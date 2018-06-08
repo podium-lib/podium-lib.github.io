@@ -1,15 +1,21 @@
-# 🌎 parcel-website
+# Podium website
 
-This is the source of the [parceljs.org](https://parceljs.org) website.
+https://pages.github.schibsted.io/Podium/dist/en/
 
-Aside from the homepage, each documentation page is generated from a markdown file using the [markdown-styles](https://github.com/mixu/markdown-styles) generator.
+## Setup
 
-## Contributing
+- `npm install`
+- `npm run dev` in one tab
+- `npm start` in another tab
+- visit `http://localhost:5000` in your browser
 
-You can start a local server using `npm start` to run it locally, once you installed all packages `npm install` and built the files `npm run build`. It is deployed using [Zeit Now](https://zeit.co/now).
+## Making changes
 
-### Changing the displayed language
+- update files in `/src/i18n/en`
+- refresh browser window to see changes
 
-You can change the displayed language using an url query:
+## Publishing changes
 
-For example, you can access the Korean version using the following url: `localhost:5000/?locale=ko`
+- run `npm run build`
+- commit changes
+- push
