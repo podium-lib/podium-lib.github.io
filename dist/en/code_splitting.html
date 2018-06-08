@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>✂️ Code Splitting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link type="text/css" rel="stylesheet" href="assets/style.css" />
+  <link type="text/css" rel="stylesheet" href="assets/pilcrow.css" />
+  <link type="text/css" rel="stylesheet" href="assets/hljs-github.min.css"/>
+  <link rel="shortcut icon" href="assets/podium.png" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <a class="logo" href="/">
+      <img class="podium" src="assets/podium.png">
+      Podium
+    </a>
+    <div class="links">
+      <a href="https://github.schibsted.io/Podium" target="_blank">GitHub</a>
+    </div>
+  </header>
+  <div class="content">
+    <nav>
+      <h3>Podlet</h3>
+      <ul>
+        <li><a href="podlets_getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="podlets_fallbacks.html">🔌 Fallbacks</a></li>
+        <li><a href="podlets_proxying.html">🐠 Proxying</a></li>
+        <li><a href="podlet_api.html">📚 API</a></li>
+      </ul>
+      <!--
+      <h2>Layouts</h2>
+      <h3>📚 Guides</h3>
+      <ul>
+        <li><a href="layouts_getting_started.html">🚀 Getting Started</a></li>
+      </ul>
+      <h3>📚 API Docs</h3>
+      <ul>
+        <li><a href="layout_api.html">Layout</a></li>
+        <li><a href="layout_app_api.html">Layout App</a></li>
+        <li><a href="layout_app_server_api.html">Layout App Server</a></li>
+      </ul>
+      -->
+    </nav>
+    <main><h1 id="✂️-code-splitting"><a class="header-link" href="#✂️-code-splitting"></a>✂️ Code Splitting</h1>
+<p>Parcel supports zero configuration code splitting out of the box. This allows you to split your application code into separate bundles which can be loaded on demand, which means smaller initial bundle sizes and faster load times. As the user navigates around in your application and modules are required, Parcel automatically takes care of loading child bundles on demand.</p>
+<p>Code splitting is controlled by use of the dynamic <code>import()</code> function <a href="https://github.com/tc39/proposal-dynamic-import">syntax proposal</a>, which works like the normal <code>import</code> statement or <code>require</code> function, but returns a Promise. This means that the module is loaded asynchronously.</p>
+<p>The following example shows how you might use dynamic imports to load a sub-page of your application on demand.</p>
+<pre class="hljs"><code><span class="hljs-comment">// pages/about.js</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-comment">// Render the page</span>
+}</code></pre><pre class="hljs"><code><span class="hljs-keyword">import</span>(<span class="hljs-string">'./pages/about'</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">page</span>) </span>{
+  <span class="hljs-comment">// Render page</span>
+  page.render();
+});</code></pre><p>Because <code>import()</code> returns a Promise, you can also use async/await syntax. You probably need to configure Babel to transpile the syntax though, until it is more widely supported by browsers.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> page = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'./pages/about'</span>);
+<span class="hljs-comment">// Render page</span>
+page.render();</code></pre><p>Dynamic imports are also lazily loaded in Parcel, so you can still put all your <code>import()</code> calls at the top of your file and the child bundles won&#39;t be loaded until they are used. The following example shows how you might lazily load sub-pages of an application dynamically.</p>
+<pre class="hljs"><code><span class="hljs-comment">// Setup a map of page names to dynamic imports.</span>
+<span class="hljs-comment">// These are not loaded until they are used.</span>
+<span class="hljs-keyword">const</span> pages = {
+  <span class="hljs-attr">about</span>: <span class="hljs-keyword">import</span>(<span class="hljs-string">'./pages/about'</span>),
+  <span class="hljs-attr">blog</span>: <span class="hljs-keyword">import</span>(<span class="hljs-string">'./pages/blog'</span>)
+};
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderPage</span>(<span class="hljs-params">name</span>) </span>{
+  <span class="hljs-comment">// Lazily load the requested page.</span>
+  <span class="hljs-keyword">const</span> page = <span class="hljs-keyword">await</span> pages[name];
+  <span class="hljs-keyword">return</span> page.render();
+}</code></pre><p><strong>Note:</strong> If you would like to use async/await in browsers that don&#39;t support it natively, remember to include <code>babel-polyfill</code> in your app or <code>babel-runtime</code> + <code>babel-plugin-transform-runtime</code> in libraries.</p>
+<pre class="hljs"><code>yarn add babel-polyfill</code></pre><pre class="hljs"><code><span class="hljs-keyword">import</span> <span class="hljs-string">"babel-polyfill"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"./app"</span>;</code></pre><p>Read the docs on <a href="http://babeljs.io/docs/usage/polyfill">babel-polyfill</a> and <a href="http://babeljs.io/docs/plugins/transform-runtime">babel-runtime</a>.</p>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var pathname = window.location.pathname.substr(1);
+      var activeLink = document.querySelector('a[href="' + pathname + '"]');
+
+      activeLink.classList.add('selected');
+    })();
+  </script>
+</body>
+</html>

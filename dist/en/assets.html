@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>📦 Assets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link type="text/css" rel="stylesheet" href="assets/style.css" />
+  <link type="text/css" rel="stylesheet" href="assets/pilcrow.css" />
+  <link type="text/css" rel="stylesheet" href="assets/hljs-github.min.css"/>
+  <link rel="shortcut icon" href="assets/podium.png" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <a class="logo" href="/">
+      <img class="podium" src="assets/podium.png">
+      Podium
+    </a>
+    <div class="links">
+      <a href="https://github.schibsted.io/Podium" target="_blank">GitHub</a>
+    </div>
+  </header>
+  <div class="content">
+    <nav>
+      <h3>Podlet</h3>
+      <ul>
+        <li><a href="podlets_getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="podlets_fallbacks.html">🔌 Fallbacks</a></li>
+        <li><a href="podlets_proxying.html">🐠 Proxying</a></li>
+        <li><a href="podlet_api.html">📚 API</a></li>
+      </ul>
+      <!--
+      <h2>Layouts</h2>
+      <h3>📚 Guides</h3>
+      <ul>
+        <li><a href="layouts_getting_started.html">🚀 Getting Started</a></li>
+      </ul>
+      <h3>📚 API Docs</h3>
+      <ul>
+        <li><a href="layout_api.html">Layout</a></li>
+        <li><a href="layout_app_api.html">Layout App</a></li>
+        <li><a href="layout_app_server_api.html">Layout App Server</a></li>
+      </ul>
+      -->
+    </nav>
+    <main><h1 id="📦-assets"><a class="header-link" href="#📦-assets"></a>📦 Assets</h1>
+<p>Parcel is based around assets. An asset can represent any file, but Parcel has special support for certain types of assets like JavaScript, CSS, and HTML files. Parcel automatically analyzes the dependencies referenced in these files and includes them in the output bundle. Assets of similar types are grouped together into the same output bundle. If you import an asset of a different type (for example, if you imported a CSS file from JS), it starts a child bundle and leaves a reference to it in the parent. This will be illustrated in the following sections.</p>
+<h2 id="javascript"><a class="header-link" href="#javascript"></a>JavaScript</h2>
+<p>The most traditional file type for web bundlers is JavaScript. Parcel supports both CommonJS and ES6 module syntax for importing files. It also supports dynamic <code>import()</code> function syntax to load modules asynchronously, which is discussed in the <a href="code_splitting.html">Code Splitting</a> section.</p>
+<pre class="hljs"><code><span class="hljs-comment">// Import a module using CommonJS syntax</span>
+<span class="hljs-keyword">const</span> dep = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./path/to/dep'</span>);
+
+<span class="hljs-comment">// Import a module using ES6 import syntax</span>
+<span class="hljs-keyword">import</span> dep <span class="hljs-keyword">from</span> <span class="hljs-string">'./path/to/dep'</span>;</code></pre><p>You can also import non-JavaScript assets from a JavaScript file, e.g. CSS or even an image file. When you import one of these files, it is not inlined as in some other bundlers. Instead, it is placed in a separate bundle (e.g. a CSS file) along with all of its dependencies. When using <a href="https://github.com/css-modules/css-modules">CSS Modules</a>, the exported classes are placed in the JavaScript bundle. Other asset types export a URL to the output file in the JavaScript bundle so you can reference them in your code.</p>
+<pre class="hljs"><code><span class="hljs-comment">// Import a CSS file</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'./test.css'</span>;
+
+<span class="hljs-comment">// Import a CSS file with CSS modules</span>
+<span class="hljs-keyword">import</span> classNames <span class="hljs-keyword">from</span> <span class="hljs-string">'./test.css'</span>;
+
+<span class="hljs-comment">// Import the URL to an image file</span>
+<span class="hljs-keyword">import</span> imageURL <span class="hljs-keyword">from</span> <span class="hljs-string">'./test.png'</span>;</code></pre><p>If you want to inline a file into the JavaScript bundle instead of reference it by URL, you can use the Node.js <code>fs.readFileSync</code> API to do that. The URL must be statically analyzable, meaning it cannot have any variables in it (other than <code>__dirname</code> and <code>__filename</code>).</p>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">'fs'</span>;
+
+<span class="hljs-comment">// Read contents as a string</span>
+<span class="hljs-keyword">const</span> string = fs.readFileSync(__dirname + <span class="hljs-string">'/test.txt'</span>, <span class="hljs-string">'utf8'</span>);
+
+<span class="hljs-comment">// Read contents as a Buffer</span>
+<span class="hljs-keyword">const</span> buffer = fs.readFileSync(__dirname + <span class="hljs-string">'/test.png'</span>);</code></pre><h2 id="css"><a class="header-link" href="#css"></a>CSS</h2>
+<p>CSS assets can be imported from a JavaScript or HTML file, and can contain dependencies referenced by <code>@import</code> syntax as well as references to images, fonts, etc. via the <code>url()</code> function. Other CSS files that are <code>@import</code>ed are inlined into the same CSS bundle, and <code>url()</code> references are rewritten to their output filenames. All filenames should be relative to the current CSS file.</p>
+<pre class="hljs"><code><span class="hljs-comment">/* Import another CSS file */</span>
+@<span class="hljs-keyword">import</span> <span class="hljs-string">'./other.css'</span>;
+
+<span class="hljs-selector-class">.test</span> {
+  <span class="hljs-comment">/* Reference an image file */</span>
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">'./images/background.png'</span>);
+}</code></pre><p>In addition to plain CSS, other compile-to-CSS languages like LESS, SASS, and Stylus are also supported, and work the same way.</p>
+<h2 id="scss"><a class="header-link" href="#scss"></a>SCSS</h2>
+<p>SCSS compilation needs <code>node-sass</code> module. To install it with npm:</p>
+<pre class="hljs"><code>npm install node-sass</code></pre><p>Once you have <code>node-sass</code> installed you can import SCSS files from JavaScript files.</p>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> <span class="hljs-string">'./custom.scss'</span></code></pre><p>Dependencies in the SCSS files can be used with the <code>@import</code> statements.</p>
+<h2 id="html"><a class="header-link" href="#html"></a>HTML</h2>
+<p>HTML assets are often the entry file that you provide to Parcel, but can also be referenced by JavaScript files, e.g. to provide links to other pages. URLs to scripts, styles, media, and other HTML files are extracted and compiled as described above. The references are rewritten in the HTML so that they link to the correct output files. All filenames should be relative to the current HTML file.</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- reference an image file --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./images/header.png"</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"./other.html"</span>&gt;</span>Link to another page<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+
+  <span class="hljs-comment">&lt;!-- import a JavaScript bundle --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./index.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>    </main>
+  </div>
+  <script>
+    (function () {
+      var pathname = window.location.pathname.substr(1);
+      var activeLink = document.querySelector('a[href="' + pathname + '"]');
+
+      activeLink.classList.add('selected');
+    })();
+  </script>
+</body>
+</html>

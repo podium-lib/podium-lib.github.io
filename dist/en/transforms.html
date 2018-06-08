@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🐠 Transforms</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link type="text/css" rel="stylesheet" href="assets/style.css" />
+  <link type="text/css" rel="stylesheet" href="assets/pilcrow.css" />
+  <link type="text/css" rel="stylesheet" href="assets/hljs-github.min.css"/>
+  <link rel="shortcut icon" href="assets/podium.png" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <a class="logo" href="/">
+      <img class="podium" src="assets/podium.png">
+      Podium
+    </a>
+    <div class="links">
+      <a href="https://github.schibsted.io/Podium" target="_blank">GitHub</a>
+    </div>
+  </header>
+  <div class="content">
+    <nav>
+      <h3>Podlet</h3>
+      <ul>
+        <li><a href="podlets_getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="podlets_fallbacks.html">🔌 Fallbacks</a></li>
+        <li><a href="podlets_proxying.html">🐠 Proxying</a></li>
+        <li><a href="podlet_api.html">📚 API</a></li>
+      </ul>
+      <!--
+      <h2>Layouts</h2>
+      <h3>📚 Guides</h3>
+      <ul>
+        <li><a href="layouts_getting_started.html">🚀 Getting Started</a></li>
+      </ul>
+      <h3>📚 API Docs</h3>
+      <ul>
+        <li><a href="layout_api.html">Layout</a></li>
+        <li><a href="layout_app_api.html">Layout App</a></li>
+        <li><a href="layout_app_server_api.html">Layout App Server</a></li>
+      </ul>
+      -->
+    </nav>
+    <main><h1 id="🐠-transforms"><a class="header-link" href="#🐠-transforms"></a>🐠 Transforms</h1>
+<p>While many bundlers require you to install and configure plugins to transform assets, Parcel has support for many common transforms and transpilers built in out of the box. You can transform JavaScript using <a href="https://babeljs.io">Babel</a>, CSS using <a href="http://postcss.org">PostCSS</a>, and HTML using <a href="https://github.com/posthtml/posthtml">PostHTML</a>. Parcel automatically runs these transforms when it finds a configuration file (e.g. <code>.babelrc</code>, <code>.postcssrc</code>) in a module.</p>
+<p>This even works in third-party <code>node_modules</code>: if a configuration file is published as part of the package, the transform is automatically turned on for that module only. This keeps bundling fast since only modules that need to be transformed are processed. It also means that you don&#39;t need to manually configure the transforms to include and exclude certain files, or know how third party code is built in order to use it in your application.</p>
+<h2 id="babel"><a class="header-link" href="#babel"></a>Babel</h2>
+<p><a href="https://babeljs.io">Babel</a> is a popular transpiler for JavaScript, with a large plugin ecosystem. Using Babel with Parcel works the same way as using it standalone or with other bundlers.</p>
+<p>Install presets and plugins in your app:</p>
+<pre class="hljs"><code>yarn add babel-preset-env</code></pre><p>Then, create a <code>.babelrc</code>:</p>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"presets"</span>: [<span class="hljs-string">"env"</span>]
+}</code></pre><h2 id="postcss"><a class="header-link" href="#postcss"></a>PostCSS</h2>
+<p><a href="http://postcss.org">PostCSS</a> is a tool for transforming CSS with plugins, like <a href="https://github.com/postcss/autoprefixer">autoprefixer</a>, <a href="http://cssnext.io/">cssnext</a>, and <a href="https://github.com/css-modules/css-modules">CSS Modules</a>. You can configure PostCSS with Parcel by creating a configuration file using one of these names: <code>.postcssrc</code> (JSON), <code>.postcssrc.js</code>, or <code>postcss.config.js</code>.</p>
+<p>Install plugins in your app:</p>
+<pre class="hljs"><code>yarn add postcss-modules autoprefixer</code></pre><p>Then, create a <code>.postcssrc</code>:</p>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"modules"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"plugins"</span>: {
+    <span class="hljs-attr">"autoprefixer"</span>: {
+      <span class="hljs-attr">"grid"</span>: <span class="hljs-literal">true</span>
+    }
+  }
+}</code></pre><p>Plugins are specified in the <code>plugins</code> object as keys, and options are defined using object values. If there are no options for a plugin, just set it to <code>true</code> instead.</p>
+<p>Target browsers for Autoprefixer, cssnext and other tools can be specified in <code>.browserslistrc</code> file:</p>
+<pre class="hljs"><code>&gt; <span class="hljs-number">1</span>%
+last <span class="hljs-number">2</span> versions</code></pre><p>CSS Modules are enabled slightly differently using the a top-level <code>modules</code> key. This is because Parcel needs to have special support for CSS Modules since they export an object to be included in the JavaScript bundle as well. Note that you still need to install <code>postcss-modules</code> in your project.</p>
+<h3 id="usage-with-existing-css-libraries"><a class="header-link" href="#usage-with-existing-css-libraries"></a>Usage with existing CSS libraries</h3>
+<p>For CSS Modules to work properly with existing modules they need to specify this support in their own <code>.postcssrc</code>.</p>
+<h3 id="set-cssnano-minify-config"><a class="header-link" href="#set-cssnano-minify-config"></a>Set cssnano minify config</h3>
+<p>Parcel adds <a href="http://cssnano.co">cssnano</a> to postcss in order to minify css in production build, where custom configuration can be set by creating <code>cssnano.config.js</code> file:</p>
+<pre class="hljs"><code><span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">calc</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">discardComments</span>: {
+    <span class="hljs-attr">removeAll</span>: <span class="hljs-literal">true</span>,
+  }
+};</code></pre><h2 id="posthtml"><a class="header-link" href="#posthtml"></a>PostHTML</h2>
+<p><a href="https://github.com/posthtml/posthtml">PostHTML</a> is a tool for transforming HTML with plugins. You can configure PostHTML with Parcel by creating a configuration file using one of these names: <code>.posthtmlrc</code> (JSON), <code>posthtmlrc.js</code>, or <code>posthtml.config.js</code>.</p>
+<p>Install plugins in your app:</p>
+<pre class="hljs"><code>yarn add posthtml-img-autosize</code></pre><p>Then, create a <code>.posthtmlrc</code>:</p>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"plugins"</span>: {
+    <span class="hljs-attr">"posthtml-img-autosize"</span>: {
+      <span class="hljs-attr">"root"</span>: <span class="hljs-string">"./images"</span>
+    }
+  }
+}</code></pre><p>Plugins are specified in the <code>plugins</code> object as keys, and options are defined using object values. If there are no options for a plugin, just set it to <code>true</code> instead.</p>
+<h2 id="typescript"><a class="header-link" href="#typescript"></a>TypeScript</h2>
+<p><a href="https://www.typescriptlang.org/">TypeScript</a> is a typed superset of JavaScript that compiles down to plain JavaScript, which also supports modern ES2015+ features. Transforming TypeScript works out of the box without any additional configuration.</p>
+<pre class="hljs"><code><span class="hljs-comment">&lt;!-- index.html --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./index.ts"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre><pre class="hljs"><code><span class="hljs-comment">// index.ts</span>
+<span class="hljs-keyword">import</span> message from <span class="hljs-string">"./message"</span>;
+<span class="hljs-built_in">console</span>.log(message);</code></pre><pre class="hljs"><code><span class="hljs-comment">// message.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-string">"Hello, world"</span>;</code></pre><h2 id="reasonml/bucklescript"><a class="header-link" href="#reasonml/bucklescript"></a>ReasonML/BuckleScript</h2>
+<p><a href="https://reasonml.github.io/">ReasonML</a> compiles OCaml to JavaScript with the help of <a href="https://bucklescript.github.io">BuckleScript</a>. You can use ReasonML by installing dependencies and creating <code>bsconfig.json</code>:</p>
+<pre class="hljs"><code>$ yarn add bs-platform --dev</code></pre><pre class="hljs"><code>// bsconfig.json
+// from https://github.com/BuckleScript/bucklescript/blob/master/jscomp/bsb/templates/basic-reason/bsconfig.json
+
+{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"whatever"</span>,
+  <span class="hljs-attr">"sources"</span>: {
+    <span class="hljs-attr">"dir"</span>: <span class="hljs-string">"src"</span>,
+    <span class="hljs-attr">"subdirs"</span>: <span class="hljs-literal">true</span>
+  },
+  <span class="hljs-attr">"package-specs"</span>: {
+    <span class="hljs-attr">"module"</span>: <span class="hljs-string">"commonjs"</span>,
+    <span class="hljs-attr">"in-source"</span>: <span class="hljs-literal">true</span>
+  },
+  <span class="hljs-attr">"suffix"</span>: <span class="hljs-string">".bs.js"</span>,
+  <span class="hljs-attr">"bs-dependencies"</span>: [
+  ],
+  <span class="hljs-attr">"warnings"</span>: {
+    <span class="hljs-attr">"error"</span>: <span class="hljs-string">"+101"</span>
+  },
+  <span class="hljs-attr">"namespace"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"refmt"</span>: <span class="hljs-number">3</span>
+}</code></pre><pre class="hljs"><code><span class="hljs-comment">&lt;!-- index.html --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./src/index.re"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre><pre class="hljs"><code><span class="hljs-comment">/* src/index.re */</span>
+<span class="hljs-selector-tag">print_endline</span>(<span class="hljs-string">"Hello World"</span>);</code></pre><h3 id="reasonreact"><a class="header-link" href="#reasonreact"></a>ReasonReact</h3>
+<p><a href="https://reasonml.github.io/reason-react/">ReasonReact</a> is React binding for ReasonML. You can use it with Parcel too:</p>
+<pre class="hljs"><code>$ yarn add react react-dom reason-react</code></pre><pre class="hljs"><code><span class="hljs-comment">&lt;!-- index.html --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./src/index.re"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre><pre class="hljs"><code>// bsconfig.json
+
+{
+  "name": "whatever",
+<span class="hljs-addition">+ "reason": {</span>
+<span class="hljs-addition">+   "react-jsx": 2</span>
+<span class="hljs-addition">+ },</span>
+  "sources": {
+    "dir": "src",
+    "subdirs": true
+  },
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "bs-dependencies": [
+<span class="hljs-addition">+   "reason-react"</span>
+  ],
+  "warnings": {
+    "error": "+101"
+  },
+  "namespace": true,
+  "refmt": 3
+}</code></pre><pre class="hljs"><code><span class="hljs-comment">&lt;!-- index.html --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"app"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./src/index.re"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre><pre class="hljs"><code><span class="hljs-comment">/* src/Greeting.re */</span> 
+
+<span class="hljs-keyword">let</span> <span class="hljs-attr">component</span> = ReasonReact.statelessComponent(<span class="hljs-string">"Greeting"</span>);
+
+<span class="hljs-keyword">let</span> <span class="hljs-attr">make</span> = (~name, _children) =&gt; {
+  ...component,
+  render: <span class="hljs-attr">_self</span> =&gt;
+    &lt;div&gt;
+      {ReasonReact.stringToElement(<span class="hljs-string">"Hello! "</span> ++ name)}
+    &lt;/div&gt;
+};</code></pre><pre class="hljs"><code><span class="hljs-comment">/* src/index.re */</span>
+
+<span class="hljs-selector-tag">ReactDOMRe</span><span class="hljs-selector-class">.renderToElementWithId</span>(&lt;Greeting name=<span class="hljs-string">"Parcel"</span> /&gt;, <span class="hljs-string">"app"</span>);</code></pre>    </main>
+  </div>
+  <script>
+    (function () {
+      var pathname = window.location.pathname.substr(1);
+      var activeLink = document.querySelector('a[href="' + pathname + '"]');
+
+      activeLink.classList.add('selected');
+    })();
+  </script>
+</body>
+</html>
