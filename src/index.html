@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Podium" />
+  <meta property="og:url" content="https://parceljs.org/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="Microfrontend framework for Node.js" />
+  <meta property="og:image" content="https://parceljs.org/assets/parcel-og.png" />
+  <title>Podium</title>
+  <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/home.css"/>
+  <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/hljs-github.min.css"/>
+  <link rel="shortcut icon" href="/Podium/docs/assets/podium.ico" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <h1 class="frontpage-title">Podium</h1>
+    <img src="/Podium/docs/assets/podium.png">
+    <p class="subtitle">Microfrontends made easy</p>
+    <a class="button get-started" href="/Podium/docs/podlets/getting_started.html">Get Started</a>
+    <a class="button" href="https://github.schibsted.io/Podium" target="_blank">GitHub</a>
+
+    <nav class="links">
+      <a href="/Podium/docs/podlets/getting_started.html">Documentation</a>
+      <a href="https://github.schibsted.io/Podium" target="_blank">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="features">
+      <section>
+        <h3>🚀 Efficient development</h3>
+        <p>Teams need not bother with setting up and maintaining a full web-plattform. They can focus on delivering awesome business features. Podium will also take care of shared challenges such as asset bundling. </p>
+      </section>
+      <section>
+        <h3>✨ Editorial separation</h3>
+        <p>Webpages should consist of content from different domains and teams. Which features that belong together is an editorial responsibility, where the focus should be providing a great experience for our users.</p>
+      </section>
+      <section>
+        <h3>✂️ Feature isolation</h3>
+        <p>Given that we are able to provide great abstractions and clear boundaries, teams should be able to experience isolation of their own features. This should make it easier for them to write testable and reusable features of high quality, and make it easy for them to iterate fast.</p>
+      </section>
+    </div>
+
+    <section>
+      <h2>Hello World</h2>
+      <p>Create a podlet (page fragment) and load it in a layout (page)</p>
+      <div class="examples">
+      <div class="example">
+        <p><strong>✏️ podlet.js</strong></p>
+        <pre class="hljs"><code class="language-javascript"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+
+<span class="hljs-keyword">const</span> app = express();
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+  name: <span class="hljs-string">'myPodlet'</span>,
+  version: <span class="hljs-string">'1.0.0'</span>,
+});
+
+app.get(podlet.manifest(), (req, res) =&gt; {
+  res.send(podlet);
+});
+
+app.get(podlet.content(), (req, res) =&gt; res.send(<span class="hljs-string">`
+  &lt;div&gt;Podlet content&lt;/div&gt;
+`</span>));
+
+app.listen(<span class="hljs-number">7200</span>);
+</code></pre>
+      </div>
+
+      <div class="example">
+        <p><strong>🛠 layout.js</strong></p>
+        <pre class="hljs"><code class="language-js"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> Layout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/layout'</span>);
+
+<span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout(<span class="hljs-string">'myLayout'</span>);
+<span class="hljs-keyword">const</span> podlet = layout.client.register({
+    name: <span class="hljs-string">'myPodlet'</span>,
+    url: <span class="hljs-string">'http://localhost:7000/manifest.json'</span>
+});
+
+<span class="hljs-keyword">const</span> app = express();
+app.use(layout.middleware());
+
+app.get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> podlet.fetch();
+    res.send(<span class="hljs-string">`
+        &lt;html&gt;&lt;body&gt;<span class="hljs-subst">${content}</span>&lt;/body&gt;&lt;/html&gt;
+    `</span>);
+});
+
+app.listen(<span class="hljs-number">7000</span>);
+</code></pre>
+      </div>
+
+      <div class="example">
+        <p><strong>🛠 start podlet</strong></p>
+        <pre class="hljs"><pre><code class="language-bash">node podlet.js
+</code></pre></pre>
+      </div>
+
+      <div class="example">
+        <p><strong>🛠 start layout</strong></p>
+        <pre class="hljs"><pre><code class="language-bash">node layout.js
+</code></pre></pre>
+      </div>
+
+      <p>Just visit http://localhost:7000 in your browser to see a layout (page) with podlet (page fragment) content loaded 👌</p>
+    </section>
+  </main>
+
+  <footer>
+    <a class="button" href="getting_started.html">Get Started</a>
+    <div class="content">
+      <nav>
+        <h3>Podlets</h3>
+        <div>
+          <ul>
+            <li><a href="podlets_getting_started.html">🚀 Podlets - Getting Started</a></li>
+            <li><a href="podlets_fallbacks.html">🚀 Podlets - Fallbacks</a></li>
+            <li><a href="podlets_proxying.html">🚀 Podlets - Proxying</a></li>
+            <li><a href="podlet_api.html">🚀 Podlets - API</a></li>
+          </ul>  
+        </div>
+      </nav>
+      <nav>
+        <h3>Links</h3>
+        <ul>
+          <li><a href="https://github.schibsted.io/Podium" target="_blank">GitHub</a></li>
+          <li><a href="https://www.npmjs.com/package/@podium" target="_blank">npm</a></li>
+          <li><a href="https://micro-frontends.org/" target="_blank">Micro frontends</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="copyright">
+      Copyright ©
+      <script>document.write(new Date().getFullYear())</script>
+      Devon Govett. This website is <a href="https://github.com/parcel-bundler/website" target="_blank">open source</a>.
+    </div>
+  </footer>
+
+  <script src="assets/icons.js"></script>
+</body>
+</html>

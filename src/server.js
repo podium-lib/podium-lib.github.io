@@ -1,23 +1,26 @@
 const express = require('express');
-const fs = require('fs');
-
 const app = express();
-const languages = fs.readdirSync(__dirname + '/../dist');
+const { createReadStream } = require('fs');
+const { resolve } = require('path');
 
-app.use(function (req, res, next) {
-  // autodetect language
-  let lang = [req.query.locale, req.subdomains[0], req.acceptsLanguages(...languages), 'en'].find(function(lang) {
-    return languages.includes(lang);
-  });
+app.use(
+    '/Podium/docs',
+    express.static(__dirname + '/../docs', {
+        maxAge: 60000,
+    })
+);
 
-  req.url = '/' + lang + req.url;
-  res.setHeader('Content-Language', lang);
-  next();
+app.get('/Podium', (req, res) => {
+    res.redirect('/Podium/index.html');
 });
 
-app.use(express.static(__dirname + '/../dist', {
-  maxAge: 60000
-}));
+app.get('/Podium/index.html', (req, res) => {
+    createReadStream(resolve(__dirname, '../index.html')).pipe(res);
+});
+
+app.get('/', (req, res) => {
+    res.redirect('/Podium');
+});
 
 app.listen(5000);
 console.log('Listening on port 5000');
