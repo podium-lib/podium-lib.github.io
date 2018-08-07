@@ -1,6 +1,6 @@
 # Podium website
 
-https://pages.github.schibsted.io/Podium/dist/en/
+https://pages.github.schibsted.io/Podium/
 
 ## Setup
 
