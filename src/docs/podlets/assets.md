@@ -28,11 +28,11 @@ However, this approach also comes with a number of drawbacks:
 
 -   Libraries shared across podlets get included multiple times (eg. React).
 -   The lack of scoping means that styles and variables get overridden.
--   Assets do not get minified
+-   Assets do not get minified.
 
 ## Option 2. Distributed asset bundling (via the Asset Pipe project)
 
-To solve this issue, we maintain a project called [Asset Pipe](https://github.com/asset-pipe). Asset pipe provides a client library which can be used to upload a podlet's assets to a central [asset build server](https://github.com/asset-pipe/asset-pipe-build-server) for bundling and get back references that can be inserted into the podlet's manifest file which in turn will be consumed and utilized by layouts.
+To solve this issue, we maintain a project called [Asset Pipe](https://github.com/asset-pipe). Asset Pipe provides a client library which can be used to upload a podlet's assets to a central [asset build server](https://github.com/asset-pipe/asset-pipe-build-server) for bundling and get back references that can be inserted into the podlet's manifest file which in turn will be consumed and utilized by layouts.
 
 **👉 See also**
 
@@ -70,7 +70,7 @@ const assets = new Assets({
 
 _4. Add browserify transforms and plugins (optional)_
 
-Under the hood, Asset Pipe uses [Browserify](http://browserify.org/) to bundle JavaScript code. Browserify transforms and plugins can be used with the help of the `assets.transform()` and `assets.plugin()` methods. A common use case for this is transforming es modules using [Babel]() by way of the [Babelify](https://github.com/babel/babelify) Browserify transform.
+Under the hood, Asset Pipe uses [Browserify](http://browserify.org/) to bundle JavaScript code. Browserify transforms and plugins can be used with the help of the `assets.transform()` and `assets.plugin()` methods. A common use case for this is transforming ES modules using [Babel](https://babeljs.io/) by way of the [Babelify](https://github.com/babel/babelify) Browserify transform.
 
 ```js
 const babelify = require('babelify');
