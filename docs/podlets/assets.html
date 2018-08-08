@@ -51,7 +51,97 @@
       -->
     </nav>
     <main><h1 id="📦-assets"><a class="header-link" href="#📦-assets"></a>📦 Assets</h1>
-    </main>
+<h2 id="background"><a class="header-link" href="#background"></a>Background</h2>
+<p>One of the key challenges when using micro-frontends like Podium is how to handle client side assets in each page fragment when everything is stitched together into a page.</p>
+<p>In the Podium world, a podlet may need to ship with client side JavaScript and/or CSS and when a layout consumes that podlet, it will also need to consume the podlets JavaScript and/or CSS.</p>
+<h2 id="option-1:-inline-assets"><a class="header-link" href="#option-1:-inline-assets"></a>Option 1: Inline assets</h2>
+<p>The simplest option for including assets in a podlet is to just include <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code> or <code>&lt;link&gt;</code> tags in the content that a podlet serves.</p>
+<p><em>Example</em></p>
+<pre class="hljs"><code>app.use(podlet.content(), (req, res) =&gt; {
+    res.send(<span class="hljs-string">`
+        &lt;link href="/path/to/style.css" rel="stylesheet"&gt;
+        This is some content.
+        &lt;script src="/path/to/script.js"&gt;&lt;/script&gt;
+    `</span>);
+});</code></pre><p>This works, and in some cases it may be all you need.</p>
+<p>However, this approach also comes with a number of drawbacks:</p>
+<ul class="list">
+<li>Libraries shared across podlets get included multiple times (eg. React).</li>
+<li>The lack of scoping means that styles and variables get overridden.</li>
+<li>Assets do not get minified.</li>
+</ul>
+<h2 id="option-2.-distributed-asset-bundling-(via-the-asset-pipe-project)"><a class="header-link" href="#option-2.-distributed-asset-bundling-(via-the-asset-pipe-project)"></a>Option 2. Distributed asset bundling (via the Asset Pipe project)</h2>
+<p>To solve this issue, we maintain a project called <a href="https://github.com/asset-pipe">Asset Pipe</a>. Asset Pipe provides a client library which can be used to upload a podlet&#39;s assets to a central <a href="https://github.com/asset-pipe/asset-pipe-build-server">asset build server</a> for bundling and get back references that can be inserted into the podlet&#39;s manifest file which in turn will be consumed and utilized by layouts.</p>
+<p><strong>👉 See also</strong></p>
+<ul class="list">
+<li>For information on setting up an Asset Pipe build server, see <a href="https://github.com/asset-pipe/asset-pipe-build-server">@asset-pipe/server</a>.</li>
+<li>For information on consuming uploaded assets and creating bundles see the layout asset guides (coming soon) and the <a href="https://github.com/asset-pipe/asset-pipe-client">@asset-pipe/client</a> documentation.</li>
+</ul>
+<p>A rough guide to integrating Asset Pipe into a Podium podlet follows:</p>
+<p><em>1. Install the Asset Pipe client</em></p>
+<pre class="hljs"><code>npm i @asset-pipe/client</code></pre><p><em>2. Include the client in a podlet</em></p>
+<p>Importing the client returns an <code>Assets</code> class</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> Assets = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@asset-pipe/client'</span>);</code></pre><p><em>3. Create a new client instance</em></p>
+<p>In order to have the Asset Pipe client upload your assets to a central server, it necessary to configure the location of assets, the location of the Asset Pipe server and identify the upload with a tag. This tag should match the <code>name</code> field of the podlet&#39;s manifest file so that any layouts that make use of the podlet can work out where the podlet&#39;s assets are located. See <a href="https://github.com/asset-pipe/asset-pipe-client/blob/master/README.md">@asset-pipe/client</a> for API documentation.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> assets = <span class="hljs-keyword">new</span> Assets({
+    <span class="hljs-attr">buildServerUri</span>: <span class="hljs-string">'http://some-asset-server.com'</span>,
+    <span class="hljs-attr">tag</span>: podlet.name,
+    <span class="hljs-attr">js</span>: __dirname + <span class="hljs-string">'/assets/script.js'</span>,
+    <span class="hljs-attr">css</span>: __dirname + <span class="hljs-string">'/assets/style.css'</span>,
+});</code></pre><p><em>4. Add browserify transforms and plugins (optional)</em></p>
+<p>Under the hood, Asset Pipe uses <a href="http://browserify.org/">Browserify</a> to bundle JavaScript code. Browserify transforms and plugins can be used with the help of the <code>assets.transform()</code> and <code>assets.plugin()</code> methods. A common use case for this is transforming ES modules using <a href="https://babeljs.io/">Babel</a> by way of the <a href="https://github.com/babel/babelify">Babelify</a> Browserify transform.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> babelify = <span class="hljs-built_in">require</span>(<span class="hljs-string">'babelify'</span>);
+
+...
+
+assets.transform(babelify);</code></pre><p><em>5. Include client middleware</em></p>
+<p>Once the Asset Pipe client instance has been created, the podlet app should include the client middleware in order to kick off uploading and to ensure that uploads are complete before route handlers are called.</p>
+<pre class="hljs"><code>app.use(assets.middleware());</code></pre><p><em>6. Set asset identifiers in the podlet&#39;s manifest file</em></p>
+<p>Once the Asset Pipe client middleware we attached has run, the client will know the identifiers for any JavaScript or CSS assets on the asset server. This can then be accessed using the <code>assets.js()</code> and <code>assets.css()</code> methods.</p>
+<pre class="hljs"><code>app.get(podlet.manifest(), (req, res) =&gt; {
+    podlet.js(assets.js());
+    podlet.css(assets.css());
+
+    res.json(podlet);
+});</code></pre><p><em>7. Wait for asset upload (optional)</em></p>
+<p>In some cases, you may want to wait for assets to be uploaded. A good example for this is Kubernetes health checks. This can be achieved using the <code>assets.ready()</code> method.</p>
+<pre class="hljs"><code><span class="hljs-keyword">await</span> assets.ready();</code></pre><h3 id="a-complete-example"><a class="header-link" href="#a-complete-example"></a>A complete example</h3>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> Assets = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@asset-pipe/client'</span>);
+<span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+<span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> babelify = <span class="hljs-built_in">require</span>(<span class="hljs-string">'babelify'</span>);
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,
+    <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
+});
+
+<span class="hljs-keyword">const</span> assets = <span class="hljs-keyword">new</span> Assets({
+    <span class="hljs-attr">buildServerUri</span>: <span class="hljs-string">'http://some-asset-server.com'</span>,
+    <span class="hljs-attr">tag</span>: podlet.name,
+    <span class="hljs-attr">js</span>: __dirname + <span class="hljs-string">'/assets/script.js'</span>,
+    <span class="hljs-attr">css</span>: __dirname + <span class="hljs-string">'/assets/style.css'</span>,
+});
+
+assets.transform(babelify);
+
+<span class="hljs-keyword">const</span> app = express();
+
+app.use(assets.middleware());
+app.use(podlet.middleware());
+
+app.get(podlet.manifest(), (req, res) =&gt; {
+    podlet.js(assets.js());
+    podlet.css(assets.css());
+
+    res.json(podlet);
+});
+
+app.get(podlet.content(), (req, res) =&gt; {
+    res.send(<span class="hljs-string">`Some content`</span>);
+});
+
+app.listen(<span class="hljs-number">7100</span>);</code></pre>    </main>
   </div>
   <script>
     (function () {
