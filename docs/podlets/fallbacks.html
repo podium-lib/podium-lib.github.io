@@ -53,10 +53,29 @@
     <main><h1 id="🔌-fallbacks"><a class="header-link" href="#🔌-fallbacks"></a>🔌 Fallbacks</h1>
 <p>What happens if a podlet server is down? Unresponsive? Responding too slowly? By default podium will simply render an empty string in its place. You might, however, want to have some measure of control over what gets shown. Enter fallbacks.</p>
 <h2 id="how-do-fallbacks-work?"><a class="header-link" href="#how-do-fallbacks-work?"></a>How do fallbacks work?</h2>
-<p>On the first request to a podlet, podium will request the podlets manifest file inside of which it will discover the location of the podlets fallback route if one has been defined. It will then make a request to the fallback route and cache the response. Later, if the podlet server cannot be reached for any reason, podium will simply display the podlets cached fallback content instead.</p>
+<p>On the first request to a podlet, podium will request the podlet’s manifest file inside of which it will discover the location of the podlets fallback route if one has been defined. It will then make a request to the fallback route and cache the response. Later, if the podlet server cannot be reached for any reason, or the request returns a non 200 response, podium will simply display the podlet’s cached fallback content instead.</p>
+<p>Note that the podlet’s assets will still be served, so the fallback can depend on both JS and CSS being present once it’s rendered.</p>
 <h2 id="defining-a-fallback-route"><a class="header-link" href="#defining-a-fallback-route"></a>Defining a fallback route</h2>
-<p>asda</p>
-    </main>
+<p>With a podlet instance you call the <code>fallback</code>-function which will return the route from the manifest. By default this is at <code>/fallback</code>. You then attach your handler which receives a simplified version of the context and return the fallback you want.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet(<span class="hljs-comment">/*...*/</span>);
+
+<span class="hljs-keyword">const</span> app = express();
+
+app.get(podlet.fallback(), (req, res) =&gt; {
+  res.send(<span class="hljs-string">"&lt;div&gt;It didn't work :(&lt;/div&gt;"</span>);
+});</code></pre><p>With a custom url, which will be reflected in the manifest.</p>
+<pre class="hljs"><code>app.get(podlet.fallback(<span class="hljs-string">'/my-custom-fallback-route'</span>), (req, res) =&gt; {
+  res.send(<span class="hljs-string">"&lt;div&gt;It didn't work :(&lt;/div&gt;"</span>);
+});</code></pre><p>You can also use some of the Podium context that&#39;s not request bound. This is useful if you need to serve a different fallback depending on where the podlet is mounted.</p>
+<pre class="hljs"><code>app.get(podlet.fallback(), (req, res) =&gt; {
+  <span class="hljs-keyword">const</span> { publicPathname } = res.locals.podium.context;
+  res.send(
+    <span class="hljs-string">`&lt;div data-public-path-name=<span class="hljs-subst">${publicPathname}</span>&gt;It didn't work :(&lt;/div&gt;`</span>
+  );
+});</code></pre><p>The fallback can also point to an external service.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet(<span class="hljs-comment">/*...*/</span>);
+
+podlet.fallback(<span class="hljs-string">'https://www.example.com/my-fallback'</span>);</code></pre>    </main>
   </div>
   <script>
     (function () {
