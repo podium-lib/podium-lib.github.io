@@ -20,14 +20,19 @@ const app = express();
 app.get(podlet.fallback(), (req, res) => {
   res.send("<div>It didn't work :(</div>");
 });
+```
 
-// With a custom url, which will be reflected in the manifest
+With a custom url, which will be reflected in the manifest.
+
+```js
 app.get(podlet.fallback('/my-custom-fallback-route'), (req, res) => {
   res.send("<div>It didn't work :(</div>");
 });
+```
 
-// Using the context
-// This is useful if you need to serve a different fallback depending on where the podlet is mounted
+You can also use some of the Podium context that's not request bound. This is useful if you need to serve a different fallback depending on where the podlet is mounted.
+
+```js
 app.get(podlet.fallback(), (req, res) => {
   const { publicPathname } = res.locals.podium.context;
   res.send(
@@ -43,5 +48,3 @@ const podlet = new Podlet(/*...*/);
 
 podlet.fallback('https://www.example.com/my-fallback');
 ```
-
-If the request to fetch the fallback fails blabla
