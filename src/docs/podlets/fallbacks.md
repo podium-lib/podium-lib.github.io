@@ -10,7 +10,7 @@ Note that the podlet’s assets will still be served, so the fallback can depend
 
 ## Defining a fallback route
 
-With a podlet instance you call the `fallback`-function which will return the route from the manifest. By default it’s `/fallback`. You then attach your handler which receives a simplified version of the context and return the fallback you want.
+With a podlet instance you call the `fallback`-function which will return the route from the manifest. By default this is at `/fallback`. You then attach your handler which receives a simplified version of the context and return the fallback you want.
 
 ```js
 const podlet = new Podlet(/*...*/);
