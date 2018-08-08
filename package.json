@@ -1,10 +1,10 @@
 {
-  "name": "parcel-website",
+  "name": "podium-docs-website",
   "version": "1.0.0",
-  "description": "The parcel website",
+  "description": "The Podium docs website",
   "main": "index.js",
-  "repository": "git://git@github.com:parcel-bundler/website.git",
-  "author": "Devon Govett <devongovett@gmail.com>",
+  "repository": "git://git@github.schibsted.io:Podium/podium.github.schibsted.io.git",
+  "author": "Frontend Platform Web <trygve.lie@finn.no>",
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.2"
