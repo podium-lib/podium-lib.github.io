@@ -314,5 +314,5 @@ console.log(url.href)  // prints full to proxy endpoint
 [@podium/layout]: https://github.schibsted.io/Podium/layout
 [@podium/podlet]: https://github.schibsted.io/Podium/podlet
 [@podium/context]: https://github.schibsted.io/Podium/context
-[WHATWG URL](https://url.spec.whatwg.org/)
-[URL](https://nodejs.org/api/url.html#url_class_url)
+[WHATWG URL]: https://url.spec.whatwg.org/
+[URL]: https://nodejs.org/api/url.html#url_class_url
