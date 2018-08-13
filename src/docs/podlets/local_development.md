@@ -2,7 +2,7 @@
 
 ## Background
 
-The key experience of working on a podlet is intended to be one of working on the podlet in isolation from any layouts or other podlets. Doing so provides a number of challenges in many cases due to various missing components such headers and assets that would normally be provided by a layout.
+It is intended that Podlets be developed in isolation from layouts or other Podlets. This isolation can introduce challenges into local development due to some components normally provided by a layout (such as headers and Assets) not being available.
 
 ## A basic podlet development setup
 
@@ -51,16 +51,10 @@ The first problem with the basic setup described above is that every time you ma
 
 This is not so much a Podium problem as it is a common Node.js problem and it's easily solved. A common way to do so is to use a module such as [nodemon](http://nodemon.io) to monitor your file system and restart your server automatically anytime relevant files change.
 
-_Install nodemon_
-
-```bash
-npm install --global nodemon
-```
-
 _Use nodemon to run your server_
 
 ```bash
-nodemon server.js
+npx nodemon server.js
 ```
 
 See the [nodemon docs](https://github.com/remy/nodemon#nodemon) for more information.
@@ -78,7 +72,7 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-This podlet will work fine when a layout sends a request to it but it will blow up spectacularly if you try to visit `/` directly in your browser.
+This podlet will behave correctly when send requests by a layout but it will throw an error if you try to visit `/` directly in your browser.
 
 To solve this, we provide something called `defaults`. When enabled, you can set defaults for Podium context values that will be overwritten, and therefore not used, when requests are sent from the layout to the podlet.
 
@@ -145,7 +139,7 @@ const assets = new Assets({
 })
 ```
 
-When in development mode, JavaScript will automatically be served at the route `/js` and CSS will automatically be served at the route `/css`. You can then put these URLs directly into your development template. An advantage of this approach is that you will not need to reload the server when making changes to your client side assets. Refreshing the page to see changes will be enough.
+When in development mode, JavaScript will automatically be served at the route `/js` and CSS will automatically be served at the route `/css`. You can then put these URLs directly into your development template. An advantage of this approach is that you will not need to restart the server when making changes to your client side assets. Refreshing the page to see changes will be enough.
 
 ```html
 <html>
@@ -237,7 +231,7 @@ will generate the following entry in the podlet's manifest
 
 When this is consumed by a layout, the layout will mount a proxy from the layout directly to `http://google.com` without sending any traffic to the podlet. When working locally on your podlet in isolation this will mean that the proxy is simply not available to you.
 
-The prefered way to overcome this challenge is to mount a proxy in the podlet for development purposes
+The preferred way to overcome this challenge is to mount a proxy in the podlet for development purposes
 
 ```js
 podlet.proxy('http://google.com', 'google');
