@@ -1,214 +1,180 @@
 # ✂️ Context
 
-A Podlet is intended to be used in multiple Layouts. To support this, a Podlet
-needs access to certain pieces of data from the Layout server so it can
-determine how to respond in context of the Layout requesting it.
+A Podlet is intended to be used within multiple Layouts but for this to be possible a Podlet
+needs to be able to access certain pieces of data from each Layout server so that it can
+determine how to respond.
 
-An example of the kind of information a Podlet might need from the Layout server
-is the domain the Layout server is serving pages on. In order for a Podlet to be
-able to build absolute links to the domain the Layout is serving the podlet on,
-the Podlet will somehow need to be given this information from the Layout.
+The purpose of the Podium Context then is to give a Podlet access to background contextual information about each incoming HTTP request so that the Podlet can taylor its response accordingly.
 
-In Podium, this set of information is always provided on the requests from the
-Layout server to the Podlets. This is called the context and is sent to the Podlet
-as a group of HTTP headers.
+More specifically, a Podlet can make use of the context to:
 
-The Context is appended to all requests, including proxy requests, from a Layout
-server to a Podlet.
+-   construct URLs back to the Layout where the request originated
+-   respond differently depending on locale eg. `en-US` or `no-NO`
+-   respond differently depending on what type of device environment was used to make the request eg. `mobile` or `desktop`
+-   respond differently depending on whether the layout is in debug mode or not
+
+In Podium, this context information is sent as a set of HTTP headers with every request (including proxy requests) from a
+Layout server to a Podlet.
 
 ## Default Context variables
 
-Podium has a default set of Context variables which is always appended. They are
-as follow:
+Podium has a default set of Context variables which are always present. These are:
 
-### Debug
+| Name            | Header Name              | Context Name     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| --------------- | ------------------------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Debug           | `podium-debug`           | `debug`          | A boolean value informing the Podlet whether the Layout is in debug mode or not. Defaults to `false`                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Locale          | `podium-locale`          | `locale`         | A [bcp47] compliant locale string with locale information from the Layout. Defaults to `en-US`                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Device Type     | `podium-device-type`     | `deviceType`     | A guess (based on user-agent) as to the device type of the browser requesting the page from a Layout server. Possible values are `desktop`, `tablet` and `mobile`. Defaults to `desktop`                                                                                                                                                                                                                                                                                                                                                           |
+| Mount Origin    | `podium-mount-origin`    | `mountOrigin`    | URL origin of the inbound request to the Layout server. For example, if the Layout server is serving requests on the domain http://www.foo.com this value will be `http://www.foo.com`                                                                                                                                                                                                                                                                                                                                                             |
+| Mount Pathname  | `podium-mount-pathname`  | `mountPathname`  | URL path to where a Layout is mounted in an HTTP server. This value is the same as the layout's `pathname` option. For example, if the Layout server has mounted a Layout on the pathname `/bar` (http://www.foo.com/bar) this value will be `/bar`.                                                                                                                                                                                                                                                                                               |
+| Public Pathname | `podium-public-pathname` | `publicPathname` | URL path to where a Layout server has mounted a Proxy in order to proxy public traffic to a Podlet. The full public pathname is built up by joining together the value of Mount Pathname with a prefix value. The prefix value is there to define a namespace to isolate the proxy from other HTTP routes defined under the same mount pathname. The default prefix value is `podium-resource`. For example, if the Layout server has mounted a Layout on the pathname `/bar` (http://www.foo.com/bar) this value will be `/bar/podium-resource/`. |
 
-A boolean value giving a hint about whether the Layout is in debug mode or not.
-Defaults to `false`.
+## Consuming Context values in a Podlet
 
-### Locale
+(For information on working with the Podium Context within Layouts including setting defaults and adding values, please see the [@podium/layout] module documentation.)
 
-A [bcp47] compliant locale string with locale information from the Layout.
-Defaults to `en-US`.
+Since Context values are sent to Podlets from Layouts as headers, to make them easier to work with, the [@podium/podlet] module contains a `de-serializer` which converts context headers into object keys and values and places them on the HTTP response object at `res.locals.podium.context` for use in later middleware and/or routes.
 
-### Device Type
+When you mount the Podlet's middleware into an app this de-serialization process will occur automatically on each request.
 
-A guess (based on user-agent) as to the device type of the browser requesting the page from a Layout server. Possible values are `desktop`, `tablet` and `mobile`.
-Defaults to `desktop`.
-
-### Mount Origin
-
-URL origin of the inbound request to the Layout server. This value is retrieved
-from the inbound request to the Layout server.
-For example, if the Layout server is serving a request to the domain
-http://www.foo.com this value will be `http://www.foo.com`.
-
-### Mount Pathname
-
-URL pathname of where a Layout is mounted in the HTTP server. This value is the
-same as that defined as `pathname` in the Layout module’s constructor.
-For example, if the Layout server has mounted a Layout on the pathname `/bar`
-(http://www.foo.com/bar) this value will be `/bar`.
-
-### Public Pathname
-
-URL pathname to where a Layout server has mounted a Proxy to proxy public traffic
-to a Podlet. The full public pathname is built up by joining together the value of Mount Pathname
-with a prefix value. The prefix value is there to define a namespace to isolate
-the proxy from other HTTP routes defined under the same mount pathname. The
-default prefix value is `podium-resource`.
-For example, if the Layout server has mounted a Layout on the pathname `/bar`
-(http://www.foo.com/bar) this value will be `/bar/podium-resource/`.
-
-## Reading and appending Context
-
-Under the hood, the Context is appended to the requests from the Layout to the
-Podlets as prefixed HTTP headers. Each Context header is prefixed with `podium`
-followed by the name of the Context property in [kebab case]. For example, the
-Mount Origin context value will be sent with the header name
-`podium-mount-origin` at the HTTP level.
-
-Note: unless you are writing a low level Podium library implementation you likely will not need to interact with these HTTP headers directly. When using the [@podium/layout] and [@podium/podlet] modules to build Layout and Podlet servers, appending to and reading from the Context is taken care of for you.
-
-### Appending Context
-
-A Context is always created by a Layout server for each request sent to it. The [@podium/layout] module contains a set of Context parsers that run in parallel
-for each request. Once complete, the parser results are then built into a Context object so that it can be passed on to Podlets when requests are made to fetch their content.
-
-Context parsers are run by [Connect](https://github.com/senchalabs/connect) compatible middleware that each layout instance exposes via a `.middleware()` method. When run, the constructed Context object is placed on the HTTP response object at `res.locals.podium.context` for use in later middleware and routes.
-
-On `res.locals.podium.context`, property names are to be found in
-[camel case] with the prefix removed. For example, `podium-mount-origin` becomes `mountOrigin`.
-
-In a Layout server the Context must be manually passed on to the `.client.fetch()`
-or `.client.stream()` methods on the @podium/layout object when requesting content
-from Podlets. This step is crucial and should be done when requesting content
-from Podlets unless you have some specific need to not send a Context.
+_Example: adding podlet middleware_
 
 ```js
-const Layout = require('@podium/layout');
-const app = require('express')();
-
-// Set up a Layout
-const layout = new Layout({
-    pathname: '/',
-    name: 'demo',
-});
-
-// Register a Podlet
-const podlet = layout.client.register({
-    name: 'my_podlet',
-    uri: 'http://localhost:7100/manifest.json',
-});
-
-// Mount Layout middleware on app
-app.use(layout.pathname(), layout.middleware());
-
-// Fetch content from Podlet on request to app
-app.get(layout.pathname(), (req, res) => {
-    const ctx = res.locals.podium.context;
-    Promise.all([
-        podlet.fetch(ctx), // Pass Context to request
-    ]).then(result => {
-        res.status(200).send(result[0]);
-    });
-});
-```
-
-The `.client.fetch()` or `.client.stream()` methods will serialize the Context
-object on `.locals.podium.context` into http headers on the request to the Podlets
-as previously described.
-
-Each of the default Context parser has a default configuration which should cover
-most use cases. Though; one can override these defaults through the @podium/layout
-constructor.
-
-Example of setting the Debug Context to default `true`:
-
-```js
-const layout = new Layout({
-    pathname: '/',
-    name: 'demo',
-    context: {
-        debug: {
-            enabled: true,
-        },
-    },
-});
-```
-
-Please see the [@podium/layout] module documentation for more detailed documentation.
-
-One is not limited to just the default Context values in Podium. One can easily
-write a custom parser and plug it in the chain of parsers which are run by the
-`.middleware()` on each request.
-
-```js
-const CustomContext = require('custom-context');
-const Layout = require('@podium/layout');
-const app = require('express')();
-
-// Set up a Layout
-const layout = new Layout({
-    pathname: '/',
-    name: 'demo',
-});
-
-// Attach custom context to Layout
-layout.context.register('my-custom-context', new CustomContext());
-
-// Mount Layout middleware on app
-app.use(layout.pathname(), layout.middleware());
-```
-
-Please see the [@podium/context] module documentation for more detailed
-documentation on how to write and append a custom Context parser.
-
-### Reading Context
-
-The [@podium/podlet] module contains a de-serializer which will help with picking up
-the Context from the http headers on a inbound request.
-
-The de-serializer is run by the Connect compatible middleware method,
-`.middleware()`, on the @podium/podlet Object. When run, Context values are then stored
-on `.locals.podium.context` on the http response object for use in a later middleware
-/ route .
-
-On `.locals.podium.context` the Context property names are to be found in [camel case].
-Iow: the Context property name for ex Mount Origin is `mountOrigin`.
-
-```js
-const Podlet = require('@podium/podlet');
-const app = require('express')();
-
-const podlet = new Podlet({
-    version: '2.0.0',
-    name: 'demo',
-});
-
 app.use(podlet.middleware());
+```
 
-app.get(podlet.content(), (req, res, next) => {
-    if (res.locals.podium.context.locale === 'nb-NO') {
-        res.status(200).send('Hei verden');
-        return;
-    }
-    res.status(200).send('Hello world');
+Note: As shown in the table above, context names are converted from [kebab case] to [camel case] and the `podium` prefix is removed so the `podium-mount-origin` header will be set as `mountOrigin` on `res.locals.podium.context`.
+
+_Example: accessing de-serialized context values in later middleware_
+
+```js
+app.use((req, res, next) => {
+    // res.locals.podium.context.locale
+    next();
 });
+```
+
+_Example: accessing de-serialized context values in an express route_
+
+```js
+app.get('/', (req, res, next) => {
+    // res.locals.podium.context.deviceType
+});
+```
+
+### URL construction
+
+Perhaps the most important thing the Context is typically used for is to construct URLs linking back to the Layout a Podlet is being sent a request from.
+
+In a Podlet, the origin of a layout server will be found at `res.locals.podium.context.mountOrigin`
+and the pathname to the layout server will be found at `res.locals.podium.context.mountPathname`.
+
+These adher to the [WHATWG URL] spec so we can easily compose full URLs by using the [URL] module in node.js.
+
+_Example: using the URL module to construct urls from context values_
+
+```js
+const { URL } = require('url');
+const { mountOrigin, mountPathname } = res.locals.podium.context;
+const url = new URL(mountPathname, mountOrigin);
+// url.href => <mountOrigin>/<mountPathname>
+// eg. http://localhost:3040/cats
+```
+
+_Example: using the URL module to construct proxy urls from context values_
+
+```js
+const { URL } = require('url');
+const { mountOrigin, publicPathname } = res.locals.podium.context;
+const url = new URL(publicPathname, mountOrigin);
+// url.href => <mountOrigin>/<publicPathname>
+// eg. http://localhost:3040/cats/podium-resource
 ```
 
 ### Requests from non Layout servers
 
-The Context is appended to the requests from Layout servers to Podlet servers, but
-there are cases where one would like to request a Podlet from a non Layout server.
-In such a case where the request is not coming from a Layout server one will not
-have the Context.
+The Context is appended to requests from Layout servers to Podlet servers, but when testing the podlet in isolation you will want to be able to send requests to Podlets directly, bypassing Layouts entirely. Such requests will not
+have the appropriate Context headers set and will therefore not be able to populate the `res.locals.podium.context` object.
 
-Local development of a Podlet and running different types of tests on a Podlet
-are examples of cases where one would like to request a Podlet directly.
+To support this use case, a `.defaults()` method is provided on the [@podium/podlet] instance. In order to use this, you must set the [@podium/podlet] constructor argument `defaults` to `true`.
 
-To cater for this, it is possible to turn on and adjust a default Context in the
-[@podium/podlet] module.
+_Example: enabling default context support in a Podlet_
+
+```js
+// Enable defaults which will set a default Context
+const podlet = new Podlet({
+    ...
+    defaults: true,
+});
+```
+
+_Example: setting default context values_
+
+```js
+// Set default locale to Norwegian
+podlet.defaults({
+    locale: 'nb-NO',
+});
+```
+
+This is very handy during development, but it is advisable that these defaults
+be turned off when running in production. Consider using `NODE_ENV` to enable/disable defaults based on the environment.
+
+_Example: disabling defaults in production_
+
+```js
+const podlet = new Podlet({
+    ...
+    defaults: process.env.NODE_ENV !== 'production',
+});
+```
+
+### Client side JavaScript and the context
+
+There are many occasions when you will want access to context values client side. Making AJAX requests to proxy endpoints and client side page navigation are two such common cases.
+
+We recommend the following 2 step approach to sharing context values between backend node.js code and client side code.
+
+1.  write required context values to the dom in your content route
+2.  read from the dom in your client side code
+
+_Example: writing context values to the dom in an express route_
+
+```js
+app.get('/', (req, res) => {
+    const {
+        mountOrigin,
+        mountPathname,
+        publicPathname,
+    } = res.locals.podium.context;
+
+    res.send(`
+        <div 
+            id="app"
+            data-mount-origin="${mountOrigin}"
+            data-mount-pathname="${mountPathname}"
+            data-public-pathname="${publicPathname}"
+        ></div>
+    `);
+});
+```
+
+_Example: reading context values from the dom in client side JavaScript_
+
+```js
+const app = document.getElementById('app');
+const { mountOrigin, mountPathname, publicPathname } = app.dataset;
+```
+
+_Example: constructing a URL in client side JavaScript_
+
+```js
+const url = new URL(mountPathname, mountOrigin).href;
+```
+
+## Putting it all together
+
+_Example: building a Podlet with a default context that passes values to the client_
 
 ```js
 const Podlet = require('@podium/podlet');
@@ -218,7 +184,9 @@ const app = require('express')();
 const podlet = new Podlet({
     version: '2.0.0',
     name: 'demo',
-    defaults: true,
+
+    // turn defaults on for development
+    defaults: process.env,
 });
 
 // Set default locale to Norwegian
@@ -226,71 +194,37 @@ podlet.defaults({
     locale: 'nb-NO',
 });
 
+// mount middleware to ensure context headers are parsed
 app.use(podlet.middleware());
 
-app.get(podlet.content(), (req, res, next) => {
-    if (res.locals.podium.context.locale === 'nb-NO') {
-        res.status(200).send('Hei verden');
-        return;
+app.get('/', (req, res, next) => {
+    const {
+        mountOrigin,
+        mountPathname,
+        publicPathname,
+        locale,
+    } = res.locals.podium.context;
+
+    // offer one response to norwegian speakers...
+    if (locale === 'en-NO') {
+        res.send(`
+        <div 
+            id="app"
+            data-mount-origin="${mountOrigin}"
+            data-mount-pathname="${mountPathname}"
+            data-public-pathname="${publicPathname}"
+        >
+        Hei!
+        </div>
+    `);
+    } else {
+        // ...and another to english speakers
+        res.send('English is not supported at this time.');
     }
-    res.status(200).send('Hello world');
-});
-```
-
-This is very handy during development, but it is advised to have these defaults
-turned off when running in production. To control such one can use `NODE_ENV`
-to turn default on / off depending on environment.
-
-```js
-const podlet = new Podlet({
-    version: '2.0.0',
-    name: 'demo',
-    defaults: process.env.NODE_ENV !== 'production',
 });
 ```
 
 Please see the [@podium/podlet] module for more detailed documentation.
-
-## Using the Context
-
-The whole purpose of the Context is to give a Podlet info about the context it is
-running in in a Layout. A Podlet should be written generically so it can be included
-in different Layouts without any customization for each Layout.
-
-Example: A Podlet should be able to handle that it is used in a Layout which is
-serving things on http://mysite.com/foo/ and a second Layout serving things on
-http://mysite.com/bar/xyz/. The Podlet should, with the help of the Context,
-be able to build absolute URLs to both these etc.
-
-### A word on URL construction
-
-Maybe the most important thing to use the Context for is constructing URLs for example HTML links which reflects the Layout a Podlet is included in can be built.
-
-In a Podlet, the origin of a layout server will be found on `.locals.podium.context.mountOrigin`
-and the pathname to the layout will be found on `.locals.podium.context.mountPathname`.
-
-These adher to the [WHATWG URL] spec so we can easely compose full URLs by using,
-for example the [URL] module in node.js.
-
-```js
-const { URL } = require('url');
-const origin = res.locals.podium.context.mountOrigin;
-const pathname = res.locals.podium.context.mountPathname;
-const url = new URL(pathname, origin);
-
-console.log(url.href); // prints full URL
-```
-
-The same can be done to construct public URL to the proxy URL:
-
-```js
-const { URL } = require('url');
-const origin = res.locals.podium.context.mountOrigin;
-const pathname = res.locals.podium.context.publicPathname;
-const url = new URL(pathname, origin);
-
-console.log(url.href); // prints full to proxy endpoint
-```
 
 [bcp47]: https://tools.ietf.org/html/bcp47
 [kebab case]: https://en.wikipedia.org/wiki/Kebab_case
