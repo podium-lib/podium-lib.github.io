@@ -1,7 +1,7 @@
-# Context
+# ✂️ Context
 
 A Podlet is intended to be used in multiple Layouts. To support this, a Podlet
-needs access to certain pieces of information from the Layout server so it can
+needs access to certain pieces of data from the Layout server so it can
 determine how to respond in context of the Layout requesting it.
 
 An example of the kind of information a Podlet might need from the Layout server
@@ -29,19 +29,18 @@ Defaults to `false`.
 ### Locale
 
 A [bcp47] compliant locale string with locale information from the Layout.
-Defaults to `en-EN`.
+Defaults to `en-US`.
 
 ### Device Type
 
-A guess at the device type of the browser requesting a page from a Layout server
-hinting at whether the browser is running on a desktop, tablet or mobile.
+A guess (based on user-agent) as to the device type of the browser requesting the page from a Layout server. Possible values are `desktop`, `tablet` and `mobile`.
 Defaults to `desktop`.
 
 ### Mount Origin
 
 URL origin of the inbound request to the Layout server. This value is retrieved
 from the inbound request to the Layout server.
-For example,  if the Layout server is serving a request to the domain
+For example, if the Layout server is serving a request to the domain
 http://www.foo.com this value will be `http://www.foo.com`.
 
 ### Mount Pathname
@@ -54,8 +53,8 @@ For example, if the Layout server has mounted a Layout on the pathname `/bar`
 ### Public Pathname
 
 URL pathname to where a Layout server has mounted a Proxy to proxy public traffic
-to a Podlet. The full public pathname is built up by the value of Mount Pathname
-and a prefix value. The prefix value is there to define a namespace to isolate
+to a Podlet. The full public pathname is built up by joining together the value of Mount Pathname
+with a prefix value. The prefix value is there to define a namespace to isolate
 the proxy from other HTTP routes defined under the same mount pathname. The
 default prefix value is `podium-resource`.
 For example, if the Layout server has mounted a Layout on the pathname `/bar`
@@ -69,31 +68,22 @@ followed by the name of the Context property in [kebab case]. For example, the
 Mount Origin context value will be sent with the header name
 `podium-mount-origin` at the HTTP level.
 
-Though; unless one are doing a low level implementation of a Podium library one
-should not necessarily need to deal with the http headers. When using the
-[@podium/layout] and [@podium/podlet] modules to build Layout and Podlet servers,
-appending and reading the Context is a bit easier.
+Note: unless you are writing a low level Podium library implementation you likely will not need to interact with these HTTP headers directly. When using the [@podium/layout] and [@podium/podlet] modules to build Layout and Podlet servers, appending to and reading from the Context is taken care of for you.
 
 ### Appending Context
 
-The Context is always created in the Layout server for each request to it. The
-[@podium/layout] module contain a set of Context parsers which run in parallel
-on each request and builds the Context so it can be passed on to the Podlets when
-requesting them for content.
+A Context is always created by a Layout server for each request sent to it. The [@podium/layout] module contains a set of Context parsers that run in parallel
+for each request. Once complete, the parser results are then built into a Context object so that it can be passed on to Podlets when requests are made to fetch their content.
 
-The Context parsers is run by the Connect compatible middleware method,
-`.middleware()`, on the @podium/layout object. When run, the Context are then
-stored on `.locals.podium.context` on the http response object for use in a later
-middleware / route.
+Context parsers are run by [Connect](https://github.com/senchalabs/connect) compatible middleware that each layout instance exposes via a `.middleware()` method. When run, the constructed Context object is placed on the HTTP response object at `res.locals.podium.context` for use in later middleware and routes.
 
-On `.locals.podium.context` the Context property names are to be found in
-[camel case] and without the prefix. Iow: the Context property name for ex
-Mount Origin is `mountOrigin`.
+On `res.locals.podium.context`, property names are to be found in
+[camel case] with the prefix removed. For example, `podium-mount-origin` becomes `mountOrigin`.
 
 In a Layout server the Context must be manually passed on to the `.client.fetch()`
-or `.client.stream()` method on the @podium/layout object when requesting content
+or `.client.stream()` methods on the @podium/layout object when requesting content
 from Podlets. This step is crucial and should be done when requesting content
-from Podlets unless one do not want to send a Context to a Podlet for some reason.
+from Podlets unless you have some specific need to not send a Context.
 
 ```js
 const Layout = require('@podium/layout');
@@ -115,17 +105,14 @@ const podlet = layout.client.register({
 app.use(layout.pathname(), layout.middleware());
 
 // Fetch content from Podlet on request to app
-app.get(layout.pathname(),
-    (req, res) => {
-        const ctx = res.locals.podium.context;
-        Promise.all([
-            podlet.fetch(ctx),  // Pass Context to request
-        ])
-        .then(result => {
-            res.status(200).send(result[0]);
-        });
-    }
-);
+app.get(layout.pathname(), (req, res) => {
+    const ctx = res.locals.podium.context;
+    Promise.all([
+        podlet.fetch(ctx), // Pass Context to request
+    ]).then(result => {
+        res.status(200).send(result[0]);
+    });
+});
 ```
 
 The `.client.fetch()` or `.client.stream()` methods will serialize the Context
@@ -144,9 +131,9 @@ const layout = new Layout({
     name: 'demo',
     context: {
         debug: {
-            enabled: true
-        }
-    }
+            enabled: true,
+        },
+    },
 });
 ```
 
@@ -183,7 +170,7 @@ The [@podium/podlet] module contains a de-serializer which will help with pickin
 the Context from the http headers on a inbound request.
 
 The de-serializer is run by the Connect compatible middleware method,
-`.middleware()`, on the @podium/podlet Object. When run, the Context are then stored
+`.middleware()`, on the @podium/podlet Object. When run, Context values are then stored
 on `.locals.podium.context` on the http response object for use in a later middleware
 / route .
 
@@ -214,7 +201,7 @@ app.get(podlet.content(), (req, res, next) => {
 
 The Context is appended to the requests from Layout servers to Podlet servers, but
 there are cases where one would like to request a Podlet from a non Layout server.
-In such a case where the request is not comming from a Layout server one will not
+In such a case where the request is not coming from a Layout server one will not
 have the Context.
 
 Local development of a Podlet and running different types of tests on a Podlet
@@ -250,7 +237,7 @@ app.get(podlet.content(), (req, res, next) => {
 });
 ```
 
-This is very handy during development, but it is adviced to have these defaults
+This is very handy during development, but it is advised to have these defaults
 turned off when running in production. To control such one can use `NODE_ENV`
 to turn default on / off depending on environment.
 
@@ -262,13 +249,13 @@ const podlet = new Podlet({
 });
 ```
 
-Please see the [@podium/podlet] module documentation for more detailed documentation.
+Please see the [@podium/podlet] module for more detailed documentation.
 
 ## Using the Context
 
 The whole purpose of the Context is to give a Podlet info about the context it is
-running in in a Layout. A Podlet should be written genericly so it can be included
-in different Layouts without any custom altering for each Layout.
+running in in a Layout. A Podlet should be written generically so it can be included
+in different Layouts without any customization for each Layout.
 
 Example: A Podlet should be able to handle that it is used in a Layout which is
 serving things on http://mysite.com/foo/ and a second Layout serving things on
@@ -277,14 +264,13 @@ be able to build absolute URLs to both these etc.
 
 ### A word on URL construction
 
-Maybe the most important thing to use the Context for is constructing URLs so
-ex HTML links which reflects the Layout a Podlet is included in can be built.
+Maybe the most important thing to use the Context for is constructing URLs for example HTML links which reflects the Layout a Podlet is included in can be built.
 
 In a Podlet, the origin of a layout server will be found on `.locals.podium.context.mountOrigin`
 and the pathname to the layout will be found on `.locals.podium.context.mountPathname`.
 
 These adher to the [WHATWG URL] spec so we can easely compose full URLs by using,
-ex the [URL] module in node.js.
+for example the [URL] module in node.js.
 
 ```js
 const { URL } = require('url');
@@ -292,7 +278,7 @@ const origin = res.locals.podium.context.mountOrigin;
 const pathname = res.locals.podium.context.mountPathname;
 const url = new URL(pathname, origin);
 
-console.log(url.href)  // prints full URL
+console.log(url.href); // prints full URL
 ```
 
 The same can be done to construct public URL to the proxy URL:
@@ -303,10 +289,8 @@ const origin = res.locals.podium.context.mountOrigin;
 const pathname = res.locals.podium.context.publicPathname;
 const url = new URL(pathname, origin);
 
-console.log(url.href)  // prints full to proxy endpoint
+console.log(url.href); // prints full to proxy endpoint
 ```
-
-
 
 [bcp47]: https://tools.ietf.org/html/bcp47
 [kebab case]: https://en.wikipedia.org/wiki/Kebab_case
@@ -314,5 +298,5 @@ console.log(url.href)  // prints full to proxy endpoint
 [@podium/layout]: https://github.schibsted.io/Podium/layout
 [@podium/podlet]: https://github.schibsted.io/Podium/podlet
 [@podium/context]: https://github.schibsted.io/Podium/context
-[WHATWG URL]: https://url.spec.whatwg.org/
-[URL]: https://nodejs.org/api/url.html#url_class_url
+[whatwg url]: https://url.spec.whatwg.org/
+[url]: https://nodejs.org/api/url.html#url_class_url
