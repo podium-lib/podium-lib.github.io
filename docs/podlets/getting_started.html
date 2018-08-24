@@ -128,7 +128,7 @@ so. Eg. <code>podlet.manifest(&#39;/manifest&#39;)</code></p>
 app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) =&gt; {
-    res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">'&lt;div&gt;This is the podlets html content&lt;/div&gt;'</span>);
+    res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">`&lt;div&gt;This is the podlet's HTML content&lt;/div&gt;`</span>);
 });
 
 app.get(podlet.manifest(), (req, res) =&gt; {
