@@ -72,7 +72,10 @@ app.listen(<span class="hljs-number">7200</span>);
         <pre class="hljs"><code class="language-js"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
 <span class="hljs-keyword">const</span> Layout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/layout'</span>);
 
-<span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout(<span class="hljs-string">'myLayout'</span>);
+<span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({ 
+    name: <span class="hljs-string">'myLayout'</span>
+    pathname: <span class="hljs-string">'/'</span>
+});
 <span class="hljs-keyword">const</span> podlet = layout.client.register({
     name: <span class="hljs-string">'myPodlet'</span>,
     url: <span class="hljs-string">'http://localhost:7000/manifest.json'</span>

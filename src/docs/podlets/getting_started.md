@@ -147,7 +147,7 @@ const podlet = new Podlet({
 app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
-    res.status(200).send('<div>This is the podlets html content</div>');
+    res.status(200).send(`<div>This is the podlet's HTML content</div>`);
 });
 
 app.get(podlet.manifest(), (req, res) => {
