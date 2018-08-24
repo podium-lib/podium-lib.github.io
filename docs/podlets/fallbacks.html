@@ -29,23 +29,20 @@
         <li><a href="/Podium/docs/podium/conceptual_overview.html">📚 Overview</a></li>
       </ul>
       
-      <h3>Podlet</h3>
+      <h3>Podlet Guides</h3>
       <ul>
         <li><a href="/Podium/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
         <li><a href="/Podium/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
-        <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
         <li><a href="/Podium/docs/podlets/context.html">✂️ Context</a></li>
         <li><a href="/Podium/docs/podlets/assets.html">📦 Assets</a></li>
+        <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
         <li><a href="/Podium/docs/podlets/local_development.html">🔥 Local Development</a></li>
       </ul>
 
-      <!--
-      <h2>Layouts</h2>
-      <h3>📚 Guides</h3>
+      <h3>Layout Guides</h3>
       <ul>
-        <li><a href="layouts_getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="/Podium/docs/layouts/getting_started.html">🚀 Getting Started</a></li>
       </ul>
-      -->
 
       <h3>API Docs</h3>
       <ul>
@@ -63,25 +60,32 @@
 <p>Note that the podlet’s assets will still be served, so the fallback can depend on both JS and CSS being present once it’s rendered.</p>
 <h2 id="defining-a-fallback-route"><a class="header-link" href="#defining-a-fallback-route"></a>Defining a fallback route</h2>
 <p>With a podlet instance you call the <code>fallback</code>-function which will return the route from the manifest. By default this is at <code>/fallback</code>. You then attach your handler which receives a simplified version of the context and return the fallback you want.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet(<span class="hljs-comment">/*...*/</span>);
+<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet <span class="hljs-comment">/*...*/</span>();
 
 <span class="hljs-keyword">const</span> app = express();
 
 app.get(podlet.fallback(), (req, res) =&gt; {
-  res.send(<span class="hljs-string">"&lt;div&gt;It didn't work :(&lt;/div&gt;"</span>);
+    res.send(<span class="hljs-string">"&lt;div&gt;It didn't work :(&lt;/div&gt;"</span>);
 });</code></pre><p>With a custom url, which will be reflected in the manifest.</p>
 <pre class="hljs"><code>app.get(podlet.fallback(<span class="hljs-string">'/my-custom-fallback-route'</span>), (req, res) =&gt; {
-  res.send(<span class="hljs-string">"&lt;div&gt;It didn't work :(&lt;/div&gt;"</span>);
+    res.send(<span class="hljs-string">"&lt;div&gt;It didn't work :(&lt;/div&gt;"</span>);
 });</code></pre><p>You can also use some of the Podium context that&#39;s not request bound. This is useful if you need to serve a different fallback depending on where the podlet is mounted.</p>
 <pre class="hljs"><code>app.get(podlet.fallback(), (req, res) =&gt; {
-  <span class="hljs-keyword">const</span> { publicPathname } = res.locals.podium.context;
-  res.send(
-    <span class="hljs-string">`&lt;div data-public-path-name=<span class="hljs-subst">${publicPathname}</span>&gt;It didn't work :(&lt;/div&gt;`</span>
-  );
+    <span class="hljs-keyword">const</span> { publicPathname } = res.locals.podium.context;
+    res.send(
+        <span class="hljs-string">`&lt;div data-public-path-name=<span class="hljs-subst">${publicPathname}</span>&gt;It didn't work :(&lt;/div&gt;`</span>
+    );
 });</code></pre><p>The fallback can also point to an external service.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet(<span class="hljs-comment">/*...*/</span>);
+<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet <span class="hljs-comment">/*...*/</span>();
 
-podlet.fallback(<span class="hljs-string">'https://www.example.com/my-fallback'</span>);</code></pre>    </main>
+podlet.fallback(<span class="hljs-string">'https://www.example.com/my-fallback'</span>);</code></pre><h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
+<ul class="list">
+<li><a href="/Podium/docs/podlets/context.html">learn about working with the context</a></li>
+<li><a href="/Podium/docs/podlets/assets.html">add client side assets (JavaScript and CSS)</a></li>
+<li><a href="/Podium/docs/podlets/proxying.html">learn about adding additional routes using the proxy</a></li>
+<li><a href="/Podium/docs/podlets/local_development.html">read about improving your podlet development workflow</a></li>
+</ul>
+    </main>
   </div>
   <script>
     (function () {

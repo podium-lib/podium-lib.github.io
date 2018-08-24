@@ -149,3 +149,8 @@ app.get(podlet.content(), (req, res) => {
 
 app.listen(7100);
 ```
+
+## Next steps
+
+-   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
+-   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)

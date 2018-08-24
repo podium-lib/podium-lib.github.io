@@ -13,12 +13,12 @@ Note that the podlet’s assets will still be served, so the fallback can depend
 With a podlet instance you call the `fallback`-function which will return the route from the manifest. By default this is at `/fallback`. You then attach your handler which receives a simplified version of the context and return the fallback you want.
 
 ```js
-const podlet = new Podlet(/*...*/);
+const podlet = new Podlet /*...*/();
 
 const app = express();
 
 app.get(podlet.fallback(), (req, res) => {
-  res.send("<div>It didn't work :(</div>");
+    res.send("<div>It didn't work :(</div>");
 });
 ```
 
@@ -26,7 +26,7 @@ With a custom url, which will be reflected in the manifest.
 
 ```js
 app.get(podlet.fallback('/my-custom-fallback-route'), (req, res) => {
-  res.send("<div>It didn't work :(</div>");
+    res.send("<div>It didn't work :(</div>");
 });
 ```
 
@@ -34,17 +34,24 @@ You can also use some of the Podium context that's not request bound. This is us
 
 ```js
 app.get(podlet.fallback(), (req, res) => {
-  const { publicPathname } = res.locals.podium.context;
-  res.send(
-    `<div data-public-path-name=${publicPathname}>It didn't work :(</div>`
-  );
+    const { publicPathname } = res.locals.podium.context;
+    res.send(
+        `<div data-public-path-name=${publicPathname}>It didn't work :(</div>`
+    );
 });
 ```
 
 The fallback can also point to an external service.
 
 ```js
-const podlet = new Podlet(/*...*/);
+const podlet = new Podlet /*...*/();
 
 podlet.fallback('https://www.example.com/my-fallback');
 ```
+
+## Next steps
+
+-   [learn about working with the context](/Podium/docs/podlets/context.html)
+-   [add client side assets (JavaScript and CSS)](/Podium/docs/podlets/assets.html)
+-   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
+-   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)

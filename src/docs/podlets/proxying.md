@@ -189,3 +189,7 @@ app.get(podlet.content(), (req, res) => {
 
 app.listen(7100);
 ```
+
+## Next steps
+
+-   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)

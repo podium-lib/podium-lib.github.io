@@ -29,23 +29,20 @@
         <li><a href="/Podium/docs/podium/conceptual_overview.html">📚 Overview</a></li>
       </ul>
       
-      <h3>Podlet</h3>
+      <h3>Podlet Guides</h3>
       <ul>
         <li><a href="/Podium/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
         <li><a href="/Podium/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
-        <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
         <li><a href="/Podium/docs/podlets/context.html">✂️ Context</a></li>
         <li><a href="/Podium/docs/podlets/assets.html">📦 Assets</a></li>
+        <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
         <li><a href="/Podium/docs/podlets/local_development.html">🔥 Local Development</a></li>
       </ul>
 
-      <!--
-      <h2>Layouts</h2>
-      <h3>📚 Guides</h3>
+      <h3>Layout Guides</h3>
       <ul>
-        <li><a href="layouts_getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="/Podium/docs/layouts/getting_started.html">🚀 Getting Started</a></li>
       </ul>
-      -->
 
       <h3>API Docs</h3>
       <ul>
@@ -76,20 +73,20 @@ initialization.</p>
 @podium/podlet. To do so, run:</p>
 <pre class="hljs"><code>npm install express @podium/podlet</code></pre><h2 id="step-3:-import-dependencies"><a class="header-link" href="#step-3:-import-dependencies"></a>Step 3: Import dependencies</h2>
 <p>Create a file <code>index.js</code> and import the 2 dependencies at the top</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">"express"</span>);
-<span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">"@podium/podlet"</span>);</code></pre><h2 id="step-4:-instantiate-instances"><a class="header-link" href="#step-4:-instantiate-instances"></a>Step 4: Instantiate instances</h2>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);</code></pre><h2 id="step-4:-instantiate-instances"><a class="header-link" href="#step-4:-instantiate-instances"></a>Step 4: Instantiate instances</h2>
 <p>Instantiate the podlet and create an express app instance</p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> app = express();
 
 <span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
-  <span class="hljs-attr">name</span>: <span class="hljs-string">"myPodlet"</span>, <span class="hljs-comment">// required</span>
-  version: <span class="hljs-string">"1.0.0"</span> <span class="hljs-comment">// required</span>
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>, <span class="hljs-comment">// required</span>
+    version: <span class="hljs-string">'1.0.0'</span>, <span class="hljs-comment">// required</span>
 });</code></pre><h2 id="step-5:-mount-middleware"><a class="header-link" href="#step-5:-mount-middleware"></a>Step 5: Mount middleware</h2>
 <p>Mount the podlet instances middleware into the express app</p>
 <pre class="hljs"><code>app.use(podlet.middleware());</code></pre><h2 id="step-6:-create-a-content-route"><a class="header-link" href="#step-6:-create-a-content-route"></a>Step 6: Create a content route</h2>
 <p>This is the route that the podlet server will use to return its html content.</p>
 <pre class="hljs"><code>app.get(podlet.content(), (req, res) =&gt; {
-  res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">"&lt;div&gt;This is the podlets html content&lt;/div&gt;"</span>);
+    res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">'&lt;div&gt;This is the podlets html content&lt;/div&gt;'</span>);
 });</code></pre><p>Here we use the podlets helper method <code>podlet.content()</code> which by default
 returns the string <code>&#39;/&#39;</code>. We could just have easily have simply hard coded <code>&#39;/&#39;</code>
 as our route but by using <code>podlet.content()</code>, we are telling the podlet where
@@ -105,7 +102,7 @@ meta data about itself in the form of a json document. We can get this pretty
 much for free by just serializing the podlet with <code>JSON.stringify(podlet)</code> and
 returning it from a route.</p>
 <pre class="hljs"><code>app.get(podlet.manifest(), (req, res) =&gt; {
-  res.status(<span class="hljs-number">200</span>).send(podlet);
+    res.status(<span class="hljs-number">200</span>).send(podlet);
 });</code></pre><p>Same as with the content route, we can change the route path for the manifest by
 passing a path to <code>podlet.manifest(path)</code> though theres usually no need to do
 so. Eg. <code>podlet.manifest(&#39;/manifest&#39;)</code></p>
@@ -118,27 +115,35 @@ so. Eg. <code>podlet.manifest(&#39;/manifest&#39;)</code></p>
 <span class="hljs-comment"># {"name":"myPodlet","version":"1.0.0","content":"/","fallback":"/fallback","assets":{"js":"","css":""},"proxy":{}}</span></code></pre><p>And curl the server to get back it&#39;s html content:</p>
 <pre class="hljs"><code>curl http://localhost:7100
 <span class="hljs-comment"># &lt;div&gt;This is the podlets html content&lt;/div&gt;</span></code></pre><h2 id="the-complete-code"><a class="header-link" href="#the-complete-code"></a>The complete code</h2>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">"express"</span>);
-<span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">"@podium/podlet"</span>);
+<pre class="hljs"><code><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
 
 <span class="hljs-keyword">const</span> app = express();
 
 <span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
-  <span class="hljs-attr">name</span>: <span class="hljs-string">"myPodlet"</span>,
-  <span class="hljs-attr">version</span>: <span class="hljs-string">"1.0.0"</span>
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,
+    <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
 });
 
 app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) =&gt; {
-  res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">"&lt;div&gt;This is the podlets html content&lt;/div&gt;"</span>);
+    res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">'&lt;div&gt;This is the podlets html content&lt;/div&gt;'</span>);
 });
 
 app.get(podlet.manifest(), (req, res) =&gt; {
-  res.status(<span class="hljs-number">200</span>).send(podlet);
+    res.status(<span class="hljs-number">200</span>).send(podlet);
 });
 
-app.listen(<span class="hljs-number">7100</span>);</code></pre>    </main>
+app.listen(<span class="hljs-number">7100</span>);</code></pre><h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
+<ul class="list">
+<li><a href="/Podium/docs/podlets/fallbacks.html">add a fallback route to your podlet</a></li>
+<li><a href="/Podium/docs/podlets/context.html">learn about working with the context</a></li>
+<li><a href="/Podium/docs/podlets/assets.html">add client side assets (JavaScript and CSS)</a></li>
+<li><a href="/Podium/docs/podlets/proxying.html">learn about adding additional routes using the proxy</a></li>
+<li><a href="/Podium/docs/podlets/local_development.html">read about improving your podlet development workflow</a></li>
+</ul>
+    </main>
   </div>
   <script>
     (function () {

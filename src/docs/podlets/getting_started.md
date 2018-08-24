@@ -38,8 +38,8 @@ npm install express @podium/podlet
 Create a file `index.js` and import the 2 dependencies at the top
 
 ```js
-const express = require("express");
-const Podlet = require("@podium/podlet");
+const express = require('express');
+const Podlet = require('@podium/podlet');
 ```
 
 ## Step 4: Instantiate instances
@@ -50,8 +50,8 @@ Instantiate the podlet and create an express app instance
 const app = express();
 
 const podlet = new Podlet({
-  name: "myPodlet", // required
-  version: "1.0.0" // required
+    name: 'myPodlet', // required
+    version: '1.0.0', // required
 });
 ```
 
@@ -69,7 +69,7 @@ This is the route that the podlet server will use to return its html content.
 
 ```js
 app.get(podlet.content(), (req, res) => {
-  res.status(200).send("<div>This is the podlets html content</div>");
+    res.status(200).send('<div>This is the podlets html content</div>');
 });
 ```
 
@@ -93,7 +93,7 @@ returning it from a route.
 
 ```js
 app.get(podlet.manifest(), (req, res) => {
-  res.status(200).send(podlet);
+    res.status(200).send(podlet);
 });
 ```
 
@@ -134,25 +134,33 @@ curl http://localhost:7100
 ## The complete code
 
 ```js
-const express = require("express");
-const Podlet = require("@podium/podlet");
+const express = require('express');
+const Podlet = require('@podium/podlet');
 
 const app = express();
 
 const podlet = new Podlet({
-  name: "myPodlet",
-  version: "1.0.0"
+    name: 'myPodlet',
+    version: '1.0.0',
 });
 
 app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
-  res.status(200).send("<div>This is the podlets html content</div>");
+    res.status(200).send('<div>This is the podlets html content</div>');
 });
 
 app.get(podlet.manifest(), (req, res) => {
-  res.status(200).send(podlet);
+    res.status(200).send(podlet);
 });
 
 app.listen(7100);
 ```
+
+## Next steps
+
+-   [add a fallback route to your podlet](/Podium/docs/podlets/fallbacks.html)
+-   [learn about working with the context](/Podium/docs/podlets/context.html)
+-   [add client side assets (JavaScript and CSS)](/Podium/docs/podlets/assets.html)
+-   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
+-   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)
