@@ -8,6 +8,7 @@
   <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/style.css" />
   <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/pilcrow.css" />
   <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/hljs-github.min.css"/>
+  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"/>
   <link rel="shortcut icon" href="/Podium/docs/assets/podium.png" type="image/x-icon">
 </head>
 <body>
@@ -22,10 +23,12 @@
   </header>
   <div class="content">
     <nav>
-    <h3>Podium</h3>
+      
+      <h3>Podium</h3>
       <ul>
-        <li><a href="/Podium/docs/podium/conceptual_overview.html">📚 Conceptual Overview</a></li>
+        <li><a href="/Podium/docs/podium/conceptual_overview.html">📚 Overview</a></li>
       </ul>
+      
       <h3>Podlet</h3>
       <ul>
         <li><a href="/Podium/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
@@ -34,23 +37,26 @@
         <li><a href="/Podium/docs/podlets/context.html">✂️ Context</a></li>
         <li><a href="/Podium/docs/podlets/assets.html">📦 Assets</a></li>
         <li><a href="/Podium/docs/podlets/local_development.html">🔥 Local Development</a></li>
-        <li><a href="/Podium/docs/podlets/api.html">🚨 API</a></li>
       </ul>
+
       <!--
       <h2>Layouts</h2>
       <h3>📚 Guides</h3>
       <ul>
         <li><a href="layouts_getting_started.html">🚀 Getting Started</a></li>
       </ul>
-      <h3>📚 API Docs</h3>
-      <ul>
-        <li><a href="layout_api.html">Layout</a></li>
-        <li><a href="layout_app_api.html">Layout App</a></li>
-        <li><a href="layout_app_server_api.html">Layout App Server</a></li>
-      </ul>
       -->
+
+      <h3>API Docs</h3>
+      <ul>
+        <li><a href="https://github.schibsted.io/Podium/podlet/blob/master/README.md">📚 Podlet</a></li>
+        <li><a href="https://github.schibsted.io/Podium/layout/blob/master/README.md">📚 Layout</a></li>
+        <li><a href="https://github.schibsted.io/Podium/context/blob/master/README.md">📚 Context</a></li>
+        <li><a href="https://github.schibsted.io/Podium/proxy/blob/master/README.md">📚 Proxy</a></li>
+        <li><a href="https://github.schibsted.io/Podium/client/blob/master/README.md">📚 Client</a></li>
+      </ul>
     </nav>
-    <main><h1 id="🔌-fallbacks"><a class="header-link" href="#🔌-fallbacks"></a>🔌 Fallbacks</h1>
+    <main class="markdown-body"><h1 id="🔌-fallbacks"><a class="header-link" href="#🔌-fallbacks"></a>🔌 Fallbacks</h1>
 <p>What happens if a podlet server is down? Unresponsive? Responding too slowly? By default podium will simply render an empty string in its place. You might, however, want to have some measure of control over what gets shown. Enter fallbacks.</p>
 <h2 id="how-do-fallbacks-work?"><a class="header-link" href="#how-do-fallbacks-work?"></a>How do fallbacks work?</h2>
 <p>On the first request to a podlet, podium will request the podlet’s manifest file inside of which it will discover the location of the podlets fallback route if one has been defined. It will then make a request to the fallback route and cache the response. Later, if the podlet server cannot be reached for any reason, or the request returns a non 200 response, podium will simply display the podlet’s cached fallback content instead.</p>
