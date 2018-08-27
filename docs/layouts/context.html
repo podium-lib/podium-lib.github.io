@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>✂️ Context</title>
+  <title>️️✂️ The Podium Context</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/style.css" />
   <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/pilcrow.css" />
@@ -22,7 +22,7 @@
     </div>
   </header>
   <div class="content">
-    <nav>
+    <nav class="main-navigation">
       
       <h3>Podium</h3>
       <ul>
@@ -36,12 +36,17 @@
         <li><a href="/Podium/docs/podlets/context.html">✂️ Context</a></li>
         <li><a href="/Podium/docs/podlets/assets.html">📦 Assets</a></li>
         <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
-        <li><a href="/Podium/docs/podlets/local_development.html">🔥 Local Development</a></li>
+        <li><a href="/Podium/docs/podlets/local_development.html">🔥 Development</a></li>
       </ul>
 
       <h3>Layout Guides</h3>
       <ul>
         <li><a href="/Podium/docs/layouts/getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="/Podium/docs/layouts/context.html">✂️ Context</a></li>
+        <li><a href="/Podium/docs/layouts/unavailable_podlets.html">🔌 Unavailable Podlets</a></li>
+        <li><a href="/Podium/docs/layouts/sharing_state.html">🐠 Sharing State</a></li>
+        <li><a href="/Podium/docs/layouts/assets.html">📦 Assets</a></li>
+        <li><a href="/Podium/docs/layouts/local_development.html">🔥 Development</a></li>
       </ul>
 
       <h3>API Docs</h3>
@@ -53,7 +58,37 @@
         <li><a href="https://github.schibsted.io/Podium/client/blob/master/README.md">📚 Client</a></li>
       </ul>
     </nav>
-    <main class="markdown-body"><h1 id="✂️-context"><a class="header-link" href="#✂️-context"></a>✂️ Context</h1>
+    <main class="markdown-body"><h1 id="️️✂️-the-podium-context"><a class="header-link" href="#️️✂️-the-podium-context"></a>️️✂️ The Podium Context</h1>
+<p>The purpose of the Podium Context is to give a podlet access to background contextual information about each incoming HTTP request so that it can taylor its response accordingly. You can read more regarding the Podium context and how it applies to podlets in the <a href="/Podium/docs/podlets/context.html">podlet context guide</a>.</p>
+<p>The context, as it applies to Podium layouts, is always created in the layout server for each request to it. The <code>@podium/layout</code> module defines a set of context parsers which are run in parallel by Podium layout middleware during each request. The results of these parsers are combined to form a context object which we then pass on to podlets when fetching their content.</p>
+<p>As we have seen, you must manually pass the context object on to podlets via a call to <code>.fetch(ctx)</code>. This call will convert the context object into Podium context HTTP headers which will in turn be converted back to a context object once received by a podlet.</p>
+<p><em>Example</em></p>
+<pre class="hljs"><code>app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+    <span class="hljs-keyword">const</span> ctx = res.locals.podium.context;
+    <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> gettingStarted.fetch(ctx);
+    ...
+});</code></pre><h3 id="configuring-context-parsers"><a class="header-link" href="#configuring-context-parsers"></a>Configuring context parsers</h3>
+<p>Each of the default context parsers has a default configuration which should cover most use cases. It is, however, possible to overwrite default configuration when constructing a layout.</p>
+<p><em>Example</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    ...
+    context: {
+        <span class="hljs-attr">debug</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+        },
+    },
+});</code></pre><p>In this example, we configure the default for the <code>debug</code> context parser to be enabled.</p>
+<p>See the <a href="https://github.schibsted.io/Podium/layout/blob/master/README.md">@podium/layout</a> module for more detailed documentation regarding configuring the default context parsers.</p>
+<h3 id="custom-context-parsers"><a class="header-link" href="#custom-context-parsers"></a>Custom context parsers</h3>
+<p>It is possible to extend the Podium context by registering any number of additional parsers.</p>
+<p><em>Example</em></p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> CustomContext = <span class="hljs-built_in">require</span>(<span class="hljs-string">'my-custom-context-parser'</span>);
+
+...
+
+<span class="hljs-comment">// Register custom context with layout</span>
+layout.context.register(<span class="hljs-string">'my-custom-context'</span>, <span class="hljs-keyword">new</span> CustomContext());</code></pre><p>In the example above, once run via layout middleware, a new camelCased value <code>myCustomContext</code> will be available on the Podium context. This will then be sent over HTTP as a header with the name <code>podium-my-custom-context</code> when fetching podlet content.</p>
+<p>See the <a href="https://github.schibsted.io/Podium/context/blob/master/README.md">@podium/context</a> module for more detailed documentation on how to write and register custom Context parsers.</p>
     </main>
   </div>
   <script>
