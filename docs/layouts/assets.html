@@ -59,6 +59,133 @@
       </ul>
     </nav>
     <main class="markdown-body"><h1 id="📦-assets"><a class="header-link" href="#📦-assets"></a>📦 Assets</h1>
+<p>PODLET</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> app = express();
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({ ... });
+<span class="hljs-keyword">const</span> assets = <span class="hljs-keyword">new</span> Assets({ <span class="hljs-attr">server</span>: <span class="hljs-string">'http://localhost:3031'</span> });
+
+<span class="hljs-keyword">const</span> ready = <span class="hljs-built_in">Promise</span>.all([,
+    assets.publish(<span class="hljs-string">'unique-id'</span>, <span class="hljs-string">'/path/to/script.js'</span>),
+    assets.publish(<span class="hljs-string">'unique-id'</span>, <span class="hljs-string">'/path/to/style.css'</span>),
+]);
+
+app.use(<span class="hljs-keyword">async</span> (req, res, next) =&gt; {
+    <span class="hljs-keyword">await</span> ready();
+    next();
+})
+
+app.use(podlet.middleware());
+
+app.get(<span class="hljs-string">'/manifest.json'</span>, (req, res) =&gt; {
+    res.send(podlet);
+});
+
+app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+    res.send(<span class="hljs-string">`&lt;div&gt;Some podlet content&lt;/div&gt;`</span>);
+});
+
+app.listen(<span class="hljs-number">7100</span>);</code></pre><p>LAYOUT</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> app = express();
+<span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({ ... });
+
+layout.client.register({ ... });
+layout.client.register({ ... });
+layout.client.register({ ... });
+
+<span class="hljs-keyword">const</span> assets = <span class="hljs-keyword">new</span> Assets({ <span class="hljs-attr">server</span>: <span class="hljs-string">'http://localhost:3031'</span> });
+
+<span class="hljs-keyword">const</span> ready = <span class="hljs-built_in">Promise</span>.all([
+    assets.publish(<span class="hljs-string">'another-unique-id'</span>, <span class="hljs-string">'/path/to/client.js'</span>),
+    assets.publish(<span class="hljs-string">'another-unique-id'</span>, <span class="hljs-string">'/path/to/style.css'</span>),
+]).then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Promise</span>.all([
+    assets.bundle.js(<span class="hljs-string">'another-unique-id'</span>, <span class="hljs-string">'unique-id'</span>),
+    assets.bundle.css(<span class="hljs-string">'another-unique-id'</span>, <span class="hljs-string">'unique-id'</span>),
+]));
+
+app.use(<span class="hljs-keyword">async</span> (req, res, next) =&gt; {
+    <span class="hljs-keyword">await</span> ready();
+    next();
+})
+
+app.use(layout.middleware());
+
+app.get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">const</span> [js, css] = <span class="hljs-built_in">Promise</span>.all([
+        assets.js(),
+        assets.css(),
+    ]);
+    res.send(<span class="hljs-string">`
+        &lt;html&gt;
+            &lt;head&gt;
+                <span class="hljs-subst">${css.map(href =&gt; <span class="hljs-string">`&lt;link rel="stylesheet" href="<span class="hljs-subst">${href}</span>" /&gt;`</span>).join(<span class="hljs-string">'\n'</span>)}</span>
+            &lt;/head&gt;
+            &lt;body&gt;
+                ...
+                <span class="hljs-subst">${js.map(src =&gt; <span class="hljs-string">`&lt;script src="<span class="hljs-subst">${src}</span>"&gt;&lt;/script&gt;`</span>).join(<span class="hljs-string">'\n'</span>)}</span>
+            &lt;/body&gt;
+        &lt;/html&gt;
+    `</span>);
+});
+
+...</code></pre><p>Use cases</p>
+<ul class="list">
+<li>Request to layout comes in and everything waits until assets are resolved. (published, bundled and url computed).</li>
+<li>Ready checks do the waiting for assets to be resolved.</li>
+<li>Get a calculated URL to a bundle</li>
+</ul>
+<p>LAYOUT</p>
+<!-- publish js and css assets -->
+<p>assets.publish(tag, path.js)
+assets.publish(tag, path.css)</p>
+<!-- bundle a set of publishing tags -->
+<p>assets.bundle.js(tag, tag, tag, ...)
+assets.bundle.css(tag, tag, tag, ...)</p>
+<!-- wait for publishing and bundling to be complete -->
+<p>assets.ready()
+assets.middleware()</p>
+<!-- synchronously get bundle url arrays for js and css -->
+<p>assets.script() =&gt; [ url ]
+assets.style() =&gt; [ url ]</p>
+<p>PODLET</p>
+<!-- publish js and css assets -->
+<p>assets.publish(tag, path.js)
+assets.publish(tag, path.css)</p>
+<!-- wait for publishing to be complete -->
+<p>assets.middleware()
+assets.ready()</p>
+<!-- synchronously get asset hashes for js and css -->
+<p>Given tags, make me a bundle:</p>
+<p>=&gt; tag1,tag2,tag3
+=&gt; as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json</p>
+<p>Given tags, give me a url:</p>
+<p>=&gt; tag1,tag2,tag3
+=&gt; as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json
+=&gt; 5as43d45sa3d4asd45.js</p>
+<p>Given a tag and and asset feed, give me a url:</p>
+<p>=&gt; tag + [feed]
+=&gt; perform bundle
+=&gt; build url</p>
+<p>bundle made up of feeds with these hashes:
+as45d3asd453as, da54s3d54as3d5, sa76d5a67sd5a76sd5</p>
+<p>publish
+=&gt; tag, [feed]
+=&gt; hash feed to get name -&gt; fds12dfs12d3s1df23.json
+=&gt; set tag file to point to fds12dfs12d3s1df23.json
+=&gt; hunt for tag in tags when found. eg. tag in [tag, tag2, tag3]
+=&gt; lookup all hashes for all tags. eg. [tag, tag2, tag3] =&gt; [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json]
+=&gt; hash together hashes to produce 1 hash and check if file exists: eg. [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json] -&gt; asdas65456sd4.js
+=&gt; produce new bundle if not</p>
+<p>bundle
+=&gt; [tag, tag2, tag3], &#39;js&#39;
+=&gt; lookup all hashes for all tags. eg. [tag, tag2, tag3] =&gt; [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json]
+=&gt; hash together hashes to produce 1 hash and check if file exists: eg. [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json] -&gt; asdas65456sd4.js
+=&gt; produce new bundle if not</p>
+<p>url
+=&gt; [tag, tag2, tag3], &#39;js&#39;
+=&gt; lookup all hashes for all tags. eg. [tag, tag2, tag3] =&gt; [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json]
+=&gt; hash together hashes to produce 1 hash and check if file exists: eg. [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json] -&gt; asdas65456sd4.js</p>
+<p>assets.publish(&#39;unique-id&#39;, &#39;/path/to/script.js&#39;);
+podlet.js(&#39;unique-id&#39;);</p>
     </main>
   </div>
   <script>
