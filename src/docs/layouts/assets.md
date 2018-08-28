@@ -1,71 +1,93 @@
 # 📦 Assets
 
-PODLET
+One of the key challenges when using micro-frontends like Podium is how to handle client side assets in each page fragment when everything is stitched together into a page.
+
+In the Podium world, a podlet may need to ship with client side JavaScript and/or CSS and when a layout consumes that podlet, it will also need to consume the podlets JavaScript and/or CSS.
+
+The following are a couple of options for how you might tackle this problem though both share such challenges as:
+
+-   how to isolate styling or behavior
+-   how to handle duplication of shared libraries such as React
+-   how to minimize client asset size and number of requests.
+
+We are currently iterating over better general solutions to these problems which we will publish as soon as they are ready.
+
+## Inline code approach
+
+This approach involves each podlet defining its assets as inline code in the podlet's manifest file so that the layout can then include this code directly in its HTML template.
+
+**Step 1.**
+
+In your podlet, use the podlet asset helper functions to define inline client code.
+
+_Example_
 
 ```js
-const app = express();
-const podlet = new Podlet({ ... });
-const assets = new Assets({ server: 'http://localhost:3031' });
-
-const ready = Promise.all([,
-    assets.publish('unique-id', '/path/to/script.js'),
-    assets.publish('unique-id', '/path/to/style.css'),
-]);
-
-app.use(async (req, res, next) => {
-    await ready();
-    next();
-})
-
-app.use(podlet.middleware());
-
-app.get('/manifest.json', (req, res) => {
-    res.send(podlet);
-});
-
-app.get('/', (req, res) => {
-    res.send(`<div>Some podlet content</div>`);
-});
-
-app.listen(7100);
+podlet.js(`<script>console.log('hello world');</script>`);
+podlet.css(`<style>body { background-color: hot-pink; }</style>`);
 ```
 
-LAYOUT
+**Step 2.**
+
+Then, read the podlet code snippets using the layout client and insert these into your HTML.
+
+_Example_
 
 ```js
-const app = express();
-const layout = new Layout({ ... });
-
-layout.client.register({ ... });
-layout.client.register({ ... });
-layout.client.register({ ... });
-
-const assets = new Assets({ server: 'http://localhost:3031' });
-
-const ready = Promise.all([
-    assets.publish('another-unique-id', '/path/to/client.js'),
-    assets.publish('another-unique-id', '/path/to/style.css'),
-]).then(() => Promise.all([
-    assets.bundle.js('another-unique-id', 'unique-id'),
-    assets.bundle.css('another-unique-id', 'unique-id'),
-]));
-
-app.use(async (req, res, next) => {
-    await ready();
-    next();
-})
-
-app.use(layout.middleware());
-
 app.get('/', async (req, res) => {
-    const [js, css] = Promise.all([
-        assets.js(),
-        assets.css(),
-    ]);
+    const js = layout.client.js();
+    const css = layout.client.css();
+
     res.send(`
         <html>
             <head>
-                ${css.map(href => `<link rel="stylesheet" href="${href}" />`).join('\n')}
+                ${css.join('\n')}
+            </head>
+            <body>
+                ...
+                ${js.join('\n')}
+            </body>
+        </html>
+    `);
+});
+```
+
+## Upload to a CDN or remote server approach
+
+This approach involves each podlet uploading its assets to a predefined CDN location so that the layout can then include the CDN URLs in its HTML template.
+
+**Step 1.**
+
+In your podlet, upload your assets to a CDN by whatever means necessary. You might do this whenever your podlet server starts up to ensure the latest version is available on the CDN.
+
+**Step 2.**
+
+Next, tell the podlet the location of your assets so that it can populate the manifest file.
+
+_Example_
+
+```js
+podlet.js('http://some-cdn.com/client.js');
+podlet.css('http://some-cdn.com/style.css');
+```
+
+**Step 3.**
+
+Finally, in your layout, read an array of URLs from the layout client and insert these into your HTML.
+
+_Example_
+
+```js
+app.get('/', async (req, res) => {
+    const js = layout.client.js();
+    const css = layout.client.css();
+
+    res.send(`
+        <html>
+            <head>
+                ${css
+                    .map(href => `<link rel="stylesheet" href="${href}" />`)
+                    .join('\n')}
             </head>
             <body>
                 ...
@@ -74,91 +96,4 @@ app.get('/', async (req, res) => {
         </html>
     `);
 });
-
-...
 ```
-
-Use cases
-
--   Request to layout comes in and everything waits until assets are resolved. (published, bundled and url computed).
--   Ready checks do the waiting for assets to be resolved.
--   Get a calculated URL to a bundle
-
-LAYOUT
-
-<!-- publish js and css assets -->
-
-assets.publish(tag, path.js)
-assets.publish(tag, path.css)
-
-<!-- bundle a set of publishing tags -->
-
-assets.bundle.js(tag, tag, tag, ...)
-assets.bundle.css(tag, tag, tag, ...)
-
-<!-- wait for publishing and bundling to be complete -->
-
-assets.ready()
-assets.middleware()
-
-<!-- synchronously get bundle url arrays for js and css -->
-
-assets.script() => [ url ]
-assets.style() => [ url ]
-
-PODLET
-
-<!-- publish js and css assets -->
-
-assets.publish(tag, path.js)
-assets.publish(tag, path.css)
-
-<!-- wait for publishing to be complete -->
-
-assets.middleware()
-assets.ready()
-
-<!-- synchronously get asset hashes for js and css -->
-
-Given tags, make me a bundle:
-
-=> tag1,tag2,tag3
-=> as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json
-
-Given tags, give me a url:
-
-=> tag1,tag2,tag3
-=> as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json
-=> 5as43d45sa3d4asd45.js
-
-Given a tag and and asset feed, give me a url:
-
-=> tag + [feed]
-=> perform bundle
-=> build url
-
-bundle made up of feeds with these hashes:
-as45d3asd453as, da54s3d54as3d5, sa76d5a67sd5a76sd5
-
-publish
-=> tag, [feed]
-=> hash feed to get name -> fds12dfs12d3s1df23.json
-=> set tag file to point to fds12dfs12d3s1df23.json
-=> hunt for tag in tags when found. eg. tag in [tag, tag2, tag3]
-=> lookup all hashes for all tags. eg. [tag, tag2, tag3] => [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json]
-=> hash together hashes to produce 1 hash and check if file exists: eg. [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json] -> asdas65456sd4.js
-=> produce new bundle if not
-
-bundle
-=> [tag, tag2, tag3], 'js'
-=> lookup all hashes for all tags. eg. [tag, tag2, tag3] => [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json]
-=> hash together hashes to produce 1 hash and check if file exists: eg. [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json] -> asdas65456sd4.js
-=> produce new bundle if not
-
-url
-=> [tag, tag2, tag3], 'js'
-=> lookup all hashes for all tags. eg. [tag, tag2, tag3] => [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json]
-=> hash together hashes to produce 1 hash and check if file exists: eg. [as45d3asd453as.json, da54s3d54as3d5.json, sa76d5a67sd5a76sd5.json] -> asdas65456sd4.js
-
-assets.publish('unique-id', '/path/to/script.js');
-podlet.js('unique-id');
