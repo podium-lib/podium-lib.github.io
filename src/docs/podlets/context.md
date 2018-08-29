@@ -228,7 +228,6 @@ Please see the [@podium/podlet] module for more detailed documentation.
 
 ## Next steps
 
--   [add client side assets (JavaScript and CSS)](/Podium/docs/podlets/assets.html)
 -   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
 -   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)
 

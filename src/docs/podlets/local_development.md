@@ -43,7 +43,7 @@ then you could simply visit the following routes to test your changes
 -   `http://localhost:7100/manifest.json`: the podlet's manifest route
 -   `http://localhost:7100`: the podlet's content route
 
-## Problems and improvements
+## Problems and solutions
 
 ### Restarting the server
 
@@ -98,7 +98,7 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-### HTML pages, page fragments and assets
+### HTML pages and page fragments
 
 In production, your content route will be responding with an HTML fragment devoid of its wrapping `<html>` or `<body>` tags. However, in development you will want to wrap your fragment in a light HTML page wrapper, especially if your podlet makes use of client side assets such as JavaScript or CSS.
 
@@ -126,93 +126,11 @@ When working on this podlet in isolation however, we want to be able to visit th
 </html>
 ```
 
-While there are any number of ways to support client side JavaScript and CSS assets in your podlets, in many cases, you will run into the problem of wanting to serve your assets directly with your podlet while in development and not while running in production.
-
-#### Asset pipe in development mode
-
-If you are using the [asset-pipe](https://github.com/asset-pipe) project for distributed asset bundling as described in the [assets](assets.md) section of these guides then you can put the asset pipe client in development mode in order to have assets bundled and served on local URLs that you can then link to in your development templates.
-
-```js
-const assets = new Assets({
-    ...
-    development: true,
-})
-```
-
-When in development mode, JavaScript will automatically be served at the route `/js` and CSS will automatically be served at the route `/css`. You can then put these URLs directly into your development template. An advantage of this approach is that you will not need to restart the server when making changes to your client side assets. Refreshing the page to see changes will be enough.
-
-```html
-<html>
-    <head>
-        <link rel="stylesheet" href="/css">
-    </head>
-    <body>
-        <div>My content fragment</div>
-        <script src="/js"></script>
-    </body>
-</html>
-```
-
-#### Putting it together
-
-The following example shows a setup using `asset-pipe` that works correctly both in development and production.
-
-```js
-const Assets = require('@asset-pipe/client');
-const Podlet = require('@podium/podlet');
-const express = require('express');
-
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-});
-
-const assets = new Assets({
-    buildServerUri: 'http://some-asset-server.com',
-    tag: podlet.name,
-    js: __dirname + '/assets/script.js',
-    css: __dirname + '/assets/style.css',
-    development: process.env.NODE_ENV === 'development',
-});
-
-const app = express();
-
-app.use(assets.middleware());
-app.use(podlet.middleware());
-
-app.get(podlet.manifest(), (req, res) => {
-    podlet.js(assets.js());
-    podlet.css(assets.css());
-
-    res.json(podlet);
-});
-
-app.get(podlet.content(), (req, res) => {
-    const fragment = `<div>My content fragment</div>`;
-
-    if (process.env.NODE_ENV === 'development') {
-        res.send(`
-            <html>
-                <head>
-                    <link rel="stylesheet" href="/css">
-                </head>
-                <body>
-                    ${fragment}
-                    <script src="/js"></script>
-                </body>
-            </html>
-        `);
-    } else {
-        res.send(fragment);
-    }
-});
-
-app.listen(7100);
-```
+While there are any number of ways to support client side JavaScript and CSS assets in your podlets, in many cases, you will run into the problem of wanting to serve your assets directly with your podlet while in development and not while running in production. How you handle this will depend on your needs and approach to assets as a whole. We are currently working on a general solution to this problem and will share more when we feel it ready.
 
 ### Proxying to absolute URLs
 
-A slight edge case you may encounter when working locally with proxying is that absolute URLs are proxied to directly from layouts, in some cases bypassing podlets entirely.
+A slight edge case you may encounter when working locally with proxying is that absolute URLs are proxied to directly from layouts bypassing podlets entirely.
 
 ```js
 podlet.proxy('http://google.com', 'google');

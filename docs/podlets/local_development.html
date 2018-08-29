@@ -34,7 +34,6 @@
         <li><a href="/Podium/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
         <li><a href="/Podium/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
         <li><a href="/Podium/docs/podlets/context.html">✂️ Context</a></li>
-        <li><a href="/Podium/docs/podlets/assets.html">📦 Assets</a></li>
         <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
         <li><a href="/Podium/docs/podlets/local_development.html">🔥 Development</a></li>
       </ul>
@@ -88,7 +87,7 @@ app.listen(<span class="hljs-number">7100</span>);</code></pre><p>If this conten
 <li><code>http://localhost:7100/manifest.json</code>: the podlet&#39;s manifest route</li>
 <li><code>http://localhost:7100</code>: the podlet&#39;s content route</li>
 </ul>
-<h2 id="problems-and-improvements"><a class="header-link" href="#problems-and-improvements"></a>Problems and improvements</h2>
+<h2 id="problems-and-solutions"><a class="header-link" href="#problems-and-solutions"></a>Problems and solutions</h2>
 <h3 id="restarting-the-server"><a class="header-link" href="#restarting-the-server"></a>Restarting the server</h3>
 <p>The first problem with the basic setup described above is that every time you make a change to your server, you will need to stop and restart your server before refreshing your browser window in order to see changes.</p>
 <p>This is not so much a Podium problem as it is a common Node.js problem and it&#39;s easily solved. A common way to do so is to use a module such as <a href="http://nodemon.io">nodemon</a> to monitor your file system and restart your server automatically anytime relevant files change.</p>
@@ -114,7 +113,7 @@ app.listen(<span class="hljs-number">7100</span>);</code></pre><p>If this conten
 app.get(podlet.content(), (req, res) =&gt; {
     <span class="hljs-keyword">const</span> { mountOrigin } = res.locals.podium.context;
     res.send(<span class="hljs-string">`&lt;div&gt;<span class="hljs-subst">${mountOrigin}</span>&lt;/div&gt;`</span>);
-});</code></pre><h3 id="html-pages,-page-fragments-and-assets"><a class="header-link" href="#html-pages,-page-fragments-and-assets"></a>HTML pages, page fragments and assets</h3>
+});</code></pre><h3 id="html-pages-and-page-fragments"><a class="header-link" href="#html-pages-and-page-fragments"></a>HTML pages and page fragments</h3>
 <p>In production, your content route will be responding with an HTML fragment devoid of its wrapping <code>&lt;html&gt;</code> or <code>&lt;body&gt;</code> tags. However, in development you will want to wrap your fragment in a light HTML page wrapper, especially if your podlet makes use of client side assets such as JavaScript or CSS.</p>
 <p><em>In production</em></p>
 <p>In this example, the returned content is kept slim and simple, a single <code>&lt;div&gt;</code> is returned and client side assets are handled elsewhere.</p>
@@ -128,74 +127,9 @@ app.get(podlet.content(), (req, res) =&gt; {
         <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>My content fragment<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"..."</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre><p>While there are any number of ways to support client side JavaScript and CSS assets in your podlets, in many cases, you will run into the problem of wanting to serve your assets directly with your podlet while in development and not while running in production.</p>
-<h4 id="asset-pipe-in-development-mode"><a class="header-link" href="#asset-pipe-in-development-mode"></a>Asset pipe in development mode</h4>
-<p>If you are using the <a href="https://github.com/asset-pipe">asset-pipe</a> project for distributed asset bundling as described in the <a href="./assets.html">assets</a> section of these guides then you can put the asset pipe client in development mode in order to have assets bundled and served on local URLs that you can then link to in your development templates.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> assets = <span class="hljs-keyword">new</span> Assets({
-    ...
-    development: <span class="hljs-literal">true</span>,
-})</code></pre><p>When in development mode, JavaScript will automatically be served at the route <code>/js</code> and CSS will automatically be served at the route <code>/css</code>. You can then put these URLs directly into your development template. An advantage of this approach is that you will not need to restart the server when making changes to your client side assets. Refreshing the page to see changes will be enough.</p>
-<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/css"</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>My content fragment<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre><h4 id="putting-it-together"><a class="header-link" href="#putting-it-together"></a>Putting it together</h4>
-<p>The following example shows a setup using <code>asset-pipe</code> that works correctly both in development and production.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> Assets = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@asset-pipe/client'</span>);
-<span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
-<span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
-
-<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
-    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,
-    <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
-});
-
-<span class="hljs-keyword">const</span> assets = <span class="hljs-keyword">new</span> Assets({
-    <span class="hljs-attr">buildServerUri</span>: <span class="hljs-string">'http://some-asset-server.com'</span>,
-    <span class="hljs-attr">tag</span>: podlet.name,
-    <span class="hljs-attr">js</span>: __dirname + <span class="hljs-string">'/assets/script.js'</span>,
-    <span class="hljs-attr">css</span>: __dirname + <span class="hljs-string">'/assets/style.css'</span>,
-    <span class="hljs-attr">development</span>: process.env.NODE_ENV === <span class="hljs-string">'development'</span>,
-});
-
-<span class="hljs-keyword">const</span> app = express();
-
-app.use(assets.middleware());
-app.use(podlet.middleware());
-
-app.get(podlet.manifest(), (req, res) =&gt; {
-    podlet.js(assets.js());
-    podlet.css(assets.css());
-
-    res.json(podlet);
-});
-
-app.get(podlet.content(), (req, res) =&gt; {
-    <span class="hljs-keyword">const</span> fragment = <span class="hljs-string">`&lt;div&gt;My content fragment&lt;/div&gt;`</span>;
-
-    <span class="hljs-keyword">if</span> (process.env.NODE_ENV === <span class="hljs-string">'development'</span>) {
-        res.send(<span class="hljs-string">`
-            &lt;html&gt;
-                &lt;head&gt;
-                    &lt;link rel="stylesheet" href="/css"&gt;
-                &lt;/head&gt;
-                &lt;body&gt;
-                    <span class="hljs-subst">${fragment}</span>
-                    &lt;script src="/js"&gt;&lt;/script&gt;
-                &lt;/body&gt;
-            &lt;/html&gt;
-        `</span>);
-    } <span class="hljs-keyword">else</span> {
-        res.send(fragment);
-    }
-});
-
-app.listen(<span class="hljs-number">7100</span>);</code></pre><h3 id="proxying-to-absolute-urls"><a class="header-link" href="#proxying-to-absolute-urls"></a>Proxying to absolute URLs</h3>
-<p>A slight edge case you may encounter when working locally with proxying is that absolute URLs are proxied to directly from layouts, in some cases bypassing podlets entirely.</p>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre><p>While there are any number of ways to support client side JavaScript and CSS assets in your podlets, in many cases, you will run into the problem of wanting to serve your assets directly with your podlet while in development and not while running in production. How you handle this will depend on your needs and approach to assets as a whole. We are currently working on a general solution to this problem and will share more when we feel it ready.</p>
+<h3 id="proxying-to-absolute-urls"><a class="header-link" href="#proxying-to-absolute-urls"></a>Proxying to absolute URLs</h3>
+<p>A slight edge case you may encounter when working locally with proxying is that absolute URLs are proxied to directly from layouts bypassing podlets entirely.</p>
 <pre class="hljs"><code>podlet.proxy(<span class="hljs-string">'http://google.com'</span>, <span class="hljs-string">'google'</span>);</code></pre><p>will generate the following entry in the podlet&#39;s manifest</p>
 <pre class="hljs"><code>{
     ...

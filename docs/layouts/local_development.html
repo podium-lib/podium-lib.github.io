@@ -34,7 +34,6 @@
         <li><a href="/Podium/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
         <li><a href="/Podium/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
         <li><a href="/Podium/docs/podlets/context.html">✂️ Context</a></li>
-        <li><a href="/Podium/docs/podlets/assets.html">📦 Assets</a></li>
         <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
         <li><a href="/Podium/docs/podlets/local_development.html">🔥 Development</a></li>
       </ul>
@@ -59,6 +58,212 @@
       </ul>
     </nav>
     <main class="markdown-body"><h1 id="🔥-local-development"><a class="header-link" href="#🔥-local-development"></a>🔥 Local Development</h1>
+<p>Once you have built 1 or more podlets, you will want to be able to test them in the more realistic context of a layout server, building together a page and making sure all the pieces work together correctly.</p>
+<p>The following examples show a somewhat contrived multi-podlet and layout setup in which our layout composes together a header, a navigation area, some content and a footer.</p>
+<h2 id="sample-podlets"><a class="header-link" href="#sample-podlets"></a>Sample podlets</h2>
+<p><em>Example: header</em></p>
+<p>Create a folder <code>/podlets/header</code> with a file <code>index.js</code> inside to hold the following podlet code.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'header'</span>,
+    <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
+});
+
+app.use(podlet.middleware());
+
+app.get(<span class="hljs-string">'/manifest.json'</span>, (req, res) =&gt; {
+    res.json(podlet);
+});
+
+app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+    res.send(<span class="hljs-string">`&lt;header&gt;The Best Podium page ever&lt;/header&gt;`</span>);
+});
+
+app.listen(<span class="hljs-number">7001</span>);</code></pre><p><em>Example: navigation bar</em></p>
+<p>Create a folder <code>/podlets/navigation</code> with a file <code>index.js</code> inside to hold the following podlet code.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'navigation'</span>,
+    <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
+});
+
+app.use(podlet.middleware());
+
+app.get(<span class="hljs-string">'/manifest.json'</span>, (req, res) =&gt; {
+    res.json(podlet);
+});
+
+app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+    res.send(<span class="hljs-string">`&lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href="/home"&gt;home&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/blog"&gt;blog&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/about"&gt;about&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/contact"&gt;contact&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;`</span>);
+});
+
+app.listen(<span class="hljs-number">7002</span>);</code></pre><p><em>Example: main home page content</em></p>
+<p>Create a folder <code>/podlets/home</code> with a file <code>index.js</code> inside to hold the following podlet code.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'homeContent'</span>,
+    <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
+});
+
+app.use(podlet.middleware());
+
+app.get(<span class="hljs-string">'/manifest.json'</span>, (req, res) =&gt; {
+    res.json(podlet);
+});
+
+app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+    res.send(<span class="hljs-string">`&lt;section&gt;Welcome to my Podium home page&lt;/section&gt;`</span>);
+});
+
+app.listen(<span class="hljs-number">7003</span>);</code></pre><p><em>Example: page footer</em></p>
+<p>Create a folder <code>/podlets/footer</code> with a file <code>index.js</code> inside to hold the following podlet code.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'footer'</span>,
+    <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
+});
+
+app.use(podlet.middleware());
+
+app.get(<span class="hljs-string">'/manifest.json'</span>, (req, res) =&gt; {
+    res.json(podlet);
+});
+
+app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+    res.send(<span class="hljs-string">`&lt;footer&gt;&amp;copy; 2018 - the Podium team&lt;/footer&gt;`</span>);
+});
+
+app.listen(<span class="hljs-number">7004</span>);</code></pre><h2 id="sample-layout"><a class="header-link" href="#sample-layout"></a>Sample layout</h2>
+<p><em>Example: the /home layout</em></p>
+<p>Create a folder <code>/layouts/home</code>. Create a file <code>index.js</code> inside this folder to hold the following layout code.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> Layout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/layout'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'homePage'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/home'</span>,
+});
+
+<span class="hljs-keyword">const</span> headerClient = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'header'</span>,
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7001/manifest.json'</span>,
+});
+<span class="hljs-keyword">const</span> navigationClient = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'navigation'</span>,
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7002/manifest.json'</span>,
+});
+<span class="hljs-keyword">const</span> contentClient = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'content'</span>,
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7003/manifest.json'</span>,
+});
+<span class="hljs-keyword">const</span> footerClient = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'footer'</span>,
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7004/manifest.json'</span>,
+});
+
+app.use(<span class="hljs-string">'/home'</span>, layout.middleware());
+
+app.get(<span class="hljs-string">'/home'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> ctx = res.locals.podium.context;
+
+        <span class="hljs-keyword">const</span> [header, navigation, content, footer] = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([
+            headerClient.fetch(ctx),
+            navigationClient.fetch(ctx),
+            contentClient.fetch(ctx),
+            footerClient.fetch(ctx),
+        ]);
+
+        res.send(<span class="hljs-string">`
+            &lt;html&gt;
+            &lt;head&gt;
+                &lt;title&gt;Podium example - home&lt;/title&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                <span class="hljs-subst">${header}</span>
+                <span class="hljs-subst">${navigation}</span>
+                <span class="hljs-subst">${content}</span>
+                <span class="hljs-subst">${footer}</span>
+            &lt;/body&gt;
+            &lt;/html&gt;
+        `</span>);
+    } <span class="hljs-keyword">catch</span> (err) {
+        <span class="hljs-built_in">console</span>.error(err);
+        res.sendStatus(<span class="hljs-number">500</span>);
+    }
+});
+
+app.listen(<span class="hljs-number">7000</span>);</code></pre><h2 id="running-podlets-and-layout-together"><a class="header-link" href="#running-podlets-and-layout-together"></a>Running podlets and layout together</h2>
+<p>Because each podlet and the layout have been configured to run on different ports you can safely start them all up together.</p>
+<pre class="hljs"><code>node podlets/header
+node podlets/navigation
+node podlets/home
+node podlets/footer</code></pre><p>We can now start up our <code>/home</code> layout to consume and display our podlet content.</p>
+<pre class="hljs"><code>node layouts/home</code></pre><p>Our layout has been configured to run on port <code>7000</code> so we should now be able to visit the url <code>http://localhost:7000/home</code> in a browser and see <code>header</code>, <code>navigation</code>, <code>home page</code> and <code>footer</code> content composed together.</p>
+<h2 id="improving-the-development-experience"><a class="header-link" href="#improving-the-development-experience"></a>Improving the development experience</h2>
+<p>The setup described above is a manual process requiring a number of repetitive operations by the developer to start up, restart or shut down processes. What follows are several suggestions for improving on this.</p>
+<h3 id="using-forever"><a class="header-link" href="#using-forever"></a>using forever</h3>
+<p>One fairly simple way to manage all your podlets and layouts at once is to use a tool called <a href="https://github.com/foreverjs/forever">forever</a> which is available on <code>npm</code>.</p>
+<p><em>Example: install forever</em></p>
+<pre class="hljs"><code>npm i -g forever</code></pre><p><code>Forever</code> allows you to pass it some <code>json</code> configuration describing your setup and have it manage the processes</p>
+<p><em>Example: forever json configuration file</em></p>
+<pre class="hljs"><code>[
+    {
+        <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"header"</span>,
+        <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+        <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/podlets/header"</span>
+    },
+    {
+        <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"navigation"</span>,
+        <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+        <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/podlets/navigation"</span>
+    },
+    {
+        <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"home"</span>,
+        <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+        <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/podlets/home"</span>
+    },
+    {
+        <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"footer"</span>,
+        <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+        <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/podlets/footer"</span>
+    },
+    {
+        <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"homePage"</span>,
+        <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+        <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/layouts/home"</span>
+    }
+]</code></pre><p>You can then pass the configuration file to <code>forever</code> to start everything up at once.</p>
+<p><em>Example: running forever</em></p>
+<pre class="hljs"><code>forever start /path/to/development.json</code></pre><p>Notice that every service has been configured to run in watch mode meaning that they will be automatically restarted any time a file change is detected.</p>
+<p>You can <a href="https://github.com/foreverjs/forever">read more about forever here</a>.</p>
+<h3 id="using-pm2"><a class="header-link" href="#using-pm2"></a>using pm2</h3>
+<p>A great alternative to forever is <a href="https://pm2.io/">pm2</a>. Pm2 can also take a configuration file in <code>json</code> format, can aggregate logs, run services in watch mode, has great docs and more.</p>
     </main>
   </div>
   <script>

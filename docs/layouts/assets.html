@@ -34,7 +34,6 @@
         <li><a href="/Podium/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
         <li><a href="/Podium/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
         <li><a href="/Podium/docs/podlets/context.html">✂️ Context</a></li>
-        <li><a href="/Podium/docs/podlets/assets.html">📦 Assets</a></li>
         <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
         <li><a href="/Podium/docs/podlets/local_development.html">🔥 Development</a></li>
       </ul>
@@ -68,7 +67,7 @@
 <li>how to minimize client asset size and number of requests.</li>
 </ul>
 <p>We are currently iterating over better general solutions to these problems which we will publish as soon as they are ready.</p>
-<h2 id="inline-code-approach"><a class="header-link" href="#inline-code-approach"></a>Inline code approach</h2>
+<h2 id="approach-1:-inline-code"><a class="header-link" href="#approach-1:-inline-code"></a>Approach 1: inline code</h2>
 <p>This approach involves each podlet defining its assets as inline code in the podlet&#39;s manifest file so that the layout can then include this code directly in its HTML template.</p>
 <p><strong>Step 1.</strong></p>
 <p>In your podlet, use the podlet asset helper functions to define inline client code.</p>
@@ -92,7 +91,7 @@ podlet.css(<span class="hljs-string">`&lt;style&gt;body { background-color: hot-
             &lt;/body&gt;
         &lt;/html&gt;
     `</span>);
-});</code></pre><h2 id="upload-to-a-cdn-or-remote-server-approach"><a class="header-link" href="#upload-to-a-cdn-or-remote-server-approach"></a>Upload to a CDN or remote server approach</h2>
+});</code></pre><h2 id="approach-2:-upload-to-a-cdn-or-remote-server"><a class="header-link" href="#approach-2:-upload-to-a-cdn-or-remote-server"></a>Approach 2: upload to a CDN or remote server</h2>
 <p>This approach involves each podlet uploading its assets to a predefined CDN location so that the layout can then include the CDN URLs in its HTML template.</p>
 <p><strong>Step 1.</strong></p>
 <p>In your podlet, upload your assets to a CDN by whatever means necessary. You might do this whenever your podlet server starts up to ensure the latest version is available on the CDN.</p>

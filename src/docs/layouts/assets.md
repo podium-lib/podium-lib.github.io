@@ -12,7 +12,7 @@ The following are a couple of options for how you might tackle this problem thou
 
 We are currently iterating over better general solutions to these problems which we will publish as soon as they are ready.
 
-## Inline code approach
+## Approach 1: inline code
 
 This approach involves each podlet defining its assets as inline code in the podlet's manifest file so that the layout can then include this code directly in its HTML template.
 
@@ -52,7 +52,7 @@ app.get('/', async (req, res) => {
 });
 ```
 
-## Upload to a CDN or remote server approach
+## Approach 2: upload to a CDN or remote server
 
 This approach involves each podlet uploading its assets to a predefined CDN location so that the layout can then include the CDN URLs in its HTML template.
 
