@@ -161,6 +161,5 @@ app.listen(7100);
 
 -   [add a fallback route to your podlet](/Podium/docs/podlets/fallbacks.html)
 -   [learn about working with the context](/Podium/docs/podlets/context.html)
--   [add client side assets (JavaScript and CSS)](/Podium/docs/podlets/assets.html)
 -   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
 -   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)

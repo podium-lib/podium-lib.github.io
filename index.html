@@ -78,7 +78,7 @@ app.listen(<span class="hljs-number">7200</span>);
 });
 <span class="hljs-keyword">const</span> podlet = layout.client.register({
     name: <span class="hljs-string">'myPodlet'</span>,
-    url: <span class="hljs-string">'http://localhost:7000/manifest.json'</span>
+    uri: <span class="hljs-string">'http://localhost:7200/manifest.json'</span>
 });
 
 <span class="hljs-keyword">const</span> app = express();
@@ -107,7 +107,7 @@ app.listen(<span class="hljs-number">7000</span>);
 </code></pre></pre>
       </div>
 
-      <p>Just visit http://localhost:7000 in your browser to see a layout (page) with podlet (page fragment) content loaded 👌</p>
+      <p>Now when you visit http://localhost:7000 in your browser, you should be able to see a layout (page) with podlet (page fragment) content loaded 👌</p>
     </section>
   </main>
 
@@ -131,9 +131,8 @@ app.listen(<span class="hljs-number">7000</span>);
             <li><a href="/Podium/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
             <li><a href="/Podium/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
             <li><a href="/Podium/docs/podlets/context.html">✂️ Context</a></li>
-            <li><a href="/Podium/docs/podlets/assets.html">📦 Assets</a></li>
             <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
-            <li><a href="/Podium/docs/podlets/local_development.html">🔥 Local Development</a></li>
+            <li><a href="/Podium/docs/podlets/local_development.html">🔥 Development</a></li>
           </ul>  
         </div>
       </nav>
@@ -143,6 +142,11 @@ app.listen(<span class="hljs-number">7000</span>);
         <div>
           <ul>
             <li><a href="/Podium/docs/layouts/getting_started.html">🚀 Getting Started</a></li>
+            <li><a href="/Podium/docs/layouts/context.html">✂️ Context</a></li>
+            <li><a href="/Podium/docs/layouts/unavailable_podlets.html">🔌 Unavailable Podlets</a></li>
+            <li><a href="/Podium/docs/layouts/dynamic_routes.html">🐠 Dynamic Routes</a></li>
+            <li><a href="/Podium/docs/layouts/assets.html">📦 Assets</a></li>
+            <li><a href="/Podium/docs/layouts/local_development.html">🔥 Development</a></li>
           </ul>  
         </div>
       </nav>

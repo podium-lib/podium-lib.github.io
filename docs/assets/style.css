@@ -443,3 +443,7 @@ td {
     margin: 0 auto;
     padding: 45px;
 }
+
+.main-navigation {
+    overflow-y: auto;
+}

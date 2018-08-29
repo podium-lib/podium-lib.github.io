@@ -52,6 +52,5 @@ podlet.fallback('https://www.example.com/my-fallback');
 ## Next steps
 
 -   [learn about working with the context](/Podium/docs/podlets/context.html)
--   [add client side assets (JavaScript and CSS)](/Podium/docs/podlets/assets.html)
 -   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
 -   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)

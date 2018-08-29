@@ -13,6 +13,8 @@ The npm cli will be installed automatically when you install node.js. Additional
 
 First, we need to initialize a new node project in an empty directory.
 
+_Example_
+
 ```bash
 mkdir basic-layout
 cd basic-layout
@@ -27,6 +29,8 @@ initialization.
 Next, we need to install and import our dependencies, `express` and
 `@podium/layout`. To do so, run:
 
+_Example_
+
 ```bash
 npm install express @podium/layout
 ```
@@ -34,6 +38,8 @@ npm install express @podium/layout
 ## Step 3: Import dependencies
 
 Create a file `index.js`, open it in your favorite text editor and import our 2 dependencies at the top of the file.
+
+_Example_
 
 ```js
 const express = require('express');
@@ -43,6 +49,8 @@ const Layout = require('@podium/layout');
 ## Step 4: Instantiate instances
 
 Create an express app instance and instantiate the layout. `name` and `pathname` are required parameters. `name` must be a unique identifier in camel casing. `pathname` is a prefix path to where your layout will appear online. For our example here we can say that our page will be served at `/demo` so `pathname` should be set to `/demo`. If our page were being served at the root of the server, `pathname` would need to be `/`.
+
+_Example_
 
 ```js
 const app = express();
@@ -57,6 +65,8 @@ const layout = new Layout({
 
 For this step, we can use the podlet we created in the [podlets - getting started](/Podium/docs/podlets/getting_started.html) guide. It's set up to run on port `7100` so after we start it up, we can register our podlet's manifest file in our layout like so:
 
+_Example_
+
 ```js
 const gettingStarted = layout.client.register({
     name: 'gettingStartedPodlet', // required
@@ -70,6 +80,8 @@ The `uri` here should point to the podlet's manifest file, not to its server roo
 
 Mount the layout instances middleware into the express app. This important step adds layout specific middleware to the app to take care of such tasks as context parsing and proxying.
 
+_Example_
+
 ```js
 app.use(layout.middleware());
 ```
@@ -79,6 +91,8 @@ app.use(layout.middleware());
 This is the route that the layout server will use to return its html page. We create our route using the same `pathname` value we gave the layout constructor.
 
 In our route handler, we grab the Podium context from the response object and hand it to the fetch method of our `gettingStarted` podlet client. This method returns a promise which resolves to be the podlet's content which we can then insert into our page as shown below:
+
+_Example_
 
 ```js
 app.get('/demo', async (req, res) => {
@@ -98,11 +112,28 @@ app.get('/demo', async (req, res) => {
 });
 ```
 
-In a more realistic example, you might fetch content from any number of podlets. Your page might be broken up into podlets representing the page header, footer, sidebar and so on.
+In a more realistic example, you might fetch content from any number of podlets. Your page might be broken up into podlets representing the page header, footer, sidebar and so on. Since podlets are isolated and independent of each other, we can safely fetch content in parallel.
+
+_Example_
+
+```js
+app.get('/', (req, res) => {
+    const ctx = res.locals.podium.context;
+    const content = await Promise.all([
+        header.fetch(ctx),
+        sidebar.fetch(ctx),
+        gettingStarted.fetch(ctx),
+        footer.fetch(ctx),
+    ]);
+    ...
+});
+```
 
 ## Step 8: Start the server
 
 Now, all thats left is to start the server and test it out
+
+_Example_
 
 ```js
 app.listen(7101);
@@ -112,11 +143,15 @@ We call `.listen(port)` on the express app instance and pass it a port
 
 We can run the app with:
 
+_Example_
+
 ```bash
 node index.js
 ```
 
 And we can then visit our page in a browser at:
+
+_Example_
 
 ```bash
 http://localhost:7101/demo
@@ -125,6 +160,8 @@ http://localhost:7101/demo
 If you see the text "This is the podlets html content" then you've successfully created your first layout.
 
 ## The complete code
+
+_Example_
 
 ```js
 const express = require('express');
@@ -162,3 +199,11 @@ app.get('/demo', async (req, res) => {
 
 app.listen(7101);
 ```
+
+## Next steps
+
+-   [learn about handling podlet unavailability](/Podium/docs/layouts/unavailable_podlets.html)
+-   [learn about forwarding the Podium context to podlets](/Podium/docs/layouts/context.html)
+-   [learn about sharing state between podlets via the URL](/Podium/docs/layouts/sharing_state.html)
+-   [learn about options for including client side assets](/Podium/docs/layouts/assets.html)
+-   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)
