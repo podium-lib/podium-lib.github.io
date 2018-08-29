@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>🐠 Sharing state between podlets</title>
+  <title>🐠 Passing URL params and query string values to podlets</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/style.css" />
   <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/pilcrow.css" />
@@ -43,7 +43,7 @@
         <li><a href="/Podium/docs/layouts/getting_started.html">🚀 Getting Started</a></li>
         <li><a href="/Podium/docs/layouts/context.html">✂️ Context</a></li>
         <li><a href="/Podium/docs/layouts/unavailable_podlets.html">🔌 Unavailable Podlets</a></li>
-        <li><a href="/Podium/docs/layouts/sharing_state.html">🐠 Sharing State</a></li>
+        <li><a href="/Podium/docs/layouts/dynamic_routes.html">🐠 Dynamic Routes</a></li>
         <li><a href="/Podium/docs/layouts/assets.html">📦 Assets</a></li>
         <li><a href="/Podium/docs/layouts/local_development.html">🔥 Development</a></li>
       </ul>
@@ -57,8 +57,8 @@
         <li><a href="https://github.schibsted.io/Podium/client/blob/master/README.md">📚 Client</a></li>
       </ul>
     </nav>
-    <main class="markdown-body"><h1 id="🐠-sharing-state-between-podlets"><a class="header-link" href="#🐠-sharing-state-between-podlets"></a>🐠 Sharing state between podlets</h1>
-<p>There are occasions where you will want user interaction in a podlet to inform the behaviour of other podlets. A great example of this is search. You might have one podlet that handles user search input and another podlet that displays search results.</p>
+    <main class="markdown-body"><h1 id="🐠-passing-url-params-and-query-string-values-to-podlets"><a class="header-link" href="#🐠-passing-url-params-and-query-string-values-to-podlets"></a>🐠 Passing URL params and query string values to podlets</h1>
+<p>There are occasions where you will want user interaction in a podlet to inform the behavior of other podlets. A great example of this is search. You might have one podlet that handles user search input and another podlet that displays search results.</p>
 <p><em>Example</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> searchField = layout.client.register({
     <span class="hljs-attr">name</span>: <span class="hljs-string">'searchField'</span>,
@@ -68,7 +68,7 @@
 <span class="hljs-keyword">const</span> searchResults = layout.client.register({
     <span class="hljs-attr">name</span>: <span class="hljs-string">'searchResults'</span>,
     <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7201'</span>,
-});</code></pre><p>The recommended way for the <code>searchResults</code> podlet to react to user changes in the <code>searchField</code> is to put shared state into URL query parameters.</p>
+});</code></pre><p>The recommended way for the <code>searchResults</code> podlet to react to user changes in the <code>searchField</code> is to manipulate the pages URL query string parameters or pathname param.</p>
 <h2 id="sending-query-params"><a class="header-link" href="#sending-query-params"></a>Sending query params</h2>
 <p>The Podium context is not the only way for a layout to communicate with its podlets. Query params can be forwarded to podlets via <code>.fetch()</code> calls.</p>
 <p><em>Example</em></p>
@@ -77,13 +77,32 @@
 <pre class="hljs"><code><span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([
     searchField.fetch(ctx, { <span class="hljs-attr">query</span>: { <span class="hljs-attr">search</span>: req.query.search } }),
     searchResults.fetch(ctx, { <span class="hljs-attr">query</span>: { <span class="hljs-attr">search</span>: req.query.search } }),
-]);</code></pre><p>Our podlets will then have access to the value of <code>search</code> and be able to render content accordingly. Likewise, in order to set this state, all a podlet will need to do is navigate the page to <code>http://localhost:7101?search=houses</code>.
+]);</code></pre><p>Our podlets will then have access to the value of <code>search</code> and be able to render content accordingly. Likewise, in order to trigger changes, all a podlet will need to do is navigate the page to <code>http://localhost:7101?search=houses</code>.
 The <code>searchField</code> podlet could do this by creating a form.</p>
 <p><em>Example</em></p>
 <pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"http://localhost:7101"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"GET"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"search"</span> /&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> /&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></code></pre><h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></code></pre><h2 id="sending-a-pathname"><a class="header-link" href="#sending-a-pathname"></a>Sending a pathname</h2>
+<p>Another way to send dynamic queries to podlets is by sending along a <code>pathname</code> option. This can be used, for example, to build podlet URLs that are defined using named route parameters.</p>
+<p><em>Example: sending podlet content route with named parameter</em></p>
+<p>In the layout.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> content = podlet.fetch(context, { <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/andrew'</span> });</code></pre><p>In the podlet.</p>
+<pre class="hljs"><code>podlet.content(<span class="hljs-string">'/'</span>);
+app.get(<span class="hljs-string">'/:name'</span>, (req, res) =&gt; {
+    <span class="hljs-comment">// req.params.name =&gt; andrew</span>
+});</code></pre><p>It is important to note here that the <code>pathname</code> value is appended to the content route so if you were to serve your content route at <code>/content</code> instead of at <code>/</code> the final URL sent to the podlet would include this.</p>
+<pre class="hljs"><code>podlet.content(<span class="hljs-string">'/content'</span>);
+app.get(<span class="hljs-string">'/content/:name'</span>, (req, res) =&gt; {
+    <span class="hljs-comment">// req.params.name =&gt; andrew</span>
+});</code></pre><p>You are, in fact, free to handle any routes you like under <code>content</code> namespace. The following is also valid.</p>
+<pre class="hljs"><code><span class="hljs-comment">// include `/name` when defining `pathname`</span>
+<span class="hljs-keyword">const</span> content = podlet.fetch(context, { <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/name/andrew'</span> });
+
+podlet.content(<span class="hljs-string">'/content'</span>);
+app.get(<span class="hljs-string">'/content/name/:name'</span>, (req, res) =&gt; {
+    <span class="hljs-comment">// req.params.name =&gt; andrew</span>
+});</code></pre><h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
 <ul class="list">
 <li><a href="/Podium/docs/layouts/assets.html">learn about options for including client side assets</a></li>
 <li><a href="/Podium/docs/layouts/local_development.html">read about setting up a layout development workflow</a></li>
