@@ -97,3 +97,7 @@ app.get('/', async (req, res) => {
     `);
 });
 ```
+
+## Next steps
+
+-   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)

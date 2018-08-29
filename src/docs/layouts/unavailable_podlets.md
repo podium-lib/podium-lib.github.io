@@ -49,3 +49,10 @@ app.get('/', (req, res, next) => {
     }
 });
 ```
+
+## Next steps
+
+-   [learn about forwarding the Podium context to podlets](/Podium/docs/layouts/context.html)
+-   [learn about sharing state between podlets via the URL](/Podium/docs/layouts/sharing_state.html)
+-   [learn about options for including client side assets](/Podium/docs/layouts/assets.html)
+-   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)

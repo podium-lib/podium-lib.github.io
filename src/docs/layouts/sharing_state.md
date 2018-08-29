@@ -50,3 +50,8 @@ _Example_
   <input type="submit" />
 </form>
 ```
+
+## Next steps
+
+-   [learn about options for including client side assets](/Podium/docs/layouts/assets.html)
+-   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)

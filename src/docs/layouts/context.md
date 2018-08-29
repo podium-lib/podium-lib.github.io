@@ -55,3 +55,9 @@ layout.context.register('my-custom-context', new CustomContext());
 In the example above, once run via layout middleware, a new camelCased value `myCustomContext` will be available on the Podium context. This will then be sent over HTTP as a header with the name `podium-my-custom-context` when fetching podlet content.
 
 See the [@podium/context](https://github.schibsted.io/Podium/context/blob/master/README.md) module for more detailed documentation on how to write and register custom Context parsers.
+
+## Next steps
+
+-   [learn about sharing state between podlets via the URL](/Podium/docs/layouts/sharing_state.html)
+-   [learn about options for including client side assets](/Podium/docs/layouts/assets.html)
+-   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)

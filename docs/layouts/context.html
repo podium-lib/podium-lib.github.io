@@ -88,6 +88,12 @@
 <span class="hljs-comment">// Register custom context with layout</span>
 layout.context.register(<span class="hljs-string">'my-custom-context'</span>, <span class="hljs-keyword">new</span> CustomContext());</code></pre><p>In the example above, once run via layout middleware, a new camelCased value <code>myCustomContext</code> will be available on the Podium context. This will then be sent over HTTP as a header with the name <code>podium-my-custom-context</code> when fetching podlet content.</p>
 <p>See the <a href="https://github.schibsted.io/Podium/context/blob/master/README.md">@podium/context</a> module for more detailed documentation on how to write and register custom Context parsers.</p>
+<h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
+<ul class="list">
+<li><a href="/Podium/docs/layouts/sharing_state.html">learn about sharing state between podlets via the URL</a></li>
+<li><a href="/Podium/docs/layouts/assets.html">learn about options for including client side assets</a></li>
+<li><a href="/Podium/docs/layouts/local_development.html">read about setting up a layout development workflow</a></li>
+</ul>
     </main>
   </div>
   <script>

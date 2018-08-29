@@ -199,3 +199,11 @@ app.get('/demo', async (req, res) => {
 
 app.listen(7101);
 ```
+
+## Next steps
+
+-   [learn about handling podlet unavailability](/Podium/docs/layouts/unavailable_podlets.html)
+-   [learn about forwarding the Podium context to podlets](/Podium/docs/layouts/context.html)
+-   [learn about sharing state between podlets via the URL](/Podium/docs/layouts/sharing_state.html)
+-   [learn about options for including client side assets](/Podium/docs/layouts/assets.html)
+-   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)
