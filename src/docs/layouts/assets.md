@@ -4,13 +4,13 @@ One of the key challenges when using micro-frontends like Podium is how to handl
 
 In the Podium world, a podlet may need to ship with client side JavaScript and/or CSS and when a layout consumes that podlet, it will also need to consume the podlets JavaScript and/or CSS.
 
-The following are a couple of options for how you might tackle this problem though both share such challenges as:
+Podium itself does not provide support for asset related tasks such as bundling or minification but we are currently iterating over better general solutions to these problems which will be published and documented as soon as they are ready.
+
+While there are many ways to do so, the following examples illustrate a couple of possibilities for how you might tackle the asset problem currently. Both examples shown here share the same set of challenges:
 
 -   how to isolate styling or behavior
 -   how to handle duplication of shared libraries such as React
 -   how to minimize client asset size and number of requests.
-
-We are currently iterating over better general solutions to these problems which we will publish as soon as they are ready.
 
 ## Approach 1: inline code
 
