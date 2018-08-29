@@ -1,6 +1,6 @@
 # 🔥 Local Development
 
-Once you have built 1 or more podlets, you will want to be able to test them in the more realistic context of a layout server, building together a page and making sure all the pieces work together correctly.
+Once you have built one or more podlets, you will want to be able to test them in the more realistic context of a layout server, thereby allowing you to see the complete page and make sure all the pieces work together correctly.
 
 The following examples show a somewhat contrived multi-podlet and layout setup in which our layout composes together a header, a navigation area, some content and a footer.
 
@@ -176,7 +176,6 @@ app.get('/home', async (req, res) => {
             </html>
         `);
     } catch (err) {
-        console.error(err);
         res.sendStatus(500);
     }
 });

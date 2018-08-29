@@ -58,7 +58,7 @@
       </ul>
     </nav>
     <main class="markdown-body"><h1 id="️️✂️-the-podium-context"><a class="header-link" href="#️️✂️-the-podium-context"></a>️️✂️ The Podium Context</h1>
-<p>The purpose of the Podium Context is to give a podlet access to background contextual information about each incoming HTTP request so that it can taylor its response accordingly. You can read more regarding the Podium context and how it applies to podlets in the <a href="/Podium/docs/podlets/context.html">podlet context guide</a>.</p>
+<p>The purpose of the Podium Context is to give a podlet access to background contextual information about each incoming HTTP request so that it can tailor its response accordingly. You can read more regarding the Podium context and how it applies to podlets in the <a href="/Podium/docs/podlets/context.html">podlet context guide</a>.</p>
 <p>The context, as it applies to Podium layouts, is always created in the layout server for each request to it. The <code>@podium/layout</code> module defines a set of context parsers which are run in parallel by Podium layout middleware during each request. The results of these parsers are combined to form a context object which we then pass on to podlets when fetching their content.</p>
 <p>As we have seen, you must manually pass the context object on to podlets via a call to <code>.fetch(ctx)</code>. This call will convert the context object into Podium context HTTP headers which will in turn be converted back to a context object once received by a podlet.</p>
 <p><em>Example</em></p>

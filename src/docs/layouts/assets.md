@@ -34,7 +34,7 @@ Then, read the podlet code snippets using the layout client and insert these int
 _Example_
 
 ```js
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
     const js = layout.client.js();
     const css = layout.client.css();
 
@@ -78,7 +78,7 @@ Finally, in your layout, read an array of URLs from the layout client and insert
 _Example_
 
 ```js
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
     const js = layout.client.js();
     const css = layout.client.css();
 

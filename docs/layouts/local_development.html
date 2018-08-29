@@ -58,7 +58,7 @@
       </ul>
     </nav>
     <main class="markdown-body"><h1 id="🔥-local-development"><a class="header-link" href="#🔥-local-development"></a>🔥 Local Development</h1>
-<p>Once you have built 1 or more podlets, you will want to be able to test them in the more realistic context of a layout server, building together a page and making sure all the pieces work together correctly.</p>
+<p>Once you have built one or more podlets, you will want to be able to test them in the more realistic context of a layout server, thereby allowing you to see the complete page and make sure all the pieces work together correctly.</p>
 <p>The following examples show a somewhat contrived multi-podlet and layout setup in which our layout composes together a header, a navigation area, some content and a footer.</p>
 <h2 id="sample-podlets"><a class="header-link" href="#sample-podlets"></a>Sample podlets</h2>
 <p><em>Example: header</em></p>
@@ -203,7 +203,6 @@ app.get(<span class="hljs-string">'/home'</span>, <span class="hljs-keyword">asy
             &lt;/html&gt;
         `</span>);
     } <span class="hljs-keyword">catch</span> (err) {
-        <span class="hljs-built_in">console</span>.error(err);
         res.sendStatus(<span class="hljs-number">500</span>);
     }
 });

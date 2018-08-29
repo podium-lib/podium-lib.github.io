@@ -76,7 +76,7 @@
 podlet.css(<span class="hljs-string">`&lt;style&gt;body { background-color: hot-pink; }&lt;/style&gt;`</span>);</code></pre><p><strong>Step 2.</strong></p>
 <p>Then, read the podlet code snippets using the layout client and insert these into your HTML.</p>
 <p><em>Example</em></p>
-<pre class="hljs"><code>app.get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+<pre class="hljs"><code>app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
     <span class="hljs-keyword">const</span> js = layout.client.js();
     <span class="hljs-keyword">const</span> css = layout.client.css();
 
@@ -102,7 +102,7 @@ podlet.css(<span class="hljs-string">`&lt;style&gt;body { background-color: hot-
 podlet.css(<span class="hljs-string">'http://some-cdn.com/style.css'</span>);</code></pre><p><strong>Step 3.</strong></p>
 <p>Finally, in your layout, read an array of URLs from the layout client and insert these into your HTML.</p>
 <p><em>Example</em></p>
-<pre class="hljs"><code>app.get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+<pre class="hljs"><code>app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
     <span class="hljs-keyword">const</span> js = layout.client.js();
     <span class="hljs-keyword">const</span> css = layout.client.css();
 

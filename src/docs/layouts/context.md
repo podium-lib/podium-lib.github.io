@@ -1,6 +1,6 @@
 # ️️✂️ The Podium Context
 
-The purpose of the Podium Context is to give a podlet access to background contextual information about each incoming HTTP request so that it can taylor its response accordingly. You can read more regarding the Podium context and how it applies to podlets in the [podlet context guide](/Podium/docs/podlets/context.html).
+The purpose of the Podium Context is to give a podlet access to background contextual information about each incoming HTTP request so that it can tailor its response accordingly. You can read more regarding the Podium context and how it applies to podlets in the [podlet context guide](/Podium/docs/podlets/context.html).
 
 The context, as it applies to Podium layouts, is always created in the layout server for each request to it. The `@podium/layout` module defines a set of context parsers which are run in parallel by Podium layout middleware during each request. The results of these parsers are combined to form a context object which we then pass on to podlets when fetching their content.
 
