@@ -3,7 +3,7 @@
 Podium is designed to anticipate and handle the possibility that 1 or more of your podlets may respond slowly or become unavailable from time to time. It does so via the concept of fallbacks.
 When a podlet is first fetched, the layout client will cache a copy of the podlet's fallback content (if defined). If, at a later stage, the layout client cannot fetch the podlet's content, it will instead use the podlet's cached fallback content or just an empty string if no fallback content is available. This means that a layout can go on serving requests with the content it can fetch rather than itself become unavailable.
 
-By default, a layout will substitute a fallback (or empty string) for a podlet's content whenever the podlet fails to respond within 1000 ms but this can be configured by passing options to the layout constructor.
+By default, a layout will substitute a fallback (or empty string) for a podlet's content whenever either the podlet fails to respond with a 2xx status code or the podlet fails to respond within 1000 ms. This default timeout value can be configured by passing options to the layout constructor.
 
 ```js
 const layout = new Layout({
