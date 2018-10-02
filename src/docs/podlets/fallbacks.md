@@ -13,7 +13,7 @@ Note that the podlet’s assets will still be served, so the fallback can depend
 With a podlet instance you call the `fallback`-function which will return the route from the manifest. By default this is at `/fallback`. You then attach your handler which receives a simplified version of the context and return the fallback you want.
 
 ```js
-const podlet = new Podlet /*...*/();
+const podlet = new Podlet(/*...*/);
 
 const app = express();
 
@@ -44,7 +44,7 @@ app.get(podlet.fallback(), (req, res) => {
 The fallback can also point to an external service.
 
 ```js
-const podlet = new Podlet /*...*/();
+const podlet = new Podlet(/*...*/);
 
 podlet.fallback('https://www.example.com/my-fallback');
 ```

@@ -76,45 +76,42 @@ initialization.</p>
 <p>Next, we need to install and import dependencies. Express js and
 @podium/podlet. To do so, run:</p>
 <pre class="hljs"><code>npm install express @podium/podlet</code></pre><h2 id="step-3:-import-dependencies"><a class="header-link" href="#step-3:-import-dependencies"></a>Step 3: Import dependencies</h2>
-<p>Create a file <code>index.js</code> and import the 2 dependencies at the top</p>
+<p>Create a file <code>podlet.js</code> and import the 2 dependencies at the top</p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
 <span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);</code></pre><h2 id="step-4:-instantiate-instances"><a class="header-link" href="#step-4:-instantiate-instances"></a>Step 4: Instantiate instances</h2>
-<p>Instantiate the podlet and create an express app instance</p>
+<p>Create an express app instance and instantiate the podlet</p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> app = express();
 
 <span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
-    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>, <span class="hljs-comment">// required</span>
-    version: <span class="hljs-string">'1.0.0'</span>, <span class="hljs-comment">// required</span>
-});</code></pre><h2 id="step-5:-mount-middleware"><a class="header-link" href="#step-5:-mount-middleware"></a>Step 5: Mount middleware</h2>
-<p>Mount the podlet instances middleware into the express app</p>
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,       <span class="hljs-comment">// required</span>
+    version: <span class="hljs-string">'1.0.0'</span>,       <span class="hljs-comment">// required</span>
+    content: <span class="hljs-string">'/'</span>,           <span class="hljs-comment">// optional</span>
+    fallback: <span class="hljs-string">'/fallback'</span>,  <span class="hljs-comment">// optional</span>
+    assets: {               
+        <span class="hljs-string">"js"</span>:<span class="hljs-string">""</span>,            <span class="hljs-comment">// optional</span>
+        <span class="hljs-string">"css"</span>:<span class="hljs-string">""</span>            <span class="hljs-comment">// optional</span>
+        },                  
+    <span class="hljs-attr">proxy</span>: {}               <span class="hljs-comment">// optional</span>
+});</code></pre><p>The two first keys are required and the rest is optional, the values used in this example for the optional fields is the default values.  </p>
+<h2 id="step-5:-mount-middleware"><a class="header-link" href="#step-5:-mount-middleware"></a>Step 5: Mount middleware</h2>
+<p>Mount the podlet instances <a href="https://medium.com/@agoiabeladeyemi/a-simple-explanation-of-express-middleware-c68ea839f498">middleware</a> into the express app</p>
 <pre class="hljs"><code>app.use(podlet.middleware());</code></pre><h2 id="step-6:-create-a-content-route"><a class="header-link" href="#step-6:-create-a-content-route"></a>Step 6: Create a content route</h2>
 <p>This is the route that the podlet server will use to return its html content.</p>
 <pre class="hljs"><code>app.get(podlet.content(), (req, res) =&gt; {
     res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">'&lt;div&gt;This is the podlets html content&lt;/div&gt;'</span>);
-});</code></pre><p>Here we use the podlets helper method <code>podlet.content()</code> which by default
-returns the string <code>&#39;/&#39;</code>. We could just have easily have simply hard coded <code>&#39;/&#39;</code>
-as our route but by using <code>podlet.content()</code>, we are telling the podlet where
-the content route is which means that the podlet can automatically generate
-manifest content (see the next step below).</p>
-<p>One final thing to note is that you can also pass a <code>path</code> to
-<code>podlet.content(path)</code> in order to customise where the content route will be
-mounted. Eg. <code>podlet.content(&#39;/content&#39;)</code> to mount the content route at
-<code>&#39;/content&#39;</code></p>
+});</code></pre><p>Here we use the podlets helper method <code>podlet.content()</code> which returns the content path we sat in step 4. </p>
+<p>One final thing to note is that you can also pass a path to podlet.content(path) in order to customise where the content route will be mounted. Eg. podlet.content(&#39;/content&#39;) to mount the content route at &#39;/content&#39;</p>
 <h2 id="step-7:-create-a-manifest-route"><a class="header-link" href="#step-7:-create-a-manifest-route"></a>Step 7: Create a manifest route</h2>
-<p>We mentioned the podlet manifest earlier. In Podium, each podlet must return
-meta data about itself in the form of a json document. We can get this pretty
-much for free by just serializing the podlet with <code>JSON.stringify(podlet)</code> and
-returning it from a route.</p>
+<p>In Podium, each podlet must return meta data about itself in the form of a json document. By returning the podlet object, it will be serialized with <code>JSON.stringify(podlet)</code> and
+returned to the router.</p>
 <pre class="hljs"><code>app.get(podlet.manifest(), (req, res) =&gt; {
     res.status(<span class="hljs-number">200</span>).send(podlet);
-});</code></pre><p>Same as with the content route, we can change the route path for the manifest by
-passing a path to <code>podlet.manifest(path)</code> though theres usually no need to do
-so. Eg. <code>podlet.manifest(&#39;/manifest&#39;)</code></p>
+});</code></pre><p>Same as with the content route, we can use the podlets helper method <code>podlet.manifest()</code> to return the default manifest route, which is <code>&#39;/manifest.json&#39;</code> </p>
 <h2 id="step-8:-start-the-server"><a class="header-link" href="#step-8:-start-the-server"></a>Step 8: Start the server</h2>
 <p>Now, all thats left is to start the server and test it out</p>
 <pre class="hljs"><code>app.listen(<span class="hljs-number">7100</span>);</code></pre><p>We call <code>.listen(port)</code> on the express app instance and pass it a port</p>
 <p>We can run the app with:</p>
-<pre class="hljs"><code>node index.js</code></pre><p>And we can then curl the server to get back it&#39;s manifest content:</p>
+<pre class="hljs"><code>node podlet.js</code></pre><p>And we can then curl the server to get back it&#39;s manifest content:</p>
 <pre class="hljs"><code>curl http://localhost:7100/manifest.json
 <span class="hljs-comment"># {"name":"myPodlet","version":"1.0.0","content":"/","fallback":"/fallback","assets":{"js":"","css":""},"proxy":{}}</span></code></pre><p>And curl the server to get back it&#39;s html content:</p>
 <pre class="hljs"><code>curl http://localhost:7100
@@ -125,8 +122,15 @@ so. Eg. <code>podlet.manifest(&#39;/manifest&#39;)</code></p>
 <span class="hljs-keyword">const</span> app = express();
 
 <span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
-    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,
-    <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,       <span class="hljs-comment">// required</span>
+    version: <span class="hljs-string">'1.0.0'</span>,       <span class="hljs-comment">// required</span>
+    content: <span class="hljs-string">'/'</span>,           <span class="hljs-comment">// optional</span>
+    fallback: <span class="hljs-string">'/fallback'</span>,  <span class="hljs-comment">// optional</span>
+    assets: {               
+        <span class="hljs-string">"js"</span>:<span class="hljs-string">""</span>,            <span class="hljs-comment">// optional</span>
+        <span class="hljs-string">"css"</span>:<span class="hljs-string">""</span>            <span class="hljs-comment">// optional</span>
+        },                  
+    <span class="hljs-attr">proxy</span>: {}               <span class="hljs-comment">// optional</span>
 });
 
 app.use(podlet.middleware());
