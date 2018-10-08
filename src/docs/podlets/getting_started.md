@@ -54,11 +54,6 @@ const podlet = new Podlet({
     version: '1.0.0',       // required
     content: '/',           // optional
     fallback: '/fallback',  // optional
-    assets: {               
-        "js":"",            // optional
-        "css":""            // optional
-        },                  
-    proxy: {}               // optional
 });
 ```
 The two first keys are required and the rest is optional, the values used in this example for the optional fields is the default values.  
@@ -142,11 +137,6 @@ const podlet = new Podlet({
     version: '1.0.0',       // required
     content: '/',           // optional
     fallback: '/fallback',  // optional
-    assets: {               
-        "js":"",            // optional
-        "css":""            // optional
-        },                  
-    proxy: {}               // optional
 });
 
 app.use(podlet.middleware());

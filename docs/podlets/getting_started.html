@@ -87,11 +87,6 @@ initialization.</p>
     version: <span class="hljs-string">'1.0.0'</span>,       <span class="hljs-comment">// required</span>
     content: <span class="hljs-string">'/'</span>,           <span class="hljs-comment">// optional</span>
     fallback: <span class="hljs-string">'/fallback'</span>,  <span class="hljs-comment">// optional</span>
-    assets: {               
-        <span class="hljs-string">"js"</span>:<span class="hljs-string">""</span>,            <span class="hljs-comment">// optional</span>
-        <span class="hljs-string">"css"</span>:<span class="hljs-string">""</span>            <span class="hljs-comment">// optional</span>
-        },                  
-    <span class="hljs-attr">proxy</span>: {}               <span class="hljs-comment">// optional</span>
 });</code></pre><p>The two first keys are required and the rest is optional, the values used in this example for the optional fields is the default values.  </p>
 <h2 id="step-5:-mount-middleware"><a class="header-link" href="#step-5:-mount-middleware"></a>Step 5: Mount middleware</h2>
 <p>Mount the podlet instances <a href="https://medium.com/@agoiabeladeyemi/a-simple-explanation-of-express-middleware-c68ea839f498">middleware</a> into the express app</p>
@@ -126,11 +121,6 @@ returned to the router.</p>
     version: <span class="hljs-string">'1.0.0'</span>,       <span class="hljs-comment">// required</span>
     content: <span class="hljs-string">'/'</span>,           <span class="hljs-comment">// optional</span>
     fallback: <span class="hljs-string">'/fallback'</span>,  <span class="hljs-comment">// optional</span>
-    assets: {               
-        <span class="hljs-string">"js"</span>:<span class="hljs-string">""</span>,            <span class="hljs-comment">// optional</span>
-        <span class="hljs-string">"css"</span>:<span class="hljs-string">""</span>            <span class="hljs-comment">// optional</span>
-        },                  
-    <span class="hljs-attr">proxy</span>: {}               <span class="hljs-comment">// optional</span>
 });
 
 app.use(podlet.middleware());
