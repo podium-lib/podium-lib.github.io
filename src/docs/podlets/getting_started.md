@@ -44,20 +44,21 @@ const Podlet = require('@podium/podlet');
 
 ## Step 4: Instantiate instances
 
-Instantiate the podlet and create an express app instance
+Create an express app instance and instantiate the podlet
 
 ```js
 const app = express();
 
 const podlet = new Podlet({
-    name: 'myPodlet', // required
-    version: '1.0.0', // required
+    name: 'myPodlet',       // required
+    version: '1.0.0',       // required
 });
 ```
+The two first keys are required and the rest is optional, the values used in this example for the optional fields is the default values.  
 
 ## Step 5: Mount middleware
 
-Mount the podlet instances middleware into the express app
+Mount the podlet instances [middleware](https://medium.com/@agoiabeladeyemi/a-simple-explanation-of-express-middleware-c68ea839f498) into the express app
 
 ```js
 app.use(podlet.middleware());
@@ -73,23 +74,15 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-Here we use the podlets helper method `podlet.content()` which by default
-returns the string `'/'`. We could just have easily have simply hard coded `'/'`
-as our route but by using `podlet.content()`, we are telling the podlet where
-the content route is which means that the podlet can automatically generate
-manifest content (see the next step below).
+Here we use the podlets helper method `podlet.content()` which returns the content path we set in step 4. 
 
-One final thing to note is that you can also pass a `path` to
-`podlet.content(path)` in order to customise where the content route will be
-mounted. Eg. `podlet.content('/content')` to mount the content route at
-`'/content'`
+One final thing to note is that you can also pass a path to podlet.content(path) in order to customise where the content route will be mounted. Eg. podlet.content('/content') to mount the content route at '/content'
+
 
 ## Step 7: Create a manifest route
 
-We mentioned the podlet manifest earlier. In Podium, each podlet must return
-meta data about itself in the form of a json document. We can get this pretty
-much for free by just serializing the podlet with `JSON.stringify(podlet)` and
-returning it from a route.
+In Podium, each podlet must return meta data about itself in the form of a json document. By returning the podlet object, it will be serialized with `JSON.stringify(podlet)` and
+returned to the router.
 
 ```js
 app.get(podlet.manifest(), (req, res) => {
@@ -97,9 +90,7 @@ app.get(podlet.manifest(), (req, res) => {
 });
 ```
 
-Same as with the content route, we can change the route path for the manifest by
-passing a path to `podlet.manifest(path)` though theres usually no need to do
-so. Eg. `podlet.manifest('/manifest')`
+Same as with the content route, we can use the podlets helper method `podlet.manifest()` to return the default manifest route, which is `'/manifest.json'` 
 
 ## Step 8: Start the server
 
@@ -140,8 +131,10 @@ const Podlet = require('@podium/podlet');
 const app = express();
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
+    name: 'myPodlet',       // required
+    version: '1.0.0',       // required
+    content: '/',           // optional
+    fallback: '/fallback',  // optional
 });
 
 app.use(podlet.middleware());

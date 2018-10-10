@@ -64,7 +64,7 @@
 <p>Note that the podlet’s assets will still be served, so the fallback can depend on both JS and CSS being present once it’s rendered.</p>
 <h2 id="defining-a-fallback-route"><a class="header-link" href="#defining-a-fallback-route"></a>Defining a fallback route</h2>
 <p>With a podlet instance you call the <code>fallback</code>-function which will return the route from the manifest. By default this is at <code>/fallback</code>. You then attach your handler which receives a simplified version of the context and return the fallback you want.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet <span class="hljs-comment">/*...*/</span>();
+<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet(<span class="hljs-comment">/*...*/</span>);
 
 <span class="hljs-keyword">const</span> app = express();
 
@@ -80,7 +80,7 @@ app.get(podlet.fallback(), (req, res) =&gt; {
         <span class="hljs-string">`&lt;div data-public-path-name=<span class="hljs-subst">${publicPathname}</span>&gt;It didn't work :(&lt;/div&gt;`</span>
     );
 });</code></pre><p>The fallback can also point to an external service.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet <span class="hljs-comment">/*...*/</span>();
+<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet(<span class="hljs-comment">/*...*/</span>);
 
 podlet.fallback(<span class="hljs-string">'https://www.example.com/my-fallback'</span>);</code></pre><h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
 <ul class="list">

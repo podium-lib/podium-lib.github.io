@@ -68,8 +68,8 @@ For this step, we can use the podlet we created in the [podlets - getting starte
 _Example_
 
 ```js
-const gettingStarted = layout.client.register({
-    name: 'gettingStartedPodlet', // required
+const podlet = layout.client.register({
+    name: 'myPodlet', // required
     uri: 'http://localhost:7100/manifest.json', // required
 });
 ```
@@ -90,7 +90,7 @@ app.use(layout.middleware());
 
 This is the route that the layout server will use to return its html page. We create our route using the same `pathname` value we gave the layout constructor.
 
-In our route handler, we grab the Podium context from the response object and hand it to the fetch method of our `gettingStarted` podlet client. This method returns a promise which resolves to be the podlet's content which we can then insert into our page as shown below:
+In our route handler, we grab the Podium context from the response object and hand it to the fetch method of our `podlet` podlet client. This method returns a promise which resolves to be the podlet's content which we can then insert into our page as shown below:
 
 _Example_
 
@@ -98,7 +98,7 @@ _Example_
 app.get('/demo', async (req, res) => {
     try {
         const ctx = res.locals.podium.context;
-        const content = await gettingStarted.fetch(ctx);
+        const content = await podlet.fetch(ctx);
 
         res.status(200).send(`
             <html>
@@ -122,7 +122,7 @@ app.get('/', (req, res) => {
     const content = await Promise.all([
         header.fetch(ctx),
         sidebar.fetch(ctx),
-        gettingStarted.fetch(ctx),
+        podlet.fetch(ctx),
         footer.fetch(ctx),
     ]);
     ...
@@ -136,7 +136,7 @@ Now, all thats left is to start the server and test it out
 _Example_
 
 ```js
-app.listen(7101);
+app.listen(7000);
 ```
 
 We call `.listen(port)` on the express app instance and pass it a port
@@ -154,7 +154,7 @@ And we can then visit our page in a browser at:
 _Example_
 
 ```bash
-http://localhost:7101/demo
+http://localhost:7000/demo
 ```
 
 If you see the text "This is the podlets html content" then you've successfully created your first layout.
@@ -174,8 +174,8 @@ const layout = new Layout({
     pathname: '/demo',
 });
 
-const gettingStarted = layout.client.register({
-    name: 'gettingStartedPodlet',
+const podlet = layout.client.register({
+    name: 'myPodlet',
     uri: 'http://localhost:7100/manifest.json',
 });
 
@@ -184,7 +184,7 @@ app.use(layout.middleware());
 app.get('/demo', async (req, res) => {
     try {
         const ctx = res.locals.podium.context;
-        const content = await gettingStarted.fetch(ctx);
+        const content = await podlet.fetch(ctx);
 
         res.status(200).send(`
             <html>
@@ -197,7 +197,7 @@ app.get('/demo', async (req, res) => {
     }
 });
 
-app.listen(7101);
+app.listen(7000);
 ```
 
 ## Next steps

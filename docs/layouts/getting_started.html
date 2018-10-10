@@ -90,8 +90,8 @@ initialization.</p>
 });</code></pre><h2 id="step-5:-register-a-basic-podlet-for-use-in-the-page"><a class="header-link" href="#step-5:-register-a-basic-podlet-for-use-in-the-page"></a>Step 5: Register a basic podlet for use in the page</h2>
 <p>For this step, we can use the podlet we created in the <a href="/Podium/docs/podlets/getting_started.html">podlets - getting started</a> guide. It&#39;s set up to run on port <code>7100</code> so after we start it up, we can register our podlet&#39;s manifest file in our layout like so:</p>
 <p><em>Example</em></p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> gettingStarted = layout.client.register({
-    <span class="hljs-attr">name</span>: <span class="hljs-string">'gettingStartedPodlet'</span>, <span class="hljs-comment">// required</span>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>, <span class="hljs-comment">// required</span>
     uri: <span class="hljs-string">'http://localhost:7100/manifest.json'</span>, <span class="hljs-comment">// required</span>
 });</code></pre><p>The <code>uri</code> here should point to the podlet&#39;s manifest file, not to its server root.</p>
 <h2 id="step-6:-mount-middleware"><a class="header-link" href="#step-6:-mount-middleware"></a>Step 6: Mount middleware</h2>
@@ -99,12 +99,12 @@ initialization.</p>
 <p><em>Example</em></p>
 <pre class="hljs"><code>app.use(layout.middleware());</code></pre><h2 id="step-7:-create-a-route-to-fetch-and-display-a-podlet's-content"><a class="header-link" href="#step-7:-create-a-route-to-fetch-and-display-a-podlet's-content"></a>Step 7: Create a route to fetch and display a podlet&#39;s content</h2>
 <p>This is the route that the layout server will use to return its html page. We create our route using the same <code>pathname</code> value we gave the layout constructor.</p>
-<p>In our route handler, we grab the Podium context from the response object and hand it to the fetch method of our <code>gettingStarted</code> podlet client. This method returns a promise which resolves to be the podlet&#39;s content which we can then insert into our page as shown below:</p>
+<p>In our route handler, we grab the Podium context from the response object and hand it to the fetch method of our <code>podlet</code> podlet client. This method returns a promise which resolves to be the podlet&#39;s content which we can then insert into our page as shown below:</p>
 <p><em>Example</em></p>
 <pre class="hljs"><code>app.get(<span class="hljs-string">'/demo'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
     <span class="hljs-keyword">try</span> {
         <span class="hljs-keyword">const</span> ctx = res.locals.podium.context;
-        <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> gettingStarted.fetch(ctx);
+        <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> podlet.fetch(ctx);
 
         res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">`
             &lt;html&gt;
@@ -122,19 +122,19 @@ initialization.</p>
     <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([
         header.fetch(ctx),
         sidebar.fetch(ctx),
-        gettingStarted.fetch(ctx),
+        podlet.fetch(ctx),
         footer.fetch(ctx),
     ]);
     ...
 });</code></pre><h2 id="step-8:-start-the-server"><a class="header-link" href="#step-8:-start-the-server"></a>Step 8: Start the server</h2>
 <p>Now, all thats left is to start the server and test it out</p>
 <p><em>Example</em></p>
-<pre class="hljs"><code>app.listen(<span class="hljs-number">7101</span>);</code></pre><p>We call <code>.listen(port)</code> on the express app instance and pass it a port</p>
+<pre class="hljs"><code>app.listen(<span class="hljs-number">7000</span>);</code></pre><p>We call <code>.listen(port)</code> on the express app instance and pass it a port</p>
 <p>We can run the app with:</p>
 <p><em>Example</em></p>
 <pre class="hljs"><code>node index.js</code></pre><p>And we can then visit our page in a browser at:</p>
 <p><em>Example</em></p>
-<pre class="hljs"><code>http://localhost:7101/demo</code></pre><p>If you see the text &quot;This is the podlets html content&quot; then you&#39;ve successfully created your first layout.</p>
+<pre class="hljs"><code>http://localhost:7000/demo</code></pre><p>If you see the text &quot;This is the podlets html content&quot; then you&#39;ve successfully created your first layout.</p>
 <h2 id="the-complete-code"><a class="header-link" href="#the-complete-code"></a>The complete code</h2>
 <p><em>Example</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
@@ -147,8 +147,8 @@ initialization.</p>
     <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/demo'</span>,
 });
 
-<span class="hljs-keyword">const</span> gettingStarted = layout.client.register({
-    <span class="hljs-attr">name</span>: <span class="hljs-string">'gettingStartedPodlet'</span>,
+<span class="hljs-keyword">const</span> podlet = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,
     <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7100/manifest.json'</span>,
 });
 
@@ -157,7 +157,7 @@ app.use(layout.middleware());
 app.get(<span class="hljs-string">'/demo'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
     <span class="hljs-keyword">try</span> {
         <span class="hljs-keyword">const</span> ctx = res.locals.podium.context;
-        <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> gettingStarted.fetch(ctx);
+        <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> podlet.fetch(ctx);
 
         res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">`
             &lt;html&gt;
@@ -170,7 +170,7 @@ app.get(<span class="hljs-string">'/demo'</span>, <span class="hljs-keyword">asy
     }
 });
 
-app.listen(<span class="hljs-number">7101</span>);</code></pre><h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
+app.listen(<span class="hljs-number">7000</span>);</code></pre><h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
 <ul class="list">
 <li><a href="/Podium/docs/layouts/unavailable_podlets.html">learn about handling podlet unavailability</a></li>
 <li><a href="/Podium/docs/layouts/context.html">learn about forwarding the Podium context to podlets</a></li>

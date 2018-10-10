@@ -55,6 +55,8 @@
   version: <span class="hljs-string">'1.0.0'</span>,
 });
 
+app.use(podlet.middleware());
+
 app.get(podlet.manifest(), (req, res) =&gt; {
   res.send(podlet);
 });
@@ -63,7 +65,7 @@ app.get(podlet.content(), (req, res) =&gt; res.send(<span class="hljs-string">`
   &lt;div&gt;Podlet content&lt;/div&gt;
 `</span>));
 
-app.listen(<span class="hljs-number">7200</span>);
+app.listen(<span class="hljs-number">7100</span>);
 </code></pre>
       </div>
 
@@ -73,12 +75,12 @@ app.listen(<span class="hljs-number">7200</span>);
 <span class="hljs-keyword">const</span> Layout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/layout'</span>);
 
 <span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({ 
-    name: <span class="hljs-string">'myLayout'</span>
+    name: <span class="hljs-string">'myLayout'</span>,
     pathname: <span class="hljs-string">'/'</span>
 });
 <span class="hljs-keyword">const</span> podlet = layout.client.register({
     name: <span class="hljs-string">'myPodlet'</span>,
-    uri: <span class="hljs-string">'http://localhost:7200/manifest.json'</span>
+    uri: <span class="hljs-string">'http://localhost:7100/manifest.json'</span>
 });
 
 <span class="hljs-keyword">const</span> app = express();
