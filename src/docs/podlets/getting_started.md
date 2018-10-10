@@ -35,7 +35,7 @@ npm install express @podium/podlet
 
 ## Step 3: Import dependencies
 
-Create a file `podlet.js` and import the 2 dependencies at the top
+Create a file `index.js` and import the 2 dependencies at the top
 
 ```js
 const express = require('express');
@@ -52,8 +52,6 @@ const app = express();
 const podlet = new Podlet({
     name: 'myPodlet',       // required
     version: '1.0.0',       // required
-    content: '/',           // optional
-    fallback: '/fallback',  // optional
 });
 ```
 The two first keys are required and the rest is optional, the values used in this example for the optional fields is the default values.  
@@ -76,7 +74,7 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-Here we use the podlets helper method `podlet.content()` which returns the content path we sat in step 4. 
+Here we use the podlets helper method `podlet.content()` which returns the content path we set in step 4. 
 
 One final thing to note is that you can also pass a path to podlet.content(path) in order to customise where the content route will be mounted. Eg. podlet.content('/content') to mount the content route at '/content'
 
@@ -107,7 +105,7 @@ We call `.listen(port)` on the express app instance and pass it a port
 We can run the app with:
 
 ```bash
-node podlet.js
+node index.js
 ```
 
 And we can then curl the server to get back it's manifest content:

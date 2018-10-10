@@ -76,7 +76,7 @@ initialization.</p>
 <p>Next, we need to install and import dependencies. Express js and
 @podium/podlet. To do so, run:</p>
 <pre class="hljs"><code>npm install express @podium/podlet</code></pre><h2 id="step-3:-import-dependencies"><a class="header-link" href="#step-3:-import-dependencies"></a>Step 3: Import dependencies</h2>
-<p>Create a file <code>podlet.js</code> and import the 2 dependencies at the top</p>
+<p>Create a file <code>index.js</code> and import the 2 dependencies at the top</p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
 <span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);</code></pre><h2 id="step-4:-instantiate-instances"><a class="header-link" href="#step-4:-instantiate-instances"></a>Step 4: Instantiate instances</h2>
 <p>Create an express app instance and instantiate the podlet</p>
@@ -85,8 +85,6 @@ initialization.</p>
 <span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
     <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,       <span class="hljs-comment">// required</span>
     version: <span class="hljs-string">'1.0.0'</span>,       <span class="hljs-comment">// required</span>
-    content: <span class="hljs-string">'/'</span>,           <span class="hljs-comment">// optional</span>
-    fallback: <span class="hljs-string">'/fallback'</span>,  <span class="hljs-comment">// optional</span>
 });</code></pre><p>The two first keys are required and the rest is optional, the values used in this example for the optional fields is the default values.  </p>
 <h2 id="step-5:-mount-middleware"><a class="header-link" href="#step-5:-mount-middleware"></a>Step 5: Mount middleware</h2>
 <p>Mount the podlet instances <a href="https://medium.com/@agoiabeladeyemi/a-simple-explanation-of-express-middleware-c68ea839f498">middleware</a> into the express app</p>
@@ -94,7 +92,7 @@ initialization.</p>
 <p>This is the route that the podlet server will use to return its html content.</p>
 <pre class="hljs"><code>app.get(podlet.content(), (req, res) =&gt; {
     res.status(<span class="hljs-number">200</span>).send(<span class="hljs-string">'&lt;div&gt;This is the podlets html content&lt;/div&gt;'</span>);
-});</code></pre><p>Here we use the podlets helper method <code>podlet.content()</code> which returns the content path we sat in step 4. </p>
+});</code></pre><p>Here we use the podlets helper method <code>podlet.content()</code> which returns the content path we set in step 4. </p>
 <p>One final thing to note is that you can also pass a path to podlet.content(path) in order to customise where the content route will be mounted. Eg. podlet.content(&#39;/content&#39;) to mount the content route at &#39;/content&#39;</p>
 <h2 id="step-7:-create-a-manifest-route"><a class="header-link" href="#step-7:-create-a-manifest-route"></a>Step 7: Create a manifest route</h2>
 <p>In Podium, each podlet must return meta data about itself in the form of a json document. By returning the podlet object, it will be serialized with <code>JSON.stringify(podlet)</code> and
@@ -106,7 +104,7 @@ returned to the router.</p>
 <p>Now, all thats left is to start the server and test it out</p>
 <pre class="hljs"><code>app.listen(<span class="hljs-number">7100</span>);</code></pre><p>We call <code>.listen(port)</code> on the express app instance and pass it a port</p>
 <p>We can run the app with:</p>
-<pre class="hljs"><code>node podlet.js</code></pre><p>And we can then curl the server to get back it&#39;s manifest content:</p>
+<pre class="hljs"><code>node index.js</code></pre><p>And we can then curl the server to get back it&#39;s manifest content:</p>
 <pre class="hljs"><code>curl http://localhost:7100/manifest.json
 <span class="hljs-comment"># {"name":"myPodlet","version":"1.0.0","content":"/","fallback":"/fallback","assets":{"js":"","css":""},"proxy":{}}</span></code></pre><p>And curl the server to get back it&#39;s html content:</p>
 <pre class="hljs"><code>curl http://localhost:7100
