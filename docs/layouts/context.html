@@ -99,7 +99,7 @@ layout.context.register(<span class="hljs-string">'my-custom-context'</span>, <s
   <script>
     (function () {
       var pathname = window.location.pathname.substr(1);
-      var activeLink = document.querySelector('a[href="' + pathname + '"]');
+      var activeLink = document.querySelector('a[href$="' + pathname + '"]');
 
       activeLink.classList.add('selected');
     })();
