@@ -46,8 +46,7 @@ _Example_
 
 ```html
 <form action="http://localhost:7101" method="GET">
-  <input type="text" name="search" />
-  <input type="submit" />
+    <input type="text" name="search" /> <input type="submit" />
 </form>
 ```
 
@@ -66,7 +65,6 @@ const content = podlet.fetch(context, { pathname: '/andrew' });
 In the podlet.
 
 ```js
-podlet.content('/');
 app.get('/:name', (req, res) => {
     // req.params.name => andrew
 });
@@ -75,7 +73,9 @@ app.get('/:name', (req, res) => {
 It is important to note here that the `pathname` value is appended to the content route so if you were to serve your content route at `/content` instead of at `/` the final URL sent to the podlet would include this.
 
 ```js
-podlet.content('/content');
+const podlet = new Podlet({
+    content: '/content',
+});
 app.get('/content/:name', (req, res) => {
     // req.params.name => andrew
 });
@@ -87,7 +87,9 @@ You are, in fact, free to handle any routes you like under `content` namespace. 
 // include `/name` when defining `pathname`
 const content = podlet.fetch(context, { pathname: '/name/andrew' });
 
-podlet.content('/content');
+const podlet = new Podlet({
+    content: '/content',
+});
 app.get('/content/name/:name', (req, res) => {
     // req.params.name => andrew
 });

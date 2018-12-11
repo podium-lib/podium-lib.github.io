@@ -149,9 +149,9 @@ const footerClient = layout.client.register({
     uri: 'http://localhost:7004/manifest.json',
 });
 
-app.use('/home', layout.middleware());
+app.use(layout.pathname(), layout.middleware());
 
-app.get('/home', async (req, res) => {
+app.get(layout.pathname(), async (req, res) => {
     try {
         const ctx = res.locals.podium.context;
 
