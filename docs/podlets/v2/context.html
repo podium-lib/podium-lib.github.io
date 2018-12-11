@@ -58,7 +58,7 @@
       </ul>
     </nav>
     <main class="markdown-body"><h1 id="✂️-context"><a class="header-link" href="#✂️-context"></a>✂️ Context</h1>
-<p>👉 This documentation is for Podium podlets version 3.0. <a href="/Podium/docs/podlets/v2/context.html">Version 2.0 documentation</a> is also available.</p>
+<p>👉 This documentation is for Podium podlets version 2.0. <a href="/Podium/docs/podlets/context.html">Version 3.0 documentation</a> is also available.</p>
 <p>A Podlet is intended to be used within multiple Layouts but for this to be possible a Podlet
 needs to be able to access certain pieces of data from each Layout server so that it can
 determine how to respond.</p>
@@ -153,12 +153,12 @@ and the pathname to the layout server will be found at <code>res.locals.podium.c
 <span class="hljs-comment">// eg. http://localhost:3040/cats/podium-resource</span></code></pre><h3 id="requests-from-non-layout-servers"><a class="header-link" href="#requests-from-non-layout-servers"></a>Requests from non Layout servers</h3>
 <p>The Context is appended to requests from Layout servers to Podlet servers, but when testing the podlet in isolation you will want to be able to send requests to Podlets directly, bypassing Layouts entirely. Such requests will not
 have the appropriate Context headers set and will therefore not be able to populate the <code>res.locals.podium.context</code> object.</p>
-<p>To support this use case, a <code>.defaults()</code> method is provided on the <a href="https://github.schibsted.io/Podium/podlet">@podium/podlet</a> instance. In order to use this, you must set the <a href="https://github.schibsted.io/Podium/podlet">@podium/podlet</a> constructor argument <code>development</code> to <code>true</code>.</p>
+<p>To support this use case, a <code>.defaults()</code> method is provided on the <a href="https://github.schibsted.io/Podium/podlet">@podium/podlet</a> instance. In order to use this, you must set the <a href="https://github.schibsted.io/Podium/podlet">@podium/podlet</a> constructor argument <code>defaults</code> to <code>true</code>.</p>
 <p><em>Example: enabling default context support in a Podlet</em></p>
 <pre class="hljs"><code><span class="hljs-comment">// Enable defaults which will set a default Context</span>
 <span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
     ...
-    development: <span class="hljs-literal">true</span>,
+    defaults: <span class="hljs-literal">true</span>,
 });</code></pre><p><em>Example: setting default context values</em></p>
 <pre class="hljs"><code><span class="hljs-comment">// Set default locale to Norwegian</span>
 podlet.defaults({
@@ -168,7 +168,7 @@ be turned off when running in production. Consider using <code>NODE_ENV</code> t
 <p><em>Example: disabling defaults in production</em></p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
     ...
-    development: process.env.NODE_ENV !== <span class="hljs-string">'production'</span>,
+    defaults: process.env.NODE_ENV !== <span class="hljs-string">'production'</span>,
 });</code></pre><h3 id="client-side-javascript-and-the-context"><a class="header-link" href="#client-side-javascript-and-the-context"></a>Client side JavaScript and the context</h3>
 <p>There are many occasions when you will want access to context values client side. Making AJAX requests to proxy endpoints and client side page navigation are two such common cases.</p>
 <p>We recommend the following 2 step approach to sharing context values between backend node.js code and client side code.</p>
@@ -205,8 +205,8 @@ be turned off when running in production. Consider using <code>NODE_ENV</code> t
     <span class="hljs-attr">version</span>: <span class="hljs-string">'2.0.0'</span>,
     <span class="hljs-attr">name</span>: <span class="hljs-string">'demo'</span>,
 
-    <span class="hljs-comment">// turn on for development only</span>
-    development: process.env.NODE_ENV !== <span class="hljs-string">'production'</span>,
+    <span class="hljs-comment">// turn defaults on for development</span>
+    defaults: process.env,
 });
 
 <span class="hljs-comment">// Set default locale to Norwegian</span>
@@ -227,7 +227,7 @@ app.get(<span class="hljs-string">'/'</span>, (req, res, next) =&gt; {
 
     <span class="hljs-comment">// offer one response to norwegian speakers...</span>
     <span class="hljs-keyword">if</span> (locale === <span class="hljs-string">'en-NO'</span>) {
-        res.status(<span class="hljs-number">200</span>).podiumSend(<span class="hljs-string">`
+        res.send(<span class="hljs-string">`
         &lt;div 
             id="app"
             data-mount-origin="<span class="hljs-subst">${mountOrigin}</span>"
@@ -239,13 +239,13 @@ app.get(<span class="hljs-string">'/'</span>, (req, res, next) =&gt; {
     `</span>);
     } <span class="hljs-keyword">else</span> {
         <span class="hljs-comment">// ...and another to english speakers</span>
-        res.status(<span class="hljs-number">200</span>).podiumSend(<span class="hljs-string">'English is not supported at this time.'</span>);
+        res.send(<span class="hljs-string">'English is not supported at this time.'</span>);
     }
 });</code></pre><p>Please see the <a href="https://github.schibsted.io/Podium/podlet">@podium/podlet</a> module for more detailed documentation.</p>
 <h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
 <ul class="list">
-<li><a href="/Podium/docs/podlets/proxying.html">learn about adding additional routes using the proxy</a></li>
-<li><a href="/Podium/docs/podlets/local_development.html">read about improving your podlet development workflow</a></li>
+<li><a href="/Podium/docs/podlets/v2/proxying.html">learn about adding additional routes using the proxy</a></li>
+<li><a href="/Podium/docs/podlets/v2/local_development.html">read about improving your podlet development workflow</a></li>
 </ul>
     </main>
   </div>

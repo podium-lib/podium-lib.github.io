@@ -58,7 +58,7 @@
       </ul>
     </nav>
     <main class="markdown-body"><h1 id="🐠-proxying"><a class="header-link" href="#🐠-proxying"></a>🐠 Proxying</h1>
-<p>👉 This documentation is for Podium podlets version 3.0. <a href="/Podium/docs/podlets/v2/proxying.html">Version 2.0 documentation</a> is also available.</p>
+<p>👉 This documentation is for Podium podlets version 2.0. <a href="/Podium/docs/podlets/proxying.html">Version 3.0 documentation</a> is also available.</p>
 <h2 id="background"><a class="header-link" href="#background"></a>Background</h2>
 <p>While Podium does not enforce what type of infrastructure is used to run podlet and layout servers, a common decision that will have to be made when using Podium is whether podlet servers should be publicly accessible or whether they should be accessible only through the layout server. This decision can impact how client side code is written due to a common need to communicate back directly from client code to podlet server.</p>
 <p>In some cases, you may not wish to expose your podlets to the outside world, instead prefering to expose only layouts and let the layouts do the work of fetching content from internally placed podlets.</p>
@@ -102,13 +102,13 @@
 <h3 id="programmatically-defining-proxy-routes"><a class="header-link" href="#programmatically-defining-proxy-routes"></a>Programmatically defining proxy routes</h3>
 <p>It&#39;s not necessary to define proxy routes in a manifest file manually. There is a <code>podlet.proxy()</code> helper method you should use to define proxy routes and have the manifest file fields populated for you. The following example will achieve the same thing as shown earlier using this helper.</p>
 <p><em>Example</em></p>
-<pre class="hljs"><code>podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/api'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'api'</span> });</code></pre><p>What&#39;s more, we can also define the route itself at the same time.</p>
+<pre class="hljs"><code>podlet.proxy(<span class="hljs-string">'/api'</span>, <span class="hljs-string">'api'</span>);</code></pre><p>What&#39;s more, we can also define the route itself at the same time.</p>
 <p><em>Example</em></p>
-<pre class="hljs"><code>app.get(podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/api'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'api'</span> }), (req, res) =&gt; {
+<pre class="hljs"><code>app.get(podlet.proxy(<span class="hljs-string">'/api'</span>, <span class="hljs-string">'api'</span>), (req, res) =&gt; {
     res.json({ <span class="hljs-attr">key</span>: <span class="hljs-string">'value'</span> });
 });</code></pre><p>There are a maximum of 4 proxies, however it is possible to mount multiple routes under a single proxy.</p>
 <p><em>Example</em></p>
-<pre class="hljs"><code>podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/api'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'api'</span> });
+<pre class="hljs"><code>podlet.proxy(<span class="hljs-string">'/api'</span>, <span class="hljs-string">'api'</span>);
 
 app.get(<span class="hljs-string">'/api/cats'</span>, (req, res) =&gt; {
     res.json([{ <span class="hljs-attr">name</span>: <span class="hljs-string">'fluffy'</span> }]);
@@ -120,7 +120,7 @@ app.get(<span class="hljs-string">'/api/dogs'</span>, (req, res) =&gt; {
 });
 <span class="hljs-comment">// http://localhost:1337/myLayout/podium-resource/myPodlet/api/dogs</span></code></pre><p>Specifying an absolute URL is also possible in which case the layout will mount a proxy directly to the URL, bypassing the podlet entirely.</p>
 <p><em>Example</em></p>
-<pre class="hljs"><code>podlet.proxy({ <span class="hljs-attr">name</span>: <span class="hljs-string">'remote-api'</span>, <span class="hljs-attr">target</span>: <span class="hljs-string">'http://&lt;some-service:port&gt;/api'</span> });
+<pre class="hljs"><code>podlet.proxy(<span class="hljs-string">'remote-api'</span>, <span class="hljs-string">'http://&lt;some-service:port&gt;/api'</span>);
 
 <span class="hljs-comment">// http://localhost:1337/myLayout/podium-resource/myPodlet/remote-api</span></code></pre><h3 id="constructing-proxy-urls"><a class="header-link" href="#constructing-proxy-urls"></a>Constructing Proxy URLs</h3>
 <p>When creating a podlet with proxy routes, it&#39;s necessary to be able to dynamically, programmatically determine the location of these proxy routes.</p>
@@ -135,7 +135,7 @@ app.get(podlet.content(), (req, res) =&gt; {
     <span class="hljs-built_in">console</span>.log(url.href);
 });</code></pre><p>The path to a given endpoint can then be constructed by joining this base URL together with the namespace key given to the <code>podlet.proxy()</code> method like so:</p>
 <pre class="hljs"><code><span class="hljs-comment">// define and create an API proxy route</span>
-app.get(podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/api'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'api'</span> }), (req, res) =&gt; {
+app.get(podlet.proxy(<span class="hljs-string">'/api'</span>, <span class="hljs-string">'api'</span>), (req, res) =&gt; {
     res.json({...});
 });
 
@@ -159,10 +159,10 @@ app.get(podlet.content(), (req, res) =&gt; {
 <span class="hljs-keyword">const</span> app = express();
 
 app.get(podlet.manifest(), (req, res) =&gt; {
-    res.status(<span class="hljs-number">200</span>).json(podlet);
+    res.json(podlet);
 });
 
-app.get(podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/content'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'content'</span> }), (req, res) =&gt; {
+app.get(podlet.proxy(<span class="hljs-string">'/content'</span>, <span class="hljs-string">'content'</span>), (req, res) =&gt; {
     res.send(<span class="hljs-string">'This is the actual content for the page'</span>);
 });
 
@@ -185,7 +185,7 @@ app.get(podlet.content(), (req, res) =&gt; {
 
 app.listen(<span class="hljs-number">7100</span>);</code></pre><h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
 <ul class="list">
-<li><a href="/Podium/docs/podlets/local_development.html">read about improving your podlet development workflow</a></li>
+<li><a href="/Podium/docs/podlets/v2/local_development.html">read about improving your podlet development workflow</a></li>
 </ul>
     </main>
   </div>

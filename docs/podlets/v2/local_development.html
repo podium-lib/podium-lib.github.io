@@ -58,7 +58,7 @@
       </ul>
     </nav>
     <main class="markdown-body"><h1 id="🔥-local-development"><a class="header-link" href="#🔥-local-development"></a>🔥 Local Development</h1>
-<p>👉 This documentation is for Podium podlets version 3.0. <a href="/Podium/docs/podlets/v2/local_development.html">Version 2.0 documentation</a> is also available.</p>
+<p>👉 This documentation is for Podium podlets version 2.0. <a href="/Podium/docs/podlets/local_development.html">Version 3.0 documentation</a> is also available.</p>
 <h2 id="background"><a class="header-link" href="#background"></a>Background</h2>
 <p>It is intended that Podlets be developed in isolation from layouts or other Podlets. This isolation can introduce challenges into local development due to some components normally provided by a layout (such as headers and Assets) not being available.</p>
 <h2 id="a-basic-podlet-development-setup"><a class="header-link" href="#a-basic-podlet-development-setup"></a>A basic podlet development setup</h2>
@@ -101,12 +101,12 @@ app.listen(<span class="hljs-number">7100</span>);</code></pre><p>If this conten
     <span class="hljs-keyword">const</span> { mountOrigin } = res.locals.podium.context;
     res.send(<span class="hljs-string">`&lt;div&gt;<span class="hljs-subst">${mountOrigin}</span>&lt;/div&gt;`</span>);
 });</code></pre><p>This podlet will behave correctly when send requests by a layout but it will throw an error if you try to visit <code>/</code> directly in your browser.</p>
-<p>To solve this, we provide a <code>development</code> mode. When enabled, you can set defaults for Podium context values that will be overwritten, and therefore not used, when requests are sent from the layout to the podlet.</p>
-<p>To enable this feature, pass <code>development: true</code> in the podlet constructor like so:</p>
+<p>To solve this, we provide something called <code>defaults</code>. When enabled, you can set defaults for Podium context values that will be overwritten, and therefore not used, when requests are sent from the layout to the podlet.</p>
+<p>To enable this feature, pass <code>defaults: true</code> to the podlet constructor like so:</p>
 <pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
     ...
-    development: <span class="hljs-literal">true</span>,
-});</code></pre><p>Then rewriting our previous example we can provide sensible development defaults for context values:</p>
+    defaults: <span class="hljs-literal">true</span>,
+})</code></pre><p>Then rewriting our previous example we can provide sensible development defaults for context values:</p>
 <pre class="hljs"><code>podlet.defaults({
     <span class="hljs-attr">mountOrigin</span>: <span class="hljs-string">'http://localhost:7100'</span>,
 });
@@ -114,46 +114,23 @@ app.listen(<span class="hljs-number">7100</span>);</code></pre><p>If this conten
 app.get(podlet.content(), (req, res) =&gt; {
     <span class="hljs-keyword">const</span> { mountOrigin } = res.locals.podium.context;
     res.send(<span class="hljs-string">`&lt;div&gt;<span class="hljs-subst">${mountOrigin}</span>&lt;/div&gt;`</span>);
-});</code></pre><p>Even better, simply enabling <code>development</code> mode will result in some sane context defaults being provided, regardless of whether you call <code>.defaults</code> or not.</p>
-<p>So the following should work when <code>development</code> mode is on as well:</p>
-<pre class="hljs"><code>app.get(podlet.content(), (req, res) =&gt; {
-    <span class="hljs-keyword">const</span> { mountOrigin } = res.locals.podium.context;
-    res.send(<span class="hljs-string">`&lt;div&gt;<span class="hljs-subst">${mountOrigin}</span>&lt;/div&gt;`</span>);
 });</code></pre><h3 id="html-pages-and-page-fragments"><a class="header-link" href="#html-pages-and-page-fragments"></a>HTML pages and page fragments</h3>
 <p>In production, your content route will be responding with an HTML fragment devoid of its wrapping <code>&lt;html&gt;</code> or <code>&lt;body&gt;</code> tags. However, in development you will want to wrap your fragment in a light HTML page wrapper, especially if your podlet makes use of client side assets such as JavaScript or CSS.</p>
-<p>Once again, <code>development</code> mode can help us here. If we set <code>development</code> to <code>true</code> in the constructor and use the <code>res.podiumSend</code> method in our content and fallback routes then our HTML response will be decorated with an HTML page template. As soon as we set <code>development</code> to <code>false</code>, the decorating stops and the fragment is returned on its own.</p>
-<p>Example</p>
-<p>Write the same code, toggle HTML template wrapping by setting <code>development</code> mode to <code>true</code> or <code>false</code></p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
-    ...
-    development: <span class="hljs-literal">true</span>,
-});
-
-app.get(podlet.content(), (req, res) =&gt; {
-    res.status(<span class="hljs-number">200</span>).podiumSend(<span class="hljs-string">`
-        &lt;div&gt;
-            The podlet's HTML content
-        &lt;/div&gt;
-    `</span>);
-});</code></pre><p>Additionally, if you set JavaScript or CSS assets using the <code>podlet.js()</code> or <code>podlet.css()</code> methods, script and style tags will be included in page decoration when in <code>development</code> mode and omitted when not.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
-    ...
-    development: <span class="hljs-literal">true</span>,
-});
-
-podlet.js(<span class="hljs-string">'http://cdn.mysite.com/scripts.js'</span>);
-podlet.css(<span class="hljs-string">'http://cdn.mysite.com/styles.css'</span>);
-
-app.get(podlet.content(), (req, res) =&gt; {
-    res.status(<span class="hljs-number">200</span>).podiumSend(<span class="hljs-string">`
-        &lt;div&gt;
-            The podlet's HTML content
-        &lt;/div&gt;
-    `</span>);
-});</code></pre><p>The decorated page template will include script and style tags to load in <code>http://cdn.mysite.com/scripts.js</code> and <code>http://cdn.mysite.com/styles.css</code></p>
-<p>These would not be included if <code>development</code> was then set to <code>false</code></p>
+<p><em>In production</em></p>
+<p>In this example, the returned content is kept slim and simple, a single <code>&lt;div&gt;</code> is returned and client side assets are handled elsewhere.</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>My content fragment<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre><p><em>In development</em></p>
+<p>When working on this podlet in isolation however, we want to be able to visit the podlet directly in a browser and see an HTML page so we wrap it in <code>&lt;html&gt;</code> and <code>&lt;body&gt;</code> tags. Once we do this, we gain the ability to link in JavaScript and CSS development assets so we can properly see what we are working on.</p>
+<pre class="hljs"><code><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"..."</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>My content fragment<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"..."</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre><p>While there are any number of ways to support client side JavaScript and CSS assets in your podlets, in many cases, you will run into the problem of wanting to serve your assets directly with your podlet while in development and not while running in production. How you handle this will depend on your needs and approach to assets as a whole. We are currently working on a general solution to this problem and will share more when we feel it ready.</p>
 <h3 id="proxying-to-absolute-urls"><a class="header-link" href="#proxying-to-absolute-urls"></a>Proxying to absolute URLs</h3>
-<p>Another case you may encounter when working locally with proxying is that absolute URLs are proxied to directly from layouts bypassing podlets entirely.</p>
+<p>A slight edge case you may encounter when working locally with proxying is that absolute URLs are proxied to directly from layouts bypassing podlets entirely.</p>
 <pre class="hljs"><code>podlet.proxy(<span class="hljs-string">'http://google.com'</span>, <span class="hljs-string">'google'</span>);</code></pre><p>will generate the following entry in the podlet&#39;s manifest</p>
 <pre class="hljs"><code>{
     ...
@@ -161,34 +138,14 @@ app.get(podlet.content(), (req, res) =&gt; {
         <span class="hljs-attr">"google"</span>: <span class="hljs-string">"http://google.com"</span>
     }
 }</code></pre><p>When this is consumed by a layout, the layout will mount a proxy from the layout directly to <code>http://google.com</code> without sending any traffic to the podlet. When working locally on your podlet in isolation this will mean that the proxy is simply not available to you.</p>
-<p>Fortunately, <code>development</code> mode takes care of this for us. When <code>development</code> is set to <code>true</code>, a dev only proxy will be mounted in the podlet. Furthermore, default development context values will reflect this so that your code can continue to dynamically calculate the location of the proxy&#39;s public address, even though this address now sits with the podlet and not the layout.</p>
-<pre class="hljs"><code><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
-    ...
-    development: <span class="hljs-literal">true</span>,
-});
+<p>The preferred way to overcome this challenge is to mount a proxy in the podlet for development purposes</p>
+<pre class="hljs"><code>podlet.proxy(<span class="hljs-string">'http://google.com'</span>, <span class="hljs-string">'google'</span>);
 
-podlet.proxy(<span class="hljs-string">'http://google.com'</span>, <span class="hljs-string">'google'</span>);
-
-app.get(podlet.content(), (req, res) =&gt; {
-    <span class="hljs-keyword">const</span> { mountOrigin, publicPathname } = res.locals.podium.context;
-    <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> URL(publicPathname, mountOrigin);
-
-    res.status(<span class="hljs-number">200</span>).podiumSend(<span class="hljs-string">`
-        &lt;div&gt;
-            The url being proxied to google is <span class="hljs-subst">${url.href  + <span class="hljs-string">'google'</span>}</span>
-        &lt;/div&gt;
-    `</span>);
-});
-
-app.listen(<span class="hljs-number">3000</span>);</code></pre><p>In development mode, the URL will be something like <code>http://localhost:3000/podium-resource/my-podlet/google</code></p>
-<p>When not in development mode, the URL will be be similar except that it will be pointing at the layout server instead of the podlet server. Something like <code>http://localhost:8080/podium-resource/my-podlet/google</code></p>
-<h2 id="in-summary"><a class="header-link" href="#in-summary"></a>In Summary</h2>
-<p>For the best experience when developing podlets:</p>
-<ul class="list">
-<li>install nodemon so your podlet server restarts on changes</li>
-<li>turn on development mode when in dev (but not in production)</li>
-</ul>
-    </main>
+<span class="hljs-keyword">if</span> (process.env.NODE_ENV === <span class="hljs-string">'development'</span>) {
+    <span class="hljs-keyword">const</span> proxy = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Proxy</span>();
+    app.use(proxy.middleware());
+    proxy.register(podlet);
+}</code></pre>    </main>
   </div>
   <script>
     (function () {

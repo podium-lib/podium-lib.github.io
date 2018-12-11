@@ -1,6 +1,6 @@
 # ✂️ Context
 
-👉 This documentation is for Podium podlets version 3.0. [Version 2.0 documentation](/Podium/docs/podlets/v2/context.html) is also available.
+👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/Podium/docs/podlets/context.html) is also available.
 
 A Podlet is intended to be used within multiple Layouts but for this to be possible a Podlet
 needs to be able to access certain pieces of data from each Layout server so that it can
@@ -98,7 +98,7 @@ const url = new URL(publicPathname, mountOrigin);
 The Context is appended to requests from Layout servers to Podlet servers, but when testing the podlet in isolation you will want to be able to send requests to Podlets directly, bypassing Layouts entirely. Such requests will not
 have the appropriate Context headers set and will therefore not be able to populate the `res.locals.podium.context` object.
 
-To support this use case, a `.defaults()` method is provided on the [@podium/podlet] instance. In order to use this, you must set the [@podium/podlet] constructor argument `development` to `true`.
+To support this use case, a `.defaults()` method is provided on the [@podium/podlet] instance. In order to use this, you must set the [@podium/podlet] constructor argument `defaults` to `true`.
 
 _Example: enabling default context support in a Podlet_
 
@@ -106,7 +106,7 @@ _Example: enabling default context support in a Podlet_
 // Enable defaults which will set a default Context
 const podlet = new Podlet({
     ...
-    development: true,
+    defaults: true,
 });
 ```
 
@@ -127,7 +127,7 @@ _Example: disabling defaults in production_
 ```js
 const podlet = new Podlet({
     ...
-    development: process.env.NODE_ENV !== 'production',
+    defaults: process.env.NODE_ENV !== 'production',
 });
 ```
 
@@ -187,8 +187,8 @@ const podlet = new Podlet({
     version: '2.0.0',
     name: 'demo',
 
-    // turn on for development only
-    development: process.env.NODE_ENV !== 'production',
+    // turn defaults on for development
+    defaults: process.env,
 });
 
 // Set default locale to Norwegian
@@ -209,7 +209,7 @@ app.get('/', (req, res, next) => {
 
     // offer one response to norwegian speakers...
     if (locale === 'en-NO') {
-        res.status(200).podiumSend(`
+        res.send(`
         <div 
             id="app"
             data-mount-origin="${mountOrigin}"
@@ -221,7 +221,7 @@ app.get('/', (req, res, next) => {
     `);
     } else {
         // ...and another to english speakers
-        res.status(200).podiumSend('English is not supported at this time.');
+        res.send('English is not supported at this time.');
     }
 });
 ```
@@ -230,8 +230,8 @@ Please see the [@podium/podlet] module for more detailed documentation.
 
 ## Next steps
 
--   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
--   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)
+-   [learn about adding additional routes using the proxy](/Podium/docs/podlets/v2/proxying.html)
+-   [read about improving your podlet development workflow](/Podium/docs/podlets/v2/local_development.html)
 
 [bcp47]: https://tools.ietf.org/html/bcp47
 [kebab case]: https://en.wikipedia.org/wiki/Kebab_case

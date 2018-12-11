@@ -1,6 +1,6 @@
 # 🐠 Proxying
 
-👉 This documentation is for Podium podlets version 3.0. [Version 2.0 documentation](/Podium/docs/podlets/v2/proxying.html) is also available.
+👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/Podium/docs/podlets/proxying.html) is also available.
 
 ## Background
 
@@ -74,7 +74,7 @@ It's not necessary to define proxy routes in a manifest file manually. There is 
 _Example_
 
 ```js
-podlet.proxy({ target: '/api', name: 'api' });
+podlet.proxy('/api', 'api');
 ```
 
 What's more, we can also define the route itself at the same time.
@@ -82,7 +82,7 @@ What's more, we can also define the route itself at the same time.
 _Example_
 
 ```js
-app.get(podlet.proxy({ target: '/api', name: 'api' }), (req, res) => {
+app.get(podlet.proxy('/api', 'api'), (req, res) => {
     res.json({ key: 'value' });
 });
 ```
@@ -92,7 +92,7 @@ There are a maximum of 4 proxies, however it is possible to mount multiple route
 _Example_
 
 ```js
-podlet.proxy({ target: '/api', name: 'api' });
+podlet.proxy('/api', 'api');
 
 app.get('/api/cats', (req, res) => {
     res.json([{ name: 'fluffy' }]);
@@ -110,7 +110,7 @@ Specifying an absolute URL is also possible in which case the layout will mount 
 _Example_
 
 ```js
-podlet.proxy({ name: 'remote-api', target: 'http://<some-service:port>/api' });
+podlet.proxy('remote-api', 'http://<some-service:port>/api');
 
 // http://localhost:1337/myLayout/podium-resource/myPodlet/remote-api
 ```
@@ -137,7 +137,7 @@ The path to a given endpoint can then be constructed by joining this base URL to
 
 ```js
 // define and create an API proxy route
-app.get(podlet.proxy({ target: '/api', name: 'api' }), (req, res) => {
+app.get(podlet.proxy('/api', 'api'), (req, res) => {
     res.json({...});
 });
 
@@ -166,10 +166,10 @@ const podlet = new Podlet({
 const app = express();
 
 app.get(podlet.manifest(), (req, res) => {
-    res.status(200).json(podlet);
+    res.json(podlet);
 });
 
-app.get(podlet.proxy({ target: '/content', name: 'content' }), (req, res) => {
+app.get(podlet.proxy('/content', 'content'), (req, res) => {
     res.send('This is the actual content for the page');
 });
 
@@ -195,4 +195,4 @@ app.listen(7100);
 
 ## Next steps
 
--   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)
+-   [read about improving your podlet development workflow](/Podium/docs/podlets/v2/local_development.html)
