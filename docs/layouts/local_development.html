@@ -176,9 +176,9 @@ app.listen(<span class="hljs-number">7004</span>);</code></pre><h2 id="sample-la
     <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7004/manifest.json'</span>,
 });
 
-app.use(<span class="hljs-string">'/home'</span>, layout.middleware());
+app.use(layout.pathname(), layout.middleware());
 
-app.get(<span class="hljs-string">'/home'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+app.get(layout.pathname(), <span class="hljs-keyword">async</span> (req, res) =&gt; {
     <span class="hljs-keyword">try</span> {
         <span class="hljs-keyword">const</span> ctx = res.locals.podium.context;
 

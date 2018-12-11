@@ -1,6 +1,6 @@
 # 🔌 Fallbacks
 
-👉 This documentation is for Podium podlets version 3.0. [Version 2.0 documentation](/Podium/docs/podlets/v2/fallbacks.html) is also available.
+👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/Podium/docs/podlets/fallbacks.html) is also available.
 
 What happens if a podlet server is down? Unresponsive? Responding too slowly? By default podium will simply render an empty string in its place. You might, however, want to have some measure of control over what gets shown. Enter fallbacks.
 
@@ -20,7 +20,7 @@ const podlet = new Podlet(/*...*/);
 const app = express();
 
 app.get(podlet.fallback(), (req, res) => {
-    res.status(200).podiumSend("<div>It didn't work :(</div>");
+    res.send("<div>It didn't work :(</div>");
 });
 ```
 
@@ -28,7 +28,7 @@ With a custom url, which will be reflected in the manifest.
 
 ```js
 app.get(podlet.fallback('/my-custom-fallback-route'), (req, res) => {
-    res.status(200).podiumSend("<div>It didn't work :(</div>");
+    res.send("<div>It didn't work :(</div>");
 });
 ```
 
@@ -37,7 +37,7 @@ You can also use some of the Podium context that's not request bound. This is us
 ```js
 app.get(podlet.fallback(), (req, res) => {
     const { publicPathname } = res.locals.podium.context;
-    res.status(200).podiumSend(
+    res.send(
         `<div data-public-path-name=${publicPathname}>It didn't work :(</div>`
     );
 });
@@ -53,6 +53,6 @@ podlet.fallback('https://www.example.com/my-fallback');
 
 ## Next steps
 
--   [learn about working with the context](/Podium/docs/podlets/context.html)
--   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
--   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)
+-   [learn about working with the context](/Podium/docs/podlets/v2/context.html)
+-   [learn about adding additional routes using the proxy](/Podium/docs/podlets/v2/proxying.html)
+-   [read about improving your podlet development workflow](/Podium/docs/podlets/v2/local_development.html)

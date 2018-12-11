@@ -1,6 +1,6 @@
 # 🚀 Getting Started
 
-👉 This documentation is for Podium podlets version 3.0. [Version 2.0 documentation](/Podium/docs/podlets/v2/getting_started.html) is also available.
+👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/Podium/docs/podlets/getting_started.html) is also available.
 
 This guide will show you how to get started building podlets for Podium in Node
 js using the express js http framework. It will walk you through the creation of
@@ -32,7 +32,7 @@ Next, we need to install and import dependencies. Express js and
 @podium/podlet. To do so, run:
 
 ```bash
-npm install express @podium/podlet@alpha
+npm install express @podium/podlet
 ```
 
 ## Step 3: Import dependencies
@@ -54,16 +54,10 @@ const app = express();
 const podlet = new Podlet({
     name: 'myPodlet', // required
     version: '1.0.0', // required
-    pathname: '/', // required
-    manifest: '/manifest.json', // optional, defaults to '/manifest.json'
-    content: '/', // optional, defaults to '/'
-    development: true, // optional, defaults to false
 });
 ```
 
-It's not necessary to set `content` or `manifest` as we have done above. These values default to appropriate values that you will use most of the time.
-
-While we have set `development` to `true`, it's important to remember to set this to `false` when working with layouts. Development mode is only useful when working on a podlet in isolation.
+The two first keys are required and the rest is optional, the values used in this example for the optional fields is the default values.
 
 ## Step 5: Mount middleware
 
@@ -75,23 +69,21 @@ app.use(podlet.middleware());
 
 ## Step 6: Create a content route
 
-This is the route that the podlet server will use to return its HTML content.
+This is the route that the podlet server will use to return its html content.
 
 ```js
 app.get(podlet.content(), (req, res) => {
-    res.status(200).podiumSend(`
-        <div>
-            This is the podlet's HTML content
-        </div>
-    `);
+    res.status(200).send('<div>This is the podlets html content</div>');
 });
 ```
 
 Here we use the podlets helper method `podlet.content()` which returns the content path we set in step 4.
 
+One final thing to note is that you can also pass a path to podlet.content(path) in order to customise where the content route will be mounted. Eg. podlet.content('/content') to mount the content route at '/content'
+
 ## Step 7: Create a manifest route
 
-In Podium, each podlet must return meta data about itself in the form of a JSON document. By returning the podlet object, it will be serialized with `JSON.stringify(podlet)` and
+In Podium, each podlet must return meta data about itself in the form of a json document. By returning the podlet object, it will be serialized with `JSON.stringify(podlet)` and
 returned to the router.
 
 ```js
@@ -100,7 +92,7 @@ app.get(podlet.manifest(), (req, res) => {
 });
 ```
 
-Same as with the content route, we can use the podlet's helper method `podlet.manifest()` to return the default manifest route, which is `'/manifest.json'`
+Same as with the content route, we can use the podlets helper method `podlet.manifest()` to return the default manifest route, which is `'/manifest.json'`
 
 ## Step 8: Start the server
 
@@ -118,18 +110,18 @@ We can run the app with:
 node index.js
 ```
 
-And we can then CURL the server to get back it's manifest content:
+And we can then curl the server to get back it's manifest content:
 
 ```bash
 curl http://localhost:7100/manifest.json
 # {"name":"myPodlet","version":"1.0.0","content":"/","fallback":"/fallback","assets":{"js":"","css":""},"proxy":{}}
 ```
 
-And CURL the server to get back it's HTML content:
+And curl the server to get back it's html content:
 
 ```bash
 curl http://localhost:7100
-# <div>This is the podlet's HTML content</div>
+# <div>This is the podlets html content</div>
 ```
 
 ## The complete code
@@ -141,22 +133,16 @@ const Podlet = require('@podium/podlet');
 const app = express();
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    content: '/',
-    fallback: '/fallback',
-    development: true,
+    name: 'myPodlet', // required
+    version: '1.0.0', // required
+    content: '/', // optional
+    fallback: '/fallback', // optional
 });
 
 app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
-    res.status(200).podiumSend(`
-        <div>
-            This is the podlet's HTML content
-        </div>
-    `);
+    res.status(200).send(`<div>This is the podlet's HTML content</div>`);
 });
 
 app.get(podlet.manifest(), (req, res) => {
@@ -168,7 +154,7 @@ app.listen(7100);
 
 ## Next steps
 
--   [add a fallback route to your podlet](/Podium/docs/podlets/fallbacks.html)
--   [learn about working with the context](/Podium/docs/podlets/context.html)
--   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
--   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)
+-   [add a fallback route to your podlet](/Podium/docs/podlets/v2/fallbacks.html)
+-   [learn about working with the context](/Podium/docs/podlets/v2/context.html)
+-   [learn about adding additional routes using the proxy](/Podium/docs/podlets/v2/proxying.html)
+-   [read about improving your podlet development workflow](/Podium/docs/podlets/v2/local_development.html)
