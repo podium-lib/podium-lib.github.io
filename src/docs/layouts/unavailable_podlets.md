@@ -14,7 +14,7 @@ const layout = new Layout({
 });
 ```
 
-See the [@podium/client](https://github.schibsted.io/Podium/client/blob/master/README.md) module for additional documentation.
+See the [@podium/client](https://github.com/podium-lib/client/blob/master/README.md) module for additional documentation.
 
 ## Defining a podlet as throwable
 
@@ -52,7 +52,7 @@ app.get('/', (req, res, next) => {
 
 ## Next steps
 
--   [learn about forwarding the Podium context to podlets](/Podium/docs/layouts/context.html)
--   [learn about sharing state between podlets via the URL](/Podium/docs/layouts/dynamic_routes.html)
--   [learn about options for including client side assets](/Podium/docs/layouts/assets.html)
--   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)
+-   [learn about forwarding the Podium context to podlets](/podium-lib/docs/layouts/context.html)
+-   [learn about sharing state between podlets via the URL](/podium-lib/docs/layouts/dynamic_routes.html)
+-   [learn about options for including client side assets](/podium-lib/docs/layouts/assets.html)
+-   [read about setting up a layout development workflow](/podium-lib/docs/layouts/local_development.html)

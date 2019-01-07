@@ -7,7 +7,7 @@ js using the express js HTTP framework. At the end you will have created a fairl
 
 Ideally, you should have some familiarity with building apps with javascript and
 node.js. You will also need to have node.js installed at version 8 or higher.
-The npm cli will be installed automatically when you install node.js. Additionally, you should familiarize yourself with the Podium's [high level concepts](/Podium/docs/podium/conceptual_overview.html) and understand [how to build a podlet](/Podium/docs/podlets/getting_started.html) with Podium.
+The npm cli will be installed automatically when you install node.js. Additionally, you should familiarize yourself with the Podium's [high level concepts](/podium-lib/docs/podium/conceptual_overview.html) and understand [how to build a podlet](/podium-lib/docs/podlets/getting_started.html) with Podium.
 
 ## Step 1: Project setup
 
@@ -63,7 +63,7 @@ const layout = new Layout({
 
 ## Step 5: Register a basic podlet for use in the page
 
-For this step, we can use the podlet we created in the [podlets - getting started](/Podium/docs/podlets/getting_started.html) guide. It's set up to run on port `7100` so after we start it up, we can register our podlet's manifest file in our layout like so:
+For this step, we can use the podlet we created in the [podlets - getting started](/podium-lib/docs/podlets/getting_started.html) guide. It's set up to run on port `7100` so after we start it up, we can register our podlet's manifest file in our layout like so:
 
 _Example_
 
@@ -202,8 +202,8 @@ app.listen(7000);
 
 ## Next steps
 
--   [learn about handling podlet unavailability](/Podium/docs/layouts/unavailable_podlets.html)
--   [learn about forwarding the Podium context to podlets](/Podium/docs/layouts/context.html)
--   [learn about sharing state between podlets via the URL](/Podium/docs/layouts/sharing_state.html)
--   [learn about options for including client side assets](/Podium/docs/layouts/assets.html)
--   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)
+-   [learn about handling podlet unavailability](/podium-lib/docs/layouts/unavailable_podlets.html)
+-   [learn about forwarding the Podium context to podlets](/podium-lib/docs/layouts/context.html)
+-   [learn about sharing state between podlets via the URL](/podium-lib/docs/layouts/sharing_state.html)
+-   [learn about options for including client side assets](/podium-lib/docs/layouts/assets.html)
+-   [read about setting up a layout development workflow](/podium-lib/docs/layouts/local_development.html)

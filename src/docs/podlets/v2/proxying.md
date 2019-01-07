@@ -1,6 +1,6 @@
 # 🐠 Proxying
 
-👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/Podium/docs/podlets/proxying.html) is also available.
+👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/podium-lib/docs/podlets/proxying.html) is also available.
 
 ## Background
 
@@ -195,4 +195,4 @@ app.listen(7100);
 
 ## Next steps
 
--   [read about improving your podlet development workflow](/Podium/docs/podlets/v2/local_development.html)
+-   [read about improving your podlet development workflow](/podium-lib/docs/podlets/v2/local_development.html)

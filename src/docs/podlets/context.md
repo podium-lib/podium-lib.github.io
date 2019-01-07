@@ -1,6 +1,6 @@
 # ✂️ Context
 
-👉 This documentation is for Podium podlets version 3.0. [Version 2.0 documentation](/Podium/docs/podlets/v2/context.html) is also available.
+👉 This documentation is for Podium podlets version 3.0. [Version 2.0 documentation](/podium-lib/docs/podlets/v2/context.html) is also available.
 
 A Podlet is intended to be used within multiple Layouts but for this to be possible a Podlet
 needs to be able to access certain pieces of data from each Layout server so that it can
@@ -230,14 +230,14 @@ Please see the [@podium/podlet] module for more detailed documentation.
 
 ## Next steps
 
--   [learn about adding additional routes using the proxy](/Podium/docs/podlets/proxying.html)
--   [read about improving your podlet development workflow](/Podium/docs/podlets/local_development.html)
+-   [learn about adding additional routes using the proxy](/podium-lib/docs/podlets/proxying.html)
+-   [read about improving your podlet development workflow](/podium-lib/docs/podlets/local_development.html)
 
 [bcp47]: https://tools.ietf.org/html/bcp47
 [kebab case]: https://en.wikipedia.org/wiki/Kebab_case
 [camel case]: https://en.wikipedia.org/wiki/Camel_case
-[@podium/layout]: https://github.schibsted.io/Podium/layout
-[@podium/podlet]: https://github.schibsted.io/Podium/podlet
-[@podium/context]: https://github.schibsted.io/Podium/context
+[@podium/layout]: https://github.com/podium-lib/layout
+[@podium/podlet]: https://github.com/podium-lib/podlet
+[@podium/context]: https://github.com/podium-lib/context
 [whatwg url]: https://url.spec.whatwg.org/
 [url]: https://nodejs.org/api/url.html#url_class_url

@@ -1,6 +1,6 @@
 # ️️✂️ The Podium Context
 
-The purpose of the Podium Context is to give a podlet access to background contextual information about each incoming HTTP request so that it can tailor its response accordingly. You can read more regarding the Podium context and how it applies to podlets in the [podlet context guide](/Podium/docs/podlets/context.html).
+The purpose of the Podium Context is to give a podlet access to background contextual information about each incoming HTTP request so that it can tailor its response accordingly. You can read more regarding the Podium context and how it applies to podlets in the [podlet context guide](/podium-lib/docs/podlets/context.html).
 
 The context, as it applies to Podium layouts, is always created in the layout server for each request to it. The `@podium/layout` module defines a set of context parsers which are run in parallel by Podium layout middleware during each request. The results of these parsers are combined to form a context object which we then pass on to podlets when fetching their content.
 
@@ -35,7 +35,7 @@ const layout = new Layout({
 
 In this example, we configure the default for the `debug` context parser to be enabled.
 
-See the [@podium/layout](https://github.schibsted.io/Podium/layout/blob/master/README.md) module for more detailed documentation regarding configuring the default context parsers.
+See the [@podium/layout](https://github.com/podium-lib/layout/blob/master/README.md) module for more detailed documentation regarding configuring the default context parsers.
 
 ### Custom context parsers
 
@@ -54,10 +54,10 @@ layout.context.register('my-custom-context', new CustomContext());
 
 In the example above, once run via layout middleware, a new camelCased value `myCustomContext` will be available on the Podium context. This will then be sent over HTTP as a header with the name `podium-my-custom-context` when fetching podlet content.
 
-See the [@podium/context](https://github.schibsted.io/Podium/context/blob/master/README.md) module for more detailed documentation on how to write and register custom Context parsers.
+See the [@podium/context](https://github.com/podium-lib/context/blob/master/README.md) module for more detailed documentation on how to write and register custom Context parsers.
 
 ## Next steps
 
--   [learn about sharing state between podlets via the URL](/Podium/docs/layouts/sharing_state.html)
--   [learn about options for including client side assets](/Podium/docs/layouts/assets.html)
--   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)
+-   [learn about sharing state between podlets via the URL](/podium-lib/docs/layouts/sharing_state.html)
+-   [learn about options for including client side assets](/podium-lib/docs/layouts/assets.html)
+-   [read about setting up a layout development workflow](/podium-lib/docs/layouts/local_development.html)

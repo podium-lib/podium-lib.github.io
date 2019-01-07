@@ -97,5 +97,5 @@ app.get('/content/name/:name', (req, res) => {
 
 ## Next steps
 
--   [learn about options for including client side assets](/Podium/docs/layouts/assets.html)
--   [read about setting up a layout development workflow](/Podium/docs/layouts/local_development.html)
+-   [learn about options for including client side assets](/podium-lib/docs/layouts/assets.html)
+-   [read about setting up a layout development workflow](/podium-lib/docs/layouts/local_development.html)

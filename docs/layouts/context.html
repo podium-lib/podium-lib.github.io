@@ -5,20 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>️️✂️ The Podium Context</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/style.css" />
-  <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/pilcrow.css" />
-  <link type="text/css" rel="stylesheet" href="/Podium/docs/assets/hljs-github.min.css"/>
+  <link type="text/css" rel="stylesheet" href="/podium-lib/docs/assets/style.css" />
+  <link type="text/css" rel="stylesheet" href="/podium-lib/docs/assets/pilcrow.css" />
+  <link type="text/css" rel="stylesheet" href="/podium-lib/docs/assets/hljs-github.min.css"/>
   <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"/>
-  <link rel="shortcut icon" href="/Podium/docs/assets/podium.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/podium-lib/docs/assets/podium.png" type="image/x-icon">
 </head>
 <body>
   <header>
-    <a class="logo" href="/Podium">
-      <img class="podium" src="/Podium/docs/assets/podium.png">
+    <a class="logo" href="/podium-lib">
+      <img class="podium" src="/podium-lib/docs/assets/podium.png">
       Podium
     </a>
     <div class="links">
-      <a href="https://github.schibsted.io/Podium" target="_blank">GitHub</a>
+      <a href="https://github.com/podium-lib" target="_blank">GitHub</a>
     </div>
   </header>
   <div class="content">
@@ -26,39 +26,39 @@
       
       <h3>Podium</h3>
       <ul>
-        <li><a href="/Podium/docs/podium/conceptual_overview.html">📚 Overview</a></li>
+        <li><a href="/podium-lib/docs/podium/conceptual_overview.html">📚 Overview</a></li>
       </ul>
       
       <h3>Podlet Guides</h3>
       <ul>
-        <li><a href="/Podium/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
-        <li><a href="/Podium/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
-        <li><a href="/Podium/docs/podlets/context.html">✂️ Context</a></li>
-        <li><a href="/Podium/docs/podlets/proxying.html">🐠 Proxying</a></li>
-        <li><a href="/Podium/docs/podlets/local_development.html">🔥 Development</a></li>
+        <li><a href="/podium-lib/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="/podium-lib/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
+        <li><a href="/podium-lib/docs/podlets/context.html">✂️ Context</a></li>
+        <li><a href="/podium-lib/docs/podlets/proxying.html">🐠 Proxying</a></li>
+        <li><a href="/podium-lib/docs/podlets/local_development.html">🔥 Development</a></li>
       </ul>
 
       <h3>Layout Guides</h3>
       <ul>
-        <li><a href="/Podium/docs/layouts/getting_started.html">🚀 Getting Started</a></li>
-        <li><a href="/Podium/docs/layouts/context.html">✂️ Context</a></li>
-        <li><a href="/Podium/docs/layouts/unavailable_podlets.html">🔌 Unavailable Podlets</a></li>
-        <li><a href="/Podium/docs/layouts/dynamic_routes.html">🐠 Dynamic Routes</a></li>
-        <li><a href="/Podium/docs/layouts/assets.html">📦 Assets</a></li>
-        <li><a href="/Podium/docs/layouts/local_development.html">🔥 Development</a></li>
+        <li><a href="/podium-lib/docs/layouts/getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="/podium-lib/docs/layouts/context.html">✂️ Context</a></li>
+        <li><a href="/podium-lib/docs/layouts/unavailable_podlets.html">🔌 Unavailable Podlets</a></li>
+        <li><a href="/podium-lib/docs/layouts/dynamic_routes.html">🐠 Dynamic Routes</a></li>
+        <li><a href="/podium-lib/docs/layouts/assets.html">📦 Assets</a></li>
+        <li><a href="/podium-lib/docs/layouts/local_development.html">🔥 Development</a></li>
       </ul>
 
       <h3>API Docs</h3>
       <ul>
-        <li><a href="https://github.schibsted.io/Podium/podlet/blob/master/README.md">📚 Podlet</a></li>
-        <li><a href="https://github.schibsted.io/Podium/layout/blob/master/README.md">📚 Layout</a></li>
-        <li><a href="https://github.schibsted.io/Podium/context/blob/master/README.md">📚 Context</a></li>
-        <li><a href="https://github.schibsted.io/Podium/proxy/blob/master/README.md">📚 Proxy</a></li>
-        <li><a href="https://github.schibsted.io/Podium/client/blob/master/README.md">📚 Client</a></li>
+        <li><a href="https://github.com/podium-lib/podlet/blob/master/README.md">📚 Podlet</a></li>
+        <li><a href="https://github.com/podium-lib/layout/blob/master/README.md">📚 Layout</a></li>
+        <li><a href="https://github.com/podium-lib/context/blob/master/README.md">📚 Context</a></li>
+        <li><a href="https://github.com/podium-lib/proxy/blob/master/README.md">📚 Proxy</a></li>
+        <li><a href="https://github.com/podium-lib/client/blob/master/README.md">📚 Client</a></li>
       </ul>
     </nav>
     <main class="markdown-body"><h1 id="️️✂️-the-podium-context"><a class="header-link" href="#️️✂️-the-podium-context"></a>️️✂️ The Podium Context</h1>
-<p>The purpose of the Podium Context is to give a podlet access to background contextual information about each incoming HTTP request so that it can tailor its response accordingly. You can read more regarding the Podium context and how it applies to podlets in the <a href="/Podium/docs/podlets/context.html">podlet context guide</a>.</p>
+<p>The purpose of the Podium Context is to give a podlet access to background contextual information about each incoming HTTP request so that it can tailor its response accordingly. You can read more regarding the Podium context and how it applies to podlets in the <a href="/podium-lib/docs/podlets/context.html">podlet context guide</a>.</p>
 <p>The context, as it applies to Podium layouts, is always created in the layout server for each request to it. The <code>@podium/layout</code> module defines a set of context parsers which are run in parallel by Podium layout middleware during each request. The results of these parsers are combined to form a context object which we then pass on to podlets when fetching their content.</p>
 <p>As we have seen, you must manually pass the context object on to podlets via a call to <code>.fetch(ctx)</code>. This call will convert the context object into Podium context HTTP headers which will in turn be converted back to a context object once received by a podlet.</p>
 <p><em>Example</em></p>
@@ -77,7 +77,7 @@
         },
     },
 });</code></pre><p>In this example, we configure the default for the <code>debug</code> context parser to be enabled.</p>
-<p>See the <a href="https://github.schibsted.io/Podium/layout/blob/master/README.md">@podium/layout</a> module for more detailed documentation regarding configuring the default context parsers.</p>
+<p>See the <a href="https://github.com/podium-lib/layout/blob/master/README.md">@podium/layout</a> module for more detailed documentation regarding configuring the default context parsers.</p>
 <h3 id="custom-context-parsers"><a class="header-link" href="#custom-context-parsers"></a>Custom context parsers</h3>
 <p>It is possible to extend the Podium context by registering any number of additional parsers.</p>
 <p><em>Example</em></p>
@@ -87,12 +87,12 @@
 
 <span class="hljs-comment">// Register custom context with layout</span>
 layout.context.register(<span class="hljs-string">'my-custom-context'</span>, <span class="hljs-keyword">new</span> CustomContext());</code></pre><p>In the example above, once run via layout middleware, a new camelCased value <code>myCustomContext</code> will be available on the Podium context. This will then be sent over HTTP as a header with the name <code>podium-my-custom-context</code> when fetching podlet content.</p>
-<p>See the <a href="https://github.schibsted.io/Podium/context/blob/master/README.md">@podium/context</a> module for more detailed documentation on how to write and register custom Context parsers.</p>
+<p>See the <a href="https://github.com/podium-lib/context/blob/master/README.md">@podium/context</a> module for more detailed documentation on how to write and register custom Context parsers.</p>
 <h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
 <ul class="list">
-<li><a href="/Podium/docs/layouts/sharing_state.html">learn about sharing state between podlets via the URL</a></li>
-<li><a href="/Podium/docs/layouts/assets.html">learn about options for including client side assets</a></li>
-<li><a href="/Podium/docs/layouts/local_development.html">read about setting up a layout development workflow</a></li>
+<li><a href="/podium-lib/docs/layouts/sharing_state.html">learn about sharing state between podlets via the URL</a></li>
+<li><a href="/podium-lib/docs/layouts/assets.html">learn about options for including client side assets</a></li>
+<li><a href="/podium-lib/docs/layouts/local_development.html">read about setting up a layout development workflow</a></li>
 </ul>
     </main>
   </div>
