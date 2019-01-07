@@ -1,43 +1,44 @@
 # 📚 Conceptual Overview
 
-Podium is a library for building [micro frontends](https://micro-frontends.org/). Micro frontends is based on a concept that instead of putting all functionallity needed to generate a web page into one monolithic application one separate parts of the functionallity into smaller independent servers being responsible for serving individual parts, fragments or components if you want, of the page and then composing them together into a whole page in a separate layer. The composition is done by requesting each independent fragment over http and putting each fragment into a html page's structure.
+Podium is a library for building [micro frontends](https://micro-frontends.org/). "Micro frontends" is a concept that advocates letting go of the monolith and instead putting all functionallity into smaller independent servers with each server being responsible for serving individual parts of the page in isolation (page fragments) and then composing them together into whole pages in separate layers. The composition is done by requesting each independent fragment over HTTP and then putting each fragment into the HTML page's markup.
 
-A simple example is the following where a web page has a header, footer, side bar and a main content area. Each of these can be separate fragments joind together in a structure which is the page layout.
+The following simple example shows a web page which has a header, a footer, a side bar and a main content area as indicated by the red dotted lines.
 
-[ illustration ]
+![](../assets/finn-fragments.jpg)
 
-In a micro frontend architecture the application overview can look something like this:
+In a [micro frontend](https://micro-frontends.org/) architecture this web page could be broken up into a separate fragment (podlet) for each red dotted area:
 
-[ illustration ]
+The advantages of this architectural approach are:
 
-The advantages of such an architecture is that:
+-   Each individual fragment of a page can be built with different technologies and by independent teams.
+-   Each individual fragment can fail without the whole page being affected.
+-   Each individual fragment can be processed and built in parallel and each individual fragment can be scaled independently.
+-   Each individual fragment can be reused in multiple pages and when the fragment is updated, each page that includes it is instantly updated.
 
- * Each individual fragment of a page can be built on different technologies and by independent teams.
- * Each individual fragment can fail without the whole page being affected.
- * Each individual fragment can be processed and build in paralell where each individual fragment can be scaled independently.
- * Each individual fragment can be reused in multiple pages and when updated, each page including it is instantly updated.
+## Podium overview
 
+Podium consists of two main parts:
 
- ## Podium overview
+### Podlets
 
- Podium consits of two main parts:
+A Podlet is Podium speak for a single fragment of a whole HTML page. You can also think of this as a component or a page fragment.
 
-### Podlet
+A Podlet consists of a manifest, written in json and served over HTTP, which defines references to:
 
-A Podlet is a single fragment of a whole html page. One can think of this as a component or a fragment but in Podium we have chosen to call it a Podlet.
+-   An HTTP endpoint to the podlet's main content
+-   An HTTP endpoint to a possible fallback for use in scenarios where the main content cannot be read
+-   An HTTP endpoint to a client side JavaScript file
+-   An HTTP endpoint to a client side CSS file
+-   HTTP endpoints which should be made public
 
-A Podlet is defined by a manifest, defined in json, which hold references to:
+In its simplest form a Podlet can be a manifest file pointing to an HTML file served by a static HTTP server. In Podium the `@podium/podlet` module is used to help facilitate the process of building Podlets.
 
- * a http endpoint to the podlets main content
- * a http endpoint to a possible fallback for use in scenarios where the main content can not be read
- * a http endpoint to a belonging javascript file
- * a http endpoint to a belonging css file
- * http endpoints which should be made publicy available
+See the [podlet guides](../podlets/getting_started.html) section for more information.
 
-In its simplest form a Podlet can be a manifest file pointing to a html file served by a static http server. In Podium the @podium/podlet module is a module to help fasilitate the process of building Podlets.
+### Layouts
 
-### Layout
+A Layout is responsible for supplying the structure of an HTML page, inserting each Podlet into the appropriate location in the page's markup and then serving the resulting page. The Layout is also responsible for generating and appending a Podium context to requests made to each Podlet. This context is a set of HTTP headers containing request contextual information from the Layout server to the Podlet which the Podlet can then use to generate dynamic content depending on which Layout is making the request to it.
 
-A Layout is responsible for holding the structure of a html page and insert each Podlet in its representative spot in the structure. The Layout is also responsible for generating and appending a context which is passed on to the requests to each Podlet. The context is a set of http headers containing request contextual information from the Layout server to the Podlet which the Podlet can use to generate dynamic content from depending on which Layout which is requesting it.
+In Podium the `@podium/layout` module is used to help facilitate the process of building Layouts.
 
-In Podium the @podium/layout module is a module to help fasilitate the process of building Layouts.
+See the [layout guides](../layouts/getting_started.html) section for more information.
