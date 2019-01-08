@@ -100,4 +100,4 @@ app.get('/', (req, res) => {
 
 ## Next steps
 
--   [read about setting up a layout development workflow](/podium-lib/docs/layouts/local_development.html)
+-   [read about setting up a layout development workflow](/docs/layouts/local_development.html)

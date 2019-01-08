@@ -1,6 +1,6 @@
 # 🔌 Fallbacks
 
-👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/podium-lib/docs/podlets/fallbacks.html) is also available.
+👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/docs/podlets/fallbacks.html) is also available.
 
 What happens if a podlet server is down? Unresponsive? Responding too slowly? By default podium will simply render an empty string in its place. You might, however, want to have some measure of control over what gets shown. Enter fallbacks.
 
@@ -53,6 +53,6 @@ podlet.fallback('https://www.example.com/my-fallback');
 
 ## Next steps
 
--   [learn about working with the context](/podium-lib/docs/podlets/v2/context.html)
--   [learn about adding additional routes using the proxy](/podium-lib/docs/podlets/v2/proxying.html)
--   [read about improving your podlet development workflow](/podium-lib/docs/podlets/v2/local_development.html)
+-   [learn about working with the context](/docs/podlets/v2/context.html)
+-   [learn about adding additional routes using the proxy](/docs/podlets/v2/proxying.html)
+-   [read about improving your podlet development workflow](/docs/podlets/v2/local_development.html)

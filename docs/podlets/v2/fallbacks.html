@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>🔌 Fallbacks</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link type="text/css" rel="stylesheet" href="/podium-lib/docs/assets/style.css" />
-  <link type="text/css" rel="stylesheet" href="/podium-lib/docs/assets/pilcrow.css" />
-  <link type="text/css" rel="stylesheet" href="/podium-lib/docs/assets/hljs-github.min.css"/>
+  <link type="text/css" rel="stylesheet" href="/docs/assets/style.css" />
+  <link type="text/css" rel="stylesheet" href="/docs/assets/pilcrow.css" />
+  <link type="text/css" rel="stylesheet" href="/docs/assets/hljs-github.min.css"/>
   <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css"/>
-  <link rel="shortcut icon" href="/podium-lib/docs/assets/podium.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/docs/assets/podium.png" type="image/x-icon">
 </head>
 <body>
   <header>
-    <a class="logo" href="/podium-lib">
-      <img class="podium" src="/podium-lib/docs/assets/podium.png">
+    <a class="logo" href="/">
+      <img class="podium" src="/docs/assets/podium.png">
       Podium
     </a>
     <div class="links">
@@ -26,26 +26,26 @@
       
       <h3>Podium</h3>
       <ul>
-        <li><a href="/podium-lib/docs/podium/conceptual_overview.html">📚 Overview</a></li>
+        <li><a href="/docs/podium/conceptual_overview.html">📚 Overview</a></li>
       </ul>
       
       <h3>Podlet Guides</h3>
       <ul>
-        <li><a href="/podium-lib/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
-        <li><a href="/podium-lib/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
-        <li><a href="/podium-lib/docs/podlets/context.html">✂️ Context</a></li>
-        <li><a href="/podium-lib/docs/podlets/proxying.html">🐠 Proxying</a></li>
-        <li><a href="/podium-lib/docs/podlets/local_development.html">🔥 Development</a></li>
+        <li><a href="/docs/podlets/getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="/docs/podlets/fallbacks.html">🔌 Fallbacks</a></li>
+        <li><a href="/docs/podlets/context.html">✂️ Context</a></li>
+        <li><a href="/docs/podlets/proxying.html">🐠 Proxying</a></li>
+        <li><a href="/docs/podlets/local_development.html">🔥 Development</a></li>
       </ul>
 
       <h3>Layout Guides</h3>
       <ul>
-        <li><a href="/podium-lib/docs/layouts/getting_started.html">🚀 Getting Started</a></li>
-        <li><a href="/podium-lib/docs/layouts/context.html">✂️ Context</a></li>
-        <li><a href="/podium-lib/docs/layouts/unavailable_podlets.html">🔌 Unavailable Podlets</a></li>
-        <li><a href="/podium-lib/docs/layouts/dynamic_routes.html">🐠 Dynamic Routes</a></li>
-        <li><a href="/podium-lib/docs/layouts/assets.html">📦 Assets</a></li>
-        <li><a href="/podium-lib/docs/layouts/local_development.html">🔥 Development</a></li>
+        <li><a href="/docs/layouts/getting_started.html">🚀 Getting Started</a></li>
+        <li><a href="/docs/layouts/context.html">✂️ Context</a></li>
+        <li><a href="/docs/layouts/unavailable_podlets.html">🔌 Unavailable Podlets</a></li>
+        <li><a href="/docs/layouts/dynamic_routes.html">🐠 Dynamic Routes</a></li>
+        <li><a href="/docs/layouts/assets.html">📦 Assets</a></li>
+        <li><a href="/docs/layouts/local_development.html">🔥 Development</a></li>
       </ul>
 
       <h3>API Docs</h3>
@@ -58,7 +58,7 @@
       </ul>
     </nav>
     <main class="markdown-body"><h1 id="🔌-fallbacks"><a class="header-link" href="#🔌-fallbacks"></a>🔌 Fallbacks</h1>
-<p>👉 This documentation is for Podium podlets version 2.0. <a href="/podium-lib/docs/podlets/fallbacks.html">Version 3.0 documentation</a> is also available.</p>
+<p>👉 This documentation is for Podium podlets version 2.0. <a href="/docs/podlets/fallbacks.html">Version 3.0 documentation</a> is also available.</p>
 <p>What happens if a podlet server is down? Unresponsive? Responding too slowly? By default podium will simply render an empty string in its place. You might, however, want to have some measure of control over what gets shown. Enter fallbacks.</p>
 <h2 id="how-do-fallbacks-work?"><a class="header-link" href="#how-do-fallbacks-work?"></a>How do fallbacks work?</h2>
 <p>On the first request to a podlet, podium will request the podlet’s manifest file inside of which it will discover the location of the podlets fallback route if one has been defined. It will then make a request to the fallback route and cache the response. Later, if the podlet server cannot be reached for any reason, or the request returns a non 200 response, podium will simply display the podlet’s cached fallback content instead.</p>
@@ -85,9 +85,9 @@ app.get(podlet.fallback(), (req, res) =&gt; {
 
 podlet.fallback(<span class="hljs-string">'https://www.example.com/my-fallback'</span>);</code></pre><h2 id="next-steps"><a class="header-link" href="#next-steps"></a>Next steps</h2>
 <ul class="list">
-<li><a href="/podium-lib/docs/podlets/v2/context.html">learn about working with the context</a></li>
-<li><a href="/podium-lib/docs/podlets/v2/proxying.html">learn about adding additional routes using the proxy</a></li>
-<li><a href="/podium-lib/docs/podlets/v2/local_development.html">read about improving your podlet development workflow</a></li>
+<li><a href="/docs/podlets/v2/context.html">learn about working with the context</a></li>
+<li><a href="/docs/podlets/v2/proxying.html">learn about adding additional routes using the proxy</a></li>
+<li><a href="/docs/podlets/v2/local_development.html">read about improving your podlet development workflow</a></li>
 </ul>
     </main>
   </div>

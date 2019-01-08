@@ -1,6 +1,6 @@
 # 🔥 Local Development
 
-👉 This documentation is for Podium podlets version 3.0. [Version 2.0 documentation](/podium-lib/docs/podlets/v2/local_development.html) is also available.
+👉 This documentation is for Podium podlets version 3.0. [Version 2.0 documentation](/docs/podlets/v2/local_development.html) is also available.
 
 ## Background
 

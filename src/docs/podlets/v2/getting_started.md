@@ -1,6 +1,6 @@
 # 🚀 Getting Started
 
-👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/podium-lib/docs/podlets/getting_started.html) is also available.
+👉 This documentation is for Podium podlets version 2.0. [Version 3.0 documentation](/docs/podlets/getting_started.html) is also available.
 
 This guide will show you how to get started building podlets for Podium in Node
 js using the express js http framework. It will walk you through the creation of
@@ -154,7 +154,7 @@ app.listen(7100);
 
 ## Next steps
 
--   [add a fallback route to your podlet](/podium-lib/docs/podlets/v2/fallbacks.html)
--   [learn about working with the context](/podium-lib/docs/podlets/v2/context.html)
--   [learn about adding additional routes using the proxy](/podium-lib/docs/podlets/v2/proxying.html)
--   [read about improving your podlet development workflow](/podium-lib/docs/podlets/v2/local_development.html)
+-   [add a fallback route to your podlet](/docs/podlets/v2/fallbacks.html)
+-   [learn about working with the context](/docs/podlets/v2/context.html)
+-   [learn about adding additional routes using the proxy](/docs/podlets/v2/proxying.html)
+-   [read about improving your podlet development workflow](/docs/podlets/v2/local_development.html)
