@@ -7,14 +7,14 @@
   "author": "Frontend Platform Web <trygve.lie@finn.no>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.4"
   },
   "devDependencies": {
     "markdown-styles": "^3.1.10",
-    "now": "^11.3.8",
+    "now": "^13.0.1",
     "now-travis": "^1.2.0",
-    "npm-run-all": "^4.1.1",
-    "reload": "^2.3.1",
+    "npm-run-all": "^4.1.5",
+    "reload": "^2.4.0",
     "watch": "^1.0.2"
   },
   "scripts": {
