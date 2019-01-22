@@ -19,6 +19,7 @@ const Podlet = require('@podium/podlet');
 const podlet = new Podlet({
     name: 'myPodlet',
     version: '1.0.0',
+    pathname: '/',
 });
 
 const app = express();

@@ -186,6 +186,7 @@ const app = require('express')();
 const podlet = new Podlet({
     version: '2.0.0',
     name: 'demo',
+    pathname: '/',
 
     // turn on for development only
     development: process.env.NODE_ENV !== 'production',

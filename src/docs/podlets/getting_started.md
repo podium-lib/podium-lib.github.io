@@ -32,7 +32,7 @@ Next, we need to install and import dependencies. Express js and
 @podium/podlet. To do so, run:
 
 ```bash
-npm install express @podium/podlet@alpha
+npm install express @podium/podlet
 ```
 
 ## Step 3: Import dependencies
