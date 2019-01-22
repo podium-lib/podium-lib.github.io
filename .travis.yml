@@ -4,7 +4,7 @@ node_js:
     - '10'
     - '8'
 
-script: npm run test:coverage && npm run lint
+script: npm run build
 
 jobs:
     fast_finish: true
