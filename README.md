@@ -1,6 +1,6 @@
 # Podium website
 
-https://pages.github.com/podium-lib/
+https://podium-lib.io
 
 ## Setup
 
