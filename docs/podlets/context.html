@@ -204,6 +204,7 @@ be turned off when running in production. Consider using <code>NODE_ENV</code> t
 <span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
     <span class="hljs-attr">version</span>: <span class="hljs-string">'2.0.0'</span>,
     <span class="hljs-attr">name</span>: <span class="hljs-string">'demo'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,
 
     <span class="hljs-comment">// turn on for development only</span>
     development: process.env.NODE_ENV !== <span class="hljs-string">'production'</span>,
