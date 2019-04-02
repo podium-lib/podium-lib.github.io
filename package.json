@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "markdown-styles": "^3.1.10",
+    "prettier": "^1.16.4",
     "watch": "^1.0.2"
   },
   "scripts": {
@@ -19,5 +20,6 @@
     "clean": "rm -rf dist",
     "start": "node src/server.js",
     "dev": "watch 'npm run build' src",
+    "format": "prettier --write 'src/**/*.{md,js,css,json,html}'"
   }
 }
