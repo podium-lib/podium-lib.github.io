@@ -2,7 +2,7 @@
   "name": "podium-docs-website",
   "version": "1.0.0",
   "description": "The Podium docs website",
-  "main": "index.js",
+  "private": true,
   "repository": "git://git@github.schibsted.io:Podium/podium.github.schibsted.io.git",
   "author": "Frontend Platform Web <trygve.lie@finn.no>",
   "license": "MIT",
