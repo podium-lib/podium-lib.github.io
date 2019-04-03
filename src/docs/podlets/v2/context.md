@@ -10,10 +10,10 @@ The purpose of the Podium Context then is to give a Podlet access to background 
 
 More specifically, a Podlet can make use of the context to:
 
--   construct URLs back to the Layout where the request originated
--   respond differently depending on locale eg. `en-US` or `no-NO`
--   respond differently depending on what type of device environment was used to make the request eg. `mobile` or `desktop`
--   respond differently depending on whether the layout is in debug mode or not
+- construct URLs back to the Layout where the request originated
+- respond differently depending on locale eg. `en-US` or `no-NO`
+- respond differently depending on what type of device environment was used to make the request eg. `mobile` or `desktop`
+- respond differently depending on whether the layout is in debug mode or not
 
 In Podium, this context information is sent as a set of HTTP headers with every request (including proxy requests) from a
 Layout server to a Podlet.
@@ -51,8 +51,8 @@ _Example: accessing de-serialized context values in later middleware_
 
 ```js
 app.use((req, res, next) => {
-    // res.locals.podium.context.locale
-    next();
+  // res.locals.podium.context.locale
+  next();
 });
 ```
 
@@ -60,7 +60,7 @@ _Example: accessing de-serialized context values in an express route_
 
 ```js
 app.get('/', (req, res, next) => {
-    // res.locals.podium.context.deviceType
+  // res.locals.podium.context.deviceType
 });
 ```
 
@@ -115,7 +115,7 @@ _Example: setting default context values_
 ```js
 // Set default locale to Norwegian
 podlet.defaults({
-    locale: 'nb-NO',
+  locale: 'nb-NO'
 });
 ```
 
@@ -144,13 +144,9 @@ _Example: writing context values to the dom in an express route_
 
 ```js
 app.get('/', (req, res) => {
-    const {
-        mountOrigin,
-        mountPathname,
-        publicPathname,
-    } = res.locals.podium.context;
+  const { mountOrigin, mountPathname, publicPathname } = res.locals.podium.context;
 
-    res.send(`
+  res.send(`
         <div 
             id="app"
             data-mount-origin="${mountOrigin}"
@@ -184,32 +180,27 @@ const app = require('express')();
 
 // Enable defaults which will set a default Context
 const podlet = new Podlet({
-    version: '2.0.0',
-    name: 'demo',
+  version: '2.0.0',
+  name: 'demo',
 
-    // turn defaults on for development
-    defaults: process.env,
+  // turn defaults on for development
+  defaults: process.env
 });
 
 // Set default locale to Norwegian
 podlet.defaults({
-    locale: 'nb-NO',
+  locale: 'nb-NO'
 });
 
 // mount middleware to ensure context headers are parsed
 app.use(podlet.middleware());
 
 app.get('/', (req, res, next) => {
-    const {
-        mountOrigin,
-        mountPathname,
-        publicPathname,
-        locale,
-    } = res.locals.podium.context;
+  const { mountOrigin, mountPathname, publicPathname, locale } = res.locals.podium.context;
 
-    // offer one response to norwegian speakers...
-    if (locale === 'en-NO') {
-        res.send(`
+  // offer one response to norwegian speakers...
+  if (locale === 'en-NO') {
+    res.send(`
         <div 
             id="app"
             data-mount-origin="${mountOrigin}"
@@ -219,10 +210,10 @@ app.get('/', (req, res, next) => {
         Hei!
         </div>
     `);
-    } else {
-        // ...and another to english speakers
-        res.send('English is not supported at this time.');
-    }
+  } else {
+    // ...and another to english speakers
+    res.send('English is not supported at this time.');
+  }
 });
 ```
 
@@ -230,8 +221,8 @@ Please see the [@podium/podlet] module for more detailed documentation.
 
 ## Next steps
 
--   [learn about adding additional routes using the proxy](/docs/podlets/v2/proxying.html)
--   [read about improving your podlet development workflow](/docs/podlets/v2/local_development.html)
+- [learn about adding additional routes using the proxy](/docs/podlets/v2/proxying.html)
+- [read about improving your podlet development workflow](/docs/podlets/v2/local_development.html)
 
 [bcp47]: https://tools.ietf.org/html/bcp47
 [kebab case]: https://en.wikipedia.org/wiki/Kebab_case

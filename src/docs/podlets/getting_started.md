@@ -52,12 +52,12 @@ Create an express app instance and instantiate the podlet
 const app = express();
 
 const podlet = new Podlet({
-    name: 'myPodlet', // required
-    version: '1.0.0', // required
-    pathname: '/', // required
-    manifest: '/manifest.json', // optional, defaults to '/manifest.json'
-    content: '/', // optional, defaults to '/'
-    development: true, // optional, defaults to false
+  name: 'myPodlet', // required
+  version: '1.0.0', // required
+  pathname: '/', // required
+  manifest: '/manifest.json', // optional, defaults to '/manifest.json'
+  content: '/', // optional, defaults to '/'
+  development: true // optional, defaults to false
 });
 ```
 
@@ -79,7 +79,7 @@ This is the route that the podlet server will use to return its HTML content.
 
 ```js
 app.get(podlet.content(), (req, res) => {
-    res.status(200).podiumSend(`
+  res.status(200).podiumSend(`
         <div>
             This is the podlet's HTML content
         </div>
@@ -96,7 +96,7 @@ returned to the router.
 
 ```js
 app.get(podlet.manifest(), (req, res) => {
-    res.status(200).send(podlet);
+  res.status(200).send(podlet);
 });
 ```
 
@@ -141,18 +141,18 @@ const Podlet = require('@podium/podlet');
 const app = express();
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    content: '/',
-    fallback: '/fallback',
-    development: true,
+  name: 'myPodlet',
+  version: '1.0.0',
+  pathname: '/',
+  content: '/',
+  fallback: '/fallback',
+  development: true
 });
 
 app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
-    res.status(200).podiumSend(`
+  res.status(200).podiumSend(`
         <div>
             This is the podlet's HTML content
         </div>
@@ -160,7 +160,7 @@ app.get(podlet.content(), (req, res) => {
 });
 
 app.get(podlet.manifest(), (req, res) => {
-    res.status(200).send(podlet);
+  res.status(200).send(podlet);
 });
 
 app.listen(7100);
@@ -168,7 +168,7 @@ app.listen(7100);
 
 ## Next steps
 
--   [add a fallback route to your podlet](/docs/podlets/fallbacks.html)
--   [learn about working with the context](/docs/podlets/context.html)
--   [learn about adding additional routes using the proxy](/docs/podlets/proxying.html)
--   [read about improving your podlet development workflow](/docs/podlets/local_development.html)
+- [add a fallback route to your podlet](/docs/podlets/fallbacks.html)
+- [learn about working with the context](/docs/podlets/context.html)
+- [learn about adding additional routes using the proxy](/docs/podlets/proxying.html)
+- [read about improving your podlet development workflow](/docs/podlets/local_development.html)

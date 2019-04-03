@@ -20,7 +20,7 @@ const podlet = new Podlet(/*...*/);
 const app = express();
 
 app.get(podlet.fallback(), (req, res) => {
-    res.status(200).podiumSend("<div>It didn't work :(</div>");
+  res.status(200).podiumSend("<div>It didn't work :(</div>");
 });
 ```
 
@@ -28,7 +28,7 @@ With a custom url, which will be reflected in the manifest.
 
 ```js
 app.get(podlet.fallback('/my-custom-fallback-route'), (req, res) => {
-    res.status(200).podiumSend("<div>It didn't work :(</div>");
+  res.status(200).podiumSend("<div>It didn't work :(</div>");
 });
 ```
 
@@ -36,10 +36,8 @@ You can also use some of the Podium context that's not request bound. This is us
 
 ```js
 app.get(podlet.fallback(), (req, res) => {
-    const { publicPathname } = res.locals.podium.context;
-    res.status(200).podiumSend(
-        `<div data-public-path-name=${publicPathname}>It didn't work :(</div>`
-    );
+  const { publicPathname } = res.locals.podium.context;
+  res.status(200).podiumSend(`<div data-public-path-name=${publicPathname}>It didn't work :(</div>`);
 });
 ```
 
@@ -53,6 +51,6 @@ podlet.fallback('https://www.example.com/my-fallback');
 
 ## Next steps
 
--   [learn about working with the context](/docs/podlets/context.html)
--   [learn about adding additional routes using the proxy](/docs/podlets/proxying.html)
--   [read about improving your podlet development workflow](/docs/podlets/local_development.html)
+- [learn about working with the context](/docs/podlets/context.html)
+- [learn about adding additional routes using the proxy](/docs/podlets/proxying.html)
+- [read about improving your podlet development workflow](/docs/podlets/local_development.html)

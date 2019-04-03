@@ -17,19 +17,19 @@ const express = require('express');
 const Podlet = require('@podium/podlet');
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: 'myPodlet',
+  version: '1.0.0',
+  pathname: '/'
 });
 
 const app = express();
 
 app.get(podlet.manifest(), (req, res) => {
-    res.json(podlet);
+  res.json(podlet);
 });
 
 app.get(podlet.content(), (req, res) => {
-    res.send(`<div>This is my content</div>`);
+  res.send(`<div>This is my content</div>`);
 });
 
 app.listen(7100);
@@ -43,8 +43,8 @@ node server.js
 
 then you could simply visit the following routes to test your changes
 
--   `http://localhost:7100/manifest.json`: the podlet's manifest route
--   `http://localhost:7100`: the podlet's content route
+- `http://localhost:7100/manifest.json`: the podlet's manifest route
+- `http://localhost:7100`: the podlet's content route
 
 ## Problems and solutions
 
@@ -70,8 +70,8 @@ Consider a podlet with the following content route:
 
 ```js
 app.get(podlet.content(), (req, res) => {
-    const { mountOrigin } = res.locals.podium.context;
-    res.send(`<div>${mountOrigin}</div>`);
+  const { mountOrigin } = res.locals.podium.context;
+  res.send(`<div>${mountOrigin}</div>`);
 });
 ```
 
@@ -92,12 +92,12 @@ Then rewriting our previous example we can provide sensible development defaults
 
 ```js
 podlet.defaults({
-    mountOrigin: 'http://localhost:7100',
+  mountOrigin: 'http://localhost:7100'
 });
 
 app.get(podlet.content(), (req, res) => {
-    const { mountOrigin } = res.locals.podium.context;
-    res.send(`<div>${mountOrigin}</div>`);
+  const { mountOrigin } = res.locals.podium.context;
+  res.send(`<div>${mountOrigin}</div>`);
 });
 ```
 
@@ -107,8 +107,8 @@ So the following should work when `development` mode is on as well:
 
 ```js
 app.get(podlet.content(), (req, res) => {
-    const { mountOrigin } = res.locals.podium.context;
-    res.send(`<div>${mountOrigin}</div>`);
+  const { mountOrigin } = res.locals.podium.context;
+  res.send(`<div>${mountOrigin}</div>`);
 });
 ```
 
@@ -214,5 +214,5 @@ When not in development mode, the URL will be be similar except that it will be 
 
 For the best experience when developing podlets:
 
--   install nodemon so your podlet server restarts on changes
--   turn on development mode when in dev (but not in production)
+- install nodemon so your podlet server restarts on changes
+- turn on development mode when in dev (but not in production)

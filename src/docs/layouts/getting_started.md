@@ -56,8 +56,8 @@ _Example_
 const app = express();
 
 const layout = new Layout({
-    name: 'myLayout', // required
-    pathname: '/demo', // required
+  name: 'myLayout', // required
+  pathname: '/demo' // required
 });
 ```
 
@@ -69,8 +69,8 @@ _Example_
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet', // required
-    uri: 'http://localhost:7100/manifest.json', // required
+  name: 'myPodlet', // required
+  uri: 'http://localhost:7100/manifest.json' // required
 });
 ```
 
@@ -96,19 +96,19 @@ _Example_
 
 ```js
 app.get('/demo', async (req, res) => {
-    try {
-        const ctx = res.locals.podium.context;
-        const content = await podlet.fetch(ctx);
+  try {
+    const ctx = res.locals.podium.context;
+    const content = await podlet.fetch(ctx);
 
-        res.status(200).send(`
+    res.status(200).send(`
             <html>
             <head><title>Demo page</title></head>
             <body>${content}</body>
             </html>
         `);
-    } catch (err) {
-        res.sendStatus(500);
-    }
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
 ```
 
@@ -170,31 +170,31 @@ const Layout = require('@podium/layout');
 const app = express();
 
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/demo',
+  name: 'myLayout',
+  pathname: '/demo'
 });
 
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: 'myPodlet',
+  uri: 'http://localhost:7100/manifest.json'
 });
 
 app.use(layout.middleware());
 
 app.get('/demo', async (req, res) => {
-    try {
-        const ctx = res.locals.podium.context;
-        const content = await podlet.fetch(ctx);
+  try {
+    const ctx = res.locals.podium.context;
+    const content = await podlet.fetch(ctx);
 
-        res.status(200).send(`
+    res.status(200).send(`
             <html>
             <head><title>Demo page</title></head>
             <body>${content}</body>
             </html>
         `);
-    } catch (err) {
-        res.sendStatus(500);
-    }
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
 
 app.listen(7000);
@@ -202,8 +202,8 @@ app.listen(7000);
 
 ## Next steps
 
--   [learn about handling podlet unavailability](/docs/layouts/unavailable_podlets.html)
--   [learn about forwarding the Podium context to podlets](/docs/layouts/context.html)
--   [learn about sharing state between podlets via the URL](/docs/layouts/sharing_state.html)
--   [learn about options for including client side assets](/docs/layouts/assets.html)
--   [read about setting up a layout development workflow](/docs/layouts/local_development.html)
+- [learn about handling podlet unavailability](/docs/layouts/unavailable_podlets.html)
+- [learn about forwarding the Podium context to podlets](/docs/layouts/context.html)
+- [learn about sharing state between podlets via the URL](/docs/layouts/sharing_state.html)
+- [learn about options for including client side assets](/docs/layouts/assets.html)
+- [read about setting up a layout development workflow](/docs/layouts/local_development.html)

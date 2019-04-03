@@ -58,6 +58,6 @@ See the [@podium/context](https://github.com/podium-lib/context/blob/master/READ
 
 ## Next steps
 
--   [learn about sharing state between podlets via the URL](/docs/layouts/sharing_state.html)
--   [learn about options for including client side assets](/docs/layouts/assets.html)
--   [read about setting up a layout development workflow](/docs/layouts/local_development.html)
+- [learn about sharing state between podlets via the URL](/docs/layouts/sharing_state.html)
+- [learn about options for including client side assets](/docs/layouts/assets.html)
+- [read about setting up a layout development workflow](/docs/layouts/local_development.html)

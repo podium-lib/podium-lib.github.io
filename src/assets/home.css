@@ -2,8 +2,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman",
-    serif;
+  font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
   background: #fefefe;
 }
 
@@ -16,8 +15,7 @@ h6 {
   font-weight: 400;
   color: #111;
   line-height: 1em;
-  font-family: "Gill Sans", "Avenir Next", Avenir, "Helvetica Neue", Helvetica,
-    Arial, sans-serif;
+  font-family: 'Gill Sans', 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 h4,
 h5,
@@ -48,8 +46,7 @@ header {
   color: #e7dacb;
   text-align: center;
   padding: 80px 0 50px 0;
-  font-family: "Gill Sans", "Avenir Next", Avenir, "Helvetica Neue", Helvetica,
-    Arial, sans-serif;
+  font-family: 'Gill Sans', 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 header .frontpage-title {
@@ -133,8 +130,7 @@ header .subtitle {
   border: 1px solid #e7dacb;
   border-radius: 50px;
   text-decoration: none;
-  font-family: "Gill Sans", "Avenir Next", Avenir, "Helvetica Neue", Helvetica,
-    Arial, sans-serif;
+  font-family: 'Gill Sans', 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 20px;
   transition: opacity 200ms;
   text-align: center;
@@ -221,8 +217,7 @@ code,
 kbd,
 samp {
   color: #000;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
-    monospace;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 0.98em;
 }
 pre {
@@ -273,8 +268,7 @@ th {
 footer {
   background: #21371b;
   color: #e7dacb;
-  font-family: "Gill Sans", "Avenir Next", Avenir, "Helvetica Neue", Helvetica,
-    Arial, sans-serif;
+  font-family: 'Gill Sans', 'Avenir Next', Avenir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding: 40px 0 20px 0;
   margin-top: 40px;
   text-align: center;

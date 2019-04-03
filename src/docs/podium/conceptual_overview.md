@@ -10,10 +10,10 @@ In a [micro frontend](https://micro-frontends.org/) architecture this web page c
 
 The advantages of this architectural approach are:
 
--   Each individual fragment of a page can be built with different technologies and by independent teams.
--   Each individual fragment can fail without the whole page being affected.
--   Each individual fragment can be processed and built in parallel and each individual fragment can be scaled independently.
--   Each individual fragment can be reused in multiple pages and when the fragment is updated, each page that includes it is instantly updated.
+- Each individual fragment of a page can be built with different technologies and by independent teams.
+- Each individual fragment can fail without the whole page being affected.
+- Each individual fragment can be processed and built in parallel and each individual fragment can be scaled independently.
+- Each individual fragment can be reused in multiple pages and when the fragment is updated, each page that includes it is instantly updated.
 
 ## Podium overview
 
@@ -25,11 +25,11 @@ A Podlet is Podium speak for a single fragment of a whole HTML page. You can als
 
 A Podlet consists of a manifest, written in json and served over HTTP, which defines references to:
 
--   An HTTP endpoint to the podlet's main content
--   An HTTP endpoint to a possible fallback for use in scenarios where the main content cannot be read
--   An HTTP endpoint to a client side JavaScript file
--   An HTTP endpoint to a client side CSS file
--   HTTP endpoints which should be made public
+- An HTTP endpoint to the podlet's main content
+- An HTTP endpoint to a possible fallback for use in scenarios where the main content cannot be read
+- An HTTP endpoint to a client side JavaScript file
+- An HTTP endpoint to a client side CSS file
+- HTTP endpoints which should be made public
 
 In its simplest form a Podlet can be a manifest file pointing to an HTML file served by a static HTTP server. In Podium the `@podium/podlet` module is used to help facilitate the process of building Podlets.
 

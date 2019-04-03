@@ -28,12 +28,12 @@ Podium proxying is the Podium way for a podlet to inform any layout servers that
 
 For each proxy you define in a podlet, a namespaced route will be mounted on a layout which will proxy requests back to the podlet. This works as follows:
 
--   A podlet defines its proxy routes
--   A podlet puts the location of the proxy routes into its manifest file
--   A layout reads a podlets manifest file including proxy information
--   A layout creates namespaced proxy routes
--   A layout sends information to the podlet via context headers about the public location of these routes
--   A podlet uses context headers to construct URLs pointing to the layout's proxy endpoints
+- A podlet defines its proxy routes
+- A podlet puts the location of the proxy routes into its manifest file
+- A layout reads a podlets manifest file including proxy information
+- A layout creates namespaced proxy routes
+- A layout sends information to the podlet via context headers about the public location of these routes
+- A podlet uses context headers to construct URLs pointing to the layout's proxy endpoints
 
 In a podlet's manifest, a proxy object can be used to define up to 4 proxy routes like so:
 
@@ -56,10 +56,10 @@ This will result in a URL being mounted on the layout server at:
 
 where:
 
--   `<layout-pathname>`: `pathname` argument given `new Layout({ pathname: '...' })`
--   `<prefix>`: defaults to `podium-resource`
--   `<podlet-name>`: podlet manifest `name` value
--   `<proxy-namespace>`: podlet manifest `proxy.<key>`
+- `<layout-pathname>`: `pathname` argument given `new Layout({ pathname: '...' })`
+- `<prefix>`: defaults to `podium-resource`
+- `<podlet-name>`: podlet manifest `name` value
+- `<proxy-namespace>`: podlet manifest `proxy.<key>`
 
 So for a layout running locally on port `1337` using `pathname` 'myLayout' and consuming a podlet that serves the manifest file above we should be able to send requests to:
 
@@ -83,7 +83,7 @@ _Example_
 
 ```js
 app.get(podlet.proxy({ target: '/api', name: 'api' }), (req, res) => {
-    res.json({ key: 'value' });
+  res.json({ key: 'value' });
 });
 ```
 
@@ -95,12 +95,12 @@ _Example_
 podlet.proxy({ target: '/api', name: 'api' });
 
 app.get('/api/cats', (req, res) => {
-    res.json([{ name: 'fluffy' }]);
+  res.json([{ name: 'fluffy' }]);
 });
 // http://localhost:1337/myLayout/podium-resource/myPodlet/api/cats
 
 app.get('/api/dogs', (req, res) => {
-    res.json([{ name: 'rover' }]);
+  res.json([{ name: 'rover' }]);
 });
 // http://localhost:1337/myLayout/podium-resource/myPodlet/api/dogs
 ```
@@ -125,11 +125,11 @@ The base URL can be constructed by joining together values plucked from the Podi
 const { URL } = require('url'); // not required in node >=10
 
 app.get(podlet.content(), (req, res) => {
-    const { mountOrigin, publicPathname } = res.locals.podium.context;
-    const url = new URL(publicPathname, mountOrigin);
+  const { mountOrigin, publicPathname } = res.locals.podium.context;
+  const url = new URL(publicPathname, mountOrigin);
 
-    // prints base URL under which all proxy routes are located
-    console.log(url.href);
+  // prints base URL under which all proxy routes are located
+  console.log(url.href);
 });
 ```
 
@@ -158,26 +158,26 @@ const express = require('express');
 const Podlet = require('@podium/podlet');
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: 'myPodlet',
+  version: '1.0.0',
+  pathname: '/'
 });
 
 const app = express();
 
 app.get(podlet.manifest(), (req, res) => {
-    res.status(200).json(podlet);
+  res.status(200).json(podlet);
 });
 
 app.get(podlet.proxy({ target: '/content', name: 'content' }), (req, res) => {
-    res.send('This is the actual content for the page');
+  res.send('This is the actual content for the page');
 });
 
 app.get(podlet.content(), (req, res) => {
-    const { mountOrigin, publicPathname } = res.locals.podium.context;
-    const url = new URL(publicPathname, mountOrigin);
+  const { mountOrigin, publicPathname } = res.locals.podium.context;
+  const url = new URL(publicPathname, mountOrigin);
 
-    res.send(`
+  res.send(`
         <div id="content-placeholder"></div>
         <script>
             fetch('${url.href + 'content'}')
@@ -195,4 +195,4 @@ app.listen(7100);
 
 ## Next steps
 
--   [read about improving your podlet development workflow](/docs/podlets/local_development.html)
+- [read about improving your podlet development workflow](/docs/podlets/local_development.html)

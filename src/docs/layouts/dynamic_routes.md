@@ -6,13 +6,13 @@ _Example_
 
 ```js
 const searchField = layout.client.register({
-    name: 'searchField',
-    uri: 'http://localhost:7200',
+  name: 'searchField',
+  uri: 'http://localhost:7200'
 });
 
 const searchResults = layout.client.register({
-    name: 'searchResults',
-    uri: 'http://localhost:7201',
+  name: 'searchResults',
+  uri: 'http://localhost:7201'
 });
 ```
 
@@ -34,8 +34,8 @@ _Example_
 
 ```js
 const content = await Promise.all([
-    searchField.fetch(ctx, { query: { search: req.query.search } }),
-    searchResults.fetch(ctx, { query: { search: req.query.search } }),
+  searchField.fetch(ctx, { query: { search: req.query.search } }),
+  searchResults.fetch(ctx, { query: { search: req.query.search } })
 ]);
 ```
 
@@ -45,9 +45,7 @@ The `searchField` podlet could do this by creating a form.
 _Example_
 
 ```html
-<form action="http://localhost:7101" method="GET">
-    <input type="text" name="search" /> <input type="submit" />
-</form>
+<form action="http://localhost:7101" method="GET"><input type="text" name="search" /> <input type="submit" /></form>
 ```
 
 ## Sending a pathname
@@ -66,7 +64,7 @@ In the podlet.
 
 ```js
 app.get('/:name', (req, res) => {
-    // req.params.name => andrew
+  // req.params.name => andrew
 });
 ```
 
@@ -74,10 +72,10 @@ It is important to note here that the `pathname` value is appended to the conten
 
 ```js
 const podlet = new Podlet({
-    content: '/content',
+  content: '/content'
 });
 app.get('/content/:name', (req, res) => {
-    // req.params.name => andrew
+  // req.params.name => andrew
 });
 ```
 
@@ -88,14 +86,14 @@ You are, in fact, free to handle any routes you like under `content` namespace. 
 const content = podlet.fetch(context, { pathname: '/name/andrew' });
 
 const podlet = new Podlet({
-    content: '/content',
+  content: '/content'
 });
 app.get('/content/name/:name', (req, res) => {
-    // req.params.name => andrew
+  // req.params.name => andrew
 });
 ```
 
 ## Next steps
 
--   [learn about options for including client side assets](/docs/layouts/assets.html)
--   [read about setting up a layout development workflow](/docs/layouts/local_development.html)
+- [learn about options for including client side assets](/docs/layouts/assets.html)
+- [read about setting up a layout development workflow](/docs/layouts/local_development.html)

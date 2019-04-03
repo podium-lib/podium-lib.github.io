@@ -8,9 +8,9 @@ Podium itself does not provide support for asset related tasks such as bundling 
 
 While there are many ways to do so, the following examples illustrate a couple of possibilities for how you might tackle the asset problem currently. Both examples shown here share the same set of challenges:
 
--   how to isolate styling or behavior
--   how to handle duplication of shared libraries such as React
--   how to minimize client asset size and number of requests.
+- how to isolate styling or behavior
+- how to handle duplication of shared libraries such as React
+- how to minimize client asset size and number of requests.
 
 ## Approach 1: inline code
 
@@ -35,10 +35,10 @@ _Example_
 
 ```js
 app.get('/', (req, res) => {
-    const js = layout.client.js();
-    const css = layout.client.css();
+  const js = layout.client.js();
+  const css = layout.client.css();
 
-    res.send(`
+  res.send(`
         <html>
             <head>
                 ${css.join('\n')}
@@ -79,15 +79,13 @@ _Example_
 
 ```js
 app.get('/', (req, res) => {
-    const js = layout.client.js();
-    const css = layout.client.css();
+  const js = layout.client.js();
+  const css = layout.client.css();
 
-    res.send(`
+  res.send(`
         <html>
             <head>
-                ${css
-                    .map(href => `<link rel="stylesheet" href="${href}" />`)
-                    .join('\n')}
+                ${css.map(href => `<link rel="stylesheet" href="${href}" />`).join('\n')}
             </head>
             <body>
                 ...
@@ -100,4 +98,4 @@ app.get('/', (req, res) => {
 
 ## Next steps
 
--   [read about setting up a layout development workflow](/docs/layouts/local_development.html)
+- [read about setting up a layout development workflow](/docs/layouts/local_development.html)

@@ -52,7 +52,7 @@ app.get('/', (req, res, next) => {
 
 ## Next steps
 
--   [learn about forwarding the Podium context to podlets](/docs/layouts/context.html)
--   [learn about sharing state between podlets via the URL](/docs/layouts/dynamic_routes.html)
--   [learn about options for including client side assets](/docs/layouts/assets.html)
--   [read about setting up a layout development workflow](/docs/layouts/local_development.html)
+- [learn about forwarding the Podium context to podlets](/docs/layouts/context.html)
+- [learn about sharing state between podlets via the URL](/docs/layouts/dynamic_routes.html)
+- [learn about options for including client side assets](/docs/layouts/assets.html)
+- [read about setting up a layout development workflow](/docs/layouts/local_development.html)
