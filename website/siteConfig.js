@@ -41,9 +41,9 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'podium/conceptual_overview', label: 'Overview'},
-    {doc: 'podlet/getting_started', label: 'Podlet Guides'},
-    {doc: 'layout/getting_started', label: 'Layout Guides'},
-    {doc: 'api/getting_started', label: 'API Docs'},
+    {doc: 'podlet/getting_started', label: 'Podlets'},
+    {doc: 'layout/getting_started', label: 'Layouts'},
+    {doc: 'api/getting_started', label: 'API'},
     {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
   ],
