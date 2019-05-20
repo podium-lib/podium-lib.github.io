@@ -1,0 +1,27 @@
+{
+  "docs": {
+    "Overview": [
+        "podium/conceptual_overview"
+    ],
+    "Podlet Guides": [
+        "podlet/getting_started",
+        "podlet/fallbacks",
+        "podlet/context",
+        "podlet/proxying",
+        "podlet/local_development"
+    ],
+    "Layout Guides": [
+        "layout/getting_started",
+        "layout/context",
+        "layout/unavailable_podlets",
+        "layout/dynamic_routes",
+        "layout/assets",
+        "layout/local_development"
+    ],
+    "API Doc": [
+        "api/getting_started",
+        "api/podlet",
+        "api/layout"
+    ]
+  }
+}
