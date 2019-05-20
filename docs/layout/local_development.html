@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Local Development · Podium</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Once you have built one or more podlets, you will want to be able to test them in the more realistic context of a layout server, thereby allowing you to see the complete page and make sure all the pieces work together correctly.&lt;/p&gt;
+"/><meta name="docsearch:version" content="3.0.0"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Local Development · Podium"/><meta property="og:type" content="website"/><meta property="og:url" content="https://podium-lib.io//"/><meta property="og:description" content="&lt;p&gt;Once you have built one or more podlets, you will want to be able to test them in the more realistic context of a layout server, thereby allowing you to see the complete page and make sure all the pieces work together correctly.&lt;/p&gt;
+"/><meta property="og:image" content="https://podium-lib.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://podium-lib.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon-32x32.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="https://podium-lib.io/blog/atom.xml" title="Podium Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://podium-lib.io/blog/feed.xml" title="Podium Blog RSS Feed"/><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/favicon-96x96.png" alt="Podium"/><h2 class="headerTitleWithLogo">Podium</h2></a><a href="/versions"><h3>3.0.0</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/podium/conceptual_overview" target="_self">Overview</a></li><li class="siteNavGroupActive"><a href="/docs/podlet/getting_started" target="_self">Podlet Guides</a></li><li class="siteNavGroupActive"><a href="/docs/layout/getting_started" target="_self">Layout Guides</a></li><li class="siteNavGroupActive"><a href="/docs/api/getting_started" target="_self">API Docs</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Layout Guides</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/podium/conceptual_overview">Conceptual Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Podlet Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/podlet/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/podlet/fallbacks">Fallbacks</a></li><li class="navListItem"><a class="navItem" href="/docs/podlet/context">Context</a></li><li class="navListItem"><a class="navItem" href="/docs/podlet/proxying">Proxying</a></li><li class="navListItem"><a class="navItem" href="/docs/podlet/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Layout Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/layout/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/layout/context">The Podium Context</a></li><li class="navListItem"><a class="navItem" href="/docs/layout/unavailable_podlets">Handling podlet unavailability</a></li><li class="navListItem"><a class="navItem" href="/docs/layout/dynamic_routes">Passing URL params and query string values to podlets</a></li><li class="navListItem"><a class="navItem" href="/docs/layout/assets">Assets</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/layout/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API Doc</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/api/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/api/podlet">Podlet</a></li><li class="navListItem"><a class="navItem" href="/docs/api/layout">Layout</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Local Development</h1></header><article><div><span><p>Once you have built one or more podlets, you will want to be able to test them in the more realistic context of a layout server, thereby allowing you to see the complete page and make sure all the pieces work together correctly.</p>
+<p>The following examples show a somewhat contrived multi-podlet and layout setup in which our layout composes together a header, a navigation area, some content and a footer.</p>
+<h2><a class="anchor" aria-hidden="true" id="sample-podlets"></a><a href="#sample-podlets" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sample podlets</h2>
+<p><em>Example: header</em></p>
+<p>Create a folder <code>/podlets/header</code> with a file <code>index.js</code> inside to hold the following podlet code.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'header'</span>,
+  <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>
+});
+
+app.use(podlet.middleware());
+
+app.get(<span class="hljs-string">'/manifest.json'</span>, (req, res) =&gt; {
+  res.json(podlet);
+});
+
+app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+  res.send(<span class="hljs-string">`&lt;header&gt;The Best Podium page ever&lt;/header&gt;`</span>);
+});
+
+app.listen(<span class="hljs-number">7001</span>);
+</code></pre>
+<p><em>Example: navigation bar</em></p>
+<p>Create a folder <code>/podlets/navigation</code> with a file <code>index.js</code> inside to hold the following podlet code.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'navigation'</span>,
+  <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>
+});
+
+app.use(podlet.middleware());
+
+app.get(<span class="hljs-string">'/manifest.json'</span>, (req, res) =&gt; {
+  res.json(podlet);
+});
+
+app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+  res.send(<span class="hljs-string">`&lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href="/home"&gt;home&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/blog"&gt;blog&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/about"&gt;about&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="/contact"&gt;contact&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;`</span>);
+});
+
+app.listen(<span class="hljs-number">7002</span>);
+</code></pre>
+<p><em>Example: main home page content</em></p>
+<p>Create a folder <code>/podlets/home</code> with a file <code>index.js</code> inside to hold the following podlet code.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'homeContent'</span>,
+  <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>
+});
+
+app.use(podlet.middleware());
+
+app.get(<span class="hljs-string">'/manifest.json'</span>, (req, res) =&gt; {
+  res.json(podlet);
+});
+
+app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+  res.send(<span class="hljs-string">`&lt;section&gt;Welcome to my Podium home page&lt;/section&gt;`</span>);
+});
+
+app.listen(<span class="hljs-number">7003</span>);
+</code></pre>
+<p><em>Example: page footer</em></p>
+<p>Create a folder <code>/podlets/footer</code> with a file <code>index.js</code> inside to hold the following podlet code.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'footer'</span>,
+  <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>
+});
+
+app.use(podlet.middleware());
+
+app.get(<span class="hljs-string">'/manifest.json'</span>, (req, res) =&gt; {
+  res.json(podlet);
+});
+
+app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
+  res.send(<span class="hljs-string">`&lt;footer&gt;&amp;copy; 2018 - the Podium team&lt;/footer&gt;`</span>);
+});
+
+app.listen(<span class="hljs-number">7004</span>);
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="sample-layout"></a><a href="#sample-layout" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sample layout</h2>
+<p><em>Example: the /home layout</em></p>
+<p>Create a folder <code>/layouts/home</code>. Create a file <code>index.js</code> inside this folder to hold the following layout code.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> Layout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/layout'</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)();
+
+<span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'homePage'</span>,
+  <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/home'</span>
+});
+
+<span class="hljs-keyword">const</span> headerClient = layout.client.register({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'header'</span>,
+  <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7001/manifest.json'</span>
+});
+<span class="hljs-keyword">const</span> navigationClient = layout.client.register({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'navigation'</span>,
+  <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7002/manifest.json'</span>
+});
+<span class="hljs-keyword">const</span> contentClient = layout.client.register({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'content'</span>,
+  <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7003/manifest.json'</span>
+});
+<span class="hljs-keyword">const</span> footerClient = layout.client.register({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'footer'</span>,
+  <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7004/manifest.json'</span>
+});
+
+app.use(layout.pathname(), layout.middleware());
+
+app.get(layout.pathname(), <span class="hljs-keyword">async</span> (req, res) =&gt; {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">const</span> ctx = res.locals.podium.context;
+
+    <span class="hljs-keyword">const</span> [header, navigation, content, footer] = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([
+      headerClient.fetch(ctx),
+      navigationClient.fetch(ctx),
+      contentClient.fetch(ctx),
+      footerClient.fetch(ctx)
+    ]);
+
+    res.send(<span class="hljs-string">`
+            &lt;html&gt;
+            &lt;head&gt;
+                &lt;title&gt;Podium example - home&lt;/title&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                <span class="hljs-subst">${header}</span>
+                <span class="hljs-subst">${navigation}</span>
+                <span class="hljs-subst">${content}</span>
+                <span class="hljs-subst">${footer}</span>
+            &lt;/body&gt;
+            &lt;/html&gt;
+        `</span>);
+  } <span class="hljs-keyword">catch</span> (err) {
+    res.sendStatus(<span class="hljs-number">500</span>);
+  }
+});
+
+app.listen(<span class="hljs-number">7000</span>);
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="running-podlets-and-layout-together"></a><a href="#running-podlets-and-layout-together" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Running podlets and layout together</h2>
+<p>Because each podlet and the layout have been configured to run on different ports you can safely start them all up together.</p>
+<pre><code class="hljs css language-bash">node podlets/header
+node podlets/navigation
+node podlets/home
+node podlets/footer
+</code></pre>
+<p>We can now start up our <code>/home</code> layout to consume and display our podlet content.</p>
+<pre><code class="hljs css language-bash">node layouts/home
+</code></pre>
+<p>Our layout has been configured to run on port <code>7000</code> so we should now be able to visit the url <code>http://localhost:7000/home</code> in a browser and see <code>header</code>, <code>navigation</code>, <code>home page</code> and <code>footer</code> content composed together.</p>
+<h2><a class="anchor" aria-hidden="true" id="improving-the-development-experience"></a><a href="#improving-the-development-experience" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Improving the development experience</h2>
+<p>The setup described above is a manual process requiring a number of repetitive operations by the developer to start up, restart or shut down processes. What follows are several suggestions for improving on this.</p>
+<h3><a class="anchor" aria-hidden="true" id="using-forever"></a><a href="#using-forever" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>using forever</h3>
+<p>One fairly simple way to manage all your podlets and layouts at once is to use a tool called <a href="https://github.com/foreverjs/forever">forever</a> which is available on <code>npm</code>.</p>
+<p><em>Example: install forever</em></p>
+<pre><code class="hljs css language-bash">npm i -g forever
+</code></pre>
+<p><code>Forever</code> allows you to pass it some <code>json</code> configuration describing your setup and have it manage the processes</p>
+<p><em>Example: forever json configuration file</em></p>
+<pre><code class="hljs css language-json">[
+  {
+    <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"header"</span>,
+    <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+    <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/podlets/header"</span>
+  },
+  {
+    <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"navigation"</span>,
+    <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+    <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/podlets/navigation"</span>
+  },
+  {
+    <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"home"</span>,
+    <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+    <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/podlets/home"</span>
+  },
+  {
+    <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"footer"</span>,
+    <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+    <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/podlets/footer"</span>
+  },
+  {
+    <span class="hljs-attr">"uid"</span>: <span class="hljs-string">"homePage"</span>,
+    <span class="hljs-attr">"append"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"watch"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"script"</span>: <span class="hljs-string">"index.js"</span>,
+    <span class="hljs-attr">"sourceDir"</span>: <span class="hljs-string">"/path/to/layouts/home"</span>
+  }
+]
+</code></pre>
+<p>You can then pass the configuration file to <code>forever</code> to start everything up at once.</p>
+<p><em>Example: running forever</em></p>
+<pre><code class="hljs css language-bash">forever start /path/to/development.json
+</code></pre>
+<p>Notice that every service has been configured to run in watch mode meaning that they will be automatically restarted any time a file change is detected.</p>
+<p>You can <a href="https://github.com/foreverjs/forever">read more about forever here</a>.</p>
+<h3><a class="anchor" aria-hidden="true" id="using-pm2"></a><a href="#using-pm2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>using pm2</h3>
+<p>A great alternative to forever is <a href="https://pm2.io/">pm2</a>. Pm2 can also take a configuration file in <code>json</code> format, can aggregate logs, run services in watch mode, has great docs and more.</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 4/3/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/layout/assets"><span class="arrow-prev">← </span><span>Assets</span></a><a class="docs-next button" href="/docs/api/getting_started"><span>Getting Started</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#sample-podlets">Sample podlets</a></li><li><a href="#sample-layout">Sample layout</a></li><li><a href="#running-podlets-and-layout-together">Running podlets and layout together</a></li><li><a href="#improving-the-development-experience">Improving the development experience</a><ul class="toc-headings"><li><a href="#using-forever">using forever</a></li><li><a href="#using-pm2">using pm2</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon-96x96.png" alt="Podium" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/en/podium/conceptual_overview">Conceptual overview</a><a href="/docs/en/podlet/getting_started">Podlets</a><a href="/docs/en/layout/getting_started">Layouts</a></div><div><h5>API</h5><a href="/en/api/podlet">Podlets</a><a href="/en/api/layout">Layouts</a></div><div><h5>Links</h5><a href="/blog">Blog</a><a href="https://github.com/podium-lib/issues">Issues</a><a href="https://github.com/podium-lib">GitHub</a><a href="https://www.npmjs.com/org/podium">npm</a><a href="https://micro-frontends.org/">Micro Frontends</a></div></section><a href="https://finn.no/" target="_blank" rel="noreferrer noopener" class="copyrightLogo"><img src="/img/finn_no_logo.png" alt="FINN.no" width="129" height="45"/></a><section class="copyright">Copyright © 2019 FINN.no Copyright</section></footer></div></body></html>

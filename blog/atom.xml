@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://podium-lib.io//blog</id>
+    <title>Podium Blog</title>
+    <updated>2019-05-20T06:00:00Z</updated>
+    <generator>Feed for Node.js</generator>
+    <link rel="alternate" href="https://podium-lib.io//blog"/>
+    <subtitle>The best place to stay up-to-date with the latest Podium news and events.</subtitle>
+    <logo>https://podium-lib.io//img/favicon-96x96.png</logo>
+    <rights>Copyright © 2019 FINN.no Copyright</rights>
+    <entry>
+        <title type="html"><![CDATA[New documentation site]]></title>
+        <id>https://podium-lib.io//blog/2019/05/20/new-documentation.html</id>
+        <link href="https://podium-lib.io//blog/2019/05/20/new-documentation.html">
+        </link>
+        <updated>2019-05-20T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>Welcome to our blog. Our documentation site has just gotten an refreshing update which also give us a blog.</p> <p>This space will be used to document version changes and give insight in tips and tricks not really belonging in the documentation itself.</p> ]]></summary>
+        <author>
+            <name>Trygve Lie</name>
+            <uri>https://github.com/trygve-lie/</uri>
+        </author>
+    </entry>
+</feed>

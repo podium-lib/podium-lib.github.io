@@ -1,0 +1,24 @@
+Podlets (page fragments) are standalone http services developed and run in isolation.
+
+This is a Podlet built with Express.js:
+
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);<br>
+<span class="hljs-keyword">const</span> app = express();
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,
+    <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,
+    <span class="hljs-attr">development</span>: <span class="hljs-string">true</span>,
+});
+app.use(podlet.middleware());<br>
+app.get(podlet.manifest(), (req, res) =&gt; {
+    res.send(podlet);
+});<br>
+app.get(podlet.content(), (req, res) =&gt; res.send(<span class="hljs-string">`
+    &lt;div&gt;Podlet content&lt;/div&gt;
+`</span>));<br>
+app.listen(<span class="hljs-number">7100</span>);
+</code></pre>
+
+Start the Podlet and it will be accessable on http://localhost:7100/

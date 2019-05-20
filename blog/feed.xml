@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Podium Blog</title>
+        <link>https://podium-lib.io//blog</link>
+        <description>The best place to stay up-to-date with the latest Podium news and events.</description>
+        <lastBuildDate>Mon, 20 May 2019 06:00:00 GMT</lastBuildDate>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>Feed for Node.js</generator>
+        <image>
+            <title>Podium Blog</title>
+            <url>https://podium-lib.io//img/favicon-96x96.png</url>
+            <link>https://podium-lib.io//blog</link>
+        </image>
+        <copyright>Copyright © 2019 FINN.no Copyright</copyright>
+        <item>
+            <title><![CDATA[New documentation site]]></title>
+            <link>https://podium-lib.io//blog/2019/05/20/new-documentation.html</link>
+            <guid>https://podium-lib.io//blog/2019/05/20/new-documentation.html</guid>
+            <pubDate>Mon, 20 May 2019 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p>Welcome to our blog. Our documentation site has just gotten an refreshing update which also give us a blog.</p> <p>This space will be used to document version changes and give insight in tips and tricks not really belonging in the documentation itself.</p> ]]></description>
+        </item>
+    </channel>
+</rss>
