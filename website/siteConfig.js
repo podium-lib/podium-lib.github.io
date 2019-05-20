@@ -30,11 +30,13 @@ const siteConfig = {
   //   baseUrl: '/test-site/',
 
   // Used for publishing and more
-  projectName: 'podium-lib',
+  projectName: 'podium-lib.github.io',
   organizationName: 'podium-lib',
   // For top-level user or org sites, the organization is still the same.
   // e.g., for the https://JoelMarcey.github.io site, it would be set like...
   //   organizationName: 'JoelMarcey'
+
+  cname: 'podium-lib.io',
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
