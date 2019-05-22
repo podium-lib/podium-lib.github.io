@@ -168,7 +168,7 @@ Create a new podlet instance.
 const podlet = new Podlet(options);
 ```
 
-### options
+#### options
 
 | option      | type      | default          | required |
 | ----------- | --------- | ---------------- | -------- |
@@ -181,7 +181,7 @@ const podlet = new Podlet(options);
 | logger      | `object`  |                  |          |
 | development | `boolean` | `false`          |          |
 
-#### name
+##### name
 
 The name the podlet identifies itself by. This is used internally for things
 like metrics but can also be used internally in a Layout server.
@@ -196,7 +196,7 @@ const podlet = new Podlet({
 });
 ```
 
-#### version
+##### version
 
 The current version of the podlet. It is important that this value be updated
 when a new version of the podlet is deployed since the page (layout) that the
@@ -211,7 +211,7 @@ const podlet = new Podlet({
 });
 ```
 
-#### pathname
+##### pathname
 
 Pathname for where a podlet is mounted in an HTTP server. It is important that
 this value matches where the entry point of a route is in an HTTP server since
@@ -352,7 +352,7 @@ app.get('/foo/:id', async (request, reply) => {
 ```
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-#### manifest
+##### manifest
 
 Defines the pathname for the manifest of the podlet. Defaults to
 `/manifest.json`.
@@ -420,7 +420,7 @@ app.get('/foo/component.json', async (request, reply) => {
 The `.manifest()` method can be used to retrieve the value after it has been
 set.
 
-#### content
+##### content
 
 Defines the pathname for the content of the Podlet. The value can be a relative
 or absolute URL. Defaults to `/`.
@@ -490,7 +490,7 @@ app.get('/foo/index.html', async (request, reply) => {
 
 The `.content()` method can be used to retrieve the value after it has been set.
 
-#### fallback
+##### fallback
 
 Defines the pathname for the fallback of the Podlet. The value can be a relative
 or absolute URL. Defaults to an empty string.
@@ -561,12 +561,10 @@ app.get('/foo/fallback.html', async (request, reply) => {
 The `.fallback()` method can be used to retrieve the value after it has been
 set.
 
-#### logger
+##### logger
 
 Any log4j compatible logger can be passed in and will be used for logging.
 Console is also supported for easy test / development.
-
-_Example:_
 
 ```js
 const podlet = new Podlet({
@@ -577,7 +575,7 @@ const podlet = new Podlet({
 Under the hood [abslog] is used to abstract out logging. Please see [abslog] for
 further details.
 
-#### development
+##### development
 
 Turns development mode on or off. See the section about development mode.
 
@@ -996,13 +994,13 @@ app.get('/content/info/:id', async (request, reply) => { ... });
 ```
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-### options
+#### options
 
 | option | type      | default | required |
 | ------ | --------- | ------- | -------- |
 | prefix | `boolean` | `false` |          |
 
-#### prefix
+##### prefix
 
 Specifies whether the method should prefix the return value with the `pathname` value
 that was set in the constructor.
@@ -1086,13 +1084,13 @@ app.get(podlet.fallback(), async (request, reply) => {
 ```
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-### options
+#### options
 
 | option | type      | default | required |
 | ------ | --------- | ------- | -------- |
 | prefix | `boolean` | `false` |          |
 
-#### prefix
+##### prefix
 
 Specifies whether the fallback method should prefix the return value with the
 value for `pathname` set in the constructor.
@@ -1123,7 +1121,7 @@ multiple times to set multiple values.
 
 Returns the value of the `value` options property.
 
-### options
+#### options
 
 | option | type      | default   | required |
 | ------ | --------- | --------- | -------- |
@@ -1132,7 +1130,7 @@ Returns the value of the `value` options property.
 | type   | `string`  | `default` |          |
 
 
-#### value
+##### value
 
 Sets the `pathname` for the podlets JavaScript assets. This value can be a URL
 at which the podlet's user facing JavaScript is served. The value can be either
@@ -1295,7 +1293,7 @@ const podlet = new Podlet({
 podlet.js({ value: 'http://cdn.mysite.com/assets/js/e7rfg76.js' });
 ```
 
-#### prefix
+##### prefix
 
 Specify whether the method should prefix the return value with the value for
 `pathname` that was set in the constructor.
@@ -1314,7 +1312,7 @@ podlet.js({ value: '/assets/main.js', prefix: true });
 
 Prefix will be ignored if the returned value is an absolute URL.
 
-#### type
+##### type
 
 Set the type of script which is set. If not set, `default` will be used.
 
@@ -1341,14 +1339,14 @@ multiple times to set multiple values.
 
 Returns the value of the `value` options property.
 
-### options
+#### options
 
 | option | type      | default | required |
 | ------ | --------- | ------- | -------- |
 | value  | `string`  |         |          |
 | prefix | `boolean` | `false` |          |
 
-#### value
+##### value
 
 Used to set the pathname for the CSS assets for the Podlet. The value can be a
 URL at which the podlet's user facing CSS is served. The value can be the
@@ -1515,7 +1513,7 @@ const podlet = new Podlet({
 podlet.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
 ```
 
-#### prefix
+##### prefix
 
 Sets whether the method should prefix the return value with the value for
 `pathname` set in the constructor.
