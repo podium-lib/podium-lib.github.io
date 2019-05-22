@@ -47,3 +47,8 @@
 .nav-footer {
     background-color: #21371b;
 }
+
+.post a {
+    color: #8a916f;
+    text-decoration: underline;
+}
