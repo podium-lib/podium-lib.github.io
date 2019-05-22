@@ -18,20 +18,20 @@ speak, one should be using the [@podium/podlet module](api/podlet.md).
 If one are to write a layout server to compose page fragments together, one
 should be using the [@podium/layout module](api/layout.md).
 
-## Http Framework Compabillity
+## HTTP Framework Compabillity
 
-Podium is http framework agnostic with first class support for [Express]. In
+Podium is HTTP framework agnostic with first class support for [Express]. In
 practise this means that core Podium works with the standard [http.Server]
 module in node.js but the core modules also comes with [Express] compatible
 middleware methods for easy usage.
 
 Due to the fact that Podium is built for usage with [http.Server] module in
-node.js, its easy to make Podium work with multiple http frameworks. The most
-common way to support different http framework is through plugins.
+node.js, its easy to make Podium work with multiple HTTP frameworks. The most
+common way to support different HTTP framework is through plugins.
 
-[Hapi] and [Fastify] is endorsed http frameworks by the Podium team which
-maintain plugins for these http frameworks. There are also user land plugins
-for other http frameworks.
+[Hapi] and [Fastify] is endorsed HTTP frameworks by the Podium team which
+maintain plugins for these HTTP frameworks. There are also user land plugins
+for other HTTP frameworks.
 
 Using Podium together with [Hapi] or [Fastify] does normally require that the
 plugin is handed an instance of one of the Podium modules.
@@ -40,7 +40,7 @@ plugin is handed an instance of one of the Podium modules.
  * To write a Layout server with Hapi; please see [@podium/hapi-layout]
  * To write a Podlet server with Fastify; please see [@podium/fastify-podlet]
 
-Example of setting up a Podlet server in all http framworks supported and
+Example of setting up a Podlet server in all HTTP framworks supported and
 endorsed by the Podium team:
 
 <!--DOCUSAURUS_CODE_TABS-->
@@ -68,7 +68,7 @@ app.get(podlet.content(), (req, res) => {
 });
 
 app.get(podlet.manifest(), (req, res) => {
-    res.status(200).send(podlet);
+    res.status(200).json(podlet);
 });
 
 app.listen(7100);
