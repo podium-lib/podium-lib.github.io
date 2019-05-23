@@ -11,7 +11,7 @@ used in a [@podium/layout] server to compose a full HTML page.
 This module can be used together with a plain node.js HTTP server or any HTTP
 framework and any templating language of your choosing (or none if you prefer).
 
-Note: Connect compatible middleware based frameworks (such as [Express]) are
+Connect compatible middleware based frameworks (such as [Express]) are
 considered first class in Podium so this module provides a `.middleware()`
 method for convenience.
 
