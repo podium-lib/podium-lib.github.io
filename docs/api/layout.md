@@ -498,20 +498,79 @@ Set the default encapsulating HTML document template.
 Takes a function with the following shape:
 
 ```js
-layout.view(data => `<!doctype html>
-<html lang="${data.locale}">
+layout.view((incoming, body, head) => `<!doctype html>
+<html lang="${incoming.context.locale}">
     <head>
-        <meta charset="${data.encoding}">
-        <title>${data.title}</title>
-        <link href="${data.css}" rel="stylesheet">
-        <script src="${data.js}" defer></script>
-        ${data.head}
+        <meta charset="${incoming.view.encoding}">
+        <title>${incoming.view.title}</title>
+        ${head}
     </head>
     <body>
-        ${data.body}
+        ${body}
     </body>
 </html>`;
 );
+```
+
+### .render(HttpIncoming, body, [args])
+
+Method to render the document template. Will by default render the docment
+template provided by Podium unless a custom document template is set on the
+`.view` method.
+
+In most http frameworks this method can be ignored in favour of
+`res.podiumSend()`. If pressent, `res.podiumSend()` has the advantage that one
+do not need to pass in `HttpIncoming` as the first argument.
+
+Returns a `String`.
+
+The method takes the following arguments:
+
+#### HttpIncoming (required)
+
+An instance of the [HttpIncoming] class.
+
+```js
+app.get('/', (req, res) => {
+    const incoming = res.locals.podium;
+    const document = layout.render(incoming, '<div>content to render</div>');
+    res.send(document);
+});
+```
+
+#### body
+
+An String that is intended to go into the body of the document template.
+
+```js
+layout.render(incoming, '<div>content to render</div>');
+```
+
+#### [args]
+
+All following arguments given to the method will be passed on to the document
+template. This can as an example be used to pass on parts of a page to the
+document template.
+
+```js
+layout.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+app.get('/', async (req, res, next) => {
+    const incoming = res.locals.podium;
+
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
+
+    const document = layout.render(incoming, body, head);
+    res.send(document);
+});
 ```
 
 ### .process(HttpIncoming)
@@ -559,68 +618,10 @@ app.use(async (req, res, next) => {
 });
 ```
 
-### .render(HttpIncoming, data)
-
-This method is intended to be used to implement support for multiple HTTP
-frameworks and it should not normally be necessary to use this method directly
-when creating a layout server.
-
-This method is used by `.podiumSend()` when using the [Express] HTTP framework.
-
-The method takes the following arguments:
-
-#### HttpIncoming (required)
-
-An instance of the [HttpIncoming] class.
-
-```js
-const { HttpIncoming } = require('@podium/utils');
-const Layout = require('@podium/layout');
-const express = require('express);
-
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
-});
-
-const app = express();
-
-app.get('/', (req, res) => {
-    const incoming = new HttpIncoming(req, res, res.locals)
-    layout.render(incoming, '<div>content to render</div>');
-});
-```
-
-#### data
-
-An HTML string or an object with the following shape:
-
--   `data.title` - document title
--   `data.locale` - language tag/locale identifier defaults to `en-US`
--   `data.encoding` - defaults to `utf-8`
--   `data.head` - Any additional HTML markup that should be placed in the document `<head>`
--   `data.js` - JavaScript URL, will be used as a `src` value in a script tag
--   `data.css` - CSS URL, will be used as an `href` value in a link tag
--   `data.body` - HTML body markup to be rendered
-
-Using a string
-
-```js
-layout.render(incoming, '<div>content to render</div>');
-```
-
-Using a data object
-
-```js
-layout.render(incoming, {
-    title: 'my doc title',
-    body: '<div>my content</div>',
-});
-```
-
 ### .client
 
-A property that exposes an instance of the for fetching content from podlets.
+A property that exposes an instance of the client for fetching content from
+podlets.
 
 Example of registering a podlet and fetching it:
 
