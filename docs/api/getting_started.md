@@ -3,8 +3,6 @@ id: getting_started
 title: Getting Started
 ---
 
-## Modules
-
 Podium consist of two parts; Podlets and Layouts. Each part has a module for
 developing each of these.
 

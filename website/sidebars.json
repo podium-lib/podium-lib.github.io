@@ -20,8 +20,10 @@
     ],
     "API Doc": [
         "api/getting_started",
+        "api/incoming",
         "api/podlet",
         "api/layout"
+
     ]
   }
 }
