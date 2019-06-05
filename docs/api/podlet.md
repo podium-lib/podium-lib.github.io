@@ -1736,6 +1736,141 @@ podlet.view(data => `<!doctype html>
 );
 ```
 
+### .render(HttpIncoming, fragment, [args])
+
+Method to render the document template. Will by default render the docment
+template provided by Podium unless a custom document template is set on the
+`.view` method.
+
+In most http frameworks this method can be ignored in favour of
+`res.podiumSend()`. If pressent, `res.podiumSend()` has the advantage that one
+do not need to pass in [`HttpIncoming`](incoming.md) as the first argument.
+
+Returns a `String`.
+
+The method takes the following arguments:
+
+#### HttpIncoming (required)
+
+An instance of the [`HttpIncoming`](incoming.md) class.
+
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
+```js
+app.get(podlet.content(), (req, res) => {
+    const incoming = res.locals.podium;
+    const document = layout.render(incoming, '<div>content to render</div>');
+    res.send(document);
+});
+```
+
+<!--Hapi-->
+```js
+app.route({
+    method: 'GET',
+    path: podlet.content(),
+    handler: (request, h) => {
+        const incoming = request.app.podium;
+        return layout.render(incoming, '<div>content to render</div>');
+    },
+});
+```
+
+<!--Fastify-->
+```js
+app.get(podlet.content(), (req, res) => {
+    const incoming = reply.app.podium;
+    const document = layout.render(incoming, '<div>content to render</div>');
+    reply.send(document);
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
+
+#### fragment
+
+An String that is intended to be a fragment of the final HTML document.
+
+```js
+layout.render(incoming, '<div>content to render</div>');
+```
+
+#### [args]
+
+All following arguments given to the method will be passed on to the document
+template. This can as an example be used to pass on parts of a page to the
+document template.
+
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
+```js
+podlet.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+app.get(podlet.content(), async (req, res, next) => {
+    const incoming = res.locals.podium;
+
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
+
+    const document = layout.render(incoming, body, head);
+    res.send(document);
+});
+```
+
+<!--Hapi-->
+```js
+podlet.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+app.route({
+    method: 'GET',
+    path: podlet.content(),
+    handler: (request, h) => {
+        const incoming = request.app.podium;
+
+        const head = `<meta ..... />`;
+        const body = `<section>my content</section>`;
+
+        return layout.render(incoming, body, head);
+    },
+});
+```
+
+<!--Fastify-->
+```js
+podlet.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+app.get(podlet.content(), (req, res) => {
+    const incoming = reply.app.podium;
+
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
+
+    const document = layout.render(incoming, body, head);
+    reply.send(document);
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
+
 ### .process(HttpIncoming)
 
 Method for processing a incoming HTTP request. This method is intended to be
@@ -1762,7 +1897,7 @@ const Podlet = require('@podium/podlet');
 const podlet = new Podlet({
     name: 'myPodlet',
     version: '1.0.0',
-    pathname: '/',
+    pathname: podlet.content(),
 });
 
 app.use(async (req, res, next) => {
@@ -1812,7 +1947,7 @@ app.route({
 
 <!--Fastify-->
 ```js
-app.get(podlet.content(), async (request, reply) => {
+app.get(podlet.content(), (request, reply) => {
     reply.podiumSend('<h2>Hello world</h2>');
 });
 ```
