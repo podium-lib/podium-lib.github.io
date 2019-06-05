@@ -6,7 +6,7 @@ title: HttpIncoming
 In the request-response cycle of a http request handeled by Podium some
 information needs to be accessible by different steps within such a cycle. To
 cater for this, Podium has a `HttpIncoming` object which is passed between the
-different in Podium in such a request-response cycle.
+different parts of Podium in such a request-response cycle.
 
 This `HttpIncoming` object hold different values the different steps in a
 request-response cycle handeled by Podium will need or generate. The most
