@@ -511,7 +511,7 @@ layout.view((incoming, body, head) => `<!doctype html>
 );
 ```
 
-### .render(HttpIncoming, body, [args])
+### .render(HttpIncoming, fragment, [args])
 
 Method to render the document template. Will by default render the docment
 template provided by Podium unless a custom document template is set on the
@@ -537,9 +537,9 @@ app.get('/', (req, res) => {
 });
 ```
 
-#### body
+#### fragment
 
-An String that is intended to go into the body of the document template.
+An String that is intended to be a fragment of the final HTML document.
 
 ```js
 layout.render(incoming, '<div>content to render</div>');
@@ -741,8 +741,12 @@ The event will fire with the following value:
 
 ### .context
 
-A property that exposes an instance of the @podium/context used to create a
+A property that exposes an instance of the Context object used to create a
 context.
+
+### .context.register(name, parser)
+
+Register a custom parser for a value that should be appended to the Context.
 
 Example of registering a custom third party context parser to the context:
 
@@ -757,7 +761,14 @@ const layout = new Layout({
 layout.context.register('customParser', new Parser('someConfig'));
 ```
 
-Please see [@podium/context] for full documentation.
+#### name (required)
+
+A unique name of the parser. Used as the key for the parser's value in the
+context.
+
+#### parser (required)
+
+The parser object to be registered.
 
 ### .metrics
 
