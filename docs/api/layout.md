@@ -29,32 +29,24 @@ section.
 ## Installation
 
 <!--DOCUSAURUS_CODE_TABS-->
-<!--Default / Express-->
-
+<!--HTTP / Express-->
 ```bash
 $ npm install @podium/layout
 ```
 
 <!--Hapi-->
-
 ```bash
 $ npm install @podium/layout
 $ npm install @podium/hapi-layout
 ```
-
-<!--Fastify-->
-
-```bash
-$ npm install @podium/layout
-$ npm install @podium/fastify-layout
-```
-
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Getting started
 
 Building a simple layout server including two podlets:
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const express = require('express');
 const Layout = require('@podium/layout');
@@ -77,7 +69,7 @@ const podletB = layout.client.register({
 const app = express();
 app.use(layout.middleware());
 
-app.get('/', async (req, res, next) => {
+app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
     const [a, b] = await Promise.all([
@@ -93,6 +85,60 @@ app.get('/', async (req, res, next) => {
 
 app.listen(7000);
 ```
+
+<!--Hapi-->
+```js
+const HapiLayout = require('@podium/hapi-layout');
+const Layout = require('@podium/layout');
+const Hapi = require('hapi');
+
+const app = Hapi.Server({
+    host: 'localhost',
+    port: 7000,
+});
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: (request, h) => {
+        const incoming = request.app.podium;
+
+        const [a, b] = await Promise.all([
+            podletA.fetch(incoming),
+            podletB.fetch(incoming),
+        ]);
+
+        h.podiumSend(`
+            <section>${a.content}</section>
+            <section>${b.content}</section>
+        `);
+
+    },
+});
+
+app.start();
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Constructor
 
@@ -135,6 +181,8 @@ HTTP server since this value is used to mount the proxy and inform podlets
 
 If the layout is mounted at the server "root", set the `pathname` to `/`:
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
 const layout = new Layout({
@@ -149,8 +197,37 @@ app.get('/', (req, res, next) => {
 });
 ```
 
+<!--Hapi-->
+```js
+const app = Hapi.Server({
+    host: 'localhost',
+    port: 7000,
+});
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.route({
+    method: 'GET',
+    path: '/',
+    handler: (request, h) => {
+        [ ... ]
+    },
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
+
 If the layout is mounted at `/foo`, set the `pathname` to `/foo`:
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
 const layout = new Layout({
@@ -168,6 +245,41 @@ app.get('/foo/:id', (req, res, next) => {
     [ ... ]
 });
 ```
+
+<!--Hapi-->
+```js
+const app = Hapi.Server({
+    host: 'localhost',
+    port: 7000,
+});
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.route({
+    method: 'GET',
+    path: '/foo',
+    handler: (request, h) => {
+        [ ... ]
+    },
+});
+
+app.route({
+    method: 'GET',
+    path: '/foo/{id}',
+    handler: (request, h) => {
+        [ ... ]
+    },
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 There is also a helper method for retrieving the set `pathname` which can be
 used to get the pathname from the layout object when defining routes.
@@ -275,10 +387,13 @@ more or less just a wrapper for the `.process()` method.
 
 Example
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
 app.use(layout.middleware());
 ```
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 The middleware will create an [`HttpIncoming`](incoming.md) object for each request and place it on the response at `res.locals.podium`.
 
@@ -301,13 +416,14 @@ be called multiple times to add multiple values.
 
 ##### value
 
-Sets the `pathname` for the layout's JavaScript assets. This value is usually the [URL]
-at which the layouts's user facing JavaScript is served and can be either a URL [pathname] or an absolute URL.
-
-_Examples:_
+Sets the `pathname` for the layout's JavaScript assets. This value is usually
+the [URL] at which the layouts's user facing JavaScript is served and can be
+either a URL [pathname] or an absolute URL.
 
 Serve a javascript file at `/assets/main.js`:
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
 const layout = new Layout({
@@ -316,13 +432,39 @@ const layout = new Layout({
 });
 
 app.get(layout.js({ value: '/assets/main.js' }), (req, res) => {
-    res.status(200).sendFile('./app/assets/main.js', err => {});
+    res.status(200).sendFile('./src/js/main.js', err => {});
 });
 ```
 
-Serve assets statically along side the app and set a relative URI to the
-JavaScript file:
+<!--Hapi-->
+```js
+const app = Hapi.Server([ ... ]);
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
 
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.register(require('@hapi/inert'));
+
+app.route({
+    method: 'GET',
+    path: layout.js({ value: '/assets/main.js' }),
+    handler: (request, h) => {
+        return h.file('./src/js/main.js');
+    },
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
+
+Serve assets from a static file server and set a relative URI to the JS files:
+
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
 const layout = new Layout({
@@ -330,9 +472,50 @@ const layout = new Layout({
     pathname: '/',
 });
 
-app.use('/assets', express.static('./app/files/assets'));
+app.use('/assets', express.static('./src/js'));
+
 layout.js({ value: '/assets/main.js' });
+layout.js({ value: '/assets/extra.js' });
 ```
+
+<!--Hapi-->
+```js
+const app = Hapi.Server({
+    port: 7000,
+    routes: {
+        files: {
+            relativeTo: './src/js/',
+        }
+    }
+});
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.register(require('@hapi/inert'));
+
+app.route({
+    method: 'GET',
+    path: '/assets/{param*}',
+    handler: {
+        directory: {
+            path: '.',
+            redirectToSlash: true
+        }
+    }
+});
+
+layout.js({ value: '/assets/main.js' });
+layout.js({ value: '/assets/extra.js' });
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 Set an absolute URL to where the JavaScript file is located:
 
@@ -350,12 +533,9 @@ layout.js({ value: 'http://cdn.mysite.com/assets/js/e7rfg76.js' });
 Specify whether the method should prefix the return value with the value for
 `pathname` set in the constructor.
 
-_Examples:_
-
 Return the full pathname, `/foo/assets/main.js`, to the JavaScript assets:
 
 ```js
-const app = express();
 const layout = new Layout({
     name: 'myLayout',
     pathname: '/foo',
@@ -399,12 +579,13 @@ be called multiple times to set multiple values.
 ##### value
 
 Sets the `pathname` to the layout's CSS assets. This value can be a [URL] at
-which the podlet's user facing CSS is served. The value can be a URL [pathname] or an absolute URL.
-
-_Examples:_
+which the podlet's user facing CSS is served. The value can be a URL [pathname]
+or an absolute URL.
 
 Serve a CSS file at `/assets/main.css`:
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
 const layout = new Layout({
@@ -413,12 +594,39 @@ const layout = new Layout({
 });
 
 app.get(layout.css({ value: '/assets/main.css' }), (req, res) => {
-    res.status(200).sendFile('./app/assets/main.css', err => {});
+    res.status(200).sendFile('./src/js/main.css', err => {});
 });
 ```
 
-Serve assets from a static file server and set a relative URI to the CSS file:
+<!--Hapi-->
+```js
+const app = Hapi.Server([ ... ]);
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
 
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.register(require('@hapi/inert'));
+
+app.route({
+    method: 'GET',
+    path: layout.css({ value: '/assets/main.css' }),
+    handler: (request, h) => {
+        return h.file('./src/js/main.css');
+    },
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
+
+Serve assets from a static file server and set a relative URI to the CSS files:
+
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
 const layout = new Layout({
@@ -426,9 +634,50 @@ const layout = new Layout({
     pathname: '/',
 });
 
-app.use('/assets', express.static('./app/files/assets'));
+app.use('/assets', express.static('./src/css'));
+
 layout.css({ value: '/assets/main.css' });
+layout.css({ value: '/assets/extra.css' });
 ```
+
+<!--Hapi-->
+```js
+const app = Hapi.Server({
+    port: 7000,
+    routes: {
+        files: {
+            relativeTo: './src/css/',
+        }
+    }
+});
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.register(require('@hapi/inert'));
+
+app.route({
+    method: 'GET',
+    path: '/assets/{param*}',
+    handler: {
+        directory: {
+            path: '.',
+            redirectToSlash: true
+        }
+    }
+});
+
+layout.css({ value: '/assets/main.css' });
+layout.css({ value: '/assets/extra.css' });
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 Set an absolute URL to where the CSS file is located:
 
@@ -443,14 +692,12 @@ layout.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
 
 ##### prefix
 
-Sets whether the method should prefix the return value with the `pathname` value that was set in the constructor.
-
-_Examples:_
+Sets whether the method should prefix the return value with the `pathname` value
+that was set in the constructor.
 
 Return the full pathname (`/foo/assets/main.css`) to the CSS assets:
 
 ```js
-const app = express();
 const layout = new Layout({
     name: 'myLayout',
     pathname: '/foo',
@@ -463,16 +710,19 @@ Prefix will be ignored if the returned value is an absolute URL
 
 ### .pathname()
 
-A helper method used to retrieve the `pathname` value that was set in the constructor. This can be
-handy to use when defining routes since the `pathname` set in the constructor
-must also be the base path for the layout's main content route
+A helper method used to retrieve the `pathname` value that was set in the
+constructor. This can be handy to use when defining routes since the `pathname`
+set in the constructor must also be the base path for the layout's main content
+route
 
 Example:
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const layout = new Layout({
     name: 'myLayout',
-    pathname: '/foo'
+    pathname: '/foo',
 });
 
 app.get(layout.pathname(), (req, res, next) => {
@@ -488,12 +738,45 @@ app.get(`${layout.pathname()}/bar/:id`, (req, res, next) => {
 });
 ```
 
+<!--Hapi-->
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: (request, h) => {
+        [ ... ]
+    },
+});
+
+app.route({
+    method: 'GET',
+    path: `${layout.pathname()}/bar`,
+    handler: (request, h) => {
+        [ ... ]
+    },
+});
+
+app.route({
+    method: 'GET',
+    path: `${layout.pathname()}/bar/{id}`,
+    handler: (request, h) => {
+        [ ... ]
+    },
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
+
 ### .view(template)
 
 Set the default encapsulating HTML document template.
 
-Takes a template function that accepts an instance of HttpIncoming, a content string as well as any additional markup for the document's head section
-as in:
+Takes a template function that accepts an instance of HttpIncoming, a content
+string as well as any additional markup for the document's head section as in:
 
 ```js
 (incoming, body, head) => `Return an HTML string here`;
@@ -519,11 +802,12 @@ layout.view((incoming, body, head) => `<!doctype html>
 ### .render(HttpIncoming, fragment, [args])
 
 Method to render the document template. By default this will render the docment
-template provided by Podium unless a custom document template is set by using the
-`.view` method.
+template provided by Podium unless a custom document template is set by using
+the `.view` method.
 
 In most HTTP frameworks this method can be ignored in favour of
-`res.podiumSend()`. If present, `res.podiumSend()` has the advantage that it's not necessary to pass in [`HttpIncoming`](incoming.md) as the first argument.
+`res.podiumSend()`. If present, `res.podiumSend()` has the advantage that it's
+not necessary to pass in [`HttpIncoming`](incoming.md) as the first argument.
 
 Returns a `String`.
 
@@ -533,29 +817,20 @@ This method takes the following arguments:
 
 An instance of the [`HttpIncoming`](incoming.md) class.
 
-```js
-app.get('/', (req, res) => {
-    const incoming = res.locals.podium;
-    const document = layout.render(incoming, '<div>content to render</div>');
-    res.send(document);
-});
-```
-
 #### fragment
 
-A `String` that is intended to be inserted into the body of the document template.
-
-```js
-layout.render(incoming, '<div>content to render</div>');
-```
+An String that is intended to be a fragment of the final HTML document.
 
 #### [args]
 
 All following arguments given to the method will be passed on to the document
 template.
 
-Additional arguments could be used to pass on parts of a page to the document template as shown:
+Additional arguments could be used to pass on parts of a page to the document
+template as shown:
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 layout.view = (incoming, body, head) => {
     return `
@@ -566,32 +841,62 @@ layout.view = (incoming, body, head) => {
     `;
 };
 
-app.get('/', async (req, res, next) => {
+app.get(layout.pathname(), (req, res) => {
     const incoming = res.locals.podium;
 
     const head = `<meta ..... />`;
     const body = `<section>my content</section>`;
 
     const document = layout.render(incoming, body, head);
+
     res.send(document);
 });
 ```
 
+<!--Hapi-->
+```js
+layout.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: (request, h) => {
+        const incoming = request.app.podium;
+
+        const head = `<meta ..... />`;
+        const body = `<section>my content</section>`;
+
+        return layout.render(incoming, body, head);
+    },
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
+
 ### .process(HttpIncoming)
 
 Method for processing an incoming HTTP request. This method is intended to be
-used to implement support for multiple HTTP frameworks and in most cases it won't be
-necessary for you to use this method directly when creating a layout server.
+used to implement support for multiple HTTP frameworks and in most cases it
+won't be necessary for you to use this method directly when creating a layout
+server.
 
 What it does:
 
 -   Runs context parsers on the incoming request and sets an object with the context at `HttpIncoming.context` which can be passed on to the client when requesting content from podlets.
 -   Mounts a proxy so that each podlet can do transparent proxy requests as needed.
 
-Returns a Promise. If the inbound request matches a proxy endpoint the returned
-Promise will resolve with `undefined`. If the inbound request does not match a
-proxy endpoint the returned Promise will resolve with the passed in
+Returns a Promise which will resolve with the passed in
 [`HttpIncoming`](incoming.md) object.
+
+If the inbound request matches a proxy endpoint the returned Promise will
+resolve with a [`HttpIncoming`](incoming.md) object where the `.proxy` property
+is set to `true`.
 
 This method takes the following arguments:
 
@@ -599,6 +904,8 @@ This method takes the following arguments:
 
 An instance of the [`HttpIncoming`](incoming.md) class.
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--HTTP-->
 ```js
 const { HttpIncoming } = require('@podium/utils');
 const Layout = require('@podium/layout');
@@ -608,42 +915,99 @@ const layout = new Layout({
     pathname: '/',
 });
 
-app.use(async (req, res, next) => {
-    const incoming = new HttpIncoming(req, res, res.locals);
+const server = http.createServer(async (req, res) => {
+    const incoming = new HttpIncoming(req, res);
+
     try {
         const result = await layout.process(incoming);
-        if (result) {
-            res.locals.podium = result;
-            next();
-        }
+        if (result.proxy) return;
+
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(result));
+
     } catch (error) {
-        next(error);
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('Internal server error');
     }
 });
 ```
+<!--END_DOCUSAURUS_CODE_TABS-->
+
 
 ### .client
 
-A property that exposes an instance of the client for fetching content from
+A property that exposes an instance of the client for retrieving content from
 podlets.
 
-Example of registering a podlet and fetching it:
+Example of registering two podlets and retrieving their content:
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const layout = new Layout({
     name: 'myLayout',
     pathname: '/',
 });
 
-const podlet = layout.client.register({
-    name: 'myPodlet',
+const podletA = layout.client.register({
+    name: 'myPodletA',
     uri: 'http://localhost:7100/manifest.json',
 });
 
-podlet.fetch({}).then(result => {
-    console.log(result);
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+app.get(layout.pathname(), async (req, res, next) => {
+    const incoming = res.locals.podium;
+
+    const [a, b] = await Promise.all([
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    ]);
+
+    [ ... ]
+});
+
+app.listen(7000);
+```
+
+<!--Hapi-->
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: (request, h) => {
+        const incoming = request.app.podium;
+
+        const [a, b] = await Promise.all([
+            podletA.fetch(incoming),
+            podletB.fetch(incoming),
+        ]);
+
+        [ ... ]
+    },
 });
 ```
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .client.register(options)
 
@@ -746,9 +1110,11 @@ The value will be one of the following values:
 
 ### .context
 
-A property that exposes the instance of the @podium/context used to create the context.
+A property that exposes the instance of the @podium/context used to create the
+context.
 
-Example of registering a custom third party context parser with the context instance:
+Example of registering a custom third party context parser with the context
+instance:
 
 Register a custom parser for a value that should be appended to the Context.
 
@@ -767,7 +1133,8 @@ layout.context.register('customParser', new Parser('someConfig'));
 
 #### name (required)
 
-A unique name for the parser. Used as the key for the parser's value in the context.
+A unique name for the parser. Used as the key for the parser's value in the
+context.
 
 #### parser (required)
 
@@ -831,14 +1198,20 @@ An [`HttpIncoming`](incoming.md) object. This is normally provided by the
 "middleware" which runs on the incoming request to the layout prior to the
 process of fetching podlets.
 
-The [`HttpIncoming`](incoming.md) object is normally found on a request bound property of the request or response object.
+The [`HttpIncoming`](incoming.md) object is normally found on a request bound
+property of the request or response object.
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
+
+// Creates HttpIncoming and stores it on res.locals.podium
 app.use(layout.middleware());
 
 app.get('/', async (req, res, next) => {
-    // get HttpIncoming
+
+    // Get HttpIncoming
     const incoming = res.locals.podium;
 
     const pod = await podlet.fetch(incoming);
@@ -847,6 +1220,37 @@ app.get('/', async (req, res, next) => {
     `);
 });
 ```
+
+<!--Hapi-->
+```js
+const app = Hapi.Server({
+    host: 'localhost',
+    port: 7000,
+});
+
+// Creates HttpIncoming and stores it on request.app.podium
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: await (request, h) => {
+
+        // Get HttpIncoming
+        const incoming = request.app.podium;
+
+        const pod = await podlet.fetch(incoming);
+
+        h.podiumSend(`
+            <section>${pod.content}</section>
+        `);
+    },
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 #### options (optional)
 
@@ -869,8 +1273,8 @@ console.log(result.css);
 ### .stream(HttpIncoming, options)
 
 Streams the content of the component. Returns a `ReadableStream` which streams
-the content of the component. Before the stream starts flowing a `beforeStream` event
-with a response object, containing `headers`, `css` and `js` references is
+the content of the component. Before the stream starts flowing a `beforeStream`
+event with a response object, containing `headers`, `css` and `js` references is
 emitted.
 
 #### HttpIncoming (required)
@@ -882,18 +1286,44 @@ process of fetching podlets.
 The [`HttpIncoming`](incoming.md) object is normally found on a request
 bound property of the request or response object.
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
 app.use(layout.middleware());
 
 app.get('/', async (req, res, next) => {
-    // get HttpIncoming
     const incoming = res.locals.podium;
 
     const stream = component.stream(incoming);
     stream.pipe(res);
 });
 ```
+
+<!--Hapi-->
+```js
+const app = Hapi.Server({
+    host: 'localhost',
+    port: 7000,
+});
+
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: (request, h) => {
+        const incoming = request.app.podium;
+
+        const stream = component.stream(incoming);
+        return h.response(stream)
+    },
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 #### options (optional)
 
@@ -914,6 +1344,8 @@ the manifest file otherwise `js` will be an empty string. If the resource
 manifest defines CSS assets, `css` will contain the value from the manifest file
 otherwise `css` will be an empty string.
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 const app = express();
 app.use(layout.middleware());
@@ -932,6 +1364,37 @@ app.get('/', async (req, res, next) => {
 });
 ```
 
+<!--Hapi-->
+```js
+const app = Hapi.Server({
+    host: 'localhost',
+    port: 7000,
+});
+
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: (request, h) => {
+        const incoming = request.app.podium;
+
+        const stream = component.stream(incoming);
+        stream.once('beforeStream', data => {
+            console.log(data.headers);
+            console.log(data.css);
+            console.log(data.js);
+        });
+
+        return h.response(stream)
+    },
+});
+```
+<!--END_DOCUSAURUS_CODE_TABS-->
+
 ### .name
 
 A property returning the name of the Podium resource. This is the name provided
@@ -946,28 +1409,31 @@ A property returning the location of the Podium resource.
 Method on the `http.ServerResponse` object for sending HTML fragments. Calls
 the send / write method on the `http.ServerResponse` object.
 
-This method wraps the provided fragment in a default HTML document before dispatching.
-You can use the `.view()` method to disable using a template or to set a custom template.
+This method wraps the provided fragment in a default HTML document before
+dispatching. You can use the `.view()` method to disable using a template or to
+set a custom template.
 
 _Example of sending an HTML fragment:_
 
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
 ```js
 app.get(layout.pathname(), (req, res) => {
     res.podiumSend('<h1>Hello World</h1>');
 });
 ```
 
-_Example of sending additional content with an HTML fragment:_
-
+<!--Hapi-->
 ```js
-app.get(layout.pathname(), (req, res) => {
-    res.podiumSend({
-        title: 'Document title',
-        head: '<script src="additional-script.js" defer></script>',
-        body: '<h1>Hello World</h1>',
-    });
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: (request, h) => {
+        return h.podiumSend('<h2>Hello world</h2>');
+    },
 });
 ```
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 [express]: https://expressjs.com/ 'Express'
 [hapi layout plugin]: https://github.com/podium-lib/hapi-layout 'Hapi Layout Plugin'

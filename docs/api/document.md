@@ -273,7 +273,7 @@ app.route({
         const head = `<meta ..... />`;
         const body = `<section>my content</section>`;
 
-        return podlet.render(incoming, body, head);
+        return layout.render(incoming, body, head);
     },
 });
 ```
@@ -295,7 +295,7 @@ app.get(layout.pathname(), (req, res) => {
     const head = `<meta ..... />`;
     const body = `<section>my content</section>`;
 
-    const document = podlet.render(incoming, body, head);
+    const document = layout.render(incoming, body, head);
 
     reply.send(document);
 });
