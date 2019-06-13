@@ -3,16 +3,16 @@ id: podlet
 title: @podium/podlet
 ---
 
-Module for building page fragment servers in a micro frontend architecture.
+Module for building page fragment servers for micro frontend architectures.
 
 A podlet server is responsible for generating HTML fragments which can then be
 used in a [@podium/layout] server to compose a full HTML page.
 
-This module can be used together with a plain node.js HTTP server or any HTTP
+This module can be used together with a plain Node.js HTTP server or any HTTP
 framework and any templating language of your choosing (or none if you prefer).
 
 Connect compatible middleware based frameworks (such as [Express]) are
-considered first class in Podium so this module provides a `.middleware()`
+considered first class in Podium and so this module provides a `.middleware()`
 method for convenience.
 
 For writing podlet servers with other HTTP frameworks, please see the
@@ -23,21 +23,25 @@ section.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Default / Express-->
+
 ```bash
 $ npm install @podium/podlet
 ```
 
 <!--Hapi-->
+
 ```bash
 $ npm install @podium/podlet
 $ npm install @podium/hapi-podlet
 ```
 
 <!--Fastify-->
+
 ```bash
 $ npm install @podium/podlet
 $ npm install @podium/fastify-podlet
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Getting started
@@ -46,6 +50,7 @@ Building a simple podlet server.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const express = require('express');
 const Podlet = require('@podium/podlet');
@@ -56,7 +61,7 @@ const podlet = new Podlet({
     name: 'myPodlet',
     version: '1.0.0',
     pathname: '/',
-    development: true
+    development: true,
 });
 
 app.use(podlet.middleware());
@@ -76,6 +81,7 @@ app.listen(7100);
 ```
 
 <!--Hapi-->
+
 ```js
 const HapiPodlet = require('@podium/hapi-podlet');
 const Podlet = require('@podium/podlet');
@@ -90,7 +96,7 @@ const podlet = new Podlet({
     name: 'myPodlet',
     version: '1.0.0',
     pathname: '/',
-    development: true
+    development: true,
 });
 
 app.register({
@@ -119,6 +125,7 @@ app.start();
 ```
 
 <!--Fastify-->
+
 ```js
 const fastifyPodlet = require('@podium/fastify-podlet');
 const fastify = require('fastify');
@@ -130,7 +137,7 @@ const podlet = new Podlet({
     name: 'myPodlet',
     version: '1.0.0',
     pathname: '/',
-    development: true
+    development: true,
 });
 
 app.register(fastifyPodlet, podlet);
@@ -148,16 +155,17 @@ app.get(podlet.manifest(), async (request, reply) => {
 });
 
 const start = async () => {
-  try {
-    await app.listen(7100)
-    app.log.info(`server listening on ${app.server.address().port}`)
-  } catch (err) {
-    app.log.error(err)
-    process.exit(1)
-  }
+    try {
+        await app.listen(7100);
+        app.log.info(`server listening on ${app.server.address().port}`);
+    } catch (err) {
+        app.log.error(err);
+        process.exit(1);
+    }
 };
 start();
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Constructor
@@ -170,21 +178,21 @@ const podlet = new Podlet(options);
 
 #### options
 
-| option      | type      | default          | required | details                                                |
-| ----------- | --------- | ---------------- | -------- | ------------------------------------------------------ |
-| name        | `string`  | `null`           | &check;  | Name that the Podlet identifies itself by              |
-| pathname    | `string`  | `null`           | &check;  | Pathname of where a Podlet is mounted in a HTTP server |
-| version     | `string`  | `null`           | &check;  | The current version of the podlet                      |
-| manifest    | `string`  | `/manifest.json` |          | Defines the pathname for the manifest of the Podlet    |
-| content     | `string`  | `/`              |          | Defines the pathname for the content of the Podlet     |
-| fallback    | `string`  | `null`           |          | Defines the pathname for the fallback of the Podlet    |
-| logger      | `object`  | `null`           |          | A logger which conform to a log4j interface            |
-| development | `boolean` | `false`          |          | Turns development mode on or off                       |
+| option      | type      | default          | required | details                                                 |
+| ----------- | --------- | ---------------- | -------- | ------------------------------------------------------- |
+| name        | `string`  | `null`           | &check;  | Name that the Podlet identifies itself by               |
+| pathname    | `string`  | `null`           | &check;  | Pathname of where a Podlet is mounted in an HTTP server |
+| version     | `string`  | `null`           | &check;  | The current version of the podlet                       |
+| manifest    | `string`  | `/manifest.json` |          | Defines the pathname for the manifest of the podlet     |
+| content     | `string`  | `/`              |          | Defines the pathname for the content of the podlet      |
+| fallback    | `string`  | `null`           |          | Defines the pathname for the fallback of the podlet     |
+| logger      | `object`  | `null`           |          | A logger which conforms to a log4j interface            |
+| development | `boolean` | `false`          |          | Turns development mode on or off                        |
 
 ##### name
 
-The name the podlet identifies itself by. This is used internally for things
-like metrics but can also be used internally in a Layout server.
+The name that the podlet identifies itself by. This is used internally for things
+like metrics but can also be used by a layout server.
 
 This value must be in camelCase.
 
@@ -206,6 +214,7 @@ If the podlet is mounted at the "root", set `pathname` to `/`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -222,6 +231,7 @@ app.get('/', (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -245,6 +255,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -259,13 +270,15 @@ app.get('/', async (request, reply) => {
     [ ... ]
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-If the podlet is to be mounted at `/foo`, set pathname to `/foo` and mount
+If the podlet is to be mounted at `/foo`, set the pathname to `/foo` and mount
 middleware and routes at or under `/foo`
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -286,6 +299,7 @@ app.get('/foo/:id', (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -317,6 +331,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -335,8 +350,8 @@ app.get('/foo/:id', async (request, reply) => {
     [ ... ]
 });
 ```
-<!--END_DOCUSAURUS_CODE_TABS-->
 
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 ##### version
 
@@ -360,10 +375,11 @@ Defines the pathname for the manifest of the podlet. Defaults to
 
 The value should be relative to the value set on the `pathname` argument. In
 other words if a podlet is mounted into an HTTP server at `/foo` and the
-manifest is at `/foo/component.json`, set pathname and manifest as follows:
+manifest is at `/foo/component.json`, set the pathname and manifest as follows:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -379,6 +395,7 @@ app.get('/foo/component.json', (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -401,6 +418,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -416,6 +434,7 @@ app.get('/foo/component.json', async (request, reply) => {
     reply.send(podlet);
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 The `.manifest()` method can be used to retrieve the value after it has been
@@ -426,13 +445,14 @@ set.
 Defines the pathname for the content of the Podlet. The value can be a relative
 or absolute URL. Defaults to `/`.
 
-If the value is relative, the value should be relative to the value set on the
-`pathname` argument. In other words if a podlet is mounted into an HTTP server
-at `/foo` and the content is at `/foo/index.html`, set pathname and content as
+If the value is relative, the value should be relative to the value set using the
+`pathname` argument. For example, if a podlet is mounted into an HTTP server
+at `/foo` and the content is served at `/foo/index.html`, set pathname and content as
 follows:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -448,6 +468,7 @@ app.get('/foo/index.html', (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -472,6 +493,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -487,6 +509,7 @@ app.get('/foo/index.html', async (request, reply) => {
     [ ... ]
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 The `.content()` method can be used to retrieve the value after it has been set.
@@ -497,12 +520,13 @@ Defines the pathname for the fallback of the Podlet. The value can be a relative
 or absolute URL. Defaults to an empty string.
 
 If the value is relative, the value should be relative to the value set with the
-`pathname` argument. In other words if a Podlet is mounted into an HTTP server
+`pathname` argument. If a podlet is mounted into an HTTP server
 at `/foo` and the fallback is at `/foo/fallback.html`, set pathname and fallback
 as follows:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -518,6 +542,7 @@ app.get('/foo/fallback.html', (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -542,6 +567,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -557,6 +583,7 @@ app.get('/foo/fallback.html', async (request, reply) => {
     [ ... ]
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 The `.fallback()` method can be used to retrieve the value after it has been
@@ -594,26 +621,29 @@ more or less a wrapper for the `.process()` method.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 app.use(podlet.middleware());
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-The middleware will create a [`HttpIncoming`](incoming.md) object and store it
+The middleware will create an [`HttpIncoming`](incoming.md) object and store it
 at `res.locals.podium`.
 
 Returns an Array of internal middleware that performs the tasks described above.
 
 ### .manifest(options)
 
-This method returns the value of the `manifest` argument that has been set on
+This method returns the value of the `manifest` argument that has been set in
 the constructor.
 
 Set the manifest using the default pathname which is `/manifest.json`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -628,6 +658,7 @@ app.get(podlet.manifest(), (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -649,6 +680,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -663,6 +695,7 @@ app.get(podlet.manifest(), async (request, reply) => {
     reply.send(podlet);
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Set the manifest to `/component.json` using the `manifest` argument on the
@@ -670,6 +703,7 @@ constructor:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -685,6 +719,7 @@ app.get(podlet.manifest(), (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -707,6 +742,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -722,6 +758,7 @@ app.get(podlet.manifest(), async (request, reply) => {
     reply.send(podlet);
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Podium expects the podlet's manifest route to return a JSON document describing
@@ -729,6 +766,7 @@ the podlet. This can be achieved by simply serializing the podlet instance.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet([ ... ]);
@@ -739,6 +777,7 @@ app.get(podlet.manifest(), (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet([ ... ]);
@@ -751,6 +790,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet([ ... ]);
@@ -759,8 +799,8 @@ app.get(podlet.manifest(), async (request, reply) => {
     reply.send(podlet);
 });
 ```
-<!--END_DOCUSAURUS_CODE_TABS-->
 
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 The route will then respond with something like:
 
@@ -778,9 +818,9 @@ The route will then respond with something like:
 
 #### options
 
-| option | type      | default   | required |
-| ------ | --------- | --------- | -------- |
-| prefix | `boolean` | `false`   |          |
+| option | type      | default | required |
+| ------ | --------- | ------- | -------- |
+| prefix | `boolean` | `false` |          |
 
 ##### prefix
 
@@ -808,6 +848,7 @@ Set the content using the default pathname (`/`):
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -822,6 +863,7 @@ app.get(podlet.content(), (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -845,6 +887,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -859,12 +902,14 @@ app.get(podlet.content(), async (request, reply) => {
     [ ... ]
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Set the content path to `/index.html`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -880,6 +925,7 @@ app.get(podlet.content(), (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -904,6 +950,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -919,6 +966,7 @@ app.get(podlet.content(), async (request, reply) => {
     [ ... ]
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Set the content path to `/content` and define multiple sub-routes each taking different
@@ -926,6 +974,7 @@ URI parameters:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -941,6 +990,7 @@ app.get('/content/info/:id', (req, res) => { ... });
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -981,6 +1031,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -996,6 +1047,7 @@ app.get('/content', async (request, reply) => { ... });
 app.get('/content/info', async (request, reply) => { ... });
 app.get('/content/info/:id', async (request, reply) => { ... });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 #### options
@@ -1032,6 +1084,7 @@ Set the fallback to `/fallback.html`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -1047,6 +1100,7 @@ app.get(podlet.fallback(), (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -1071,6 +1125,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -1086,6 +1141,7 @@ app.get(podlet.fallback(), async (request, reply) => {
     [ ... ]
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 #### options
@@ -1116,7 +1172,7 @@ The prefix will be ignored if the returned value is an absolute URL.
 
 ### .js(options)
 
-Sets a relative or absolute URL to a JavaScript asset for the Podlet.
+Sets a relative or absolute URL to a JavaScript asset for the podlet.
 
 When a value is set it will be internally kept and used when the podlet
 instance is serialized into a manifest JSON string. The value will also be
@@ -1130,19 +1186,20 @@ Returns the value of the `value` options property.
 | option | type      | default   | required | details                                                                                     |
 | ------ | --------- | --------- | -------- | ------------------------------------------------------------------------------------------- |
 | value  | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset                                            |
-| prefix | `boolean` | `false`   |          | If the `pathname` defined on the constructor should be applied, if relative, to the `value` |
+| prefix | `boolean` | `false`   |          | If the `pathname` defined in the constructor should be applied, if relative, to the `value` |
 | type   | `string`  | `default` |          | What type of JavaScript                                                                     |
 
 ##### value
 
-Sets the `pathname` for the Podlets JavaScript assets. This value can be a URL
-at which the Podlet's user facing JavaScript is served. The value can be either
+Sets the `pathname` for the podlet's JavaScript assets. This value can be a URL
+at which the podlet's user facing JavaScript is served. The value can be either
 the [pathname] of a [URL] or an absolute URL.
 
 Serve a javascript file at `/assets/main.js`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -1157,6 +1214,7 @@ app.get(podlet.js({ value: '/assets/main.js' }), (req, res) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -1182,6 +1240,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -1200,6 +1259,7 @@ app.get(podlet.js({ value: '/public/js/main.js' }), (request, reply) => {
     reply.sendFile('main.js');
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Serve assets statically along side the app and set a relative URI to the
@@ -1207,6 +1267,7 @@ JavaScript file:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -1222,14 +1283,15 @@ podlet.js({ value: '/assets/extra.js' });
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     port: 7000,
     routes: {
         files: {
             relativeTo: './src/js/',
-        }
-    }
+        },
+    },
 });
 
 const podlet = new Podlet({
@@ -1251,9 +1313,9 @@ app.route({
     handler: {
         directory: {
             path: '.',
-            redirectToSlash: true
-        }
-    }
+            redirectToSlash: true,
+        },
+    },
 });
 
 podlet.js({ value: '/assets/main.js' });
@@ -1261,6 +1323,7 @@ podlet.js({ value: '/assets/extra.js' });
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -1282,6 +1345,7 @@ app.get('/assets/:file', (request, reply) => {
 podlet.js({ value: '/assets/main.js' });
 podlet.js({ value: '/assets/extra.js' });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Set an absolute URL to where the javascript file is located:
@@ -1321,11 +1385,11 @@ Set the type of script which is set. If not set, `default` will be used.
 
 Use one of the following values:
 
- - `esm` for ECMAScript modules
- - `cjs` for CommonJS modules
- - `amd` for AMD modules
- - `umd` for Universal Module Definition
- - `default` if the type is unknown.
+-   `esm` for ECMAScript modules
+-   `cjs` for CommonJS modules
+-   `amd` for AMD modules
+-   `umd` for Universal Module Definition
+-   `default` if the type is unknown.
 
 The type is a hint for further use of the script. This is normally used by the
 document template to print correct `<script>` tag or to give a hint to a
@@ -1344,11 +1408,10 @@ Returns the value of the `value` options property.
 
 #### options
 
-| option | type      | default   | required | details                                                                                     |
-| ------ | --------- | --------- | -------- | ------------------------------------------------------------------------------------------- |
-| value  | `string`  |           | &check;  | Relative or absolute URL to the CSS asset                                                   |
-| prefix | `boolean` | `false`   |          | If the `pathname` defined on the constructor should be applied, if relative, to the `value` |
-
+| option | type      | default | required | details                                                                                     |
+| ------ | --------- | ------- | -------- | ------------------------------------------------------------------------------------------- |
+| value  | `string`  |         | &check;  | Relative or absolute URL to the CSS asset                                                   |
+| prefix | `boolean` | `false` |          | If the `pathname` defined in the constructor should be applied, if relative, to the `value` |
 
 ##### value
 
@@ -1360,6 +1423,7 @@ Serve a CSS file at `/assets/main.css`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -1374,6 +1438,7 @@ app.get(podlet.css({ value: '/assets/main.css' }), (req, res) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const podlet = new Podlet({
@@ -1399,6 +1464,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -1417,13 +1483,15 @@ app.get(podlet.css({ value: '/public/css/main.css' }), (request, reply) => {
     reply.sendFile('main.css');
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-Serve assets statically along side the app and set a relative URI to the css
+Serve assets statically alongside the app and set a relative URI to the css
 file:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet({
@@ -1439,14 +1507,15 @@ podlet.css({ value: '/assets/extra.css' });
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     port: 7000,
     routes: {
         files: {
             relativeTo: './src/css/',
-        }
-    }
+        },
+    },
 });
 
 const podlet = new Podlet({
@@ -1468,9 +1537,9 @@ app.route({
     handler: {
         directory: {
             path: '.',
-            redirectToSlash: true
-        }
-    }
+            redirectToSlash: true,
+        },
+    },
 });
 
 podlet.css({ value: '/assets/main.css' });
@@ -1478,6 +1547,7 @@ podlet.css({ value: '/assets/extra.css' });
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet({
@@ -1499,6 +1569,7 @@ app.get('/assets/:file', (request, reply) => {
 podlet.css({ value: '/assets/main.css' });
 podlet.css({ value: '/assets/extra.css' });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Set an absolute URL to where the CSS file is located:
@@ -1518,7 +1589,7 @@ podlet.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
 Sets whether the method should prefix the return value with the value for
 `pathname` set in the constructor.
 
-Return the full pathname (`/foo/assets/main.css`) to the CSS assets:
+Returns the full pathname (`/foo/assets/main.css`) to the CSS assets:
 
 ```js
 const podlet = new Podlet({
@@ -1538,12 +1609,9 @@ Method for defining proxy targets to be mounted in a layout server. For a
 detailed overview of how proxying works, please see the
 [proxying guide](podlet/proxying.md) for further details.
 
-When in development mode (`development` is set to `true` on the constructor) the
-same proxy endpoints will also be mounted in the Podlet to ease development. By
-this, one have the same proxy endpoints to work against in development as one
-will have when the Podlet is used in a layout.
+When a podlet is put in development mode (`development` is set to `true` in the constructor) these proxy endpoints will also be mounted in the podlet for ease of development and you will then have the same proxy endpoints available in development as you do when working with a layout.
 
-Proxying is intended to be used as a way to make podlet endpoints public. A
+Proxying is intended to be used as a way to make podlet endpoints publicly available. A
 common use case for this is creating endpoints for client side code to interact
 with (ajax requests from the browser). One might also make use of proxying to
 pass form submissions from the browser back to the podlet.
@@ -1561,6 +1629,7 @@ Mounts one proxy target `/api` with the name `api`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet( ... );
@@ -1568,6 +1637,7 @@ app.get(podlet.proxy({ target: '/api', name: 'api' }), (req, res) => { ... });
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server( ... );
 const podlet = new Podlet( ... );
@@ -1579,6 +1649,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet( ... );
@@ -1586,12 +1657,14 @@ app.get(podlet.proxy({ target: '/api', name: 'api' }), async (request, reply) =>
     ...
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Defines multiple endpoints on one proxy target `/api` with the name `api`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const podlet = new Podlet( ... );
@@ -1605,6 +1678,7 @@ podlet.proxy({ target: '/api', name: 'api' });
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server( ... );
 const podlet = new Podlet( ... );
@@ -1637,6 +1711,7 @@ podlet.proxy({ target: '/api', name: 'api' });
 ```
 
 <!--Fastify-->
+
 ```js
 const app = fastify();
 const podlet = new Podlet( ... );
@@ -1648,6 +1723,7 @@ app.get('/api/foo/:id', async (request, reply) => { ... });
 
 podlet.proxy({ target: '/api', name: 'api' });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Sets a remote target by defining an absolute URL:
@@ -1711,26 +1787,31 @@ when the constructor option `development` is set to `true`.
 
 ### .view(template)
 
-Set the default encapsulating HTML document template.
+Sets the default encapsulating HTML document template.
 
 Its worth noting that this document template is only applied to Podlets when in
 development mode. When a Layout requests a Podlet this document template will
 not be applied.
 
-Takes a function in the following shape:
+Takes a template function that accepts an instance of HttpIncoming, a content
+string as well as any additional markup for the document's head section:
 
 ```js
-podlet.view(data => `<!doctype html>
-<html lang="${data.locale}">
+(incoming, body, head) => `Return an HTML string here`;
+```
+
+In practice this might look something like:
+
+```js
+layout.view((incoming, body, head) => `<!doctype html>
+<html lang="${incoming.context.locale}">
     <head>
-        <meta charset="${data.encoding}">
-        <title>${data.title}</title>
-        <link href="${data.css}" rel="stylesheet">
-        <script src="${title.js}" defer></script>
-        ${title.head}
+        <meta charset="${incoming.view.encoding}">
+        <title>${incoming.view.title}</title>
+        ${head}
     </head>
     <body>
-        ${title.body}
+        ${body}
     </body>
 </html>`;
 );
@@ -1738,17 +1819,16 @@ podlet.view(data => `<!doctype html>
 
 ### .render(HttpIncoming, fragment, [args])
 
-Method to render the document template. Will by default render the docment
-template provided by Podium unless a custom document template is set on the
+Method to render the document template. Will, by default, render the document
+template provided by Podium unless a custom document template is set using the
 `.view` method.
 
-In most http frameworks this method can be ignored in favour of
-`res.podiumSend()`. If pressent, `res.podiumSend()` has the advantage that one
-do not need to pass in [`HttpIncoming`](incoming.md) as the first argument.
+In most HTTP frameworks this method can be ignored in favour of
+`res.podiumSend()`. If present, `res.podiumSend()` has the advantage that it's not necessary to pass in an [`HttpIncoming`](incoming.md) object as the first argument.
 
 Returns a `String`.
 
-The method takes the following arguments:
+This method takes the following arguments:
 
 #### HttpIncoming (required)
 
@@ -1756,6 +1836,7 @@ An instance of the [`HttpIncoming`](incoming.md) class.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 app.get(podlet.content(), (req, res) => {
     const incoming = res.locals.podium;
@@ -1765,6 +1846,7 @@ app.get(podlet.content(), (req, res) => {
 ```
 
 <!--Hapi-->
+
 ```js
 app.route({
     method: 'GET',
@@ -1777,6 +1859,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 app.get(podlet.content(), (req, res) => {
     const incoming = reply.app.podium;
@@ -1784,6 +1867,7 @@ app.get(podlet.content(), (req, res) => {
     reply.send(document);
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 #### fragment
@@ -1797,11 +1881,12 @@ layout.render(incoming, '<div>content to render</div>');
 #### [args]
 
 All following arguments given to the method will be passed on to the document
-template. This can as an example be used to pass on parts of a page to the
+template. For example, this could be used to pass on parts of a page to the
 document template.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 podlet.view = (incoming, body, head) => {
     return `
@@ -1824,6 +1909,7 @@ app.get(podlet.content(), async (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 podlet.view = (incoming, body, head) => {
     return `
@@ -1849,6 +1935,7 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 podlet.view = (incoming, body, head) => {
     return `
@@ -1869,22 +1956,23 @@ app.get(podlet.content(), (req, res) => {
     reply.send(document);
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .process(HttpIncoming)
 
-Method for processing a incoming HTTP request. This method is intended to be
+Method for processing an incoming HTTP request. This method is intended to be
 used to implement support for multiple HTTP frameworks and in most cases will
-not need to be used directly by library users to create podlet servers.
+not need to be used directly by podlet developers when creating podlet servers.
 
 What it does:
 
--   Handles detection of development mode and sets appropriate defaults
+-   Handles detection of development mode and sets the appropriate defaults
 -   Runs context deserializing on the incoming request and sets a context object at `HttpIncoming.context`.
 
 Returns an [`HttpIncoming`](incoming.md) object.
 
-The method takes the following arguments:
+This method takes the following arguments:
 
 #### HttpIncoming (required)
 
@@ -1916,8 +2004,8 @@ app.use(async (req, res, next) => {
 
 ## res.podiumSend(fragment)
 
-Method for dispatching an HTML fragment. Calls the `.send()` / `.write()` method
-in the framework in use and serves the HTML fragment..
+Method for dispatching an HTML fragment. Calls the `.send()` / `.write()` methods
+in the framework that's being used and serves the HTML fragment.
 
 When in development mode, when the constructor option `development` is set to
 `true`, this method will wrap the provided fragment in the given document
@@ -1928,6 +2016,7 @@ Example of sending an HTML fragment:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 app.get(podlet.content(), (req, res) => {
     res.podiumSend('<h1>Hello World</h1>');
@@ -1935,6 +2024,7 @@ app.get(podlet.content(), (req, res) => {
 ```
 
 <!--Hapi-->
+
 ```js
 app.route({
     method: 'GET',
@@ -1946,11 +2036,13 @@ app.route({
 ```
 
 <!--Fastify-->
+
 ```js
 app.get(podlet.content(), (request, reply) => {
     reply.podiumSend('<h2>Hello world</h2>');
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Development mode
@@ -1958,8 +2050,7 @@ app.get(podlet.content(), (request, reply) => {
 In most cases podlets are fragments of a whole HTML document. When a layout
 server is requesting a podlet's content or fallback, the podlet should serve
 just that fragment and not a whole HTML document with its `<html>`, `<head>`
-and `<body>`. It is also the case that when a layout server is requesting a
-podlet it provides a context.
+and `<body>`. Additionally, when a layout server requests a podlet it provides a Podium context to the podlet.
 
 These things can prove challenging for local development since accessing a
 podlet directly, from a web browser, in local development will render the
@@ -1997,7 +2088,6 @@ const podlet = new Podlet({
 When a layout server sends a request to a podlet in development mode, the
 default context will be overridden by the context from the layout server and
 the encapsulating HTML document will not be applied.
-
 
 [@podium/context]: https://github.com/podium-lib/context '@podium/context'
 [@podium/layout]: https://github.com/podium-lib/layout '@podium/layout'
