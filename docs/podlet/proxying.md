@@ -7,13 +7,13 @@ While Podium does not enforce what type of infrastructure is used to run podlet 
 
 In some cases, you may not wish to expose your podlets to the outside world, instead prefering to expose only layouts and let the layouts do the work of fetching content from internally placed podlets.
 
-A podlet server that is not exposed to the outside world except via a layout server that consumes its content may still need a way to define additional routes and make them publicly available.
+A podlet server that is not exposed to the outside world except via a layout server that consumes its content will likely still need a way to define additional routes and make them publicly available.
 
 Two very common use cases for this are when performing form submissions against a podlet and when making AJAX requests from client side code to a podlet. For example, a podlet might define an additional route at `/api` which is provided so that the client side JavaScript served by this podlet can fetch additional data asynchonously after page load.
 
 By default, a podlet serves up its content at `/`. While you can change this to a different route, `/content` for example, out of the box, no other routes will be accessible. In our example above, it will not be possible for the client side JavaScript code to make a request to `/api` as this code is now running in the layout and the layout does not provide an `/api` route. And since the podlet itself has no public address, there's no way to send a request directly to the podlet's `/api` route using an absolute URL either.
 
-To cater for this need to communicate directly with podlet servers, Podium provides a proxy feature. A Podium proxy is a transparent proxy that is mounted in the layout server making it possible to send any http request through it back to the podlet server.
+To cater for this need to communicate directly with podlet servers, Podium provides a proxy feature. A Podium proxy is a transparent proxy that is mounted in the layout server making it possible to send any HTTP request through it back to the podlet server.
 
 If your infrastructure is setup such that podlet servers are only available through layout servers then using the Podium Proxy is the prefered way to make parts of a podlet server publically available.
 
@@ -27,12 +27,12 @@ Podium proxying is the Podium way for a podlet to inform any layout servers that
 
 For each proxy you define in a podlet, a namespaced route will be mounted on a layout which will proxy requests back to the podlet. This works as follows:
 
-- A podlet defines its proxy routes
-- A podlet puts the location of the proxy routes into its manifest file
-- A layout reads a podlets manifest file including proxy information
-- A layout creates namespaced proxy routes
-- A layout sends information to the podlet via context headers about the public location of these routes
-- A podlet uses context headers to construct URLs pointing to the layout's proxy endpoints
+-   A podlet defines its proxy routes
+-   A podlet puts the location of the proxy routes into its manifest file
+-   A layout reads a podlets manifest file including proxy information
+-   A layout creates namespaced proxy routes
+-   A layout sends information to the podlet via context headers about the public location of these routes
+-   A podlet uses context headers to construct URLs pointing to the layout's proxy endpoints
 
 In a podlet's manifest, a proxy object can be used to define up to 4 proxy routes like so:
 
@@ -55,10 +55,10 @@ This will result in a URL being mounted on the layout server at:
 
 where:
 
-- `<layout-pathname>`: `pathname` argument given `new Layout({ pathname: '...' })`
-- `<prefix>`: defaults to `podium-resource`
-- `<podlet-name>`: podlet manifest `name` value
-- `<proxy-namespace>`: podlet manifest `proxy.<key>`
+-   `<layout-pathname>`: `pathname` argument given `new Layout({ pathname: '...' })`
+-   `<prefix>`: defaults to `podium-resource`
+-   `<podlet-name>`: `name` value used when registering a podlet in a layout with `layout.client.register({ name: '...' })`
+-   `<proxy-namespace>`: podlet manifest `proxy.<key>`
 
 So for a layout running locally on port `1337` using `pathname` 'myLayout' and consuming a podlet that serves the manifest file above we should be able to send requests to:
 
@@ -82,7 +82,7 @@ _Example_
 
 ```js
 app.get(podlet.proxy({ target: '/api', name: 'api' }), (req, res) => {
-  res.json({ key: 'value' });
+    res.json({ key: 'value' });
 });
 ```
 
@@ -94,12 +94,12 @@ _Example_
 podlet.proxy({ target: '/api', name: 'api' });
 
 app.get('/api/cats', (req, res) => {
-  res.json([{ name: 'fluffy' }]);
+    res.json([{ name: 'fluffy' }]);
 });
 // http://localhost:1337/myLayout/podium-resource/myPodlet/api/cats
 
 app.get('/api/dogs', (req, res) => {
-  res.json([{ name: 'rover' }]);
+    res.json([{ name: 'rover' }]);
 });
 // http://localhost:1337/myLayout/podium-resource/myPodlet/api/dogs
 ```
@@ -124,11 +124,11 @@ The base URL can be constructed by joining together values plucked from the Podi
 const { URL } = require('url'); // not required in node >=10
 
 app.get(podlet.content(), (req, res) => {
-  const { mountOrigin, publicPathname } = res.locals.podium.context;
-  const url = new URL(publicPathname, mountOrigin);
+    const { mountOrigin, publicPathname } = res.locals.podium.context;
+    const url = new URL(publicPathname, mountOrigin);
 
-  // prints base URL under which all proxy routes are located
-  console.log(url.href);
+    // prints base URL under which all proxy routes are located
+    console.log(url.href);
 });
 ```
 
@@ -157,26 +157,26 @@ const express = require('express');
 const Podlet = require('@podium/podlet');
 
 const podlet = new Podlet({
-  name: 'myPodlet',
-  version: '1.0.0',
-  pathname: '/'
+    name: 'myPodlet',
+    version: '1.0.0',
+    pathname: '/',
 });
 
 const app = express();
 
 app.get(podlet.manifest(), (req, res) => {
-  res.status(200).json(podlet);
+    res.status(200).json(podlet);
 });
 
 app.get(podlet.proxy({ target: '/content', name: 'content' }), (req, res) => {
-  res.send('This is the actual content for the page');
+    res.send('This is the actual content for the page');
 });
 
 app.get(podlet.content(), (req, res) => {
-  const { mountOrigin, publicPathname } = res.locals.podium.context;
-  const url = new URL(publicPathname, mountOrigin);
+    const { mountOrigin, publicPathname } = res.locals.podium.context;
+    const url = new URL(publicPathname, mountOrigin);
 
-  res.send(`
+    res.send(`
         <div id="content-placeholder"></div>
         <script>
             fetch('${url.href + 'content'}')
