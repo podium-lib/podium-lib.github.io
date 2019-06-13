@@ -3,23 +3,22 @@ id: layout
 title: @podium/layout
 ---
 
-Module for composing full page layouts out of page fragments (podlets in Podium
-speak) in micro frontend architectures.
+Module used for composing HTML pages (layouts) out of page fragments (podlets) in Podium.
 
 A layout server is mainly responsible for fetching HTML fragments and stitching
-these fragments into an HTML page.
+these fragments together into an HTML page.
 
 To do this, a layout instance provides three core features:
 
 -   A client used to fetch content from podlets
 -   A context used to set request bound information on requests from a layout to its podlets when fetching content from them
--   A proxy that makes it possible to publicly expose podlet data endpoints (or any backend services) via a layout
+-   A proxy that makes it possible to publicly expose podlet data endpoints (or any backend services) via the layout
 
-This module can be used together with a plain node.js HTTP server or any HTTP
-framework and templating language of your choosing (or none if you prefer).
+This module is to be used in conjunction with a Node.js HTTP server. For this, Express js, Hapi and Fastify are all supported.
+It's also possible to write your server using other HTTP frameworks or even just using the core Node.js HTTP libraries.
 
 Connect compatible middleware based frameworks (such as [Express]) are
-considered first class in Podium and this module provides a `.middleware()`
+considered first class in Podium and as such the layout module provides a `.middleware()`
 method for convenience.
 
 For writing layout servers with other HTTP frameworks, please see the
@@ -30,15 +29,18 @@ section.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--HTTP / Express-->
+
 ```bash
 $ npm install @podium/layout
 ```
 
 <!--Hapi-->
+
 ```bash
 $ npm install @podium/layout
 $ npm install @podium/hapi-layout
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Getting started
@@ -47,6 +49,7 @@ Building a simple layout server including two podlets:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const express = require('express');
 const Layout = require('@podium/layout');
@@ -87,6 +90,7 @@ app.listen(7000);
 ```
 
 <!--Hapi-->
+
 ```js
 const HapiLayout = require('@podium/hapi-layout');
 const Layout = require('@podium/layout');
@@ -138,6 +142,7 @@ app.route({
 
 app.start();
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Constructor
@@ -161,7 +166,7 @@ const layout = new Layout(options);
 
 ##### name
 
-The name that the layout identifies itself by. The value must be in camelCase.
+The name that the layout identifies itself by. This value must be in camelCase.
 
 Example:
 
@@ -174,7 +179,7 @@ const layout = new Layout({
 
 ##### pathname
 
-The Pathname to where the layout is mounted into the HTTP server. It is
+The Pathname to where the layout is mounted in an HTTP server. It is
 important that this value matches the entry point of the route where content is served in the
 HTTP server since this value is used to mount the proxy and inform podlets
 (through the Podium context) where they are mounted and where the proxy is mounted.
@@ -183,6 +188,7 @@ If the layout is mounted at the server "root", set the `pathname` to `/`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const layout = new Layout({
@@ -198,6 +204,7 @@ app.get('/', (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     host: 'localhost',
@@ -222,12 +229,14 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 If the layout is mounted at `/foo`, set the `pathname` to `/foo`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const layout = new Layout({
@@ -247,6 +256,7 @@ app.get('/foo/:id', (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     host: 'localhost',
@@ -279,6 +289,7 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 There is also a helper method for retrieving the set `pathname` which can be
@@ -358,7 +369,7 @@ Options to be passed on to the proxy.
 
 | option  | type     | default           | required | details                                                                                                |
 | ------- | -------- | ----------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| prefix  | `string` | `podium-resource` |          | Prefix used to namespace the proxy so that it's isolated from other routes in an HTTP server           |
+| prefix  | `string` | `podium-resource` |          | Prefix used to namespace the proxy so that it's isolated from other routes in the HTTP server          |
 | timeout | `number` | `6000`            |          | Default value, in milliseconds, for how long a request should wait before the connection is terminated |
 
 Example of setting the `timeout` on the proxy to 30 seconds:
@@ -389,10 +400,12 @@ Example
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 app.use(layout.middleware());
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 The middleware will create an [`HttpIncoming`](incoming.md) object for each request and place it on the response at `res.locals.podium`.
@@ -404,7 +417,7 @@ Returns an Array of middleware functions which perform the tasks described above
 Sets a URL to where the layout's JavaScript asset are being served. This URL can be relative or absolute.
 
 The value will be available for the document template to include. The method can
-be called multiple times to add multiple values.
+be called multiple times to add multiple entries.
 
 #### options
 
@@ -412,7 +425,7 @@ be called multiple times to add multiple values.
 | ------ | --------- | --------- | -------- | ------------------------------------------------------------------------------------------- |
 | value  | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset                                            |
 | prefix | `boolean` | `false`   |          | If the `pathname` defined on the constructor should be applied, if relative, to the `value` |
-| type   | `string`  | `default` |          | What type of JavaScript                                                                     |
+| type   | `string`  | `default` |          | What type of JavaScript (eg. esm, default, cjs)                                             |
 
 ##### value
 
@@ -424,6 +437,7 @@ Serve a javascript file at `/assets/main.js`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const layout = new Layout({
@@ -437,6 +451,7 @@ app.get(layout.js({ value: '/assets/main.js' }), (req, res) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const layout = new Layout({
@@ -459,12 +474,14 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Serve assets from a static file server and set a relative URI to the JS files:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const layout = new Layout({
@@ -479,14 +496,15 @@ layout.js({ value: '/assets/extra.js' });
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     port: 7000,
     routes: {
         files: {
             relativeTo: './src/js/',
-        }
-    }
+        },
+    },
 });
 
 const layout = new Layout({
@@ -507,14 +525,15 @@ app.route({
     handler: {
         directory: {
             path: '.',
-            redirectToSlash: true
-        }
-    }
+            redirectToSlash: true,
+        },
+    },
 });
 
 layout.js({ value: '/assets/main.js' });
 layout.js({ value: '/assets/extra.js' });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Set an absolute URL to where the JavaScript file is located:
@@ -548,9 +567,9 @@ Prefix will be ignored if the returned value is an absolute URL.
 
 ##### type
 
-Sets the type for script which is set. If not set, `default` will be used.
+Sets the type for the script which is set. If not set, `default` will be used.
 
-Use one of the following values:
+The following are valid values:
 
 -   `esm` for ECMAScript modules
 -   `cjs` for CommonJS modules
@@ -558,16 +577,15 @@ Use one of the following values:
 -   `umd` for Universal Module Definition
 -   `default` if the type is unknown.
 
-The type is a hint for further use of the script. This is normally used by the
-document template to include the correct `<script>` tags or to give a hint to a
-bundler when optimizing JavaScript assets.
+The type field provides a hint for further use of the script in the layout. Typically this is used in the
+document template when including the `<script>` tags or when optimizing JavaScript assets with a bundler.
 
 ### .css(options)
 
 Sets a relative or absolute URL for a CSS (Cascading Style Sheets) asset.
 
 The value will be available for the document template to include. The method can
-be called multiple times to set multiple values.
+be called multiple times to add multiple entries.
 
 #### options
 
@@ -579,13 +597,14 @@ be called multiple times to set multiple values.
 ##### value
 
 Sets the `pathname` to the layout's CSS assets. This value can be a [URL] at
-which the podlet's user facing CSS is served. The value can be a URL [pathname]
+which the podlet's user facing CSS is served. It can be a URL [pathname]
 or an absolute URL.
 
 Serve a CSS file at `/assets/main.css`:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const layout = new Layout({
@@ -599,6 +618,7 @@ app.get(layout.css({ value: '/assets/main.css' }), (req, res) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server([ ... ]);
 const layout = new Layout({
@@ -621,12 +641,14 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Serve assets from a static file server and set a relative URI to the CSS files:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 const layout = new Layout({
@@ -641,14 +663,15 @@ layout.css({ value: '/assets/extra.css' });
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     port: 7000,
     routes: {
         files: {
             relativeTo: './src/css/',
-        }
-    }
+        },
+    },
 });
 
 const layout = new Layout({
@@ -669,14 +692,15 @@ app.route({
     handler: {
         directory: {
             path: '.',
-            redirectToSlash: true
-        }
-    }
+            redirectToSlash: true,
+        },
+    },
 });
 
 layout.css({ value: '/assets/main.css' });
 layout.css({ value: '/assets/extra.css' });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Set an absolute URL to where the CSS file is located:
@@ -695,7 +719,7 @@ layout.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
 Sets whether the method should prefix the return value with the `pathname` value
 that was set in the constructor.
 
-Return the full pathname (`/foo/assets/main.css`) to the CSS assets:
+Returns the full pathname (`/foo/assets/main.css`) to the CSS asset being added:
 
 ```js
 const layout = new Layout({
@@ -711,7 +735,7 @@ Prefix will be ignored if the returned value is an absolute URL
 ### .pathname()
 
 A helper method used to retrieve the `pathname` value that was set in the
-constructor. This can be handy to use when defining routes since the `pathname`
+constructor. This can be handy when defining routes since the `pathname`
 set in the constructor must also be the base path for the layout's main content
 route
 
@@ -719,6 +743,7 @@ Example:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const layout = new Layout({
     name: 'myLayout',
@@ -739,6 +764,7 @@ app.get(`${layout.pathname()}/bar/:id`, (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const layout = new Layout({
     name: 'myLayout',
@@ -769,20 +795,21 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .view(template)
 
-Set the default encapsulating HTML document template.
+Sets the default encapsulating HTML document template.
 
 Takes a template function that accepts an instance of HttpIncoming, a content
-string as well as any additional markup for the document's head section as in:
+string as well as any additional markup for the document's head section:
 
 ```js
 (incoming, body, head) => `Return an HTML string here`;
 ```
 
-In practice this should look something like:
+In practice this might look something like:
 
 ```js
 layout.view((incoming, body, head) => `<!doctype html>
@@ -819,7 +846,7 @@ An instance of the [`HttpIncoming`](incoming.md) class.
 
 #### fragment
 
-An String that is intended to be a fragment of the final HTML document.
+A `String` that is intended to be a fragment of the final HTML document. (Everything to be displayed in the HTML body)
 
 #### [args]
 
@@ -831,6 +858,7 @@ template as shown:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 layout.view = (incoming, body, head) => {
     return `
@@ -854,6 +882,7 @@ app.get(layout.pathname(), (req, res) => {
 ```
 
 <!--Hapi-->
+
 ```js
 layout.view = (incoming, body, head) => {
     return `
@@ -877,13 +906,14 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .process(HttpIncoming)
 
 Method for processing an incoming HTTP request. This method is intended to be
 used to implement support for multiple HTTP frameworks and in most cases it
-won't be necessary for you to use this method directly when creating a layout
+won't be necessary for layout developers to use this method directly when creating a layout
 server.
 
 What it does:
@@ -891,8 +921,7 @@ What it does:
 -   Runs context parsers on the incoming request and sets an object with the context at `HttpIncoming.context` which can be passed on to the client when requesting content from podlets.
 -   Mounts a proxy so that each podlet can do transparent proxy requests as needed.
 
-Returns a Promise which will resolve with the passed in
-[`HttpIncoming`](incoming.md) object.
+Returns a Promise which will resolve with the [`HttpIncoming`](incoming.md) object that was passed in.
 
 If the inbound request matches a proxy endpoint the returned Promise will
 resolve with a [`HttpIncoming`](incoming.md) object where the `.proxy` property
@@ -906,6 +935,7 @@ An instance of the [`HttpIncoming`](incoming.md) class.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--HTTP-->
+
 ```js
 const { HttpIncoming } = require('@podium/utils');
 const Layout = require('@podium/layout');
@@ -925,7 +955,6 @@ const server = http.createServer(async (req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(result));
-
     } catch (error) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
@@ -933,8 +962,8 @@ const server = http.createServer(async (req, res) => {
     }
 });
 ```
-<!--END_DOCUSAURUS_CODE_TABS-->
 
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .client
 
@@ -945,6 +974,7 @@ Example of registering two podlets and retrieving their content:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const layout = new Layout({
     name: 'myLayout',
@@ -976,6 +1006,7 @@ app.listen(7000);
 ```
 
 <!--Hapi-->
+
 ```js
 const layout = new Layout({
     name: 'myLayout',
@@ -1007,11 +1038,12 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .client.register(options)
 
-Registers a podlet such that podlet content can later be fetched.
+Registers a podlet such that the podlet's content can later be fetched.
 
 Example:
 
@@ -1043,18 +1075,18 @@ layout.client.fooBar.fetch();
 
 | option     | type      | default | required | details                                                                                                                                                      |
 | ---------- | --------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| uri        | `string`  |         | &check;  | Uri to the manifest of a Podium component                                                                                                                    |
+| uri        | `string`  |         | &check;  | Uri to the manifest of a podlet                                                                                                                              |
 | name       | `string`  |         | &check;  | Name of the component. This is used to reference the component in your application, and does not have to match the name of the component itself              |
 | retries    | `number`  | `4`     |          | The number of times the client should retry to settle a version number conflict before terminating. Overrides the `retries` option in the layout constructor |
 | timeout    | `number`  | `1000`  |          | Defines how long, in milliseconds, a request should wait before the connection is terminated. Overrides the `timeout` option in the layout constructor       |
-| throwable  | `boolean` | `false` |          | Defines whether an error should be thrown if a failure occurs during the process of fetching a Podium component                                              |
+| throwable  | `boolean` | `false` |          | Defines whether an error should be thrown if a failure occurs during the process of fetching a podlet                                                        |
 | resolveJs  | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for JavaScript assets                                                                              |
 | resolveCss | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for CSS assets                                                                                     |
 
 ### .client.refresh()
 
 This method will refresh a resource by reading its manifest and fallback
-if defined in the manifest. The method will not call the URI to the content
+if defined in the manifest. The method will not call the content URI
 of a component.
 
 If the internal cache in the client already has a manifest cached, this will
@@ -1102,9 +1134,9 @@ What state the client is in. See the section
 
 The value will be one of the following values:
 
--   `instantiated` - When a `Client` has been instantiated but no requests to any podlets has been made.
+-   `instantiated` - When a `Client` has been instantiated but no requests to any podlets have been made.
 -   `initializing` - When one or more podlets are requested for the first time.
--   `unstable` - When an update of a podlet is detected and is in the process of re-fetching the manifest.
+-   `unstable` - When an update of a podlet is detected and the layout is in the process of re-fetching the manifest.
 -   `stable` - When all registered podlets are using cached manifests and only fetching content.
 -   `unhealthy` - When an podlet update never settled.
 
@@ -1172,6 +1204,7 @@ podlet.fetch();
 
 The event will fire with one the following values:
 
+-   `instantiated` - When a `Client` has been instantiated but no requests to any podlets have been made.
 -   `initializing` - When one or multiple podlets are requested for the very first time.
 -   `unstable` - When an update of a podlet is detected and is in the process of refetching the manifest.
 -   `stable` - When all registered podlets are using cached manifests and only fetching content.
@@ -1179,10 +1212,10 @@ The event will fire with one the following values:
 
 ## Podlet Resource Instance
 
-A registered Podium component is stored in a Podium resource object.
+A registered podlet is stored in a Podium resource object.
 
 The Podium resource object contains methods for retrieving the content of a
-Podium component. The URI of the content of a component is defined in the
+podlet. The URI of the content of a component is defined in the
 component's manifest. This is the content root of the component.
 
 A Podium resource object has the following API:
@@ -1203,6 +1236,7 @@ property of the request or response object.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 
@@ -1210,7 +1244,6 @@ const app = express();
 app.use(layout.middleware());
 
 app.get('/', async (req, res, next) => {
-
     // Get HttpIncoming
     const incoming = res.locals.podium;
 
@@ -1222,6 +1255,7 @@ app.get('/', async (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     host: 'localhost',
@@ -1250,6 +1284,7 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 #### options (optional)
@@ -1279,8 +1314,8 @@ emitted.
 
 #### HttpIncoming (required)
 
-A [`HttpIncoming`](incoming.md) object. This is normally provided by the
-"middleware" which runs on the incoming request to the layout prior to the
+An [`HttpIncoming`](incoming.md) object. This is normally provided by the
+middleware which runs on the incoming request to the layout prior to the
 process of fetching podlets.
 
 The [`HttpIncoming`](incoming.md) object is normally found on a request
@@ -1288,6 +1323,7 @@ bound property of the request or response object.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 app.use(layout.middleware());
@@ -1301,6 +1337,7 @@ app.get('/', async (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     host: 'localhost',
@@ -1319,10 +1356,11 @@ app.route({
         const incoming = request.app.podium;
 
         const stream = component.stream(incoming);
-        return h.response(stream)
+        return h.response(stream);
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 #### options (optional)
@@ -1330,7 +1368,7 @@ app.route({
 | option   | type     | default | required | details                                                                                            |
 | -------- | -------- | ------- | -------- | -------------------------------------------------------------------------------------------------- |
 | pathname | `string` |         |          | A path which will be appended to the content root of the podlet when requested                     |
-| headers  | `object` |         |          | An object which will be appended as http headers to the request to fetch the podlets's content     |
+| headers  | `object` |         |          | An object which will be appended as HTTP headers to the request to fetch the podlets's content     |
 | query    | `object` |         |          | An object which will be appended as query parameters to the request to fetch the podlets's content |
 
 #### Event: beforeStream
@@ -1346,6 +1384,7 @@ otherwise `css` will be an empty string.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const app = express();
 app.use(layout.middleware());
@@ -1365,6 +1404,7 @@ app.get('/', async (req, res, next) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     host: 'localhost',
@@ -1389,10 +1429,11 @@ app.route({
             console.log(data.js);
         });
 
-        return h.response(stream)
+        return h.response(stream);
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .name
@@ -1417,6 +1458,7 @@ _Example of sending an HTML fragment:_
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 app.get(layout.pathname(), (req, res) => {
     res.podiumSend('<h1>Hello World</h1>');
@@ -1424,6 +1466,7 @@ app.get(layout.pathname(), (req, res) => {
 ```
 
 <!--Hapi-->
+
 ```js
 app.route({
     method: 'GET',
@@ -1433,6 +1476,7 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 [express]: https://expressjs.com/ 'Express'
