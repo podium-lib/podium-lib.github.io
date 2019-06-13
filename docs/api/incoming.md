@@ -3,33 +3,33 @@ id: incoming
 title: HttpIncoming
 ---
 
-In the request-response cycle of a http request handeled by Podium some
-information needs to be accessible by different steps within such a cycle. To
-cater for this, Podium has a `HttpIncoming` object which is passed between the
-different parts of Podium in such a request-response cycle.
+In the request/response life cycle of an HTTP request handled by Podium, different
+information needs to be accessible at different stages. To cater to this,
+Podium has an `HttpIncoming` object which is passed between the
+different parts of Podium throughout the request/response life cycle.
 
-This `HttpIncoming` object hold different values the different steps in a
-request-response cycle handeled by Podium will need or generate. The most
-important properties are:
+This `HttpIncoming` object holds different values during the various stages in a
+request/response life cycle. The most important values are:
 
- * The Podium context
- * View properties for use by the document template
- * A URL object for the servers request (holds query params etc)
+-   The Podium context
+-   View properties for use by the document template
+-   A URL object for the servers request object (holds query params etc)
 
 `HttpIncoming` is used in both [@podium/layout](api/layout.md) and
 [@podium/podlet](api/podlet.md).
 
-The class for `HttpIncoming` is located in the [@podium/utils](https://github.com/podium-lib/utils/blob/master/lib/http-incoming.js)
-module and if one are to write a http server without any of the supported
-http frameworks, one will need to instanciate an instance of this object and
+The `HttpIncoming` class is located in the [@podium/utils](https://github.com/podium-lib/utils/blob/master/lib/http-incoming.js)
+module and when writing a HTTP servers without using the supported
+HTTP framework plugins, it will be necessary to instantiate an instance of this object and
 pass it between the different parts of Podium.
 
-If one use any of the supported http frameworks an instance of `HttpIncoming` is
-normally instanciated under the hood and passed on as a property on the request
-between the different parts of the request-response cycle of the http framework.
+When using the supported HTTP framework plugins an instance of `HttpIncoming` is
+created for you under the hood and passed on as a property on the request
+between the different parts of the request/response life cycle of the HTTP framework.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--HTTP-->
+
 ```js
 const { HttpIncoming } = require('@podium/utils');
 const Layout = require('@podium/layout');
@@ -63,7 +63,7 @@ const server = http.createServer(async (req, res) => {
     // Set a view property on HttpIncoming. This can now be used in the
     // document template or anywhere one have access to HttpIncoming.
     incoming.view = {
-        title: 'My pretty site'
+        title: 'My pretty site',
     };
 
     // Pass HttpIncoming on to the layout processor. This will generate
@@ -87,6 +87,7 @@ server.listen(7000);
 ```
 
 <!--Express-->
+
 ```js
 const express = require('express');
 const Layout = require('@podium/layout');
@@ -143,6 +144,7 @@ app.listen(7000);
 ```
 
 <!--Hapi-->
+
 ```js
 const HapiLayout = require('@podium/hapi-layout');
 const Layout = require('@podium/layout');
@@ -206,6 +208,7 @@ app.route({
 
 app.start();
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Constructor
@@ -219,50 +222,51 @@ const incoming = new HttpIncoming(request, response, params);
 
 #### options
 
-| option      | type                    | default | required | details                            |
-| ----------- | ----------------------- | ------- | -------- | ---------------------------------- |
-| request     | `http.IncomingMessage`  | `null`  | &check;  | A raw node.js http request object  |
-| response    | `http.ServerResponse`   | `null`  | &check;  | A raw node.js http response object |
-| params      | `object`                | `{}`    |          | Request scoped parameters          |
+| option   | type                   | default | required | details                            |
+| -------- | ---------------------- | ------- | -------- | ---------------------------------- |
+| request  | `http.IncomingMessage` | `null`  | &check;  | A raw Node.js HTTP request object  |
+| response | `http.ServerResponse`  | `null`  | &check;  | A raw Node.js HTTP response object |
+| params   | `object`               | `{}`    |          | Request scoped parameters          |
 
 ##### request
 
-A raw node.js [`http.IncomingMessage`](https://nodejs.org/dist/latest-v10.x/docs/api/http.html#http_class_http_incomingmessage)
+A raw Node.js [`http.IncomingMessage`](https://nodejs.org/dist/latest-v10.x/docs/api/http.html#http_class_http_incomingmessage)
 object.
 
-If used with a http framework do note that some http frameworks operate with
+If used with an HTTP framework please note that some frameworks operate with
 their own "request" objects as a wrapper around `http.IncomingMessage`. In such
-cases one often have access to the raw `http.IncomingMessage` object through
+cases it is often necessary to gain access to the raw `http.IncomingMessage` object through
 a property or method.
 
 ##### response
 
-A raw node.js [`http.ServerResponse`](https://nodejs.org/dist/latest-v10.x/docs/api/http.html#http_class_http_serverresponse)
+A raw Node.js [`http.ServerResponse`](https://nodejs.org/dist/latest-v10.x/docs/api/http.html#http_class_http_serverresponse)
 object.
 
-If used with a http framework do note that some http frameworks operate with
-their own "response" objects as a wrapper around `http.ServerResponse`. In such
-cases one often have access to the raw `http.ServerResponse` object through
+If used with an HTTP framework please note that some frameworks operate with
+their own "request" objects as a wrapper around `http.IncomingMessage`. In such
+cases it is often necessary to gain access to the raw `http.IncomingMessage` object through
 a property or method.
 
 ##### params
 
-An object for passing arbitrary property values parts of Podium can use.
+An object for passing arbitrary property values for Podium to use.
 
-**Note**: If one are using any of the supported http frameworks, `params` is
-normally picked up from a special properties object on the request (ex:
-`res.locals` in Express.js). Please see the plugins for the supported http
-frameworks for further information.
+**Note**: When using any of the supported HTTP frameworks, `params` is
+usually picked up from a special properties object on the request (eg.
+`res.locals` in Express.js). Please see the the relevant plugin for the appropriate HTTP
+framework for further information.
 
 One very common use case for this is to pass a request bound property to a
-context parser. There are cases where one do something on a request previous to
-running the `.middleware()` or `.process()` methods in a Layout or Podlet and
-one want to pass this on to a context parser.
+context parser. There are cases where you may want to perform operations on requests prior to
+running the `.middleware()` or `.process()` methods in a layout or podlet and
+then pass the results of these operations on to a context parser.
 
-The locale context parser uses this for setting request bound locale:
+The locale context parser does this when setting the request bound locale value:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--HTTP-->
+
 ```js
 const layout = new Layout({
     name: 'myLayout',
@@ -294,6 +298,7 @@ const server = http.createServer(async (req, res) => {
 ```
 
 <!--Express-->
+
 ```js
 const app = express();
 
@@ -333,6 +338,7 @@ app.get('/', (req, res) => {
 ```
 
 <!--Hapi-->
+
 ```js
 const app = Hapi.Server({
     host: 'localhost',
@@ -383,30 +389,31 @@ app.route({
     },
 });
 ```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Properties
 
-A HttpIncoming instance has the following properties:
+An HttpIncoming instance has the following properties:
 
 | property    | type                   | getter  | setter  | default | details                                                                                   |
 | ----------- | ---------------------- | ------- | ------- | ------- | ----------------------------------------------------------------------------------------- |
-| development | `boolean`              | &check; | &check; | `false` | Hint about if the Podlet / Layout are in development mode or not                          |
-| response    | `http.ServerResponse`  | &check; |         | `null`  | A raw node.js http response object set through the `response` argument on the constructor |
-| request     | `http.IncomingMessage` | &check; |         | `null`  | A raw node.js http request object set through the `request` argument on the constructor   |
+| development | `boolean`              | &check; | &check; | `false` | Hint regarding whether the podlet / layout are in development mode or not                 |
+| response    | `http.ServerResponse`  | &check; |         | `null`  | A raw Node.js HTTP response object set through the `response` argument in the constructor |
+| request     | `http.IncomingMessage` | &check; |         | `null`  | A raw Node.js HTTP request object set through the `request` argument in the constructor   |
 | context     | `object`               | &check; | &check; | `{}`    | The context created by the context parser                                                 |
-| params      | `object`               | &check; |         | `{}`    | Params set through the `params` argument on the constructor                               |
-| proxy       | `boolean`              | &check; | &check; | `false` | If the request was proxied or not by the proxy                                            |
-| name        | `string`               | &check; | &check; | `''`    | The name of the Podlet / Layout                                                           |
+| params      | `object`               | &check; |         | `{}`    | Params set through the `params` argument in the constructor                               |
+| proxy       | `boolean`              | &check; | &check; | `false` | Whether the request was handled by the proxy or not                                       |
+| name        | `string`               | &check; | &check; | `''`    | The name of the podlet / layout                                                           |
 | view        | `object`               | &check; | &check; | `{}`    | View parameters for the document template                                                 |
 | url         | `URL`                  | &check; |         | `{}`    | A URL object created out of the original request                                          |
-| css         | `array`                | &check; | &check; | `[]`    | CSS for the Podlet / Layout                                                               |
-| js          | `array`                | &check; | &check; | `[]`    | JS for the Podlet / Layout                                                                |
+| css         | `array`                | &check; | &check; | `[]`    | CSS for the podlet / layout                                                               |
+| js          | `array`                | &check; | &check; | `[]`    | JS for the podlet / layout                                                                |
 
 ## Methods
 
-A HttpIncoming instance has the following methods:
+An HttpIncoming instance has the following methods:
 
 ### .toJSON()
 
-Returns a JSON of the `HttpIncoming` instance.
+Returns JSON representation of the `HttpIncoming` instance.
