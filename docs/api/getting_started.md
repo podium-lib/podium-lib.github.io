@@ -3,46 +3,43 @@ id: getting_started
 title: Getting Started
 ---
 
-Podium consist of two parts; Podlets and Layouts. Each part has a module for
-developing each of these.
+Podium consists of two parts; podlets and layouts, each with its own matching module to be used for development.
 
 ### Podlets
 
-If one are to write a server for serving page fragments, or Podlets in Podium
-speak, one should be using the [@podium/podlet module](api/podlet.md).
+When writing a server for serving page fragments (podlets), the [@podium/podlet module](api/podlet.md) should be used.
 
 ### Layouts
 
-If one are to write a layout server to compose page fragments together, one
-should be using the [@podium/layout module](api/layout.md).
+When writing a layout server in order to compose page fragments together, the [@podium/layout module](api/layout.md) should be used.
 
 ## HTTP Framework Compabillity
 
 Podium is HTTP framework agnostic with first class support for [Express]. In
 practise this means that core Podium works with the standard [http.Server]
-module in node.js but the core modules also comes with [Express] compatible
-middleware methods for easy usage.
+module in Node.js but the core modules also come with [Express] compatible
+middleware methods for ease of use.
 
-Due to the fact that Podium is built for usage with [http.Server] module in
-node.js, its easy to make Podium work with multiple HTTP frameworks. The most
+Due to the fact that Podium is built for usage with the [http.Server] module in
+Node.js, it's pretty straight forward to get Podium to work with most HTTP frameworks. The most
 common way to support different HTTP framework is through plugins.
 
-[Hapi] and [Fastify] is endorsed HTTP frameworks by the Podium team which
-maintain plugins for these HTTP frameworks. There are also user land plugins
+[Hapi] and [Fastify] are both HTTP frameworks that the Podium team support by
+maintaining plugins for each. There are also user land plugins
 for other HTTP frameworks.
 
-Using Podium together with [Hapi] or [Fastify] does normally require that the
-plugin is handed an instance of one of the Podium modules.
+Using Podium together with [Hapi] or [Fastify] requires that the
+plugin is handed an instance of the appropriate Podium module.
 
- * To write a Podlet server with Hapi; please see [@podium/hapi-podlet]
- * To write a Layout server with Hapi; please see [@podium/hapi-layout]
- * To write a Podlet server with Fastify; please see [@podium/fastify-podlet]
+-   To write a podlet server with Hapi; please see [@podium/hapi-podlet]
+-   To write a layout server with Hapi; please see [@podium/hapi-layout]
+-   To write a podlet server with Fastify; please see [@podium/fastify-podlet]
 
-Example of setting up a Podlet server in all HTTP framworks supported and
-endorsed by the Podium team:
+Example of setting up a podlet server in all HTTP frameworks supported by the Podium team:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
+
 ```js
 const express = require('express');
 const Podlet = require('@podium/podlet');
@@ -53,7 +50,7 @@ const podlet = new Podlet({
     name: 'myPodlet',
     version: '1.0.0',
     pathname: '/',
-    development: true
+    development: true,
 });
 
 app.use(podlet.middleware());
@@ -73,6 +70,7 @@ app.listen(7100);
 ```
 
 <!--Hapi-->
+
 ```js
 const HapiPodlet = require('@podium/hapi-podlet');
 const Podlet = require('@podium/podlet');
@@ -87,7 +85,7 @@ const podlet = new Podlet({
     name: 'myPodlet',
     version: '1.0.0',
     pathname: '/',
-    development: true
+    development: true,
 });
 
 app.register({
@@ -116,6 +114,7 @@ app.start();
 ```
 
 <!--Fastify-->
+
 ```js
 const fastifyPodlet = require('@podium/fastify-podlet');
 const fastify = require('fastify');
@@ -127,7 +126,7 @@ const podlet = new Podlet({
     name: 'myPodlet',
     version: '1.0.0',
     pathname: '/',
-    development: true
+    development: true,
 });
 
 app.register(fastifyPodlet, podlet);
@@ -145,23 +144,23 @@ app.get(podlet.manifest(), async (request, reply) => {
 });
 
 const start = async () => {
-  try {
-    await app.listen(7100)
-    app.log.info(`server listening on ${app.server.address().port}`)
-  } catch (err) {
-    app.log.error(err)
-    process.exit(1)
-  }
+    try {
+        await app.listen(7100);
+        app.log.info(`server listening on ${app.server.address().port}`);
+    } catch (err) {
+        app.log.error(err);
+        process.exit(1);
+    }
 };
 start();
 ```
-<!--END_DOCUSAURUS_CODE_TABS-->
 
+<!--END_DOCUSAURUS_CODE_TABS-->
 
 [@podium/fastify-podlet]: https://github.com/podium-lib/fastify-podlet
 [@podium/hapi-podlet]: https://github.com/podium-lib/hapi-podlet
 [@podium/hapi-layout]: https://github.com/podium-lib/hapi-layout
-[http.Server]: https://nodejs.org/dist/latest-v12.x/docs/api/http.html#http_class_http_server
-[Express]: https://expressjs.com/
-[Fastify]: https://www.fastify.io/
-[Hapi]: https://hapijs.com/
+[http.server]: https://nodejs.org/dist/latest-v12.x/docs/api/http.html#http_class_http_server
+[express]: https://expressjs.com/
+[fastify]: https://www.fastify.io/
+[hapi]: https://hapijs.com/
