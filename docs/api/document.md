@@ -90,7 +90,7 @@ app.get(layout.pathname(), (req, res) => {
 
 ## Customizing
 
-Podium ships with a [default document template](https://github.com/podium-lib/utils/blob/next/lib/html-document.js)
+Podium ships with a [default document template](api/document.md)
 which should cover most uses. It is possible, however, to set a custom document template which can then be plugged into
 both layout and podlet servers.
 
