@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Assets · Podium</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;One of the key challenges when using micro-frontends like Podium is how to handle client side assets in each page fragment when everything is stitched together into a page.&lt;/p&gt;
-"/><meta name="docsearch:version" content="next"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Assets · Podium"/><meta property="og:type" content="website"/><meta property="og:url" content="https://podium-lib.io//"/><meta property="og:description" content="&lt;p&gt;One of the key challenges when using micro-frontends like Podium is how to handle client side assets in each page fragment when everything is stitched together into a page.&lt;/p&gt;
-"/><meta property="og:image" content="https://podium-lib.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://podium-lib.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon-32x32.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="https://podium-lib.io/blog/atom.xml" title="Podium Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://podium-lib.io/blog/feed.xml" title="Podium Blog RSS Feed"/><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/favicon-96x96.png" alt="Podium"/><h2 class="headerTitleWithLogo">Podium</h2></a><a href="/versions"><h3>next</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/next/podium/conceptual_overview" target="_self">Overview</a></li><li class="siteNavGroupActive"><a href="/docs/next/podlet/getting_started" target="_self">Podlets</a></li><li class="siteNavGroupActive"><a href="/docs/next/layout/getting_started" target="_self">Layouts</a></li><li class="siteNavGroupActive"><a href="/docs/next/api/getting_started" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Layout Guides</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/podium/conceptual_overview">Conceptual Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Podlet Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/podlet/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/fallbacks">Fallbacks</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/context">Context</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/proxying">Proxying</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Layout Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/layout/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/context">The Podium Context</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/unavailable_podlets">Handling podlet unavailability</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/dynamic_routes">Passing URL params and query string values to podlets</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/next/layout/assets">Assets</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API Doc</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/api/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/podlet">Podlet</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/layout">Layout</a></li></ul></div></div></section></div><script>
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Assets · Podium</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;One of the key challenges when using micro-frontend systems like Podium is how to handle client side assets in each page fragment when everything is stitched together into a page.&lt;/p&gt;
+"/><meta name="docsearch:version" content="next"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Assets · Podium"/><meta property="og:type" content="website"/><meta property="og:url" content="https://podium-lib.io//"/><meta property="og:description" content="&lt;p&gt;One of the key challenges when using micro-frontend systems like Podium is how to handle client side assets in each page fragment when everything is stitched together into a page.&lt;/p&gt;
+"/><meta property="og:image" content="https://podium-lib.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://podium-lib.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon-32x32.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="https://podium-lib.io/blog/atom.xml" title="Podium Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://podium-lib.io/blog/feed.xml" title="Podium Blog RSS Feed"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/favicon-96x96.png" alt="Podium"/><h2 class="headerTitleWithLogo">Podium</h2></a><a href="/versions"><h3>next</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/next/podium/conceptual_overview" target="_self">Overview</a></li><li class="siteNavGroupActive"><a href="/docs/next/podlet/getting_started" target="_self">Podlets</a></li><li class="siteNavGroupActive"><a href="/docs/next/layout/getting_started" target="_self">Layouts</a></li><li class="siteNavGroupActive"><a href="/docs/next/api/getting_started" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Layout Guides</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/podium/conceptual_overview">Conceptual Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Podlet Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/podlet/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/fallbacks">Fallbacks</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/context">Context</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/proxying">Proxying</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Layout Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/layout/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/context">The Podium Context</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/unavailable_podlets">Handling podlet unavailability</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/dynamic_routes">Passing URL params and query string values to podlets</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/next/layout/assets">Assets</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/api/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/incoming">HttpIncoming</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/document">Document Template</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/podlet">@podium/podlet</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/layout">@podium/layout</a></li></ul></div></div></section></div><script>
             var coll = document.getElementsByClassName('collapsible');
             var checkActiveCategory = true;
             for (var i = 0; i < coll.length; i++) {
@@ -28,10 +28,16 @@
               createToggler('#navToggler', '#docsNav', 'docsSliderActive');
               createToggler('#tocToggler', 'body', 'tocActive');
 
-              const headings = document.querySelector('.toc-headings');
+              var headings = document.querySelector('.toc-headings');
               headings && headings.addEventListener('click', function(event) {
-                if (event.target.tagName === 'A') {
-                  document.body.classList.remove('tocActive');
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
                 }
               }, false);
 
@@ -50,8 +56,8 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Assets</h1></header><article><div><span><p>One of the key challenges when using micro-frontends like Podium is how to handle client side assets in each page fragment when everything is stitched together into a page.</p>
-<p>In the Podium world, a podlet may need to ship with client side JavaScript and/or CSS and when a layout consumes that podlet, it will also need to consume the podlets JavaScript and/or CSS.</p>
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Assets</h1></header><article><div><span><p>One of the key challenges when using micro-frontend systems like Podium is how to handle client side assets in each page fragment when everything is stitched together into a page.</p>
+<p>In the Podium world, a podlet may need to ship with client side JavaScript and/or CSS and when a layout consumes that podlet, it will also need to consume the podlet's JavaScript and/or CSS.</p>
 <p>Podium itself does not provide support for asset related tasks such as bundling or minification but we are currently iterating over better general solutions to these problems which will be published and documented as soon as they are ready.</p>
 <p>While there are many ways to do so, the following examples illustrate a couple of possibilities for how you might tackle the asset problem currently. Both examples shown here share the same set of challenges:</p>
 <ul>
@@ -59,32 +65,34 @@
 <li>how to handle duplication of shared libraries such as React</li>
 <li>how to minimize client asset size and number of requests.</li>
 </ul>
-<h2><a class="anchor" aria-hidden="true" id="approach-1-inline-code"></a><a href="#approach-1-inline-code" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Approach 1: inline code</h2>
-<p>This approach involves each podlet defining its assets as inline code in the podlet's manifest file so that the layout can then include this code directly in its HTML template.</p>
+<h2><a class="anchor" aria-hidden="true" id="approach-1-podlet-serves-its-own-assets"></a><a href="#approach-1-podlet-serves-its-own-assets" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Approach 1: podlet serves its own assets</h2>
+<p>This approach involves each podlet serving its assets so that the layout can then include these files in its HTML template.
+Currently, this will only work if your podlets are publically available and dont require proxying to work though future changes may be made to suppor this feature.</p>
 <p><strong>Step 1.</strong></p>
 <p>In your podlet, use the podlet asset helper functions to define inline client code.</p>
 <p><em>Example</em></p>
-<pre><code class="hljs css language-js">podlet.js(<span class="hljs-string">`&lt;script&gt;console.log('hello world');&lt;/script&gt;`</span>);
-podlet.css(<span class="hljs-string">`&lt;style&gt;body { background-color: hot-pink; }&lt;/style&gt;`</span>);
+<pre><code class="hljs css language-js">podlet.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">`http://my-podlet.com/assets/scripts.js`</span> });
+podlet.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">`http://my-podlet.com/assets/styles.js`</span> });
+</code></pre>
+<p>Each of these functions can be called multiple times to add additional assets. For each call, you may also set a type (which will default to 'default' if not specified)</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-js">podlet.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">`http://my-podlet.com/assets/scripts1.js`</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">'esm'</span> });
+podlet.js({
+    <span class="hljs-attr">value</span>: <span class="hljs-string">`http://my-podlet.com/assets/scripts2.js`</span>,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">'default'</span>,
+});
 </code></pre>
 <p><strong>Step 2.</strong></p>
-<p>Then, read the podlet code snippets using the layout client and insert these into your HTML.</p>
+<p>Serve the assets from express.
+Assuming the podlets client side assets have been placed in a directory called <code>assets</code>:</p>
+<pre><code class="hljs css language-js">app.use(<span class="hljs-string">'/assets'</span>, express.static(<span class="hljs-string">'assets'</span>));
+</code></pre>
+<p>See the <a href="https://expressjs.com/en/starter/static-files.html">express documentation</a> for more information.</p>
+<p><strong>Step 3.</strong></p>
+<p>Write your layout using the <code>podiumSend</code> method and the <a href="/docs/next/api/document">document template</a> feature (Podium v4 and above) which will automatically include these assets.</p>
 <p><em>Example</em></p>
 <pre><code class="hljs css language-js">app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
-  <span class="hljs-keyword">const</span> js = layout.client.js();
-  <span class="hljs-keyword">const</span> css = layout.client.css();
-
-  res.send(<span class="hljs-string">`
-        &lt;html&gt;
-            &lt;head&gt;
-                <span class="hljs-subst">${css.join(<span class="hljs-string">'\n'</span>)}</span>
-            &lt;/head&gt;
-            &lt;body&gt;
-                ...
-                <span class="hljs-subst">${js.join(<span class="hljs-string">'\n'</span>)}</span>
-            &lt;/body&gt;
-        &lt;/html&gt;
-    `</span>);
+    res.podiumSend(<span class="hljs-string">`&lt;div&gt;Content goes here&lt;/div&gt;`</span>);
 });
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="approach-2-upload-to-a-cdn-or-remote-server"></a><a href="#approach-2-upload-to-a-cdn-or-remote-server" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Approach 2: upload to a CDN or remote server</h2>
@@ -94,27 +102,14 @@ podlet.css(<span class="hljs-string">`&lt;style&gt;body { background-color: hot-
 <p><strong>Step 2.</strong></p>
 <p>Next, tell the podlet the location of your assets so that it can populate the manifest file.</p>
 <p><em>Example</em></p>
-<pre><code class="hljs css language-js">podlet.js(<span class="hljs-string">'http://some-cdn.com/client.js'</span>);
-podlet.css(<span class="hljs-string">'http://some-cdn.com/style.css'</span>);
+<pre><code class="hljs css language-js">podlet.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">'http://some-cdn.com/client.js'</span> });
+podlet.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">'http://some-cdn.com/style.css'</span> });
 </code></pre>
 <p><strong>Step 3.</strong></p>
-<p>Finally, in your layout, read an array of URLs from the layout client and insert these into your HTML.</p>
+<p>Write your layout using the <code>podiumSend</code> method and the <a href="/docs/next/api/document">document template</a> feature (Podium v4 and above) which will automatically include these assets.</p>
 <p><em>Example</em></p>
 <pre><code class="hljs css language-js">app.get(<span class="hljs-string">'/'</span>, (req, res) =&gt; {
-  <span class="hljs-keyword">const</span> js = layout.client.js();
-  <span class="hljs-keyword">const</span> css = layout.client.css();
-
-  res.send(<span class="hljs-string">`
-        &lt;html&gt;
-            &lt;head&gt;
-                <span class="hljs-subst">${css.map(href =&gt; <span class="hljs-string">`&lt;link rel="stylesheet" href="<span class="hljs-subst">${href}</span>" /&gt;`</span>).join(<span class="hljs-string">'\n'</span>)}</span>
-            &lt;/head&gt;
-            &lt;body&gt;
-                ...
-                <span class="hljs-subst">${js.map(src =&gt; <span class="hljs-string">`&lt;script src="<span class="hljs-subst">${src}</span>"&gt;&lt;/script&gt;`</span>).join(<span class="hljs-string">'\n'</span>)}</span>
-            &lt;/body&gt;
-        &lt;/html&gt;
-    `</span>);
+    res.podiumSend(<span class="hljs-string">`&lt;div&gt;Content goes here&lt;/div&gt;`</span>);
 });
 </code></pre>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 4/3/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/layout/dynamic_routes"><span class="arrow-prev">← </span><span>Passing URL params and query string values to podlets</span></a><a class="docs-next button" href="/docs/next/layout/local_development"><span>Local Development</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#approach-1-inline-code">Approach 1: inline code</a></li><li><a href="#approach-2-upload-to-a-cdn-or-remote-server">Approach 2: upload to a CDN or remote server</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon-96x96.png" alt="Podium" width="66" height="58"/></a><div><h5>Documentation</h5><a href="/docs/en/podium/conceptual_overview">Conceptual overview</a><a href="/docs/en/podlet/getting_started">Podlets</a><a href="/docs/en/layout/getting_started">Layouts</a></div><div><h5>API</h5><a href="/docs/en/api/getting_started">Getting started</a><a href="/docs/en/api/podlet">Podlets</a><a href="/docs/en/api/layout">Layouts</a></div><div><h5>Links</h5><a href="/blog">Blog</a><a href="https://github.com/podium-lib/issues">Issues</a><a href="https://github.com/podium-lib">GitHub</a><a href="https://www.npmjs.com/org/podium">npm</a><a href="https://micro-frontends.org/">Micro Frontends</a></div></section><a href="https://finn.no/" target="_blank" rel="noreferrer noopener" class="copyrightLogo"><img src="/img/finn_no_logo.png" alt="FINN.no" width="129" height="45"/></a><section class="copyright">Copyright © 2019 FINN.no Copyright</section></footer></div></body></html>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 6/14/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/layout/dynamic_routes"><span class="arrow-prev">← </span><span>Passing URL params and query string values to podlets</span></a><a class="docs-next button" href="/docs/next/layout/local_development"><span>Local Development</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#approach-1-podlet-serves-its-own-assets">Approach 1: podlet serves its own assets</a></li><li><a href="#approach-2-upload-to-a-cdn-or-remote-server">Approach 2: upload to a CDN or remote server</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon-96x96.png" alt="Podium" width="66" height="58"/></a><div><h5>Documentation</h5><a href="/docs/podium/conceptual_overview">Conceptual overview</a><a href="/docs/podlet/getting_started">Podlets</a><a href="/docs/layout/getting_started">Layouts</a></div><div><h5>API</h5><a href="/docs/api/getting_started">Getting started</a><a href="/docs/api/podlet">Podlets</a><a href="/docs/api/layout">Layouts</a></div><div><h5>Links</h5><a href="/blog">Blog</a><a href="https://github.com/podium-lib/issues">Issues</a><a href="https://github.com/podium-lib">GitHub</a><a href="https://www.npmjs.com/org/podium">npm</a><a href="https://micro-frontends.org/">Micro Frontends</a></div></section><a href="https://finn.no/" target="_blank" rel="noreferrer noopener" class="copyrightLogo"><img src="/img/finn_no_logo.png" alt="FINN.no" width="129" height="45"/></a><section class="copyright">Copyright © 2019 FINN.no Copyright</section></footer></div></body></html>

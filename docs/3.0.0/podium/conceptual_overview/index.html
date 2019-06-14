@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Conceptual Overview · Podium</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Podium is a library for building &lt;a href=&quot;https://micro-frontends.org/&quot;&gt;micro frontends&lt;/a&gt;. &amp;quot;Micro frontends&amp;quot; is a concept that advocates letting go of the monolith and instead putting all functionallity into smaller independent servers with each server being responsible for serving individual parts of the page in isolation (page fragments) and then composing them together into whole pages in separate layers. The composition is done by requesting each independent fragment over HTTP and then putting each fragment into the HTML page&#x27;s markup.&lt;/p&gt;
+"/><meta name="docsearch:version" content="3.0.0"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Conceptual Overview · Podium"/><meta property="og:type" content="website"/><meta property="og:url" content="https://podium-lib.io//"/><meta property="og:description" content="&lt;p&gt;Podium is a library for building &lt;a href=&quot;https://micro-frontends.org/&quot;&gt;micro frontends&lt;/a&gt;. &amp;quot;Micro frontends&amp;quot; is a concept that advocates letting go of the monolith and instead putting all functionallity into smaller independent servers with each server being responsible for serving individual parts of the page in isolation (page fragments) and then composing them together into whole pages in separate layers. The composition is done by requesting each independent fragment over HTTP and then putting each fragment into the HTML page&#x27;s markup.&lt;/p&gt;
+"/><meta property="og:image" content="https://podium-lib.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://podium-lib.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon-32x32.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="https://podium-lib.io/blog/atom.xml" title="Podium Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://podium-lib.io/blog/feed.xml" title="Podium Blog RSS Feed"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/favicon-96x96.png" alt="Podium"/><h2 class="headerTitleWithLogo">Podium</h2></a><a href="/versions"><h3>3.0.0</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive siteNavItemActive"><a href="/docs/3.0.0/podium/conceptual_overview" target="_self">Overview</a></li><li class="siteNavGroupActive"><a href="/docs/3.0.0/podlet/getting_started" target="_self">Podlets</a></li><li class="siteNavGroupActive"><a href="/docs/3.0.0/layout/getting_started" target="_self">Layouts</a></li><li class="siteNavGroupActive"><a href="/docs/3.0.0/api/getting_started" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Overview</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/docs/3.0.0/podium/conceptual_overview">Conceptual Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Podlet Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podlet/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podlet/fallbacks">Fallbacks</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podlet/context">Context</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podlet/proxying">Proxying</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podlet/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Layout Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/context">The Podium Context</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/unavailable_podlets">Handling podlet unavailability</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/dynamic_routes">Passing URL params and query string values to podlets</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/assets">Assets</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API Doc</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/3.0.0/api/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/api/podlet">Podlet</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/api/layout">Layout</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Conceptual Overview</h1></header><article><div><span><p>Podium is a library for building <a href="https://micro-frontends.org/">micro frontends</a>. &quot;Micro frontends&quot; is a concept that advocates letting go of the monolith and instead putting all functionallity into smaller independent servers with each server being responsible for serving individual parts of the page in isolation (page fragments) and then composing them together into whole pages in separate layers. The composition is done by requesting each independent fragment over HTTP and then putting each fragment into the HTML page's markup.</p>
+<p>The following simple example shows a web page which has a header, a footer, a side bar and a main content area as indicated by the red dotted lines.</p>
+<p><img src="/img/finn-fragments.jpg" alt=""></p>
+<p>In a <a href="https://micro-frontends.org/">micro frontend</a> architecture this web page could be broken up into a separate fragment (podlet) for each red dotted area:</p>
+<p>The advantages of this architectural approach are:</p>
+<ul>
+<li>Each individual fragment of a page can be built with different technologies and by independent teams.</li>
+<li>Each individual fragment can fail without the whole page being affected.</li>
+<li>Each individual fragment can be processed and built in parallel and each individual fragment can be scaled independently.</li>
+<li>Each individual fragment can be reused in multiple pages and when the fragment is updated, each page that includes it is instantly updated.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="podium-overview"></a><a href="#podium-overview" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Podium overview</h2>
+<p>Podium consists of two main parts:</p>
+<h3><a class="anchor" aria-hidden="true" id="podlets"></a><a href="#podlets" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Podlets</h3>
+<p>A Podlet is Podium speak for a single fragment of a whole HTML page. You can also think of this as a component or a page fragment.</p>
+<p>A Podlet consists of a manifest, written in json and served over HTTP, which defines references to:</p>
+<ul>
+<li>An HTTP endpoint to the podlet's main content</li>
+<li>An HTTP endpoint to a possible fallback for use in scenarios where the main content cannot be read</li>
+<li>An HTTP endpoint to a client side JavaScript file</li>
+<li>An HTTP endpoint to a client side CSS file</li>
+<li>HTTP endpoints which should be made public</li>
+</ul>
+<p>In its simplest form a Podlet can be a manifest file pointing to an HTML file served by a static HTTP server. In Podium the <code>@podium/podlet</code> module is used to help facilitate the process of building Podlets.</p>
+<p>See the <a href="/docs/3.0.0/podlet/getting_started">podlet guides</a> section for more information.</p>
+<h3><a class="anchor" aria-hidden="true" id="layouts"></a><a href="#layouts" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Layouts</h3>
+<p>A Layout is responsible for supplying the structure of an HTML page, inserting each Podlet into the appropriate location in the page's markup and then serving the resulting page. The Layout is also responsible for generating and appending a Podium context to requests made to each Podlet. This context is a set of HTTP headers containing request contextual information from the Layout server to the Podlet which the Podlet can then use to generate dynamic content depending on which Layout is making the request to it.</p>
+<p>In Podium the <code>@podium/layout</code> module is used to help facilitate the process of building Layouts.</p>
+<p>See the <a href="/docs/3.0.0/layout/getting_started">layout guides</a> section for more information.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> Layout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/layout'</span>);
+
+<span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>
+});
+<span class="hljs-keyword">const</span> podlet = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7100/manifest.json'</span>
+});
+
+<span class="hljs-keyword">const</span> app = express();
+app.use(layout.middleware());
+
+app.get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; {
+    <span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> podlet.fetch();
+    res.send(<span class="hljs-string">`
+        &lt;html&gt;&lt;body&gt;<span class="hljs-subst">${content}</span>&lt;/body&gt;&lt;/html&gt;
+    `</span>);
+});
+
+app.listen(<span class="hljs-number">7000</span>);
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 4/3/2019</em></div><div class="docs-prevnext"><a class="docs-next button" href="/docs/3.0.0/podlet/getting_started"><span>Getting Started</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#podium-overview">Podium overview</a><ul class="toc-headings"><li><a href="#podlets">Podlets</a></li><li><a href="#layouts">Layouts</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon-96x96.png" alt="Podium" width="66" height="58"/></a><div><h5>Documentation</h5><a href="/docs/podium/conceptual_overview">Conceptual overview</a><a href="/docs/podlet/getting_started">Podlets</a><a href="/docs/layout/getting_started">Layouts</a></div><div><h5>API</h5><a href="/docs/api/getting_started">Getting started</a><a href="/docs/api/podlet">Podlets</a><a href="/docs/api/layout">Layouts</a></div><div><h5>Links</h5><a href="/blog">Blog</a><a href="https://github.com/podium-lib/issues">Issues</a><a href="https://github.com/podium-lib">GitHub</a><a href="https://www.npmjs.com/org/podium">npm</a><a href="https://micro-frontends.org/">Micro Frontends</a></div></section><a href="https://finn.no/" target="_blank" rel="noreferrer noopener" class="copyrightLogo"><img src="/img/finn_no_logo.png" alt="FINN.no" width="129" height="45"/></a><section class="copyright">Copyright © 2019 FINN.no Copyright</section></footer></div></body></html>

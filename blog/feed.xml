@@ -4,7 +4,7 @@
         <title>Podium Blog</title>
         <link>https://podium-lib.io//blog</link>
         <description>The best place to stay up-to-date with the latest Podium news and events.</description>
-        <lastBuildDate>Mon, 20 May 2019 06:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 14 Jun 2019 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
@@ -13,6 +13,13 @@
             <link>https://podium-lib.io//blog</link>
         </image>
         <copyright>Copyright © 2019 FINN.no Copyright</copyright>
+        <item>
+            <title><![CDATA[Version 4.0.0]]></title>
+            <link>https://podium-lib.io//blog/2019/06/14/Version-4.0.0.html</link>
+            <guid>https://podium-lib.io//blog/2019/06/14/Version-4.0.0.html</guid>
+            <pubDate>Fri, 14 Jun 2019 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p>We are very happy to release version 4.0.0 of Podium. Both <code>@podium/layout</code> and <code>@podium/podlet</code> are now available at v4.0.0.</p> <p>Version 4.0.0 attempts to be almost entirely backwards compatible with version 3.0.0.</p> <p>This release contains the following change...</p>]]></description>
+        </item>
         <item>
             <title><![CDATA[New documentation site]]></title>
             <link>https://podium-lib.io//blog/2019/05/20/new-documentation.html</link>

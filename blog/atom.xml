@@ -2,12 +2,24 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://podium-lib.io//blog</id>
     <title>Podium Blog</title>
-    <updated>2019-05-20T06:00:00Z</updated>
+    <updated>2019-06-14T06:00:00Z</updated>
     <generator>Feed for Node.js</generator>
     <link rel="alternate" href="https://podium-lib.io//blog"/>
     <subtitle>The best place to stay up-to-date with the latest Podium news and events.</subtitle>
     <logo>https://podium-lib.io//img/favicon-96x96.png</logo>
     <rights>Copyright © 2019 FINN.no Copyright</rights>
+    <entry>
+        <title type="html"><![CDATA[Version 4.0.0]]></title>
+        <id>https://podium-lib.io//blog/2019/06/14/Version-4.0.0.html</id>
+        <link href="https://podium-lib.io//blog/2019/06/14/Version-4.0.0.html">
+        </link>
+        <updated>2019-06-14T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>We are very happy to release version 4.0.0 of Podium. Both <code>@podium/layout</code> and <code>@podium/podlet</code> are now available at v4.0.0.</p> <p>Version 4.0.0 attempts to be almost entirely backwards compatible with version 3.0.0.</p> <p>This release contains the following change...</p>]]></summary>
+        <author>
+            <name>Trygve Lie</name>
+            <uri>https://github.com/trygve-lie/</uri>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[New documentation site]]></title>
         <id>https://podium-lib.io//blog/2019/05/20/new-documentation.html</id>

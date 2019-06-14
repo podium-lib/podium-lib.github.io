@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Proxying · Podium</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;While Podium does not enforce what type of infrastructure is used to run podlet and layout servers, a common decision that will have to be made when using Podium is whether podlet servers should be publicly accessible or whether they should be accessible only through the layout server. This decision can impact how client side code is written due to a common need to communicate back directly from client code to podlet server.&lt;/p&gt;
+"/><meta name="docsearch:version" content="3.0.0"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Proxying · Podium"/><meta property="og:type" content="website"/><meta property="og:url" content="https://podium-lib.io//"/><meta property="og:description" content="&lt;p&gt;While Podium does not enforce what type of infrastructure is used to run podlet and layout servers, a common decision that will have to be made when using Podium is whether podlet servers should be publicly accessible or whether they should be accessible only through the layout server. This decision can impact how client side code is written due to a common need to communicate back directly from client code to podlet server.&lt;/p&gt;
+"/><meta property="og:image" content="https://podium-lib.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://podium-lib.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon-32x32.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="https://podium-lib.io/blog/atom.xml" title="Podium Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://podium-lib.io/blog/feed.xml" title="Podium Blog RSS Feed"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/favicon-96x96.png" alt="Podium"/><h2 class="headerTitleWithLogo">Podium</h2></a><a href="/versions"><h3>3.0.0</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/3.0.0/podium/conceptual_overview" target="_self">Overview</a></li><li class="siteNavGroupActive"><a href="/docs/3.0.0/podlet/getting_started" target="_self">Podlets</a></li><li class="siteNavGroupActive"><a href="/docs/3.0.0/layout/getting_started" target="_self">Layouts</a></li><li class="siteNavGroupActive"><a href="/docs/3.0.0/api/getting_started" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Podlet Guides</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podium/conceptual_overview">Conceptual Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Podlet Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podlet/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podlet/fallbacks">Fallbacks</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podlet/context">Context</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/3.0.0/podlet/proxying">Proxying</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/podlet/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Layout Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/context">The Podium Context</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/unavailable_podlets">Handling podlet unavailability</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/dynamic_routes">Passing URL params and query string values to podlets</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/assets">Assets</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/layout/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API Doc</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/3.0.0/api/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/api/podlet">Podlet</a></li><li class="navListItem"><a class="navItem" href="/docs/3.0.0/api/layout">Layout</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Proxying</h1></header><article><div><span><p>While Podium does not enforce what type of infrastructure is used to run podlet and layout servers, a common decision that will have to be made when using Podium is whether podlet servers should be publicly accessible or whether they should be accessible only through the layout server. This decision can impact how client side code is written due to a common need to communicate back directly from client code to podlet server.</p>
+<p>In some cases, you may not wish to expose your podlets to the outside world, instead prefering to expose only layouts and let the layouts do the work of fetching content from internally placed podlets.</p>
+<p>A podlet server that is not exposed to the outside world except via a layout server that consumes its content may still need a way to define additional routes and make them publicly available.</p>
+<p>Two very common use cases for this are when performing form submissions against a podlet and when making AJAX requests from client side code to a podlet. For example, a podlet might define an additional route at <code>/api</code> which is provided so that the client side JavaScript served by this podlet can fetch additional data asynchonously after page load.</p>
+<p>By default, a podlet serves up its content at <code>/</code>. While you can change this to a different route, <code>/content</code> for example, out of the box, no other routes will be accessible. In our example above, it will not be possible for the client side JavaScript code to make a request to <code>/api</code> as this code is now running in the layout and the layout does not provide an <code>/api</code> route. And since the podlet itself has no public address, there's no way to send a request directly to the podlet's <code>/api</code> route using an absolute URL either.</p>
+<p>To cater for this need to communicate directly with podlet servers, Podium provides a proxy feature. A Podium proxy is a transparent proxy that is mounted in the layout server making it possible to send any http request through it back to the podlet server.</p>
+<p>If your infrastructure is setup such that podlet servers are only available through layout servers then using the Podium Proxy is the prefered way to make parts of a podlet server publically available.</p>
+<p>If, on the other hand, your infrastructure is setup such that podlet servers are fully publically available then the approach taken can simply be for client side code to communicate with the podlet server directly by enabling <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="podium-proxy"></a><a href="#podium-proxy" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Podium Proxy</h2>
+<p>Podium proxying is the Podium way for a podlet to inform any layout servers that consume it that there are additional routes and that they should be given public access via routes on the layout server.</p>
+<h3><a class="anchor" aria-hidden="true" id="how-it-works"></a><a href="#how-it-works" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How it works</h3>
+<p>For each proxy you define in a podlet, a namespaced route will be mounted on a layout which will proxy requests back to the podlet. This works as follows:</p>
+<ul>
+<li>A podlet defines its proxy routes</li>
+<li>A podlet puts the location of the proxy routes into its manifest file</li>
+<li>A layout reads a podlets manifest file including proxy information</li>
+<li>A layout creates namespaced proxy routes</li>
+<li>A layout sends information to the podlet via context headers about the public location of these routes</li>
+<li>A podlet uses context headers to construct URLs pointing to the layout's proxy endpoints</li>
+</ul>
+<p>In a podlet's manifest, a proxy object can be used to define up to 4 proxy routes like so:</p>
+<pre><code class="hljs css language-json">{
+    ...
+    "name": "myPodlet",
+    "proxy": {
+        "api": "/api"
+    }
+    ...
+}
+</code></pre>
+<p>This will result in a URL being mounted on the layout server at:</p>
+<pre><code class="hljs css language-bash">/&lt;layout-pathname&gt;/&lt;prefix&gt;/&lt;podlet-name&gt;/&lt;proxy-namespace&gt;
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt;layout-pathname&gt;</code>: <code>pathname</code> argument given <code>new Layout({ pathname: '...' })</code></li>
+<li><code>&lt;prefix&gt;</code>: defaults to <code>podium-resource</code></li>
+<li><code>&lt;podlet-name&gt;</code>: podlet manifest <code>name</code> value</li>
+<li><code>&lt;proxy-namespace&gt;</code>: podlet manifest <code>proxy.&lt;key&gt;</code></li>
+</ul>
+<p>So for a layout running locally on port <code>1337</code> using <code>pathname</code> 'myLayout' and consuming a podlet that serves the manifest file above we should be able to send requests to:</p>
+<p><code>http://localhost:1337/myLayout/podium-resource/myPodlet/api</code></p>
+<p>and expect that our requests would be proxied on to our podlet's <code>/api</code> route.</p>
+<h3><a class="anchor" aria-hidden="true" id="programmatically-defining-proxy-routes"></a><a href="#programmatically-defining-proxy-routes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Programmatically defining proxy routes</h3>
+<p>It's not necessary to define proxy routes in a manifest file manually. There is a <code>podlet.proxy()</code> helper method you should use to define proxy routes and have the manifest file fields populated for you. The following example will achieve the same thing as shown earlier using this helper.</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-js">podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/api'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'api'</span> });
+</code></pre>
+<p>What's more, we can also define the route itself at the same time.</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-js">app.get(podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/api'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'api'</span> }), (req, res) =&gt; {
+  res.json({ <span class="hljs-attr">key</span>: <span class="hljs-string">'value'</span> });
+});
+</code></pre>
+<p>There are a maximum of 4 proxies, however it is possible to mount multiple routes under a single proxy.</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-js">podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/api'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'api'</span> });
+
+app.get(<span class="hljs-string">'/api/cats'</span>, (req, res) =&gt; {
+  res.json([{ <span class="hljs-attr">name</span>: <span class="hljs-string">'fluffy'</span> }]);
+});
+<span class="hljs-comment">// http://localhost:1337/myLayout/podium-resource/myPodlet/api/cats</span>
+
+app.get(<span class="hljs-string">'/api/dogs'</span>, (req, res) =&gt; {
+  res.json([{ <span class="hljs-attr">name</span>: <span class="hljs-string">'rover'</span> }]);
+});
+<span class="hljs-comment">// http://localhost:1337/myLayout/podium-resource/myPodlet/api/dogs</span>
+</code></pre>
+<p>Specifying an absolute URL is also possible in which case the layout will mount a proxy directly to the URL, bypassing the podlet entirely.</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-js">podlet.proxy({ <span class="hljs-attr">name</span>: <span class="hljs-string">'remote-api'</span>, <span class="hljs-attr">target</span>: <span class="hljs-string">'http://&lt;some-service:port&gt;/api'</span> });
+
+<span class="hljs-comment">// http://localhost:1337/myLayout/podium-resource/myPodlet/remote-api</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="constructing-proxy-urls"></a><a href="#constructing-proxy-urls" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constructing Proxy URLs</h3>
+<p>When creating a podlet with proxy routes, it's necessary to be able to dynamically, programmatically determine the location of these proxy routes.</p>
+<p>The base URL can be constructed by joining together values plucked from the Podium context like so.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> { URL } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>); <span class="hljs-comment">// not required in node &gt;=10</span>
+
+app.get(podlet.content(), (req, res) =&gt; {
+  <span class="hljs-keyword">const</span> { mountOrigin, publicPathname } = res.locals.podium.context;
+  <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> URL(publicPathname, mountOrigin);
+
+  <span class="hljs-comment">// prints base URL under which all proxy routes are located</span>
+  <span class="hljs-built_in">console</span>.log(url.href);
+});
+</code></pre>
+<p>The path to a given endpoint can then be constructed by joining this base URL together with the namespace key given to the <code>podlet.proxy()</code> method like so:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// define and create an API proxy route</span>
+app.get(podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/api'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'api'</span> }), (req, res) =&gt; {
+    res.json({...});
+});
+
+app.get(podlet.content(), (req, res) =&gt; {
+    <span class="hljs-comment">// construct an absolute URL to the API proxy route</span>
+     <span class="hljs-keyword">const</span> { mountOrigin, publicPathname } = res.locals.podium.context;
+    <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> URL(publicPathname, mountOrigin);
+
+    <span class="hljs-comment">// prints specific absolute URL to API proxy endpoint</span>
+    <span class="hljs-built_in">console</span>.log(url.href + <span class="hljs-string">'api'</span>);
+});
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="example-client-side-javascript-fetching-data-from-a-content-route"></a><a href="#example-client-side-javascript-fetching-data-from-a-content-route" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example: client side JavaScript fetching data from a /content route</h3>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> Podlet = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/podlet'</span>);
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,
+  <span class="hljs-attr">version</span>: <span class="hljs-string">'1.0.0'</span>,
+  <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>
+});
+
+<span class="hljs-keyword">const</span> app = express();
+
+app.get(podlet.manifest(), (req, res) =&gt; {
+  res.status(<span class="hljs-number">200</span>).json(podlet);
+});
+
+app.get(podlet.proxy({ <span class="hljs-attr">target</span>: <span class="hljs-string">'/content'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'content'</span> }), (req, res) =&gt; {
+  res.send(<span class="hljs-string">'This is the actual content for the page'</span>);
+});
+
+app.get(podlet.content(), (req, res) =&gt; {
+  <span class="hljs-keyword">const</span> { mountOrigin, publicPathname } = res.locals.podium.context;
+  <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> URL(publicPathname, mountOrigin);
+
+  res.send(<span class="hljs-string">`
+        &lt;div id="content-placeholder"&gt;&lt;/div&gt;
+        &lt;script&gt;
+            fetch('<span class="hljs-subst">${url.href + <span class="hljs-string">'content'</span>}</span>')
+                .then((response) =&gt; response.text())
+                .then(content =&gt; {
+                    const el = document.getElementById('content-placeholder');
+                    el.innerHTML = content;
+                });
+        &lt;/script&gt;
+    `</span>);
+});
+
+app.listen(<span class="hljs-number">7100</span>);
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 4/3/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/3.0.0/podlet/context"><span class="arrow-prev">← </span><span>Context</span></a><a class="docs-next button" href="/docs/3.0.0/podlet/local_development"><span>Local Development</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#podium-proxy">Podium Proxy</a><ul class="toc-headings"><li><a href="#how-it-works">How it works</a></li><li><a href="#programmatically-defining-proxy-routes">Programmatically defining proxy routes</a></li><li><a href="#constructing-proxy-urls">Constructing Proxy URLs</a></li><li><a href="#example-client-side-javascript-fetching-data-from-a-content-route">Example: client side JavaScript fetching data from a /content route</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon-96x96.png" alt="Podium" width="66" height="58"/></a><div><h5>Documentation</h5><a href="/docs/podium/conceptual_overview">Conceptual overview</a><a href="/docs/podlet/getting_started">Podlets</a><a href="/docs/layout/getting_started">Layouts</a></div><div><h5>API</h5><a href="/docs/api/getting_started">Getting started</a><a href="/docs/api/podlet">Podlets</a><a href="/docs/api/layout">Layouts</a></div><div><h5>Links</h5><a href="/blog">Blog</a><a href="https://github.com/podium-lib/issues">Issues</a><a href="https://github.com/podium-lib">GitHub</a><a href="https://www.npmjs.com/org/podium">npm</a><a href="https://micro-frontends.org/">Micro Frontends</a></div></section><a href="https://finn.no/" target="_blank" rel="noreferrer noopener" class="copyrightLogo"><img src="/img/finn_no_logo.png" alt="FINN.no" width="129" height="45"/></a><section class="copyright">Copyright © 2019 FINN.no Copyright</section></footer></div></body></html>
