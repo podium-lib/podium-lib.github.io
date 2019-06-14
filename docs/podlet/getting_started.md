@@ -4,19 +4,19 @@ title: Getting Started
 ---
 
 This guide will show you how to get started building podlets for Podium in Node
-js using the express js http framework. It will walk you through the creation of
+js using the Express js HTTP framework. It will walk you through the creation of
 a very simple bare bones podlet.
 
 ## Before you begin
 
-Ideally, you should have some familiarity with building apps with javascript and
-node.js. You will also need to have node.js installed at version 8 or higher.
+Ideally, you should have some familiarity with building apps with JavaScript and
+Node.js. You will also need to have Node.js installed at version 8 or higher.
 The npm cli will be installed automatically when you install
-node.js
+Node.js
 
 ## Step 1: Project setup
 
-First, we need to initialize a new node project in an empty directory.
+First, we need to initialize a new Node project in an empty directory.
 
 ```bash
 mkdir basic-podlet
@@ -47,28 +47,28 @@ const Podlet = require('@podium/podlet');
 
 ## Step 4: Instantiate instances
 
-Create an express app instance and instantiate the podlet
+Create an Express app instance and instantiate the podlet
 
 ```js
 const app = express();
 
 const podlet = new Podlet({
-  name: 'myPodlet', // required
-  version: '1.0.0', // required
-  pathname: '/', // required
-  manifest: '/manifest.json', // optional, defaults to '/manifest.json'
-  content: '/', // optional, defaults to '/'
-  development: true // optional, defaults to false
+    name: 'myPodlet', // required
+    version: '1.0.0', // required
+    pathname: '/', // required
+    manifest: '/manifest.json', // optional, defaults to '/manifest.json'
+    content: '/', // optional, defaults to '/'
+    development: true, // optional, defaults to false
 });
 ```
 
 It's not necessary to set `content` or `manifest` as we have done above. These values default to appropriate values that you will use most of the time.
 
-While we have set `development` to `true`, it's important to remember to set this to `false` when working with layouts. Development mode is only useful when working on a podlet in isolation.
+While we have set `development` to `true`, you should remember to set this to `false` when going into production. Development mode is only useful when working on a podlet in isolation.
 
 ## Step 5: Mount middleware
 
-Mount the podlet instances [middleware](https://medium.com/@agoiabeladeyemi/a-simple-explanation-of-express-middleware-c68ea839f498) into the express app
+Mount the podlet instances [middleware](https://medium.com/@agoiabeladeyemi/a-simple-explanation-of-express-middleware-c68ea839f498) into the Express app
 
 ```js
 app.use(podlet.middleware());
@@ -80,7 +80,7 @@ This is the route that the podlet server will use to return its HTML content.
 
 ```js
 app.get(podlet.content(), (req, res) => {
-  res.status(200).podiumSend(`
+    res.status(200).podiumSend(`
         <div>
             This is the podlet's HTML content
         </div>
@@ -97,7 +97,7 @@ returned to the router.
 
 ```js
 app.get(podlet.manifest(), (req, res) => {
-  res.status(200).send(podlet);
+    res.status(200).send(podlet);
 });
 ```
 
@@ -111,7 +111,7 @@ Now, all thats left is to start the server and test it out
 app.listen(7100);
 ```
 
-We call `.listen(port)` on the express app instance and pass it a port
+We call `.listen(port)` on the Express app instance and pass it a port
 
 We can run the app with:
 
@@ -142,18 +142,18 @@ const Podlet = require('@podium/podlet');
 const app = express();
 
 const podlet = new Podlet({
-  name: 'myPodlet',
-  version: '1.0.0',
-  pathname: '/',
-  content: '/',
-  fallback: '/fallback',
-  development: true
+    name: 'myPodlet',
+    version: '1.0.0',
+    pathname: '/',
+    content: '/',
+    fallback: '/fallback',
+    development: true,
 });
 
 app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
-  res.status(200).podiumSend(`
+    res.status(200).podiumSend(`
         <div>
             This is the podlet's HTML content
         </div>
@@ -161,7 +161,7 @@ app.get(podlet.content(), (req, res) => {
 });
 
 app.get(podlet.manifest(), (req, res) => {
-  res.status(200).send(podlet);
+    res.status(200).send(podlet);
 });
 
 app.listen(7100);

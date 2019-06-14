@@ -17,8 +17,6 @@ const layout = new Layout({
 });
 ```
 
-See the [@podium/client](https://github.com/podium-lib/client/blob/master/README.md) module for additional documentation.
-
 ## Defining a podlet as throwable
 
 In some cases it may make no sense to show a page if some of its content is not available. In such cases, you may prefer for the layout to show an error page rather than fallback content or an empty string. This is especially true for dynamic content that is the main focus of a page. If all you can show is a header and footer, it might be better to show an error page explaining the situation to the user.
@@ -41,7 +39,7 @@ _Example_
 ```js
 app.get('/', (req, res, next) => {
     try {
-        const content = await gettingStarted.fetch(ctx);
+        const content = await gettingStarted.fetch(res.locals.podium);
         ...
     } catch(err) {
         // you might handle this directly...

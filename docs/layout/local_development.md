@@ -18,18 +18,19 @@ const Podlet = require('@podium/podlet');
 const app = require('express')();
 
 const podlet = new Podlet({
-  name: 'header',
-  version: '1.0.0'
+    name: 'header',
+    version: '1.0.0',
+    development: false,
 });
 
 app.use(podlet.middleware());
 
 app.get('/manifest.json', (req, res) => {
-  res.json(podlet);
+    res.json(podlet);
 });
 
 app.get('/', (req, res) => {
-  res.send(`<header>The Best Podium page ever</header>`);
+    res.podiumSend(`<header>The Best Podium page ever</header>`);
 });
 
 app.listen(7001);
@@ -44,18 +45,19 @@ const Podlet = require('@podium/podlet');
 const app = require('express')();
 
 const podlet = new Podlet({
-  name: 'navigation',
-  version: '1.0.0'
+    name: 'navigation',
+    version: '1.0.0',
+    development: false,
 });
 
 app.use(podlet.middleware());
 
 app.get('/manifest.json', (req, res) => {
-  res.json(podlet);
+    res.json(podlet);
 });
 
 app.get('/', (req, res) => {
-  res.send(`<nav>
+    res.podiumSend(`<nav>
         <ul>
             <li><a href="/home">home</a></li>
             <li><a href="/blog">blog</a></li>
@@ -77,18 +79,19 @@ const Podlet = require('@podium/podlet');
 const app = require('express')();
 
 const podlet = new Podlet({
-  name: 'homeContent',
-  version: '1.0.0'
+    name: 'homeContent',
+    version: '1.0.0',
+    development: false,
 });
 
 app.use(podlet.middleware());
 
 app.get('/manifest.json', (req, res) => {
-  res.json(podlet);
+    res.json(podlet);
 });
 
 app.get('/', (req, res) => {
-  res.send(`<section>Welcome to my Podium home page</section>`);
+    res.podiumSend(`<section>Welcome to my Podium home page</section>`);
 });
 
 app.listen(7003);
@@ -103,18 +106,19 @@ const Podlet = require('@podium/podlet');
 const app = require('express')();
 
 const podlet = new Podlet({
-  name: 'footer',
-  version: '1.0.0'
+    name: 'footer',
+    version: '1.0.0',
+    development: false,
 });
 
 app.use(podlet.middleware());
 
 app.get('/manifest.json', (req, res) => {
-  res.json(podlet);
+    res.json(podlet);
 });
 
 app.get('/', (req, res) => {
-  res.send(`<footer>&copy; 2018 - the Podium team</footer>`);
+    res.podiumSend(`<footer>&copy; 2018 - the Podium team</footer>`);
 });
 
 app.listen(7004);
@@ -131,56 +135,47 @@ const Layout = require('@podium/layout');
 const app = require('express')();
 
 const layout = new Layout({
-  name: 'homePage',
-  pathname: '/home'
+    name: 'homePage',
+    pathname: '/home',
 });
 
 const headerClient = layout.client.register({
-  name: 'header',
-  uri: 'http://localhost:7001/manifest.json'
+    name: 'header',
+    uri: 'http://localhost:7001/manifest.json',
 });
 const navigationClient = layout.client.register({
-  name: 'navigation',
-  uri: 'http://localhost:7002/manifest.json'
+    name: 'navigation',
+    uri: 'http://localhost:7002/manifest.json',
 });
 const contentClient = layout.client.register({
-  name: 'content',
-  uri: 'http://localhost:7003/manifest.json'
+    name: 'content',
+    uri: 'http://localhost:7003/manifest.json',
 });
 const footerClient = layout.client.register({
-  name: 'footer',
-  uri: 'http://localhost:7004/manifest.json'
+    name: 'footer',
+    uri: 'http://localhost:7004/manifest.json',
 });
 
 app.use(layout.pathname(), layout.middleware());
 
 app.get(layout.pathname(), async (req, res) => {
-  try {
-    const ctx = res.locals.podium.context;
+    const incoming = res.locals.podium;
 
     const [header, navigation, content, footer] = await Promise.all([
-      headerClient.fetch(ctx),
-      navigationClient.fetch(ctx),
-      contentClient.fetch(ctx),
-      footerClient.fetch(ctx)
+        headerClient.fetch(incoming),
+        navigationClient.fetch(incoming),
+        contentClient.fetch(incoming),
+        footerClient.fetch(incoming),
     ]);
 
-    res.send(`
-            <html>
-            <head>
-                <title>Podium example - home</title>
-            </head>
-            <body>
-                ${header}
-                ${navigation}
-                ${content}
-                ${footer}
-            </body>
-            </html>
-        `);
-  } catch (err) {
-    res.sendStatus(500);
-  }
+    incoming.view.title = 'Podium example - home';
+
+    res.podiumSend(`
+      <section>${header}</section>
+      <section>${navigation}</section>
+      <section>${content}</section>
+      <section>${footer}</section>
+    `);
 });
 
 app.listen(7000);
@@ -225,41 +220,41 @@ _Example: forever json configuration file_
 
 ```json
 [
-  {
-    "uid": "header",
-    "append": true,
-    "watch": true,
-    "script": "index.js",
-    "sourceDir": "/path/to/podlets/header"
-  },
-  {
-    "uid": "navigation",
-    "append": true,
-    "watch": true,
-    "script": "index.js",
-    "sourceDir": "/path/to/podlets/navigation"
-  },
-  {
-    "uid": "home",
-    "append": true,
-    "watch": true,
-    "script": "index.js",
-    "sourceDir": "/path/to/podlets/home"
-  },
-  {
-    "uid": "footer",
-    "append": true,
-    "watch": true,
-    "script": "index.js",
-    "sourceDir": "/path/to/podlets/footer"
-  },
-  {
-    "uid": "homePage",
-    "append": true,
-    "watch": true,
-    "script": "index.js",
-    "sourceDir": "/path/to/layouts/home"
-  }
+    {
+        "uid": "header",
+        "append": true,
+        "watch": true,
+        "script": "index.js",
+        "sourceDir": "/path/to/podlets/header"
+    },
+    {
+        "uid": "navigation",
+        "append": true,
+        "watch": true,
+        "script": "index.js",
+        "sourceDir": "/path/to/podlets/navigation"
+    },
+    {
+        "uid": "home",
+        "append": true,
+        "watch": true,
+        "script": "index.js",
+        "sourceDir": "/path/to/podlets/home"
+    },
+    {
+        "uid": "footer",
+        "append": true,
+        "watch": true,
+        "script": "index.js",
+        "sourceDir": "/path/to/podlets/footer"
+    },
+    {
+        "uid": "homePage",
+        "append": true,
+        "watch": true,
+        "script": "index.js",
+        "sourceDir": "/path/to/layouts/home"
+    }
 ]
 ```
 
