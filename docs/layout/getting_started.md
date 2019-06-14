@@ -4,13 +4,13 @@ title: Getting Started
 ---
 
 This guide will walk you through how to get started building layouts for Podium in Node
-js using the express js HTTP framework. At the end you will have created a fairly bare bones page displaying content from a single podlet server.
+js using the Express js HTTP framework. At the end you will have created a fairly bare bones page displaying content from a single podlet server.
 
 ## Before you begin
 
-Ideally, you should have some familiarity with building apps with javascript and
-node.js. You will also need to have node.js installed at version 8 or higher.
-The npm cli will be installed automatically when you install node.js. Additionally, you should familiarize yourself with the Podium's [high level concepts](/docs/podium/conceptual_overview.html) and understand [how to build a podlet](/docs/podlets/getting_started.html) with Podium.
+Ideally, you should have some familiarity with building apps with JavaScript and
+Node.js. You will also need to have Node.js installed at version 8 or higher.
+The npm cli will be installed automatically when you install Node.js. Additionally, you should familiarize yourself with the Podium's [high level concepts](/docs/podium/conceptual_overview.html) and understand [how to build a podlet](/docs/podlets/getting_started.html) with Podium.
 
 ## Step 1: Project setup
 
@@ -59,8 +59,8 @@ _Example_
 const app = express();
 
 const layout = new Layout({
-  name: 'myLayout', // required
-  pathname: '/demo' // required
+    name: 'myLayout', // required
+    pathname: '/demo', // required
 });
 ```
 
@@ -72,8 +72,8 @@ _Example_
 
 ```js
 const podlet = layout.client.register({
-  name: 'myPodlet', // required
-  uri: 'http://localhost:7100/manifest.json' // required
+    name: 'myPodlet', // required
+    uri: 'http://localhost:7100/manifest.json', // required
 });
 ```
 
@@ -81,7 +81,7 @@ The `uri` here should point to the podlet's manifest file, not to its server roo
 
 ## Step 6: Mount middleware
 
-Mount the layout instances middleware into the express app. This important step adds layout specific middleware to the app to take care of such tasks as context parsing and proxying.
+Mount the layout instance's middleware into the express app. This important step adds layout specific middleware to the app to take care of such tasks as context parsing and proxying.
 
 _Example_
 
@@ -93,27 +93,22 @@ app.use(layout.middleware());
 
 This is the route that the layout server will use to return its html page. We create our route using the same `pathname` value we gave the layout constructor.
 
-In our route handler, we grab the Podium context from the response object and hand it to the fetch method of our `podlet` podlet client. This method returns a promise which resolves to be the podlet's content which we can then insert into our page as shown below:
+In our route handler, we grab a request bound instance of HttpIncoming from the response object and hand it to the fetch method of our podlet client. This method returns a promise which resolves to be an object with the podlet's content and additional metadata which we can then insert into our page as shown below:
 
 _Example_
 
 ```js
 app.get('/demo', async (req, res) => {
-  try {
-    const ctx = res.locals.podium.context;
-    const content = await podlet.fetch(ctx);
+    const incoming = res.locals.podium;
+    const response = await podlet.fetch(incoming);
 
-    res.status(200).send(`
-            <html>
-            <head><title>Demo page</title></head>
-            <body>${content}</body>
-            </html>
-        `);
-  } catch (err) {
-    res.sendStatus(500);
-  }
+    incoming.view.title = 'My Super Page';
+
+    res.podiumSend(`<div>${response}</div>`);
 });
 ```
+
+Take note of the use of the `incoming` object to set the page `title`. You can read more about this in the [`HttpIncoming` docs](api/incoming.md)
 
 In a more realistic example, you might fetch content from any number of podlets. Your page might be broken up into podlets representing the page header, footer, sidebar and so on. Since podlets are isolated and independent of each other, we can safely fetch content in parallel.
 
@@ -121,12 +116,12 @@ _Example_
 
 ```js
 app.get('/', (req, res) => {
-    const ctx = res.locals.podium.context;
+    const incoming = res.locals.podium;
     const content = await Promise.all([
-        header.fetch(ctx),
-        sidebar.fetch(ctx),
-        podlet.fetch(ctx),
-        footer.fetch(ctx),
+        header.fetch(incoming),
+        sidebar.fetch(incoming),
+        podlet.fetch(incoming),
+        footer.fetch(incoming),
     ]);
     ...
 });
@@ -173,31 +168,24 @@ const Layout = require('@podium/layout');
 const app = express();
 
 const layout = new Layout({
-  name: 'myLayout',
-  pathname: '/demo'
+    name: 'myLayout',
+    pathname: '/demo',
 });
 
 const podlet = layout.client.register({
-  name: 'myPodlet',
-  uri: 'http://localhost:7100/manifest.json'
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
 });
 
 app.use(layout.middleware());
 
 app.get('/demo', async (req, res) => {
-  try {
-    const ctx = res.locals.podium.context;
-    const content = await podlet.fetch(ctx);
+    const incoming = res.locals.podium;
+    const response = await podlet.fetch(incoming);
 
-    res.status(200).send(`
-            <html>
-            <head><title>Demo page</title></head>
-            <body>${content}</body>
-            </html>
-        `);
-  } catch (err) {
-    res.sendStatus(500);
-  }
+    incoming.view.title = 'My Super Page';
+
+    res.podiumSend(`<div>${response}</div>`);
 });
 
 app.listen(7000);

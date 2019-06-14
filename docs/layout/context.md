@@ -13,8 +13,7 @@ _Example_
 
 ```js
 app.get('/', (req, res) => {
-    const ctx = res.locals.podium.context;
-    const content = await gettingStarted.fetch(ctx);
+    const content = await gettingStarted.fetch(res.locals.podium);
     ...
 });
 ```
@@ -38,7 +37,7 @@ const layout = new Layout({
 
 In this example, we configure the default for the `debug` context parser to be enabled.
 
-See the [@podium/layout](https://github.com/podium-lib/layout/blob/master/README.md) module for more detailed documentation regarding configuring the default context parsers.
+See the [@podium/layout](api/layout.md) api docs for more detailed documentation regarding configuring the default context parsers.
 
 ### Custom context parsers
 
@@ -56,5 +55,3 @@ layout.context.register('my-custom-context', new CustomContext());
 ```
 
 In the example above, once run via layout middleware, a new camelCased value `myCustomContext` will be available on the Podium context. This will then be sent over HTTP as a header with the name `podium-my-custom-context` when fetching podlet content.
-
-See the [@podium/context](https://github.com/podium-lib/context/blob/master/README.md) module for more detailed documentation on how to write and register custom Context parsers.
