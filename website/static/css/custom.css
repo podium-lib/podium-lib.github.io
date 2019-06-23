@@ -15,6 +15,10 @@
 @media only screen and (min-width: 1500px) {
 }
 
+body {
+    overflow-y: scroll;
+}
+
 .podium-front-head {
     background-color: #21371b;
     color: #e7dacb;

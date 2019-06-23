@@ -22,7 +22,7 @@ const users = [
 
 const siteConfig = {
   title: 'Podium', // Title for your website.
-  tagline: 'Microfrontends made easy',
+  tagline: 'Easy server side composition of microfrontends',
   url: 'https://podium-lib.io/', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
