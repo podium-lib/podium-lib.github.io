@@ -34,10 +34,58 @@ plugin is handed an instance of the appropriate Podium module.
 -   To write a podlet server with Hapi; please see [@podium/hapi-podlet]
 -   To write a layout server with Hapi; please see [@podium/hapi-layout]
 -   To write a podlet server with Fastify; please see [@podium/fastify-podlet]
+-   To write a layout server with Fastify; please see [@podium/fastify-layout]
 
 Example of setting up a podlet server in all HTTP frameworks supported by the Podium team:
 
 <!--DOCUSAURUS_CODE_TABS-->
+<!--HTTP-->
+
+```js
+const { HttpIncoming } = require('@podium/utils');
+const Podlet = require('@podium/podlet');
+const http = require('http');
+
+const podlet = new Podlet({
+    name: 'myPodlet',
+    version: '1.0.0',
+    pathname: '/',
+    development: true,
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await podlet.process(incoming);
+
+    if (incoming.url.pathname === podlet.manifest()) {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('podlet-version', podlet.version);
+        res.end(JSON.stringify(podlet));
+        return;
+    }
+
+    if (incoming.url.pathname === podlet.content()) {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/html');
+        res.setHeader('podlet-version', podlet.version);
+
+        if (incoming.context.locale === 'nb-NO') {
+            res.end(podlet.render(incoming, '<h2>Hei verden</h2>'));
+            return;
+        }
+        res.end(podlet.render(incoming, '<h2>Hello world</h2>'));
+        return;
+    }
+
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Not found');
+});
+
+server.listen(7100);
+```
+
 <!--Express-->
 
 ```js
@@ -158,6 +206,7 @@ start();
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 [@podium/fastify-podlet]: https://github.com/podium-lib/fastify-podlet
+[@podium/fastify-layout]: https://github.com/podium-lib/fastify-layout
 [@podium/hapi-podlet]: https://github.com/podium-lib/hapi-podlet
 [@podium/hapi-layout]: https://github.com/podium-lib/hapi-layout
 [http.server]: https://nodejs.org/dist/latest-v12.x/docs/api/http.html#http_class_http_server
