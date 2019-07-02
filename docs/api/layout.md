@@ -408,16 +408,22 @@ app.use(layout.middleware());
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-The middleware will create an [`HttpIncoming`](incoming.md) object for each request and place it on the response at `res.locals.podium`.
+The middleware will create an [`HttpIncoming`](incoming.md) object for each
+request and place it on the response at `res.locals.podium`.
 
-Returns an Array of middleware functions which perform the tasks described above.
+Returns an Array of middleware functions which perform the tasks described
+above.
 
-### .js(options)
+### .js(options|[options])
 
-Sets a URL to where the layout's JavaScript asset are being served. This URL can be relative or absolute.
+Set relative or absolute URLs to JavaScript asset for the layout.
 
-The value will be available for the document template to include. The method can
-be called multiple times to add multiple entries.
+When set the values will be internally kept and made available for the document
+template to include.
+
+The method can be called multiple times with a single options object to set
+multiple assets or one can provide an array of options objects to set multiple
+assets.
 
 #### options
 
@@ -445,9 +451,11 @@ const layout = new Layout({
     pathname: '/',
 });
 
-app.get(layout.js({ value: '/assets/main.js' }), (req, res) => {
+app.get('/assets.js', (req, res) => {
     res.status(200).sendFile('./src/js/main.js', err => {});
 });
+
+layout.js({ value: '/assets.js' });
 ```
 
 <!--Hapi-->
@@ -468,11 +476,13 @@ app.register(require('@hapi/inert'));
 
 app.route({
     method: 'GET',
-    path: layout.js({ value: '/assets/main.js' }),
+    path: '/assets.js',
     handler: (request, h) => {
         return h.file('./src/js/main.js');
     },
 });
+
+layout.js({ value: '/assets.js' });
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
@@ -491,8 +501,10 @@ const layout = new Layout({
 
 app.use('/assets', express.static('./src/js'));
 
-layout.js({ value: '/assets/main.js' });
-layout.js({ value: '/assets/extra.js' });
+layout.js([
+    { value: '/assets/main.js' },
+    { value: '/assets/extra.js' },
+]);
 ```
 
 <!--Hapi-->
@@ -530,8 +542,10 @@ app.route({
     },
 });
 
-layout.js({ value: '/assets/main.js' });
-layout.js({ value: '/assets/extra.js' });
+layout.js([
+    { value: '/assets/main.js' },
+    { value: '/assets/extra.js' },
+]);
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
@@ -580,12 +594,18 @@ The following are valid values:
 The type field provides a hint for further use of the script in the layout. Typically this is used in the
 document template when including the `<script>` tags or when optimizing JavaScript assets with a bundler.
 
-### .css(options)
+### .css(options|[options])
 
-Sets a relative or absolute URL for a CSS (Cascading Style Sheets) asset.
 
-The value will be available for the document template to include. The method can
-be called multiple times to add multiple entries.
+Set relative or absolute URLs to Cascading Style Sheets (CSS) asset for the
+layout.
+
+When set the values will be internally kept and made available for the document
+template to include.
+
+The method can be called multiple times with a single options object to set
+multiple assets or one can provide an array of options objects to set multiple
+assets.
 
 #### options
 
@@ -612,9 +632,11 @@ const layout = new Layout({
     pathname: '/',
 });
 
-app.get(layout.css({ value: '/assets/main.css' }), (req, res) => {
+app.get('/assets.css', (req, res) => {
     res.status(200).sendFile('./src/js/main.css', err => {});
 });
+
+layout.css({ value: '/assets.css' });
 ```
 
 <!--Hapi-->
@@ -635,11 +657,13 @@ app.register(require('@hapi/inert'));
 
 app.route({
     method: 'GET',
-    path: layout.css({ value: '/assets/main.css' }),
+    path: '/assets.css',
     handler: (request, h) => {
         return h.file('./src/js/main.css');
     },
 });
+
+layout.css({ value: '/assets.css' });
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
@@ -658,8 +682,10 @@ const layout = new Layout({
 
 app.use('/assets', express.static('./src/css'));
 
-layout.css({ value: '/assets/main.css' });
-layout.css({ value: '/assets/extra.css' });
+layout.css([
+    { value: '/assets/main.css' },
+    { value: '/assets/extra.css' },
+]);
 ```
 
 <!--Hapi-->
@@ -697,8 +723,10 @@ app.route({
     },
 });
 
-layout.css({ value: '/assets/main.css' });
-layout.css({ value: '/assets/extra.css' });
+layout.css([
+    { value: '/assets/main.css' },
+    { value: '/assets/extra.css' },
+]);
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
