@@ -3,7 +3,8 @@ id: layout
 title: @podium/layout
 ---
 
-Module used for composing HTML pages (layouts) out of page fragments (podlets) in Podium.
+Module used for composing HTML pages (layouts) out of page fragments (podlets)
+in Podium.
 
 A layout server is mainly responsible for fetching HTML fragments and stitching
 these fragments together into an HTML page.
@@ -14,12 +15,14 @@ To do this, a layout instance provides three core features:
 -   A context used to set request bound information on requests from a layout to its podlets when fetching content from them
 -   A proxy that makes it possible to publicly expose podlet data endpoints (or any backend services) via the layout
 
-This module is to be used in conjunction with a Node.js HTTP server. For this, Express js, Hapi and Fastify are all supported.
-It's also possible to write your server using other HTTP frameworks or even just using the core Node.js HTTP libraries.
+This module is to be used in conjunction with a Node.js HTTP server. For this,
+Express js, Hapi and Fastify are all supported. It's also possible to write your
+server using other HTTP frameworks or even just using the core Node.js HTTP
+libraries.
 
 Connect compatible middleware based frameworks (such as [Express]) are
-considered first class in Podium and as such the layout module provides a `.middleware()`
-method for convenience.
+considered first class in Podium and as such the layout module provides a
+`.middleware()` method for convenience.
 
 For writing layout servers with other HTTP frameworks, please see the
 [HTTP Framework Compabillity](api/getting_started.md#http-framework-compabillity)
@@ -179,10 +182,11 @@ const layout = new Layout({
 
 ##### pathname
 
-The Pathname to where the layout is mounted in an HTTP server. It is
-important that this value matches the entry point of the route where content is served in the
-HTTP server since this value is used to mount the proxy and inform podlets
-(through the Podium context) where they are mounted and where the proxy is mounted.
+The Pathname to where the layout is mounted in an HTTP server. It is important
+that this value matches the entry point of the route where content is served in
+the HTTP server since this value is used to mount the proxy and inform podlets
+(through the Podium context) where they are mounted and where the proxy is
+mounted.
 
 If the layout is mounted at the server "root", set the `pathname` to `/`:
 
@@ -416,12 +420,12 @@ above.
 
 ### .js(options|[options])
 
-Set relative or absolute URLs to JavaScript asset for the layout.
+Set relative or absolute URLs to JavaScript assets for the layout.
 
 When set the values will be internally kept and made available for the document
 template to include.
 
-The method can be called multiple times with a single options object to set
+This method can be called multiple times with a single options object to set
 multiple assets or one can provide an array of options objects to set multiple
 assets.
 
@@ -591,19 +595,20 @@ The following are valid values:
 -   `umd` for Universal Module Definition
 -   `default` if the type is unknown.
 
-The type field provides a hint for further use of the script in the layout. Typically this is used in the
-document template when including the `<script>` tags or when optimizing JavaScript assets with a bundler.
+The type field provides a hint for further use of the script in the layout.
+Typically this is used in the document template when including the `<script>`
+tags or when optimizing JavaScript assets with a bundler.
 
 ### .css(options|[options])
 
 
-Set relative or absolute URLs to Cascading Style Sheets (CSS) asset for the
+Set relative or absolute URLs to Cascading Style Sheets (CSS) assets for the
 layout.
 
 When set the values will be internally kept and made available for the document
 template to include.
 
-The method can be called multiple times with a single options object to set
+This method can be called multiple times with a single options object to set
 multiple assets or one can provide an array of options objects to set multiple
 assets.
 
@@ -874,7 +879,8 @@ An instance of the [`HttpIncoming`](incoming.md) class.
 
 #### fragment
 
-A `String` that is intended to be a fragment of the final HTML document. (Everything to be displayed in the HTML body)
+A `String` that is intended to be a fragment of the final HTML document
+(Everything to be displayed in the HTML body).
 
 #### [args]
 
@@ -941,15 +947,16 @@ app.route({
 
 Method for processing an incoming HTTP request. This method is intended to be
 used to implement support for multiple HTTP frameworks and in most cases it
-won't be necessary for layout developers to use this method directly when creating a layout
-server.
+won't be necessary for layout developers to use this method directly when
+creating a layout server.
 
 What it does:
 
 -   Runs context parsers on the incoming request and sets an object with the context at `HttpIncoming.context` which can be passed on to the client when requesting content from podlets.
 -   Mounts a proxy so that each podlet can do transparent proxy requests as needed.
 
-Returns a Promise which will resolve with the [`HttpIncoming`](incoming.md) object that was passed in.
+Returns a Promise which will resolve with the [`HttpIncoming`](incoming.md)
+object that was passed in.
 
 If the inbound request matches a proxy endpoint the returned Promise will
 resolve with a [`HttpIncoming`](incoming.md) object where the `.proxy` property
@@ -1082,7 +1089,8 @@ const podlet = layout.client.register({
 });
 ```
 
-Returns a podlet resource `Object` instance which is also stored on the layout client instance using the registered `name` value as its property name.
+Returns a podlet resource `Object` instance which is also stored on the layout
+client instance using the registered `name` value as its property name.
 
 Example:
 

@@ -1172,13 +1172,13 @@ The prefix will be ignored if the returned value is an absolute URL.
 
 ### .js(options|[options])
 
-Set relative or absolute URLs to JavaScript asset for the podlet.
+Set relative or absolute URLs to JavaScript assets for the podlet.
 
 When set the values will be internally kept and made available for the document
 template to include. The assets set are also made available in the manifest for
-the Layout to consume.
+the layout to consume.
 
-The method can be called multiple times with a single options object to set
+This method can be called multiple times with a single options object to set
 multiple assets or one can provide an array of options objects to set multiple
 assets.
 
@@ -1410,12 +1410,12 @@ bundler when optimizing JavaScript assets.
 
 ### .css(options|[options])
 
-Set relative or absolute URLs to Cascading Style Sheets (CSS) asset for the
+Set relative or absolute URLs to Cascading Style Sheets (CSS) assets for the
 podlet.
 
 When set the values will be internally kept and made available for the document
 template to include. The assets set are also made available in the manifest for
-the Layout to consume.
+the layout to consume.
 
 The method can be called multiple times with a single options object to set
 multiple assets or one can provide an array of options objects to set multiple
