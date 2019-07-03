@@ -1,0 +1,617 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>@podium/layout · Podium</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Module used for composing HTML pages (layouts) out of page fragments (podlets) in Podium.&lt;/p&gt;
+"/><meta name="docsearch:version" content="4.0.0"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="@podium/layout · Podium"/><meta property="og:type" content="website"/><meta property="og:url" content="https://podium-lib.io//"/><meta property="og:description" content="&lt;p&gt;Module used for composing HTML pages (layouts) out of page fragments (podlets) in Podium.&lt;/p&gt;
+"/><meta property="og:image" content="https://podium-lib.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://podium-lib.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon-32x32.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="https://podium-lib.io/blog/atom.xml" title="Podium Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://podium-lib.io/blog/feed.xml" title="Podium Blog RSS Feed"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/favicon-96x96.png" alt="Podium"/><h2 class="headerTitleWithLogo">Podium</h2></a><a href="/versions"><h3>4.0.0</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/4.0.0/podium/conceptual_overview" target="_self">Overview</a></li><li class="siteNavGroupActive"><a href="/docs/4.0.0/podlet/getting_started" target="_self">Podlets</a></li><li class="siteNavGroupActive"><a href="/docs/4.0.0/layout/getting_started" target="_self">Layouts</a></li><li class="siteNavGroupActive"><a href="/docs/4.0.0/api/getting_started" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>API Docs</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/4.0.0/podium/conceptual_overview">Conceptual Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Podlet Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/4.0.0/podlet/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/podlet/fallbacks">Fallbacks</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/podlet/context">Context</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/podlet/proxying">Proxying</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/podlet/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Layout Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/4.0.0/layout/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/layout/context">The Podium Context</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/layout/unavailable_podlets">Handling podlet unavailability</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/layout/dynamic_routes">Passing URL params and query string values to podlets</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/layout/assets">Assets</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/layout/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/4.0.0/api/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/api/incoming">HttpIncoming</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/api/document">Document Template</a></li><li class="navListItem"><a class="navItem" href="/docs/4.0.0/api/podlet">@podium/podlet</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/4.0.0/api/layout">@podium/layout</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">@podium/layout</h1></header><article><div><span><p>Module used for composing HTML pages (layouts) out of page fragments (podlets) in Podium.</p>
+<p>A layout server is mainly responsible for fetching HTML fragments and stitching
+these fragments together into an HTML page.</p>
+<p>To do this, a layout instance provides three core features:</p>
+<ul>
+<li>A client used to fetch content from podlets</li>
+<li>A context used to set request bound information on requests from a layout to its podlets when fetching content from them</li>
+<li>A proxy that makes it possible to publicly expose podlet data endpoints (or any backend services) via the layout</li>
+</ul>
+<p>This module is to be used in conjunction with a Node.js HTTP server. For this, Express js, Hapi and Fastify are all supported.
+It's also possible to write your server using other HTTP frameworks or even just using the core Node.js HTTP libraries.</p>
+<p>Connect compatible middleware based frameworks (such as <a href="https://expressjs.com/" title="Express">Express</a>) are
+considered first class in Podium and as such the layout module provides a <code>.middleware()</code>
+method for convenience.</p>
+<p>For writing layout servers with other HTTP frameworks, please see the
+<a href="/docs/4.0.0/api/getting_started#http-framework-compabillity">HTTP Framework Compabillity</a>
+section.</p>
+<h2><a class="anchor" aria-hidden="true" id="installation"></a><a href="#installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-352-tab-353" class="nav-link active" data-group="group_352" data-tab="tab-group-352-content-353">HTTP / Express</div><div id="tab-group-352-tab-354" class="nav-link" data-group="group_352" data-tab="tab-group-352-content-354">Hapi</div></div><div class="tab-content"><div id="tab-group-352-content-353" class="tab-pane active" data-group="group_352" tabindex="-1"><div><span><pre><code class="hljs css language-bash">$ npm install @podium/layout<br /></code></pre>
+</span></div></div><div id="tab-group-352-content-354" class="tab-pane" data-group="group_352" tabindex="-1"><div><span><pre><code class="hljs css language-bash">$ npm install @podium/layout<br />$ npm install @podium/hapi-layout<br /></code></pre>
+</span></div></div></div></div>
+<h2><a class="anchor" aria-hidden="true" id="getting-started"></a><a href="#getting-started" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Getting started</h2>
+<p>Building a simple layout server including two podlets:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-355-tab-356" class="nav-link active" data-group="group_355" data-tab="tab-group-355-content-356">Express</div><div id="tab-group-355-tab-357" class="nav-link" data-group="group_355" data-tab="tab-group-355-content-357">Hapi</div></div><div class="tab-content"><div id="tab-group-355-content-356" class="tab-pane active" data-group="group_355" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);<br /><span class="hljs-keyword">const</span> Layout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/layout'</span>);<br /><br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> podletA = layout.client.register({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodletA'</span>,<br />    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7100/manifest.json'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> podletB = layout.client.register({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodletB'</span>,<br />    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7200/manifest.json'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> app = express();<br />app.use(layout.middleware());<br /><br />app.get(layout.pathname(), <span class="hljs-keyword">async</span> (req, res, next) =&gt; {<br />    <span class="hljs-keyword">const</span> incoming = res.locals.podium;<br /><br />    <span class="hljs-keyword">const</span> [a, b] = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([<br />        podletA.fetch(incoming),<br />        podletB.fetch(incoming),<br />    ]);<br /><br />    res.podiumSend(<span class="hljs-string">`<br />        &lt;section&gt;<span class="hljs-subst">${a.content}</span>&lt;/section&gt;<br />        &lt;section&gt;<span class="hljs-subst">${b.content}</span>&lt;/section&gt;<br />    `</span>);<br />});<br /><br />app.listen(<span class="hljs-number">7000</span>);<br /></code></pre>
+</span></div></div><div id="tab-group-355-content-357" class="tab-pane" data-group="group_355" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> HapiLayout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/hapi-layout'</span>);<br /><span class="hljs-keyword">const</span> Layout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/layout'</span>);<br /><span class="hljs-keyword">const</span> Hapi = <span class="hljs-built_in">require</span>(<span class="hljs-string">'hapi'</span>);<br /><br /><span class="hljs-keyword">const</span> app = Hapi.Server({<br />    <span class="hljs-attr">host</span>: <span class="hljs-string">'localhost'</span>,<br />    <span class="hljs-attr">port</span>: <span class="hljs-number">7000</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> podletA = layout.client.register({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodletA'</span>,<br />    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7100/manifest.json'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> podletB = layout.client.register({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodletB'</span>,<br />    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7200/manifest.json'</span>,<br />});<br /><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.pathname(),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        <span class="hljs-keyword">const</span> incoming = request.app.podium;<br /><br />        <span class="hljs-keyword">const</span> [a, b] = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([<br />            podletA.fetch(incoming),<br />            podletB.fetch(incoming),<br />        ]);<br /><br />        h.podiumSend(<span class="hljs-string">`<br />            &lt;section&gt;<span class="hljs-subst">${a.content}</span>&lt;/section&gt;<br />            &lt;section&gt;<span class="hljs-subst">${b.content}</span>&lt;/section&gt;<br />        `</span>);<br /><br />    },<br />});<br /><br />app.start();<br /></code></pre>
+</span></div></div></div></div>
+<h2><a class="anchor" aria-hidden="true" id="constructor"></a><a href="#constructor" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constructor</h2>
+<p>Create a new layout instance.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout(options);
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="options"></a><a href="#options" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>options</h4>
+<table>
+<thead>
+<tr><th>option</th><th>type</th><th>default</th><th>required</th><th>details</th></tr>
+</thead>
+<tbody>
+<tr><td>name</td><td><code>string</code></td><td><code>null</code></td><td>✓</td><td>Name that the layout identifies itself by</td></tr>
+<tr><td>pathname</td><td><code>string</code></td><td><code>null</code></td><td>✓</td><td>Pathname of where a layout is mounted in an HTTP server</td></tr>
+<tr><td>logger</td><td><code>object</code></td><td><code>null</code></td><td></td><td>A logger which conforms to the log4j interface</td></tr>
+<tr><td>context</td><td><code>object</code></td><td><code>null</code></td><td></td><td>Options to be passed on to the internal @podium/context constructor</td></tr>
+<tr><td>client</td><td><code>object</code></td><td><code>null</code></td><td></td><td>Options to be passed on to the internal @podium/client constructor</td></tr>
+<tr><td>proxy</td><td><code>object</code></td><td><code>null</code></td><td></td><td>Options to be passed on to the internal @podium/proxy constructor</td></tr>
+</tbody>
+</table>
+<h5><a class="anchor" aria-hidden="true" id="name"></a><a href="#name" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>name</h5>
+<p>The name that the layout identifies itself by. This value must be in camelCase.</p>
+<p>Example:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayoutName'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,
+});
+</code></pre>
+<h5><a class="anchor" aria-hidden="true" id="pathname"></a><a href="#pathname" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>pathname</h5>
+<p>The Pathname to where the layout is mounted in an HTTP server. It is
+important that this value matches the entry point of the route where content is served in the
+HTTP server since this value is used to mount the proxy and inform podlets
+(through the Podium context) where they are mounted and where the proxy is mounted.</p>
+<p>If the layout is mounted at the server &quot;root&quot;, set the <code>pathname</code> to <code>/</code>:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-358-tab-359" class="nav-link active" data-group="group_358" data-tab="tab-group-358-content-359">Express</div><div id="tab-group-358-tab-360" class="nav-link" data-group="group_358" data-tab="tab-group-358-content-360">Hapi</div></div><div class="tab-content"><div id="tab-group-358-content-359" class="tab-pane active" data-group="group_358" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.use(layout.middleware());<br /><br />app.get(<span class="hljs-string">'/'</span>, (req, res, next) =&gt; {<br />    [ ... ]<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-358-content-360" class="tab-pane" data-group="group_358" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = Hapi.Server({<br />    <span class="hljs-attr">host</span>: <span class="hljs-string">'localhost'</span>,<br />    <span class="hljs-attr">port</span>: <span class="hljs-number">7000</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: <span class="hljs-string">'/'</span>,<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        [ ... ]<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<p>If the layout is mounted at <code>/foo</code>, set the <code>pathname</code> to <code>/foo</code>:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-361-tab-362" class="nav-link active" data-group="group_361" data-tab="tab-group-361-content-362">Express</div><div id="tab-group-361-tab-363" class="nav-link" data-group="group_361" data-tab="tab-group-361-content-363">Hapi</div></div><div class="tab-content"><div id="tab-group-361-content-362" class="tab-pane active" data-group="group_361" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,<br />});<br /><br />app.use(<span class="hljs-string">'/foo'</span>, layout.middleware());<br /><br />app.get(<span class="hljs-string">'/foo'</span>, (req, res, next) =&gt; {<br />    [ ... ]<br />});<br /><br />app.get(<span class="hljs-string">'/foo/:id'</span>, (req, res, next) =&gt; {<br />    [ ... ]<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-361-content-363" class="tab-pane" data-group="group_361" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = Hapi.Server({<br />    <span class="hljs-attr">host</span>: <span class="hljs-string">'localhost'</span>,<br />    <span class="hljs-attr">port</span>: <span class="hljs-number">7000</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,<br />});<br /><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: <span class="hljs-string">'/foo'</span>,<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        [ ... ]<br />    },<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: <span class="hljs-string">'/foo/{id}'</span>,<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        [ ... ]<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<p>There is also a helper method for retrieving the set <code>pathname</code> which can be
+used to get the pathname from the layout object when defining routes.
+See <a href="#pathname-1"><code>.pathname()</code></a> for further details.</p>
+<h5><a class="anchor" aria-hidden="true" id="logger"></a><a href="#logger" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>logger</h5>
+<p>Any log4j compatible logger can be passed in and will be used for logging.
+Console is also supported for easy test / development.</p>
+<p>Example:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,
+    <span class="hljs-attr">logger</span>: <span class="hljs-built_in">console</span>,
+});
+</code></pre>
+<p>Under the hood <a href="https://github.com/trygve-lie/abslog" title="abslog">abslog</a> is used to abstract out logging. Please see <a href="https://github.com/trygve-lie/abslog" title="abslog">abslog</a> for
+further details.</p>
+<h5><a class="anchor" aria-hidden="true" id="context"></a><a href="#context" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>context</h5>
+<p>Options to be passed on to the context parsers.</p>
+<table>
+<thead>
+<tr><th>option</th><th>type</th><th>default</th><th>required</th><th>details</th></tr>
+</thead>
+<tbody>
+<tr><td>debug</td><td><code>object</code></td><td><code>null</code></td><td></td><td>Config object passed on to the debug parser</td></tr>
+<tr><td>locale</td><td><code>object</code></td><td><code>null</code></td><td></td><td>Config object passed on to the locale parser</td></tr>
+<tr><td>deviceType</td><td><code>object</code></td><td><code>null</code></td><td></td><td>Config object passed on to the device type parser</td></tr>
+<tr><td>mountOrigin</td><td><code>object</code></td><td><code>null</code></td><td></td><td>Config object passed on to the mount origin parser</td></tr>
+<tr><td>mountPathname</td><td><code>object</code></td><td><code>null</code></td><td></td><td>Config object passed on to the mount pathname parser</td></tr>
+<tr><td>publicPathname</td><td><code>object</code></td><td><code>null</code></td><td></td><td>Config object passed on to the public pathname parser</td></tr>
+</tbody>
+</table>
+<p>Example of setting the <code>debug</code> context to default <code>true</code>:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,
+    <span class="hljs-attr">context</span>: {
+        <span class="hljs-attr">debug</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+        },
+    },
+});
+</code></pre>
+<h5><a class="anchor" aria-hidden="true" id="client"></a><a href="#client" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>client</h5>
+<p>Options to be passed on to the client.</p>
+<table>
+<thead>
+<tr><th>option</th><th>type</th><th>default</th><th>required</th><th>details</th></tr>
+</thead>
+<tbody>
+<tr><td>retries</td><td><code>number</code></td><td><code>4</code></td><td></td><td>Number of times the client should retry settling a version number conflict before terminating</td></tr>
+<tr><td>timeout</td><td><code>number</code></td><td><code>1000</code></td><td></td><td>Default value, in milliseconds, for how long a request should wait before the connection is terminated</td></tr>
+<tr><td>maxAge</td><td><code>number</code></td><td><code>Infinity</code></td><td></td><td>Default value, in milliseconds, for how long manifests should be cached</td></tr>
+</tbody>
+</table>
+<p>Example of setting <code>retries</code> on the client to <code>6</code>:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,
+    <span class="hljs-attr">client</span>: {
+        <span class="hljs-attr">retries</span>: <span class="hljs-number">6</span>,
+    },
+});
+</code></pre>
+<h5><a class="anchor" aria-hidden="true" id="proxy"></a><a href="#proxy" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>proxy</h5>
+<p>Options to be passed on to the proxy.</p>
+<table>
+<thead>
+<tr><th>option</th><th>type</th><th>default</th><th>required</th><th>details</th></tr>
+</thead>
+<tbody>
+<tr><td>prefix</td><td><code>string</code></td><td><code>podium-resource</code></td><td></td><td>Prefix used to namespace the proxy so that it's isolated from other routes in the HTTP server</td></tr>
+<tr><td>timeout</td><td><code>number</code></td><td><code>6000</code></td><td></td><td>Default value, in milliseconds, for how long a request should wait before the connection is terminated</td></tr>
+</tbody>
+</table>
+<p>Example of setting the <code>timeout</code> on the proxy to 30 seconds:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,
+    <span class="hljs-attr">proxy</span>: {
+        <span class="hljs-attr">timeout</span>: <span class="hljs-number">30000</span>,
+    },
+});
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="layout-instance"></a><a href="#layout-instance" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Layout Instance</h2>
+<p>The layout instance has the following API:</p>
+<h3><a class="anchor" aria-hidden="true" id="middleware"></a><a href="#middleware" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.middleware()</h3>
+<p>A Connect/Express compatible middleware function which takes care of the
+various operations needed for a layout to operate correctly. This function is
+more or less just a wrapper for the <code>.process()</code> method.</p>
+<p><strong>Important:</strong> This middleware must be mounted before defining any routes.</p>
+<p>Example</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-364-tab-365" class="nav-link active" data-group="group_364" data-tab="tab-group-364-content-365">Express</div></div><div class="tab-content"><div id="tab-group-364-content-365" class="tab-pane active" data-group="group_364" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br />app.use(layout.middleware());<br /></code></pre>
+</span></div></div></div></div>
+<p>The middleware will create an <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> object for each request and place it on the response at <code>res.locals.podium</code>.</p>
+<p>Returns an Array of middleware functions which perform the tasks described above.</p>
+<h3><a class="anchor" aria-hidden="true" id="jsoptions"></a><a href="#jsoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.js(options)</h3>
+<p>Sets a URL to where the layout's JavaScript asset are being served. This URL can be relative or absolute.</p>
+<p>The value will be available for the document template to include. The method can
+be called multiple times to add multiple entries.</p>
+<h4><a class="anchor" aria-hidden="true" id="options-1"></a><a href="#options-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>options</h4>
+<table>
+<thead>
+<tr><th>option</th><th>type</th><th>default</th><th>required</th><th>details</th></tr>
+</thead>
+<tbody>
+<tr><td>value</td><td><code>string</code></td><td></td><td>✓</td><td>Relative or absolute URL to the JavaScript asset</td></tr>
+<tr><td>prefix</td><td><code>boolean</code></td><td><code>false</code></td><td></td><td>If the <code>pathname</code> defined on the constructor should be applied, if relative, to the <code>value</code></td></tr>
+<tr><td>type</td><td><code>string</code></td><td><code>default</code></td><td></td><td>What type of JavaScript (eg. esm, default, cjs)</td></tr>
+</tbody>
+</table>
+<h5><a class="anchor" aria-hidden="true" id="value"></a><a href="#value" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>value</h5>
+<p>Sets the <code>pathname</code> for the layout's JavaScript assets. This value is usually
+the [URL] at which the layouts's user facing JavaScript is served and can be
+either a URL [pathname] or an absolute URL.</p>
+<p>Serve a javascript file at <code>/assets/main.js</code>:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-366-tab-367" class="nav-link active" data-group="group_366" data-tab="tab-group-366-content-367">Express</div><div id="tab-group-366-tab-368" class="nav-link" data-group="group_366" data-tab="tab-group-366-content-368">Hapi</div></div><div class="tab-content"><div id="tab-group-366-content-367" class="tab-pane active" data-group="group_366" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.get(layout.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.js'</span> }), (req, res) =&gt; {<br />    res.status(<span class="hljs-number">200</span>).sendFile(<span class="hljs-string">'./src/js/main.js'</span>, err =&gt; {});<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-366-content-368" class="tab-pane" data-group="group_366" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = Hapi.Server([ ... ]);<br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.register(<span class="hljs-built_in">require</span>(<span class="hljs-string">'@hapi/inert'</span>));<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.js'</span> }),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        <span class="hljs-keyword">return</span> h.file(<span class="hljs-string">'./src/js/main.js'</span>);<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<p>Serve assets from a static file server and set a relative URI to the JS files:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-369-tab-370" class="nav-link active" data-group="group_369" data-tab="tab-group-369-content-370">Express</div><div id="tab-group-369-tab-371" class="nav-link" data-group="group_369" data-tab="tab-group-369-content-371">Hapi</div></div><div class="tab-content"><div id="tab-group-369-content-370" class="tab-pane active" data-group="group_369" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.use(<span class="hljs-string">'/assets'</span>, express.static(<span class="hljs-string">'./src/js'</span>));<br /><br />layout.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.js'</span> });<br />layout.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/extra.js'</span> });<br /></code></pre>
+</span></div></div><div id="tab-group-369-content-371" class="tab-pane" data-group="group_369" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = Hapi.Server({<br />    <span class="hljs-attr">port</span>: <span class="hljs-number">7000</span>,<br />    <span class="hljs-attr">routes</span>: {<br />        <span class="hljs-attr">files</span>: {<br />            <span class="hljs-attr">relativeTo</span>: <span class="hljs-string">'./src/js/'</span>,<br />        },<br />    },<br />});<br /><br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.register(<span class="hljs-built_in">require</span>(<span class="hljs-string">'@hapi/inert'</span>));<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: <span class="hljs-string">'/assets/{param*}'</span>,<br />    <span class="hljs-attr">handler</span>: {<br />        <span class="hljs-attr">directory</span>: {<br />            <span class="hljs-attr">path</span>: <span class="hljs-string">'.'</span>,<br />            <span class="hljs-attr">redirectToSlash</span>: <span class="hljs-literal">true</span>,<br />        },<br />    },<br />});<br /><br />layout.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.js'</span> });<br />layout.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/extra.js'</span> });<br /></code></pre>
+</span></div></div></div></div>
+<p>Set an absolute URL to where the JavaScript file is located:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,
+});
+
+layout.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">'http://cdn.mysite.com/assets/js/e7rfg76.js'</span> });
+</code></pre>
+<h5><a class="anchor" aria-hidden="true" id="prefix"></a><a href="#prefix" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>prefix</h5>
+<p>Specify whether the method should prefix the return value with the value for
+<code>pathname</code> set in the constructor.</p>
+<p>Return the full pathname, <code>/foo/assets/main.js</code>, to the JavaScript assets:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,
+});
+
+layout.js({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.js'</span>, <span class="hljs-attr">prefix</span>: <span class="hljs-literal">true</span> });
+</code></pre>
+<p>Prefix will be ignored if the returned value is an absolute URL.</p>
+<h5><a class="anchor" aria-hidden="true" id="type"></a><a href="#type" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>type</h5>
+<p>Sets the type for the script which is set. If not set, <code>default</code> will be used.</p>
+<p>The following are valid values:</p>
+<ul>
+<li><code>esm</code> for ECMAScript modules</li>
+<li><code>cjs</code> for CommonJS modules</li>
+<li><code>amd</code> for AMD modules</li>
+<li><code>umd</code> for Universal Module Definition</li>
+<li><code>default</code> if the type is unknown.</li>
+</ul>
+<p>The type field provides a hint for further use of the script in the layout. Typically this is used in the
+document template when including the <code>&lt;script&gt;</code> tags or when optimizing JavaScript assets with a bundler.</p>
+<h3><a class="anchor" aria-hidden="true" id="cssoptions"></a><a href="#cssoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.css(options)</h3>
+<p>Sets a relative or absolute URL for a CSS (Cascading Style Sheets) asset.</p>
+<p>The value will be available for the document template to include. The method can
+be called multiple times to add multiple entries.</p>
+<h4><a class="anchor" aria-hidden="true" id="options-2"></a><a href="#options-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>options</h4>
+<table>
+<thead>
+<tr><th>option</th><th>type</th><th>default</th><th>required</th><th>details</th></tr>
+</thead>
+<tbody>
+<tr><td>value</td><td><code>string</code></td><td></td><td>✓</td><td>Relative or absolute URL to the CSS asset</td></tr>
+<tr><td>prefix</td><td><code>boolean</code></td><td><code>false</code></td><td></td><td>Whether the <code>pathname</code> defined on the constructor should be applied, if relative, to the <code>value</code></td></tr>
+</tbody>
+</table>
+<h5><a class="anchor" aria-hidden="true" id="value-1"></a><a href="#value-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>value</h5>
+<p>Sets the <code>pathname</code> to the layout's CSS assets. This value can be a [URL] at
+which the podlet's user facing CSS is served. It can be a URL [pathname]
+or an absolute URL.</p>
+<p>Serve a CSS file at <code>/assets/main.css</code>:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-372-tab-373" class="nav-link active" data-group="group_372" data-tab="tab-group-372-content-373">Express</div><div id="tab-group-372-tab-374" class="nav-link" data-group="group_372" data-tab="tab-group-372-content-374">Hapi</div></div><div class="tab-content"><div id="tab-group-372-content-373" class="tab-pane active" data-group="group_372" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.get(layout.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.css'</span> }), (req, res) =&gt; {<br />    res.status(<span class="hljs-number">200</span>).sendFile(<span class="hljs-string">'./src/js/main.css'</span>, err =&gt; {});<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-372-content-374" class="tab-pane" data-group="group_372" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = Hapi.Server([ ... ]);<br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.register(<span class="hljs-built_in">require</span>(<span class="hljs-string">'@hapi/inert'</span>));<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.css'</span> }),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        <span class="hljs-keyword">return</span> h.file(<span class="hljs-string">'./src/js/main.css'</span>);<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<p>Serve assets from a static file server and set a relative URI to the CSS files:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-375-tab-376" class="nav-link active" data-group="group_375" data-tab="tab-group-375-content-376">Express</div><div id="tab-group-375-tab-377" class="nav-link" data-group="group_375" data-tab="tab-group-375-content-377">Hapi</div></div><div class="tab-content"><div id="tab-group-375-content-376" class="tab-pane active" data-group="group_375" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.use(<span class="hljs-string">'/assets'</span>, express.static(<span class="hljs-string">'./src/css'</span>));<br /><br />layout.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.css'</span> });<br />layout.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/extra.css'</span> });<br /></code></pre>
+</span></div></div><div id="tab-group-375-content-377" class="tab-pane" data-group="group_375" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = Hapi.Server({<br />    <span class="hljs-attr">port</span>: <span class="hljs-number">7000</span>,<br />    <span class="hljs-attr">routes</span>: {<br />        <span class="hljs-attr">files</span>: {<br />            <span class="hljs-attr">relativeTo</span>: <span class="hljs-string">'./src/css/'</span>,<br />        },<br />    },<br />});<br /><br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.register(<span class="hljs-built_in">require</span>(<span class="hljs-string">'@hapi/inert'</span>));<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: <span class="hljs-string">'/assets/{param*}'</span>,<br />    <span class="hljs-attr">handler</span>: {<br />        <span class="hljs-attr">directory</span>: {<br />            <span class="hljs-attr">path</span>: <span class="hljs-string">'.'</span>,<br />            <span class="hljs-attr">redirectToSlash</span>: <span class="hljs-literal">true</span>,<br />        },<br />    },<br />});<br /><br />layout.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.css'</span> });<br />layout.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/extra.css'</span> });<br /></code></pre>
+</span></div></div></div></div>
+<p>Set an absolute URL to where the CSS file is located:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,
+});
+
+layout.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">'http://cdn.mysite.com/assets/css/3ru39ur.css'</span> });
+</code></pre>
+<h5><a class="anchor" aria-hidden="true" id="prefix-1"></a><a href="#prefix-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>prefix</h5>
+<p>Sets whether the method should prefix the return value with the <code>pathname</code> value
+that was set in the constructor.</p>
+<p>Returns the full pathname (<code>/foo/assets/main.css</code>) to the CSS asset being added:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,
+});
+
+layout.css({ <span class="hljs-attr">value</span>: <span class="hljs-string">'/assets/main.css'</span>, <span class="hljs-attr">prefix</span>: <span class="hljs-literal">true</span> });
+</code></pre>
+<p>Prefix will be ignored if the returned value is an absolute URL</p>
+<h3><a class="anchor" aria-hidden="true" id="pathname-1"></a><a href="#pathname-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.pathname()</h3>
+<p>A helper method used to retrieve the <code>pathname</code> value that was set in the
+constructor. This can be handy when defining routes since the <code>pathname</code>
+set in the constructor must also be the base path for the layout's main content
+route</p>
+<p>Example:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-378-tab-379" class="nav-link active" data-group="group_378" data-tab="tab-group-378-content-379">Express</div><div id="tab-group-378-tab-380" class="nav-link" data-group="group_378" data-tab="tab-group-378-content-380">Hapi</div></div><div class="tab-content"><div id="tab-group-378-content-379" class="tab-pane active" data-group="group_378" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,<br />});<br /><br />app.get(layout.pathname(), (req, res, next) =&gt; {<br />    [ ... ]<br />});<br /><br />app.get(<span class="hljs-string">`<span class="hljs-subst">${layout.pathname()}</span>/bar`</span>, (req, res, next) =&gt; {<br />    [ ... ]<br />});<br /><br />app.get(<span class="hljs-string">`<span class="hljs-subst">${layout.pathname()}</span>/bar/:id`</span>, (req, res, next) =&gt; {<br />    [ ... ]<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-378-content-380" class="tab-pane" data-group="group_378" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/foo'</span>,<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.pathname(),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        [ ... ]<br />    },<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: <span class="hljs-string">`<span class="hljs-subst">${layout.pathname()}</span>/bar`</span>,<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        [ ... ]<br />    },<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: <span class="hljs-string">`<span class="hljs-subst">${layout.pathname()}</span>/bar/{id}`</span>,<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        [ ... ]<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<h3><a class="anchor" aria-hidden="true" id="viewtemplate"></a><a href="#viewtemplate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.view(template)</h3>
+<p>Sets the default encapsulating HTML document template.</p>
+<p>Takes a template function that accepts an instance of HttpIncoming, a content
+string as well as any additional markup for the document's head section:</p>
+<pre><code class="hljs css language-js">(incoming, body, head) =&gt; <span class="hljs-string">`Return an HTML string here`</span>;
+</code></pre>
+<p>In practice this might look something like:</p>
+<pre><code class="hljs css language-js">layout.view(<span class="hljs-function">(<span class="hljs-params">incoming, body, head</span>) =&gt;</span> <span class="hljs-string">`&lt;!doctype html&gt;
+&lt;html lang="<span class="hljs-subst">${incoming.context.locale}</span>"&gt;
+    &lt;head&gt;
+        &lt;meta charset="<span class="hljs-subst">${incoming.view.encoding}</span>"&gt;
+        &lt;title&gt;<span class="hljs-subst">${incoming.view.title}</span>&lt;/title&gt;
+        <span class="hljs-subst">${head}</span>
+    &lt;/head&gt;
+    &lt;body&gt;
+        <span class="hljs-subst">${body}</span>
+    &lt;/body&gt;
+&lt;/html&gt;`</span>;
+);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="renderhttpincoming-fragment-args"></a><a href="#renderhttpincoming-fragment-args" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.render(HttpIncoming, fragment, [args])</h3>
+<p>Method to render the document template. By default this will render the docment
+template provided by Podium unless a custom document template is set by using
+the <code>.view</code> method.</p>
+<p>In most HTTP frameworks this method can be ignored in favour of
+<code>res.podiumSend()</code>. If present, <code>res.podiumSend()</code> has the advantage that it's
+not necessary to pass in <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> as the first argument.</p>
+<p>Returns a <code>String</code>.</p>
+<p>This method takes the following arguments:</p>
+<h4><a class="anchor" aria-hidden="true" id="httpincoming-required"></a><a href="#httpincoming-required" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HttpIncoming (required)</h4>
+<p>An instance of the <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> class.</p>
+<h4><a class="anchor" aria-hidden="true" id="fragment"></a><a href="#fragment" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fragment</h4>
+<p>A <code>String</code> that is intended to be a fragment of the final HTML document. (Everything to be displayed in the HTML body)</p>
+<h4><a class="anchor" aria-hidden="true" id="args"></a><a href="#args" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>[args]</h4>
+<p>All following arguments given to the method will be passed on to the document
+template.</p>
+<p>Additional arguments could be used to pass on parts of a page to the document
+template as shown:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-381-tab-382" class="nav-link active" data-group="group_381" data-tab="tab-group-381-content-382">Express</div><div id="tab-group-381-tab-383" class="nav-link" data-group="group_381" data-tab="tab-group-381-content-383">Hapi</div></div><div class="tab-content"><div id="tab-group-381-content-382" class="tab-pane active" data-group="group_381" tabindex="-1"><div><span><pre><code class="hljs css language-js">layout.view = <span class="hljs-function">(<span class="hljs-params">incoming, body, head</span>) =&gt;</span> {<br />    <span class="hljs-keyword">return</span> <span class="hljs-string">`<br />        &lt;html&gt;<br />            &lt;head&gt;<span class="hljs-subst">${head}</span>&lt;/head&gt;<br />            &lt;body&gt;<span class="hljs-subst">${body}</span>&lt;/body&gt;<br />        &lt;/html&gt;<br />    `</span>;<br />};<br /><br />app.get(layout.pathname(), (req, res) =&gt; {<br />    <span class="hljs-keyword">const</span> incoming = res.locals.podium;<br /><br />    <span class="hljs-keyword">const</span> head = <span class="hljs-string">`&lt;meta ..... /&gt;`</span>;<br />    <span class="hljs-keyword">const</span> body = <span class="hljs-string">`&lt;section&gt;my content&lt;/section&gt;`</span>;<br /><br />    <span class="hljs-keyword">const</span> <span class="hljs-built_in">document</span> = layout.render(incoming, body, head);<br /><br />    res.send(<span class="hljs-built_in">document</span>);<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-381-content-383" class="tab-pane" data-group="group_381" tabindex="-1"><div><span><pre><code class="hljs css language-js">layout.view = <span class="hljs-function">(<span class="hljs-params">incoming, body, head</span>) =&gt;</span> {<br />    <span class="hljs-keyword">return</span> <span class="hljs-string">`<br />        &lt;html&gt;<br />            &lt;head&gt;<span class="hljs-subst">${head}</span>&lt;/head&gt;<br />            &lt;body&gt;<span class="hljs-subst">${body}</span>&lt;/body&gt;<br />        &lt;/html&gt;<br />    `</span>;<br />};<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.pathname(),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        <span class="hljs-keyword">const</span> incoming = request.app.podium;<br /><br />        <span class="hljs-keyword">const</span> head = <span class="hljs-string">`&lt;meta ..... /&gt;`</span>;<br />        <span class="hljs-keyword">const</span> body = <span class="hljs-string">`&lt;section&gt;my content&lt;/section&gt;`</span>;<br /><br />        <span class="hljs-keyword">return</span> layout.render(incoming, body, head);<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<h3><a class="anchor" aria-hidden="true" id="processhttpincoming"></a><a href="#processhttpincoming" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.process(HttpIncoming)</h3>
+<p>Method for processing an incoming HTTP request. This method is intended to be
+used to implement support for multiple HTTP frameworks and in most cases it
+won't be necessary for layout developers to use this method directly when creating a layout
+server.</p>
+<p>What it does:</p>
+<ul>
+<li>Runs context parsers on the incoming request and sets an object with the context at <code>HttpIncoming.context</code> which can be passed on to the client when requesting content from podlets.</li>
+<li>Mounts a proxy so that each podlet can do transparent proxy requests as needed.</li>
+</ul>
+<p>Returns a Promise which will resolve with the <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> object that was passed in.</p>
+<p>If the inbound request matches a proxy endpoint the returned Promise will
+resolve with a <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> object where the <code>.proxy</code> property
+is set to <code>true</code>.</p>
+<p>This method takes the following arguments:</p>
+<h4><a class="anchor" aria-hidden="true" id="httpincoming-required-1"></a><a href="#httpincoming-required-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HttpIncoming (required)</h4>
+<p>An instance of the <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> class.</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-384-tab-385" class="nav-link active" data-group="group_384" data-tab="tab-group-384-content-385">HTTP</div></div><div class="tab-content"><div id="tab-group-384-content-385" class="tab-pane active" data-group="group_384" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> { HttpIncoming } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/utils'</span>);<br /><span class="hljs-keyword">const</span> Layout = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@podium/layout'</span>);<br /><br /><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> server = http.createServer(<span class="hljs-keyword">async</span> (req, res) =&gt; {<br />    <span class="hljs-keyword">const</span> incoming = <span class="hljs-keyword">new</span> HttpIncoming(req, res);<br /><br />    <span class="hljs-keyword">try</span> {<br />        <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> layout.process(incoming);<br />        <span class="hljs-keyword">if</span> (result.proxy) <span class="hljs-keyword">return</span>;<br /><br />        res.statusCode = <span class="hljs-number">200</span>;<br />        res.setHeader(<span class="hljs-string">'Content-Type'</span>, <span class="hljs-string">'application/json'</span>);<br />        res.end(<span class="hljs-built_in">JSON</span>.stringify(result));<br />    } <span class="hljs-keyword">catch</span> (error) {<br />        res.statusCode = <span class="hljs-number">500</span>;<br />        res.setHeader(<span class="hljs-string">'Content-Type'</span>, <span class="hljs-string">'text/plain'</span>);<br />        res.end(<span class="hljs-string">'Internal server error'</span>);<br />    }<br />});<br /></code></pre>
+</span></div></div></div></div>
+<h3><a class="anchor" aria-hidden="true" id="client-1"></a><a href="#client-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.client</h3>
+<p>A property that exposes an instance of the client for retrieving content from
+podlets.</p>
+<p>Example of registering two podlets and retrieving their content:</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-386-tab-387" class="nav-link active" data-group="group_386" data-tab="tab-group-386-content-387">Express</div><div id="tab-group-386-tab-388" class="nav-link" data-group="group_386" data-tab="tab-group-386-content-388">Hapi</div></div><div class="tab-content"><div id="tab-group-386-content-387" class="tab-pane active" data-group="group_386" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> podletA = layout.client.register({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodletA'</span>,<br />    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7100/manifest.json'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> podletB = layout.client.register({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodletB'</span>,<br />    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7200/manifest.json'</span>,<br />});<br /><br />app.get(layout.pathname(), <span class="hljs-keyword">async</span> (req, res, next) =&gt; {<br />    <span class="hljs-keyword">const</span> incoming = res.locals.podium;<br /><br />    <span class="hljs-keyword">const</span> [a, b] = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([<br />        podletA.fetch(incoming),<br />        podletB.fetch(incoming),<br />    ]);<br /><br />    [ ... ]<br />});<br /><br />app.listen(<span class="hljs-number">7000</span>);<br /></code></pre>
+</span></div></div><div id="tab-group-386-content-388" class="tab-pane" data-group="group_386" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,<br />    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> podletA = layout.client.register({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodletA'</span>,<br />    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7100/manifest.json'</span>,<br />});<br /><br /><span class="hljs-keyword">const</span> podletB = layout.client.register({<br />    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodletB'</span>,<br />    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7200/manifest.json'</span>,<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.pathname(),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        <span class="hljs-keyword">const</span> incoming = request.app.podium;<br /><br />        <span class="hljs-keyword">const</span> [a, b] = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([<br />            podletA.fetch(incoming),<br />            podletB.fetch(incoming),<br />        ]);<br /><br />        [ ... ]<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<h3><a class="anchor" aria-hidden="true" id="clientregisteroptions"></a><a href="#clientregisteroptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.client.register(options)</h3>
+<p>Registers a podlet such that the podlet's content can later be fetched.</p>
+<p>Example:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> podlet = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myPodlet'</span>,
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7100/manifest.json'</span>,
+});
+</code></pre>
+<p>Returns a podlet resource <code>Object</code> instance which is also stored on the layout client instance using the registered <code>name</code> value as its property name.</p>
+<p>Example:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,
+});
+
+layout.client.register({
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://foo.site.com/manifest.json'</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'fooBar'</span>,
+});
+layout.client.fooBar.fetch();
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="options-required"></a><a href="#options-required" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>options (required)</h4>
+<table>
+<thead>
+<tr><th>option</th><th>type</th><th>default</th><th>required</th><th>details</th></tr>
+</thead>
+<tbody>
+<tr><td>uri</td><td><code>string</code></td><td></td><td>✓</td><td>Uri to the manifest of a podlet</td></tr>
+<tr><td>name</td><td><code>string</code></td><td></td><td>✓</td><td>Name of the component. This is used to reference the component in your application, and does not have to match the name of the component itself</td></tr>
+<tr><td>retries</td><td><code>number</code></td><td><code>4</code></td><td></td><td>The number of times the client should retry to settle a version number conflict before terminating. Overrides the <code>retries</code> option in the layout constructor</td></tr>
+<tr><td>timeout</td><td><code>number</code></td><td><code>1000</code></td><td></td><td>Defines how long, in milliseconds, a request should wait before the connection is terminated. Overrides the <code>timeout</code> option in the layout constructor</td></tr>
+<tr><td>throwable</td><td><code>boolean</code></td><td><code>false</code></td><td></td><td>Defines whether an error should be thrown if a failure occurs during the process of fetching a podlet</td></tr>
+<tr><td>resolveJs</td><td><code>boolean</code></td><td><code>false</code></td><td></td><td>Defines whether to resolve relative URIs to absolute URIs for JavaScript assets</td></tr>
+<tr><td>resolveCss</td><td><code>boolean</code></td><td><code>false</code></td><td></td><td>Defines whether to resolve relative URIs to absolute URIs for CSS assets</td></tr>
+</tbody>
+</table>
+<h3><a class="anchor" aria-hidden="true" id="clientrefresh"></a><a href="#clientrefresh" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.client.refresh()</h3>
+<p>This method will refresh a resource by reading its manifest and fallback
+if defined in the manifest. The method will not call the content URI
+of a component.</p>
+<p>If the internal cache in the client already has a manifest cached, this will
+be thrown away and replaced when the new manifest is successfully fetched. If a
+new manifest cannot be successfully fetched, the old manifest will be kept in
+cache.</p>
+<p>If a manifest is successfully fetched, this method will resolve with a <code>true</code>
+value. If a manifest is not successfully fetched, it will resolve with <code>false</code>.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> podlet = layout.client.register({
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://foo.site.com/manifest.json'</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'foo'</span>,
+});
+
+<span class="hljs-keyword">const</span> status = <span class="hljs-keyword">await</span> podlet.refresh();
+
+<span class="hljs-built_in">console</span>.log(status); <span class="hljs-comment">// true</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="clientrefreshmanifests"></a><a href="#clientrefreshmanifests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.client.refreshManifests()</h3>
+<p>Refreshes the manifests of all registered resources. Does so by calling the
+<code>.refresh()</code> method on all resources under the hood.</p>
+<pre><code class="hljs css language-js">layout.client.register({
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://foo.site.com/manifest.json'</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'foo'</span>,
+});
+
+layout.client.register({
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://bar.site.com/manifest.json'</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'bar'</span>,
+});
+
+<span class="hljs-keyword">await</span> layout.client.refreshManifests();
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="clientstate"></a><a href="#clientstate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.client.state</h3>
+<p>What state the client is in. See the section
+&quot;<a href="#podlet-update-life-cycle">Podlet update life cycle</a>&quot; for more information.</p>
+<p>The value will be one of the following values:</p>
+<ul>
+<li><code>instantiated</code> - When a <code>Client</code> has been instantiated but no requests to any podlets have been made.</li>
+<li><code>initializing</code> - When one or more podlets are requested for the first time.</li>
+<li><code>unstable</code> - When an update of a podlet is detected and the layout is in the process of re-fetching the manifest.</li>
+<li><code>stable</code> - When all registered podlets are using cached manifests and only fetching content.</li>
+<li><code>unhealthy</code> - When an podlet update never settled.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="context-1"></a><a href="#context-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.context</h3>
+<p>A property that exposes the instance of the @podium/context used to create the
+context.</p>
+<p>Example of registering a custom third party context parser with the context
+instance:</p>
+<p>Register a custom parser for a value that should be appended to the Context.</p>
+<p>Example of registering a custom third party context parser to the context:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> Parser = <span class="hljs-built_in">require</span>(<span class="hljs-string">'my-custom-parser'</span>);
+
+<span class="hljs-keyword">const</span> layout = <span class="hljs-keyword">new</span> Layout({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'myLayout'</span>,
+    <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/'</span>,
+});
+
+layout.context.register(<span class="hljs-string">'customParser'</span>, <span class="hljs-keyword">new</span> Parser(<span class="hljs-string">'someConfig'</span>));
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="name-required"></a><a href="#name-required" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>name (required)</h4>
+<p>A unique name for the parser. Used as the key for the parser's value in the
+context.</p>
+<h4><a class="anchor" aria-hidden="true" id="parser-required"></a><a href="#parser-required" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>parser (required)</h4>
+<p>The parser object to be registered.</p>
+<h3><a class="anchor" aria-hidden="true" id="metrics"></a><a href="#metrics" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.metrics</h3>
+<p>Property that exposes a metric stream. This stream joins all internal metrics
+streams into one stream resulting in all metrics from all sub modules being
+exposed here.</p>
+<p>See <a href="https://github.com/metrics-js/metric" title="@metrics/metric">@metrics/metric</a> for full documentation.</p>
+<h3><a class="anchor" aria-hidden="true" id="events"></a><a href="#events" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Events</h3>
+<p>The Client instance emits the following events:</p>
+<h4><a class="anchor" aria-hidden="true" id="state"></a><a href="#state" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>state</h4>
+<p>When there is a change in state. See the section
+&quot;<a href="#podlet-update-life-cycle">Podlet update life cycle</a>&quot; for more information.</p>
+<pre><code class="hljs css language-js">layout.client.on(<span class="hljs-string">'state'</span>, state =&gt; {
+    <span class="hljs-built_in">console</span>.log(state);
+});
+
+<span class="hljs-keyword">const</span> podlet = layout.client.register({
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://foo.site.com/manifest.json'</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'foo'</span>,
+});
+
+podlet.fetch();
+</code></pre>
+<p>The event will fire with one the following values:</p>
+<ul>
+<li><code>instantiated</code> - When a <code>Client</code> has been instantiated but no requests to any podlets have been made.</li>
+<li><code>initializing</code> - When one or multiple podlets are requested for the very first time.</li>
+<li><code>unstable</code> - When an update of a podlet is detected and is in the process of refetching the manifest.</li>
+<li><code>stable</code> - When all registered podlets are using cached manifests and only fetching content.</li>
+<li><code>unhealthy</code> - When an update of a podlet never settled.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="podlet-resource-instance"></a><a href="#podlet-resource-instance" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Podlet Resource Instance</h2>
+<p>A registered podlet is stored in a Podium resource object.</p>
+<p>The Podium resource object contains methods for retrieving the content of a
+podlet. The URI of the content of a component is defined in the
+component's manifest. This is the content root of the component.</p>
+<p>A Podium resource object has the following API:</p>
+<h3><a class="anchor" aria-hidden="true" id="fetchhttpincoming-options"></a><a href="#fetchhttpincoming-options" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.fetch(HttpIncoming, options)</h3>
+<p>Fetches the content of the podlet. Returns a <code>Promise</code> which resolves with a
+response object containing the keys <code>content</code>, <code>headers</code>, <code>css</code> and <code>js</code>.</p>
+<h4><a class="anchor" aria-hidden="true" id="httpincoming-required-2"></a><a href="#httpincoming-required-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HttpIncoming (required)</h4>
+<p>An <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> object. This is normally provided by the
+&quot;middleware&quot; which runs on the incoming request to the layout prior to the
+process of fetching podlets.</p>
+<p>The <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> object is normally found on a request bound
+property of the request or response object.</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-389-tab-390" class="nav-link active" data-group="group_389" data-tab="tab-group-389-content-390">Express</div><div id="tab-group-389-tab-391" class="nav-link" data-group="group_389" data-tab="tab-group-389-content-391">Hapi</div></div><div class="tab-content"><div id="tab-group-389-content-390" class="tab-pane active" data-group="group_389" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br /><br /><span class="hljs-comment">// Creates HttpIncoming and stores it on res.locals.podium</span><br />app.use(layout.middleware());<br /><br />app.get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">async</span> (req, res, next) =&gt; {<br />    <span class="hljs-comment">// Get HttpIncoming</span><br />    <span class="hljs-keyword">const</span> incoming = res.locals.podium;<br /><br />    <span class="hljs-keyword">const</span> pod = <span class="hljs-keyword">await</span> podlet.fetch(incoming);<br />    res.podiumSend(<span class="hljs-string">`<br />        &lt;section&gt;<span class="hljs-subst">${pod.content}</span>&lt;/section&gt;<br />    `</span>);<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-389-content-391" class="tab-pane" data-group="group_389" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = Hapi.Server({<br />    <span class="hljs-attr">host</span>: <span class="hljs-string">'localhost'</span>,<br />    <span class="hljs-attr">port</span>: <span class="hljs-number">7000</span>,<br />});<br /><br /><span class="hljs-comment">// Creates HttpIncoming and stores it on request.app.podium</span><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.pathname(),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-keyword">await</span> (request, h) =&gt; {<br /><br />        <span class="hljs-comment">// Get HttpIncoming</span><br />        <span class="hljs-keyword">const</span> incoming = request.app.podium;<br /><br />        <span class="hljs-keyword">const</span> pod = <span class="hljs-keyword">await</span> podlet.fetch(incoming);<br /><br />        h.podiumSend(<span class="hljs-string">`<br />            &lt;section&gt;<span class="hljs-subst">${pod.content}</span>&lt;/section&gt;<br />        `</span>);<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<h4><a class="anchor" aria-hidden="true" id="options-optional"></a><a href="#options-optional" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>options (optional)</h4>
+<table>
+<thead>
+<tr><th>option</th><th>type</th><th>default</th><th>required</th><th>details</th></tr>
+</thead>
+<tbody>
+<tr><td>pathname</td><td><code>string</code></td><td></td><td></td><td>A path which will be appended to the content root of the podlet when requested</td></tr>
+<tr><td>headers</td><td><code>object</code></td><td></td><td></td><td>An Object which will be appended as HTTP headers to the request to fetch the podlets's content</td></tr>
+<tr><td>query</td><td><code>object</code></td><td></td><td></td><td>An Object which will be appended as query parameters to the request to fetch the podlets's content</td></tr>
+</tbody>
+</table>
+<h4><a class="anchor" aria-hidden="true" id="return-value"></a><a href="#return-value" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>return value</h4>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> component.fetch();
+<span class="hljs-built_in">console</span>.log(result.content);
+<span class="hljs-built_in">console</span>.log(result.headers);
+<span class="hljs-built_in">console</span>.log(result.js);
+<span class="hljs-built_in">console</span>.log(result.css);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="streamhttpincoming-options"></a><a href="#streamhttpincoming-options" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.stream(HttpIncoming, options)</h3>
+<p>Streams the content of the component. Returns a <code>ReadableStream</code> which streams
+the content of the component. Before the stream starts flowing a <code>beforeStream</code>
+event with a response object, containing <code>headers</code>, <code>css</code> and <code>js</code> references is
+emitted.</p>
+<h4><a class="anchor" aria-hidden="true" id="httpincoming-required-3"></a><a href="#httpincoming-required-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HttpIncoming (required)</h4>
+<p>An <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> object. This is normally provided by the
+middleware which runs on the incoming request to the layout prior to the
+process of fetching podlets.</p>
+<p>The <a href="/docs/4.0.0/api/incoming"><code>HttpIncoming</code></a> object is normally found on a request
+bound property of the request or response object.</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-392-tab-393" class="nav-link active" data-group="group_392" data-tab="tab-group-392-content-393">Express</div><div id="tab-group-392-tab-394" class="nav-link" data-group="group_392" data-tab="tab-group-392-content-394">Hapi</div></div><div class="tab-content"><div id="tab-group-392-content-393" class="tab-pane active" data-group="group_392" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br />app.use(layout.middleware());<br /><br />app.get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">async</span> (req, res, next) =&gt; {<br />    <span class="hljs-keyword">const</span> incoming = res.locals.podium;<br /><br />    <span class="hljs-keyword">const</span> stream = component.stream(incoming);<br />    stream.pipe(res);<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-392-content-394" class="tab-pane" data-group="group_392" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = Hapi.Server({<br />    <span class="hljs-attr">host</span>: <span class="hljs-string">'localhost'</span>,<br />    <span class="hljs-attr">port</span>: <span class="hljs-number">7000</span>,<br />});<br /><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.pathname(),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        <span class="hljs-keyword">const</span> incoming = request.app.podium;<br /><br />        <span class="hljs-keyword">const</span> stream = component.stream(incoming);<br />        <span class="hljs-keyword">return</span> h.response(stream);<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<h4><a class="anchor" aria-hidden="true" id="options-optional-1"></a><a href="#options-optional-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>options (optional)</h4>
+<table>
+<thead>
+<tr><th>option</th><th>type</th><th>default</th><th>required</th><th>details</th></tr>
+</thead>
+<tbody>
+<tr><td>pathname</td><td><code>string</code></td><td></td><td></td><td>A path which will be appended to the content root of the podlet when requested</td></tr>
+<tr><td>headers</td><td><code>object</code></td><td></td><td></td><td>An object which will be appended as HTTP headers to the request to fetch the podlets's content</td></tr>
+<tr><td>query</td><td><code>object</code></td><td></td><td></td><td>An object which will be appended as query parameters to the request to fetch the podlets's content</td></tr>
+</tbody>
+</table>
+<h4><a class="anchor" aria-hidden="true" id="event-beforestream"></a><a href="#event-beforestream" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Event: beforeStream</h4>
+<p>A <code>beforeStream</code> event is emitted before the stream starts flowing. A response
+object with keys <code>headers</code>, <code>js</code> and <code>css</code> is emitted with the event.</p>
+<p><code>headers</code> will always contain the response headers from the podlet. If the
+resource manifest defines JavaScript assets, <code>js</code> will contain the value from
+the manifest file otherwise <code>js</code> will be an empty string. If the resource
+manifest defines CSS assets, <code>css</code> will contain the value from the manifest file
+otherwise <code>css</code> will be an empty string.</p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-395-tab-396" class="nav-link active" data-group="group_395" data-tab="tab-group-395-content-396">Express</div><div id="tab-group-395-tab-397" class="nav-link" data-group="group_395" data-tab="tab-group-395-content-397">Hapi</div></div><div class="tab-content"><div id="tab-group-395-content-396" class="tab-pane active" data-group="group_395" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = express();<br />app.use(layout.middleware());<br /><br />app.get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">async</span> (req, res, next) =&gt; {<br />    <span class="hljs-keyword">const</span> incoming = res.locals.podium;<br /><br />    <span class="hljs-keyword">const</span> stream = component.stream(incoming);<br />    stream.once(<span class="hljs-string">'beforeStream'</span>, data =&gt; {<br />        <span class="hljs-built_in">console</span>.log(data.headers);<br />        <span class="hljs-built_in">console</span>.log(data.css);<br />        <span class="hljs-built_in">console</span>.log(data.js);<br />    });<br /><br />    stream.pipe(res);<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-395-content-397" class="tab-pane" data-group="group_395" tabindex="-1"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> app = Hapi.Server({<br />    <span class="hljs-attr">host</span>: <span class="hljs-string">'localhost'</span>,<br />    <span class="hljs-attr">port</span>: <span class="hljs-number">7000</span>,<br />});<br /><br />app.register({<br />    <span class="hljs-attr">plugin</span>: <span class="hljs-keyword">new</span> HapiLayout(),<br />    <span class="hljs-attr">options</span>: layout,<br />});<br /><br />app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.pathname(),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        <span class="hljs-keyword">const</span> incoming = request.app.podium;<br /><br />        <span class="hljs-keyword">const</span> stream = component.stream(incoming);<br />        stream.once(<span class="hljs-string">'beforeStream'</span>, data =&gt; {<br />            <span class="hljs-built_in">console</span>.log(data.headers);<br />            <span class="hljs-built_in">console</span>.log(data.css);<br />            <span class="hljs-built_in">console</span>.log(data.js);<br />        });<br /><br />        <span class="hljs-keyword">return</span> h.response(stream);<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+<h3><a class="anchor" aria-hidden="true" id="name-1"></a><a href="#name-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.name</h3>
+<p>A property returning the name of the Podium resource. This is the name provided
+during the call to <code>register</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="uri"></a><a href="#uri" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.uri</h3>
+<p>A property returning the location of the Podium resource.</p>
+<h2><a class="anchor" aria-hidden="true" id="respodiumsendfragment"></a><a href="#respodiumsendfragment" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>res.podiumSend(fragment)</h2>
+<p>Method on the <code>http.ServerResponse</code> object for sending HTML fragments. Calls
+the send / write method on the <code>http.ServerResponse</code> object.</p>
+<p>This method wraps the provided fragment in a default HTML document before
+dispatching. You can use the <code>.view()</code> method to disable using a template or to
+set a custom template.</p>
+<p><em>Example of sending an HTML fragment:</em></p>
+<div class="tabs"><div class="nav-tabs"><div id="tab-group-398-tab-399" class="nav-link active" data-group="group_398" data-tab="tab-group-398-content-399">Express</div><div id="tab-group-398-tab-400" class="nav-link" data-group="group_398" data-tab="tab-group-398-content-400">Hapi</div></div><div class="tab-content"><div id="tab-group-398-content-399" class="tab-pane active" data-group="group_398" tabindex="-1"><div><span><pre><code class="hljs css language-js">app.get(layout.pathname(), (req, res) =&gt; {<br />    res.podiumSend(<span class="hljs-string">'&lt;h1&gt;Hello World&lt;/h1&gt;'</span>);<br />});<br /></code></pre>
+</span></div></div><div id="tab-group-398-content-400" class="tab-pane" data-group="group_398" tabindex="-1"><div><span><pre><code class="hljs css language-js">app.route({<br />    <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,<br />    <span class="hljs-attr">path</span>: layout.pathname(),<br />    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">request, h</span>) =&gt;</span> {<br />        <span class="hljs-keyword">return</span> h.podiumSend(<span class="hljs-string">'&lt;h2&gt;Hello world&lt;/h2&gt;'</span>);<br />    },<br />});<br /></code></pre>
+</span></div></div></div></div>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 6/13/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/4.0.0/api/podlet"><span class="arrow-prev">← </span><span>@podium/podlet</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#installation">Installation</a></li><li><a href="#getting-started">Getting started</a></li><li><a href="#constructor">Constructor</a></li><li><a href="#layout-instance">Layout Instance</a><ul class="toc-headings"><li><a href="#middleware">.middleware()</a></li><li><a href="#jsoptions">.js(options)</a></li><li><a href="#cssoptions">.css(options)</a></li><li><a href="#pathname-1">.pathname()</a></li><li><a href="#viewtemplate">.view(template)</a></li><li><a href="#renderhttpincoming-fragment-args">.render(HttpIncoming, fragment, [args])</a></li><li><a href="#processhttpincoming">.process(HttpIncoming)</a></li><li><a href="#client-1">.client</a></li><li><a href="#clientregisteroptions">.client.register(options)</a></li><li><a href="#clientrefresh">.client.refresh()</a></li><li><a href="#clientrefreshmanifests">.client.refreshManifests()</a></li><li><a href="#clientstate">.client.state</a></li><li><a href="#context-1">.context</a></li><li><a href="#metrics">.metrics</a></li><li><a href="#events">Events</a></li></ul></li><li><a href="#podlet-resource-instance">Podlet Resource Instance</a><ul class="toc-headings"><li><a href="#fetchhttpincoming-options">.fetch(HttpIncoming, options)</a></li><li><a href="#streamhttpincoming-options">.stream(HttpIncoming, options)</a></li><li><a href="#name-1">.name</a></li><li><a href="#uri">.uri</a></li></ul></li><li><a href="#respodiumsendfragment">res.podiumSend(fragment)</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon-96x96.png" alt="Podium" width="66" height="58"/></a><div><h5>Documentation</h5><a href="/docs/podium/conceptual_overview">Conceptual overview</a><a href="/docs/podlet/getting_started">Podlets</a><a href="/docs/layout/getting_started">Layouts</a></div><div><h5>API</h5><a href="/docs/api/getting_started">Getting started</a><a href="/docs/api/podlet">Podlets</a><a href="/docs/api/layout">Layouts</a></div><div><h5>Links</h5><a href="/blog">Blog</a><a href="https://github.com/podium-lib/issues">Issues</a><a href="https://github.com/podium-lib">GitHub</a><a href="https://www.npmjs.com/org/podium">npm</a><a href="https://micro-frontends.org/">Micro Frontends</a></div></section><a href="https://finn.no/" target="_blank" rel="noreferrer noopener" class="copyrightLogo"><img src="/img/finn_no_logo.png" alt="FINN.no" width="129" height="45"/></a><section class="copyright">Copyright © 2019 FINN.no Copyright</section></footer></div></body></html>
