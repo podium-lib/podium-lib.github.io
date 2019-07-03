@@ -1170,16 +1170,17 @@ podlet.fallback({ prefix: true });
 
 The prefix will be ignored if the returned value is an absolute URL.
 
-### .js(options)
+### .js(options|[options])
 
-Sets a relative or absolute URL to a JavaScript asset for the podlet.
+Set relative or absolute URLs to JavaScript assets for the podlet.
 
-When a value is set it will be internally kept and used when the podlet
-instance is serialized into a manifest JSON string. The value will also be
-available for the document template to include. The method can be called
-multiple times to set multiple values.
+When set the values will be internally kept and made available for the document
+template to include. The assets set are also made available in the manifest for
+the layout to consume.
 
-Returns the value of the `value` options property.
+This method can be called multiple times with a single options object to set
+multiple assets or one can provide an array of options objects to set multiple
+assets.
 
 #### options
 
@@ -1208,9 +1209,11 @@ const podlet = new Podlet({
     pathname: '/',
 });
 
-app.get(podlet.js({ value: '/assets/main.js' }), (req, res) => {
+app.get('/assets.js', (req, res) => {
     res.status(200).sendFile('./src/js/main.js', err => {});
 });
+
+podlet.js({ value: '/assets.js' });
 ```
 
 <!--Hapi-->
@@ -1232,11 +1235,13 @@ app.register(require('@hapi/inert'));
 
 app.route({
     method: 'GET',
-    path: podlet.js({ value: '/assets/main.js' }),
+    path: '/assets.js',
     handler: (request, h) => {
         return h.file('./src/js/main.js');
     },
 });
+
+podlet.js({ value: '/assets.js' });
 ```
 
 <!--Fastify-->
@@ -1255,9 +1260,11 @@ app.register(require('fastify-static'), {
     root: './src/js/',
 });
 
-app.get(podlet.js({ value: '/public/js/main.js' }), (request, reply) => {
+app.get('/assets.js', (request, reply) => {
     reply.sendFile('main.js');
 });
+
+podlet.js({ value: '/assets.js' });
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
@@ -1278,8 +1285,10 @@ const podlet = new Podlet({
 
 app.use('/assets', express.static('./src/js'));
 
-podlet.js({ value: '/assets/main.js' });
-podlet.js({ value: '/assets/extra.js' });
+podlet.js([
+    { value: '/assets/main.js' },
+    { value: '/assets/extra.js' },
+]);
 ```
 
 <!--Hapi-->
@@ -1318,8 +1327,10 @@ app.route({
     },
 });
 
-podlet.js({ value: '/assets/main.js' });
-podlet.js({ value: '/assets/extra.js' });
+podlet.js([
+    { value: '/assets/main.js' },
+    { value: '/assets/extra.js' },
+]);
 ```
 
 <!--Fastify-->
@@ -1342,8 +1353,10 @@ app.get('/assets/:file', (request, reply) => {
     reply.sendFile(request.params.file);
 });
 
-podlet.js({ value: '/assets/main.js' });
-podlet.js({ value: '/assets/extra.js' });
+podlet.js([
+    { value: '/assets/main.js' },
+    { value: '/assets/extra.js' },
+]);
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
@@ -1395,16 +1408,18 @@ The type is a hint for further use of the script. This is normally used by the
 document template to print correct `<script>` tag or to give a hint to a
 bundler when optimizing JavaScript assets.
 
-### .css(options)
+### .css(options|[options])
 
-Sets a relative or absolute URL to a Cascading Style Sheets (CSS) asset.
+Set relative or absolute URLs to Cascading Style Sheets (CSS) assets for the
+podlet.
 
-When a value is set it will be internally kept and used when the podlet
-instance is serialized into a manifest JSON string. The value will also be
-available for the document template to include. The method can be called
-multiple times to set multiple values.
+When set the values will be internally kept and made available for the document
+template to include. The assets set are also made available in the manifest for
+the layout to consume.
 
-Returns the value of the `value` options property.
+The method can be called multiple times with a single options object to set
+multiple assets or one can provide an array of options objects to set multiple
+assets.
 
 #### options
 
@@ -1432,9 +1447,11 @@ const podlet = new Podlet({
     pathname: '/',
 });
 
-app.get(podlet.css({ value: '/assets/main.css' }), (req, res) => {
+app.get('/assets.css', (req, res) => {
     res.status(200).sendFile('./src/css/main.css', err => {});
 });
+
+podlet.css({ value: '/assets.css' });
 ```
 
 <!--Hapi-->
@@ -1456,11 +1473,13 @@ app.register(require('@hapi/inert'));
 
 app.route({
     method: 'GET',
-    path: podlet.css({ value: '/assets/main.css' }),
+    path: '/assets.css',
     handler: (request, h) => {
         return h.file('./src/css/main.css');
     },
 });
+
+podlet.css({ value: '/assets.css' });
 ```
 
 <!--Fastify-->
@@ -1479,9 +1498,11 @@ app.register(require('fastify-static'), {
     root: './src/css/',
 });
 
-app.get(podlet.css({ value: '/public/css/main.css' }), (request, reply) => {
+app.get('/assets.css', (request, reply) => {
     reply.sendFile('main.css');
 });
+
+podlet.css({ value: '/assets.css' });
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
@@ -1502,8 +1523,10 @@ const podlet = new Podlet({
 
 app.use('/assets', express.static('./src/css'));
 
-podlet.css({ value: '/assets/main.css' });
-podlet.css({ value: '/assets/extra.css' });
+podlet.css([
+    { value: '/assets/main.css' },
+    { value: '/assets/extra.css' },
+]);
 ```
 
 <!--Hapi-->
@@ -1542,8 +1565,10 @@ app.route({
     },
 });
 
-podlet.css({ value: '/assets/main.css' });
-podlet.css({ value: '/assets/extra.css' });
+podlet.css([
+    { value: '/assets/main.css' },
+    { value: '/assets/extra.css' },
+]);
 ```
 
 <!--Fastify-->
@@ -1566,8 +1591,10 @@ app.get('/assets/:file', (request, reply) => {
     reply.sendFile(request.params.file);
 });
 
-podlet.css({ value: '/assets/main.css' });
-podlet.css({ value: '/assets/extra.css' });
+podlet.css([
+    { value: '/assets/main.css' },
+    { value: '/assets/extra.css' },
+]);
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
