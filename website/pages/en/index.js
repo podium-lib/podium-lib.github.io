@@ -119,19 +119,19 @@ class Index extends React.Component {
         {[
           {
             title: 'Autonomous development',
-            content: 'By adopting a simple manifest, teams can develop and serve parts of a web page in isolation as if one where developing and hosting a full site. These isolated parts, aka Podlets, can easily be developed in any technology stack.',
+            content: 'By adopting a simple manifest, teams can develop and serve parts of a web page in isolation as if one where developing and hosting a full site. These isolated parts, aka Podlets, can easily be developed in any technology stack or one can opt in to using the node.js Podium library with your favorite http framework of choice.',
             // image: `${baseUrl}img/undraw_operating_system.svg`,
             // imageAlign: 'top',
           },
           {
-            title: 'Powerfull composition',
-            content: 'Podium makes it easy, and yet flexible, to compose parts developed in isolation into full complex pages, aka Layouts. Page compostion is done programmatically instead of through config or markup providing developers with much more power and freedom to make compostion suit every need one might have.',
+            title: 'Powerful composition',
+            content: 'Podium makes it easy, yet flexible, to compose parts developed in isolation into full complex pages, aka Layouts. Page compostion is done programmatically instead of through config or markup providing much more power and freedom to make compostion suit every need one might have.',
             // image: `${baseUrl}img/undraw_operating_system.svg`,
             // imageAlign: 'top',
           },
           {
             title: 'Contract based',
-            content: 'Composition with Podium is done over HTTP but between the isolated parts and the composition layer there is a strong contract. This contract ensures that the isolated parts always has a set of key, request bound, properties which can be of value to them to operate while the composition layer has usefull info about each isolated part it can use when composing.',
+            content: 'Composition with Podium is done over HTTP but between the isolated parts and the composition layer there is a strong contract. This ensures that the isolated parts always has a set of key, request bound, properties which can be of value to them to operate while the composition layer has usefull info about each isolated part it can use when composing.',
             // image: `${baseUrl}img/undraw_operating_system.svg`,
             // imageAlign: 'top',
           },
