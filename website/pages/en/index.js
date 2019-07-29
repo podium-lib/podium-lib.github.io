@@ -119,7 +119,7 @@ class Index extends React.Component {
         {[
           {
             title: 'Autonomous development',
-            content: 'By adopting a simple manifest, teams can develop and serve parts of a web page in isolation as if one where developing and hosting a full site. These isolated parts, aka Podlets, can easily be developed in any technology stack or one can opt in to using the node.js Podium library with your favorite http framework of choice.',
+            content: 'By adopting a simple manifest, teams can develop and serve parts of a web page in isolation as if one where developing and hosting a full site. These isolated parts, aka Podlets, can easily be developed in any technology stack or one can opt in to using the node.js Podium library with your favorite HTTP framework of choice.',
             image: `${baseUrl}img/isolation_min.svg`,
             imageAlign: 'top',
           },
