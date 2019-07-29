@@ -118,22 +118,22 @@ class Index extends React.Component {
       <Block layout="fourColumn">
         {[
           {
-            title: 'Efficient development',
-            content: 'Teams need not bother with setting up and maintaining a full web-plattform. They can focus on delivering awesome business features. Podium will also take care of shared challenges such as asset bundling.',
-            // image: `${baseUrl}img/undraw_operating_system.svg`,
-            // imageAlign: 'top',
+            title: 'Autonomous development',
+            content: 'By adopting a simple manifest, teams can develop and serve parts of a web page in isolation as if one where developing and hosting a full site. These isolated parts, aka Podlets, can easily be developed in any technology stack or one can opt in to using the node.js Podium library with your favorite HTTP framework of choice.',
+            image: `${baseUrl}img/isolation_min.svg`,
+            imageAlign: 'top',
           },
           {
-            title: 'Editorial separation',
-            content: 'Webpages should consist of content from different domains and teams. Which features that belong together is an editorial responsibility, where the focus should be providing a great experience for our users.',
-            // image: `${baseUrl}img/undraw_operating_system.svg`,
-            // imageAlign: 'top',
+            title: 'Powerful composition',
+            content: 'Podium makes it easy, yet flexible, to compose parts developed in isolation into full complex pages, aka Layouts. Page compostion is done programmatically instead of through config or markup providing much more power and freedom to make compostion suit every need one might have.',
+            image: `${baseUrl}img/composed_min.svg`,
+            imageAlign: 'top',
           },
           {
-            title: 'Feature isolation',
-            content: 'Given that we are able to provide great abstractions and clear boundaries, teams should be able to experience isolation of their own features. This should make it easier for them to write testable and reusable features of high quality, and make it easy for them to iterate fast.',
-            // image: `${baseUrl}img/undraw_operating_system.svg`,
-            // imageAlign: 'top',
+            title: 'Contract based',
+            content: 'Composition with Podium is done over HTTP but between the isolated parts and the composition layer there is a strong contract. This ensures that the isolated parts always has a set of key, request bound, properties which can be of value to them to operate while the composition layer has usefull info about each isolated part it can use when composing.',
+            image: `${baseUrl}img/contract_min.svg`,
+            imageAlign: 'top',
           },
         ]}
       </Block>

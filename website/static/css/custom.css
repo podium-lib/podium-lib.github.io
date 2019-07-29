@@ -35,7 +35,12 @@ body {
 }
 /* End: Navigation styling */
 
-
+/* Start: Frontpage icons styling */
+.gridBlock .imageAlignTop .blockImage {
+    max-width: 200px;
+    margin-bottom: 0;
+}
+/* End: Frontpage icons styling */
 
 .podium-front-head {
     background-color: #21371b;
