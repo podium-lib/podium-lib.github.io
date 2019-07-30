@@ -344,6 +344,41 @@ app.route({
 });
 ```
 
+<!--Fastify-->
+
+```js
+const app = fastify();
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.get('/', async (request, reply) => {
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    if (incoming.url.pathname === '/') {
+        [ ... ]
+    }
+});
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 If the layout is mounted at `/foo`, set the `pathname` to `/foo`:
@@ -401,6 +436,49 @@ app.route({
     handler: (request, h) => {
         [ ... ]
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const app = fastify();
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+app.register(fastifyLayout, layout);
+
+app.get('/foo', async (request, reply) => {
+    [ ... ]
+});
+
+app.get('/foo/:id', async (request, reply) => {
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    if (incoming.url.pathname === '/foo') {
+        [ ... ]
+    }
+
+    if (incoming.url.pathname.startsWith('/foo/')) {
+        [ ... ]
+    }
 });
 ```
 
