@@ -35,24 +35,11 @@ podlet content is placed into the `<body>` section of the document:
 
 ## Rendering
 
-A document template is used by calling the `.render()` or `res.podiumSend()`
-methods in the [podlet](api/podlet.md) and [layout](api/podlet.md) modules.
+A document template is used by calling the `.render()` methods in the [podlet](api/podlet.md)
+and [layout](api/podlet.md) modules or the `res.podiumSend()` provided by the
+HTTP framework in use.
 
 <!--DOCUSAURUS_CODE_TABS-->
-<!--HTTP-->
-
-```js
-const server = http.createServer(async (req, res) => {
-    const incoming = new HttpIncoming(req, res);
-
-    const document = layout.render(incoming, '<div>content to render</div>');
-
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.end(document);
-});
-```
-
 <!--Express-->
 
 ```js
@@ -86,6 +73,19 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
+<!--HTTP-->
+
+```js
+const server = http.createServer(async (req, res) => {
+    const incoming = new HttpIncoming(req, res);
+
+    const document = layout.render(incoming, '<div>content to render</div>');
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(document);
+});
+```
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Customizing
@@ -121,24 +121,6 @@ It is possible to pass on properties to the document template by using the
 `.view` property on [`HttpIncoming`](incoming.md).
 
 <!--DOCUSAURUS_CODE_TABS-->
-<!--HTTP-->
-
-```js
-const server = http.createServer(async (req, res) => {
-    const incoming = new HttpIncoming(req, res);
-
-    incoming.view = {
-        title: `My Site / ${someRequestValue}`,
-    };
-
-    const document = layout.render(incoming, '<div>content to render</div>');
-
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.end(document);
-});
-```
-
 <!--Express-->
 
 ```js
@@ -187,6 +169,24 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
+<!--HTTP-->
+
+```js
+const server = http.createServer(async (req, res) => {
+    const incoming = new HttpIncoming(req, res);
+
+    incoming.view = {
+        title: `My Site / ${someRequestValue}`,
+    };
+
+    const document = layout.render(incoming, '<div>content to render</div>');
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(document);
+});
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## template(HttpIncoming, fragment, [args])
@@ -214,32 +214,6 @@ The following is an example of how such additional arguments might be used to pa
 template.
 
 <!--DOCUSAURUS_CODE_TABS-->
-<!--HTTP-->
-
-```js
-layout.view = (incoming, body, head) => {
-    return `
-        <html>
-            <head>${head}</head>
-            <body>${body}</body>
-        </html>
-    `;
-};
-
-const server = http.createServer(async (req, res) => {
-    const incoming = new HttpIncoming(req, res);
-
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
-
-    const document = layout.render(incoming, body, head);
-
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.end(document);
-});
-```
-
 <!--Express-->
 
 ```js
@@ -311,6 +285,32 @@ app.get(layout.pathname(), (req, res) => {
     const document = layout.render(incoming, body, head);
 
     reply.send(document);
+});
+```
+
+<!--HTTP-->
+
+```js
+layout.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+const server = http.createServer(async (req, res) => {
+    const incoming = new HttpIncoming(req, res);
+
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
+
+    const document = layout.render(incoming, body, head);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(document);
 });
 ```
 

@@ -28,64 +28,6 @@ created for you under the hood and passed on as a property on the request
 between the different parts of the request/response life cycle of the HTTP framework.
 
 <!--DOCUSAURUS_CODE_TABS-->
-<!--HTTP-->
-
-```js
-const { HttpIncoming } = require('@podium/utils');
-const Layout = require('@podium/layout');
-const http = require('http');
-
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
-});
-
-const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
-});
-
-// Set up a document template which take HttpIncoming and a body content.
-// This template will be used when .render() is called in a request.
-layout.view = (incoming, body) => {
-    return `
-        <html>
-            <head><title>${incoming.view.title}</title></head>
-            <body>${body}</body>
-        </html>
-    `;
-};
-
-const server = http.createServer(async (req, res) => {
-    // Create a HttpIncoming object
-    let incoming = new HttpIncoming(req, res);
-
-    // Set a view property on HttpIncoming. This can now be used in the
-    // document template or anywhere one have access to HttpIncoming.
-    incoming.view = {
-        title: 'My pretty site',
-    };
-
-    // Pass HttpIncoming on to the layout processor. This will generate
-    // the context and store it on HttpIncoming among other things
-    incoming = await layout.process(incoming);
-
-    // Pass HttpIncoming on to the fetch method. This will pass the generated
-    // context on to the request to the podlet.
-    const { content } = await podlet.fetch(incoming);
-
-    // Pass HttpIncoming and the content of the podlet to the render method.
-    // This will now call the document template set on the layout.view property.
-    const html = layout.render(incoming, content);
-
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.end(html);
-});
-
-server.listen(7000);
-```
-
 <!--Express-->
 
 ```js
@@ -273,6 +215,65 @@ const start = async () => {
 }
 start();
 ```
+
+<!--HTTP-->
+
+```js
+const { HttpIncoming } = require('@podium/utils');
+const Layout = require('@podium/layout');
+const http = require('http');
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+// Set up a document template which take HttpIncoming and a body content.
+// This template will be used when .render() is called in a request.
+layout.view = (incoming, body) => {
+    return `
+        <html>
+            <head><title>${incoming.view.title}</title></head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+const server = http.createServer(async (req, res) => {
+    // Create a HttpIncoming object
+    let incoming = new HttpIncoming(req, res);
+
+    // Set a view property on HttpIncoming. This can now be used in the
+    // document template or anywhere one have access to HttpIncoming.
+    incoming.view = {
+        title: 'My pretty site',
+    };
+
+    // Pass HttpIncoming on to the layout processor. This will generate
+    // the context and store it on HttpIncoming among other things
+    incoming = await layout.process(incoming);
+
+    // Pass HttpIncoming on to the fetch method. This will pass the generated
+    // context on to the request to the podlet.
+    const { content } = await podlet.fetch(incoming);
+
+    // Pass HttpIncoming and the content of the podlet to the render method.
+    // This will now call the document template set on the layout.view property.
+    const html = layout.render(incoming, content);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(html);
+});
+
+server.listen(7000);
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Constructor
@@ -329,37 +330,6 @@ then pass the results of these operations on to a context parser.
 The locale context parser does this when setting the request bound locale value:
 
 <!--DOCUSAURUS_CODE_TABS-->
-<!--HTTP-->
-
-```js
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
-});
-
-const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
-});
-
-const server = http.createServer(async (req, res) => {
-    // Create a HttpIncoming object and set a locale param to 'nb-NO'
-    let incoming = new HttpIncoming(req, res, {
-        locale: 'nb-NO',
-    });
-
-    // Pass HttpIncoming on to the layout processor. This will generate
-    // the context where the local parser will read the locale parameter
-    // from HttpIncoming.
-    incoming = await layout.process(incoming);
-
-    // Pass HttpIncoming on to the fetch method. This will pass the generated
-    // context where locale now is `nb-NO` on to the request to the podlet.
-    const { content } = await podlet.fetch(incoming);
-
-    [ ... snip ...]
-});
-```
 
 <!--Express-->
 
@@ -493,6 +463,39 @@ app.get(layout.pathname(), async (request, reply) => {
     [ ... snip ...]
 });
 ```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    // Create a HttpIncoming object and set a locale param to 'nb-NO'
+    let incoming = new HttpIncoming(req, res, {
+        locale: 'nb-NO',
+    });
+
+    // Pass HttpIncoming on to the layout processor. This will generate
+    // the context where the local parser will read the locale parameter
+    // from HttpIncoming.
+    incoming = await layout.process(incoming);
+
+    // Pass HttpIncoming on to the fetch method. This will pass the generated
+    // context where locale now is `nb-NO` on to the request to the podlet.
+    const { content } = await podlet.fetch(incoming);
+
+    [ ... snip ...]
+});
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ## Properties
