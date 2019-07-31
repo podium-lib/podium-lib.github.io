@@ -677,6 +677,54 @@ app.route({
 layout.js({ value: '/assets.js' });
 ```
 
+<!--Fastify-->
+
+```js
+const app = fastify();
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.register(require('fastify-static'), {
+    root: './src/js/',
+});
+
+app.get('/assets.js', (request, reply) => {
+    reply.sendFile('main.js');
+});
+
+layout.js({ value: '/assets.js' });
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    if (incoming.url.pathname === '/assets.js') {
+        fs.readFile('./src/js/assets.js', (error, data) => {
+            res.statusCode = 200;
+            res.setHeader('Content-type', 'text/javascript' );
+            res.end(data);
+        });
+        return;
+    }
+
+    [ ... ]
+});
+
+layout.js({ value: '/assets.js' });
+```
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Serve assets from a static file server and set a relative URI to the JS files:
@@ -732,6 +780,66 @@ app.route({
             redirectToSlash: true,
         },
     },
+});
+
+layout.js([
+    { value: '/assets/main.js' },
+    { value: '/assets/extra.js' },
+]);
+```
+
+<!--Fastify-->
+
+```js
+const app = fastify();
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.register(require('fastify-static'), {
+    root: './src/js/',
+});
+
+app.get('/assets/:file', (request, reply) => {
+    reply.sendFile(request.params.file);
+});
+
+layout.js([
+    { value: '/assets/main.js' },
+    { value: '/assets/extra.js' },
+]);
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const { pathname } = incoming.url;
+
+    if (pathname.startsWith('/assets/')) {
+        const file = pathname.substring(pathname.lastIndexOf('/'));
+        const sanitizedFile = path.normalize(file).replace(/^(\.\.[\/\\])+/, '');
+
+        fs.readFile(`./src/js/${sanitizedFile}`, (error, data) => {
+            res.statusCode = 200;
+            res.setHeader('Content-type', 'text/javascript' );
+            res.end(data);
+        });
+        return;
+    }
+
+    [ ... ]
 });
 
 layout.js([
