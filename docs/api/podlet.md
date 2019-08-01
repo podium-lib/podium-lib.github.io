@@ -1184,11 +1184,10 @@ assets.
 
 #### options
 
-| option | type      | default   | required | details                                                                                     |
-| ------ | --------- | --------- | -------- | ------------------------------------------------------------------------------------------- |
-| value  | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset                                            |
-| prefix | `boolean` | `false`   |          | If the `pathname` defined in the constructor should be applied, if relative, to the `value` |
-| type   | `string`  | `default` |          | What type of JavaScript                                                                     |
+| option | type      | default   | required | details                                          |
+| ------ | --------- | --------- | -------- | ------------------------------------------------ |
+| value  | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset |
+| type   | `string`  | `default` |          | What type of JavaScript (eg. esm, default, cjs)  |
 
 ##### value
 
@@ -1373,25 +1372,6 @@ const podlet = new Podlet({
 podlet.js({ value: 'http://cdn.mysite.com/assets/js/e7rfg76.js' });
 ```
 
-##### prefix
-
-Specify whether the method should prefix the return value with the value for
-`pathname` that was set in the constructor.
-
-Return the full pathname, `/foo/assets/main.js`, to the JavaScript assets:
-
-```js
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-});
-
-podlet.js({ value: '/assets/main.js', prefix: true });
-```
-
-Prefix will be ignored if the returned value is an absolute URL.
-
 ##### type
 
 Set the type of script which is set. If not set, `default` will be used.
@@ -1423,10 +1403,9 @@ assets.
 
 #### options
 
-| option | type      | default | required | details                                                                                     |
-| ------ | --------- | ------- | -------- | ------------------------------------------------------------------------------------------- |
-| value  | `string`  |         | &check;  | Relative or absolute URL to the CSS asset                                                   |
-| prefix | `boolean` | `false` |          | If the `pathname` defined in the constructor should be applied, if relative, to the `value` |
+| option | type      | default | required | details                                   |
+| ------ | --------- | ------- | -------- | ----------------------------------------- |
+| value  | `string`  |         | &check;  | Relative or absolute URL to the CSS asset |
 
 ##### value
 
@@ -1610,25 +1589,6 @@ const podlet = new Podlet({
 
 podlet.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
 ```
-
-##### prefix
-
-Sets whether the method should prefix the return value with the value for
-`pathname` set in the constructor.
-
-Returns the full pathname (`/foo/assets/main.css`) to the CSS assets:
-
-```js
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-});
-
-podlet.css({ value: '/assets/main.css', prefix: true });
-```
-
-Prefix will be ignored if the returned value is an absolute URL.
 
 ### .proxy({ target, name })
 
