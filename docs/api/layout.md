@@ -542,10 +542,9 @@ assets.
 #### options
 
 | option | type      | default   | required | details                                                                                     |
-| ------ | --------- | --------- | -------- | ------------------------------------------------------------------------------------------- |
-| value  | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset                                            |
-| prefix | `boolean` | `false`   |          | If the `pathname` defined on the constructor should be applied, if relative, to the `value` |
-| type   | `string`  | `default` |          | What type of JavaScript (eg. esm, default, cjs)                                             |
+| ------ | --------- | --------- | -------- | ------------------------------------------------ |
+| value  | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset |
+| type   | `string`  | `default` |          | What type of JavaScript (eg. esm, default, cjs)  |
 
 ##### value
 
@@ -675,24 +674,6 @@ const layout = new Layout({
 layout.js({ value: 'http://cdn.mysite.com/assets/js/e7rfg76.js' });
 ```
 
-##### prefix
-
-Specify whether the method should prefix the return value with the value for
-`pathname` set in the constructor.
-
-Return the full pathname, `/foo/assets/main.js`, to the JavaScript assets:
-
-```js
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-});
-
-layout.js({ value: '/assets/main.js', prefix: true });
-```
-
-Prefix will be ignored if the returned value is an absolute URL.
-
 ##### type
 
 Sets the type for the script which is set. If not set, `default` will be used.
@@ -711,7 +692,6 @@ tags or when optimizing JavaScript assets with a bundler.
 
 ### .css(options|[options])
 
-
 Set relative or absolute URLs to Cascading Style Sheets (CSS) assets for the
 layout.
 
@@ -724,10 +704,9 @@ assets.
 
 #### options
 
-| option | type      | default | required | details                                                                                          |
-| ------ | --------- | ------- | -------- | ------------------------------------------------------------------------------------------------ |
-| value  | `string`  |         | &check;  | Relative or absolute URL to the CSS asset                                                        |
-| prefix | `boolean` | `false` |          | Whether the `pathname` defined on the constructor should be applied, if relative, to the `value` |
+| option | type      | default | required | details                                   |
+| ------ | --------- | ------- | -------- | ----------------------------------------- |
+| value  | `string`  |         | &check;  | Relative or absolute URL to the CSS asset |
 
 ##### value
 
@@ -856,24 +835,6 @@ const layout = new Layout({
 
 layout.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
 ```
-
-##### prefix
-
-Sets whether the method should prefix the return value with the `pathname` value
-that was set in the constructor.
-
-Returns the full pathname (`/foo/assets/main.css`) to the CSS asset being added:
-
-```js
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-});
-
-layout.css({ value: '/assets/main.css', prefix: true });
-```
-
-Prefix will be ignored if the returned value is an absolute URL
 
 ### .pathname()
 
