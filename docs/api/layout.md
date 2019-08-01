@@ -1233,6 +1233,55 @@ app.route({
 });
 ```
 
+<!--Fastify-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+app.get(layout.pathname(), async (request, reply) => {
+    [ ... ]
+});
+
+app.get(`${layout.pathname()}/bar`, async (request, reply) => {
+    [ ... ]
+});
+
+app.get(`${layout.pathname()}/bar/:id`, async (request, reply) => {
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const { pathname } = incoming.url;
+
+    if (pathname === layout.pathname()) {
+        [ ... ]
+    }
+
+    if (pathname === `${layout.pathname()}/bar`) {
+        [ ... ]
+    }
+
+    if (pathname.startsWith(`${layout.pathname()}/bar/`)) {
+        [ ... ]
+    }
+});
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .view(template)
