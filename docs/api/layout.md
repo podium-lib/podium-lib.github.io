@@ -712,7 +712,7 @@ const server = http.createServer(async (req, res) => {
     incoming = await layout.process(incoming);
 
     if (incoming.url.pathname === '/assets.js') {
-        fs.readFile('./src/js/assets.js', (error, data) => {
+        fs.readFile('./src/js/main.js', (error, data) => {
             res.statusCode = 200;
             res.setHeader('Content-type', 'text/javascript' );
             res.end(data);
@@ -897,7 +897,6 @@ tags or when optimizing JavaScript assets with a bundler.
 
 ### .css(options|[options])
 
-
 Set relative or absolute URLs to Cascading Style Sheets (CSS) assets for the
 layout.
 
@@ -967,6 +966,55 @@ app.route({
 layout.css({ value: '/assets.css' });
 ```
 
+<!--Fastify-->
+
+```js
+const app = fastify();
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.register(require('fastify-static'), {
+    root: './src/css/',
+});
+
+app.get('/assets.css', (request, reply) => {
+    reply.sendFile('main.css');
+});
+
+layout.css({ value: '/assets.css' });
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    if (incoming.url.pathname === '/assets.css') {
+        fs.readFile('./src/js/main.css', (error, data) => {
+            res.statusCode = 200;
+            res.setHeader('Content-type', 'text/javascript' );
+            res.end(data);
+        });
+        return;
+    }
+
+    [ ... ]
+});
+
+layout.css({ value: '/assets.css' });
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Serve assets from a static file server and set a relative URI to the CSS files:
@@ -1022,6 +1070,66 @@ app.route({
             redirectToSlash: true,
         },
     },
+});
+
+layout.css([
+    { value: '/assets/main.css' },
+    { value: '/assets/extra.css' },
+]);
+```
+
+<!--Fastify-->
+
+```js
+const app = fastify();
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.register(require('fastify-static'), {
+    root: './src/css/',
+});
+
+app.get('/assets/:file', (request, reply) => {
+    reply.sendFile(request.params.file);
+});
+
+layout.css([
+    { value: '/assets/main.css' },
+    { value: '/assets/extra.css' },
+]);
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const { pathname } = incoming.url;
+
+    if (pathname.startsWith('/assets/')) {
+        const file = pathname.substring(pathname.lastIndexOf('/'));
+        const sanitizedFile = path.normalize(file).replace(/^(\.\.[\/\\])+/, '');
+
+        fs.readFile(`./src/css/${sanitizedFile}`, (error, data) => {
+            res.statusCode = 200;
+            res.setHeader('Content-type', 'text/javascript' );
+            res.end(data);
+        });
+        return;
+    }
+
+    [ ... ]
 });
 
 layout.css([
