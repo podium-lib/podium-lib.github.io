@@ -27,11 +27,11 @@ function Help(props) {
       title: 'Documentation',
     },
     {
-      content: `For the latest news and tips and tricks, [read our blog](${props.config.baseUrl}blog).`,
+      content: `For the latest news, tips and tricks, [read our blog](${props.config.baseUrl}blog).`,
       title: 'Blog',
     },
     {
-      content: 'Podium is built up of multiple modules. For easy bug trackin we maintain one issue tracker. [File an issue](https://github.com/podium-lib/issues).',
+      content: 'Podium is made up of multiple modules. For easy bug tracking we maintain a single issue tracker. [File an issue](https://github.com/podium-lib/issues).',
       title: 'Issues',
     },
   ];
@@ -41,7 +41,7 @@ function Help(props) {
       <Container className="mainContainer documentContainer postContainer">
         <div className="post">
           <h1>Need help?</h1>
-          <p>Please seek guidence in our documentation or blog. If you encunter any bugs or something is unclear please file an issue in our issue tracker.</p>
+          <p>Please first seek guidance by visiting our docs or blog. If you encounter bugs or find that something is unclear please file an issue in our issue tracker.</p>
 
           <GridBlock contents={supportLinks} layout="threeColumn" />
 
