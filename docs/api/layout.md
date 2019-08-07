@@ -1190,31 +1190,6 @@ layout.client.fooBar.fetch();
 | resolveJs  | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for JavaScript assets                                                                              |
 | resolveCss | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for CSS assets                                                                                     |
 
-### .client.refresh()
-
-This method will refresh a resource by reading its manifest and fallback
-if defined in the manifest. The method will not call the content URI
-of a component.
-
-If the internal cache in the client already has a manifest cached, this will
-be thrown away and replaced when the new manifest is successfully fetched. If a
-new manifest cannot be successfully fetched, the old manifest will be kept in
-cache.
-
-If a manifest is successfully fetched, this method will resolve with a `true`
-value. If a manifest is not successfully fetched, it will resolve with `false`.
-
-```js
-const podlet = layout.client.register({
-    uri: 'http://foo.site.com/manifest.json',
-    name: 'foo',
-});
-
-const status = await podlet.refresh();
-
-console.log(status); // true
-```
-
 ### .client.refreshManifests()
 
 Refreshes the manifests of all registered resources. Does so by calling the
@@ -1542,6 +1517,31 @@ app.route({
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
+
+### .refresh()
+
+This method will refresh a resource by reading its manifest and fallback
+if defined in the manifest. The method will not call the content URI
+of a component.
+
+If the internal cache in the client already has a manifest cached, this will
+be thrown away and replaced when the new manifest is successfully fetched. If a
+new manifest cannot be successfully fetched, the old manifest will be kept in
+cache.
+
+If a manifest is successfully fetched, this method will resolve with a `true`
+value. If a manifest is not successfully fetched, it will resolve with `false`.
+
+```js
+const podlet = layout.client.register({
+  uri: 'http://foo.site.com/manifest.json',
+  name: 'foo',
+});
+
+const status = await podlet.refresh();
+
+console.log(status); // true
+```
 
 ### .name
 
