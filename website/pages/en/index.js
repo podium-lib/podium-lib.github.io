@@ -131,22 +131,22 @@ class Index extends React.Component {
             content:
               'By implementing simple HTTP based conventions, teams can develop and serve parts of a web page in isolation as if they were developing and hosting full sites. As such, these isolated parts (called podlets) can be developed in any technology stack. Our team maintains a set of Podium libaries writen in Node.js which you can combine with which ever Node.js HTTP framework you prefer.',
             image: `${baseUrl}img/isolation_min.svg`,
-            imageAlign: 'top'
+            imageAlign: 'top',
           },
           {
             title: 'Powerful composition',
             content:
               'Podium makes it easy, yet flexible, to compose isolated page fragments into complete web pages (called layouts). This page compostion is done programmatically (rather than through config or markup) which provides for more power and freedom for the developer.',
             image: `${baseUrl}img/composed_min.svg`,
-            imageAlign: 'top'
+            imageAlign: 'top',
           },
           {
             title: 'Contract based',
             content:
               'Page composition between isolated page fragments (podlets) and the composition layer (layout) is done over HTTP. A contract between components ensures that fragments get contextual information passed down from the composition layer and the composition layer gets meta information passed up from the fragments it composes together.',
             image: `${baseUrl}img/contract_min.svg`,
-            imageAlign: 'top'
-          }
+            imageAlign: 'top',
+          },
         ]}
       </Block>
     );
@@ -156,12 +156,12 @@ class Index extends React.Component {
         {[
           {
             title: 'Podlets',
-            content: podletExample
+            content: podletExample,
           },
           {
             title: 'Layouts',
-            content: layoutExample
-          }
+            content: layoutExample,
+          },
         ]}
       </CodeBlock>
     );
