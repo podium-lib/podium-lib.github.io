@@ -17,13 +17,13 @@ const fs = require('fs');
 
 const podletFile = path.resolve(
   __dirname,
-  '../../../../../pages/en/front.podlet.html'
+  '../../../../../pages/en/front.podlet.html',
 );
 const podletExample = fs.readFileSync(podletFile, 'utf8');
 
 const layoutFile = path.resolve(
   __dirname,
-  '../../../../../pages/en/front.layout.html'
+  '../../../../../pages/en/front.layout.html',
 );
 const layoutExample = fs.readFileSync(layoutFile, 'utf8');
 
