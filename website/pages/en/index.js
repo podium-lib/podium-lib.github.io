@@ -5,34 +5,34 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const React = require("react");
+const React = require('react');
 
-const CompLibrary = require("../../core/CompLibrary.js");
+const CompLibrary = require('../../core/CompLibrary.js');
 
 const Container = CompLibrary.Container;
 const GridBlock = CompLibrary.GridBlock;
 
-const path = require("path");
-const fs = require("fs");
+const path = require('path');
+const fs = require('fs');
 
 const podletFile = path.resolve(
   __dirname,
-  "../../../../../pages/en/front.podlet.html"
+  '../../../../../pages/en/front.podlet.html'
 );
-const podletExample = fs.readFileSync(podletFile, "utf8");
+const podletExample = fs.readFileSync(podletFile, 'utf8');
 
 const layoutFile = path.resolve(
   __dirname,
-  "../../../../../pages/en/front.layout.html"
+  '../../../../../pages/en/front.layout.html'
 );
-const layoutExample = fs.readFileSync(layoutFile, "utf8");
+const layoutExample = fs.readFileSync(layoutFile, 'utf8');
 
 class HomeSplash extends React.Component {
   render() {
-    const { siteConfig, language = "" } = this.props;
+    const { siteConfig, language = '' } = this.props;
     const { baseUrl, docsUrl } = siteConfig;
-    const docsPart = `${docsUrl ? `${docsUrl}/` : ""}`;
-    const langPart = `${language ? `${language}/` : ""}`;
+    const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
+    const langPart = `${language ? `${language}/` : ''}`;
     const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
 
     const SplashContainer = props => (
@@ -78,7 +78,7 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href={docUrl("podium/conceptual_overview")}>
+            <Button href={docUrl('podium/conceptual_overview')}>
               Get Started
             </Button>
             <Button href="https://github.com/podium-lib/">GitHub</Button>
@@ -91,12 +91,12 @@ class HomeSplash extends React.Component {
 
 class Index extends React.Component {
   render() {
-    const { config: siteConfig, language = "" } = this.props;
+    const { config: siteConfig, language = '' } = this.props;
     const { baseUrl } = siteConfig;
 
     const Block = props => (
       <Container
-        padding={["bottom", "top"]}
+        padding={['bottom', 'top']}
         id={props.id}
         background={props.background}
       >
@@ -110,7 +110,7 @@ class Index extends React.Component {
 
     const CodeBlock = props => (
       <Container
-        padding={["bottom", "top"]}
+        padding={['bottom', 'top']}
         id={props.id}
         className={props.className}
         background={props.background}
@@ -127,25 +127,25 @@ class Index extends React.Component {
       <Block layout="fourColumn">
         {[
           {
-            title: "Autonomous development",
+            title: 'Autonomous development',
             content:
-              "By implementing simple HTTP based conventions, teams can develop and serve parts of a web page in isolation as if they were developing and hosting full sites. As such, these isolated parts (called podlets) can be developed in any technology stack. Our team maintains a set of Podium libaries writen in Node.js which you can combine with which ever Node.js HTTP framework you prefer.",
+              'By implementing simple HTTP based conventions, teams can develop and serve parts of a web page in isolation as if they were developing and hosting full sites. As such, these isolated parts (called podlets) can be developed in any technology stack. Our team maintains a set of Podium libaries writen in Node.js which you can combine with which ever Node.js HTTP framework you prefer.',
             image: `${baseUrl}img/isolation_min.svg`,
-            imageAlign: "top"
+            imageAlign: 'top'
           },
           {
-            title: "Powerful composition",
+            title: 'Powerful composition',
             content:
-              "Podium makes it easy, yet flexible, to compose isolated page fragments into complete web pages (called layouts). This page compostion is done programmatically (rather than through config or markup) which provides for more power and freedom for the developer.",
+              'Podium makes it easy, yet flexible, to compose isolated page fragments into complete web pages (called layouts). This page compostion is done programmatically (rather than through config or markup) which provides for more power and freedom for the developer.',
             image: `${baseUrl}img/composed_min.svg`,
-            imageAlign: "top"
+            imageAlign: 'top'
           },
           {
-            title: "Contract based",
+            title: 'Contract based',
             content:
-              "Page composition between isolated page fragments (podlets) and the composition layer (layout) is done over HTTP. A contract between components ensures that fragments get contextual information passed down from the composition layer and the composition layer gets meta information passed up from the fragments it composes together.",
+              'Page composition between isolated page fragments (podlets) and the composition layer (layout) is done over HTTP. A contract between components ensures that fragments get contextual information passed down from the composition layer and the composition layer gets meta information passed up from the fragments it composes together.',
             image: `${baseUrl}img/contract_min.svg`,
-            imageAlign: "top"
+            imageAlign: 'top'
           }
         ]}
       </Block>
@@ -155,11 +155,11 @@ class Index extends React.Component {
       <CodeBlock className="podium-front-examples">
         {[
           {
-            title: "Podlets",
+            title: 'Podlets',
             content: podletExample
           },
           {
-            title: "Layouts",
+            title: 'Layouts',
             content: layoutExample
           }
         ]}
@@ -179,7 +179,7 @@ class Index extends React.Component {
           </a>
         ));
 
-      const pageUrl = page => baseUrl + (language ? `${language}/` : "") + page;
+      const pageUrl = page => baseUrl + (language ? `${language}/` : '') + page;
 
       return (
         <div className="productShowcaseSection paddingBottom">
@@ -187,7 +187,7 @@ class Index extends React.Component {
           <p>This project is used by all these people</p>
           <div className="logos">{showcase}</div>
           <div className="more-users">
-            <a className="button" href={pageUrl("users.html")}>
+            <a className="button" href={pageUrl('users.html')}>
               More {siteConfig.title} Users
             </a>
           </div>
