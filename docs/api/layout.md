@@ -620,10 +620,9 @@ assets.
 #### options
 
 | option | type      | default   | required | details                                                                                     |
-| ------ | --------- | --------- | -------- | ------------------------------------------------------------------------------------------- |
-| value  | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset                                            |
-| prefix | `boolean` | `false`   |          | If the `pathname` defined on the constructor should be applied, if relative, to the `value` |
-| type   | `string`  | `default` |          | What type of JavaScript (eg. esm, default, cjs)                                             |
+| ------ | --------- | --------- | -------- | ------------------------------------------------ |
+| value  | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset |
+| type   | `string`  | `default` |          | What type of JavaScript (eg. esm, default, cjs)  |
 
 ##### value
 
@@ -861,24 +860,6 @@ const layout = new Layout({
 layout.js({ value: 'http://cdn.mysite.com/assets/js/e7rfg76.js' });
 ```
 
-##### prefix
-
-Specify whether the method should prefix the return value with the value for
-`pathname` set in the constructor.
-
-Return the full pathname, `/foo/assets/main.js`, to the JavaScript assets:
-
-```js
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-});
-
-layout.js({ value: '/assets/main.js', prefix: true });
-```
-
-Prefix will be ignored if the returned value is an absolute URL.
-
 ##### type
 
 Sets the type for the script which is set. If not set, `default` will be used.
@@ -909,10 +890,9 @@ assets.
 
 #### options
 
-| option | type      | default | required | details                                                                                          |
-| ------ | --------- | ------- | -------- | ------------------------------------------------------------------------------------------------ |
-| value  | `string`  |         | &check;  | Relative or absolute URL to the CSS asset                                                        |
-| prefix | `boolean` | `false` |          | Whether the `pathname` defined on the constructor should be applied, if relative, to the `value` |
+| option | type      | default | required | details                                   |
+| ------ | --------- | ------- | -------- | ----------------------------------------- |
+| value  | `string`  |         | &check;  | Relative or absolute URL to the CSS asset |
 
 ##### value
 
@@ -1150,24 +1130,6 @@ const layout = new Layout({
 
 layout.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
 ```
-
-##### prefix
-
-Sets whether the method should prefix the return value with the `pathname` value
-that was set in the constructor.
-
-Returns the full pathname (`/foo/assets/main.css`) to the CSS asset being added:
-
-```js
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-});
-
-layout.css({ value: '/assets/main.css', prefix: true });
-```
-
-Prefix will be ignored if the returned value is an absolute URL
 
 ### .pathname()
 
@@ -1572,31 +1534,6 @@ layout.client.fooBar.fetch();
 | resolveJs  | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for JavaScript assets                                                                              |
 | resolveCss | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for CSS assets                                                                                     |
 
-### .client.refresh()
-
-This method will refresh a resource by reading its manifest and fallback
-if defined in the manifest. The method will not call the content URI
-of a component.
-
-If the internal cache in the client already has a manifest cached, this will
-be thrown away and replaced when the new manifest is successfully fetched. If a
-new manifest cannot be successfully fetched, the old manifest will be kept in
-cache.
-
-If a manifest is successfully fetched, this method will resolve with a `true`
-value. If a manifest is not successfully fetched, it will resolve with `false`.
-
-```js
-const podlet = layout.client.register({
-    uri: 'http://foo.site.com/manifest.json',
-    name: 'foo',
-});
-
-const status = await podlet.refresh();
-
-console.log(status); // true
-```
-
 ### .client.refreshManifests()
 
 Refreshes the manifests of all registered resources. Does so by calling the
@@ -1924,6 +1861,31 @@ app.route({
 ```
 
 <!--END_DOCUSAURUS_CODE_TABS-->
+
+### .refresh()
+
+This method will refresh a resource by reading its manifest and fallback
+if defined in the manifest. The method will not call the content URI
+of a component.
+
+If the internal cache in the client already has a manifest cached, this will
+be thrown away and replaced when the new manifest is successfully fetched. If a
+new manifest cannot be successfully fetched, the old manifest will be kept in
+cache.
+
+If a manifest is successfully fetched, this method will resolve with a `true`
+value. If a manifest is not successfully fetched, it will resolve with `false`.
+
+```js
+const podlet = layout.client.register({
+  uri: 'http://foo.site.com/manifest.json',
+  name: 'foo',
+});
+
+const status = await podlet.refresh();
+
+console.log(status); // true
+```
 
 ### .name
 
