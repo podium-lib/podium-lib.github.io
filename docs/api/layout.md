@@ -241,7 +241,7 @@ const server = http.createServer(async (req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html');
 
-        res.end(podlet.render(incoming, `
+        res.end(layout.render(incoming, `
             <section>${a.content}</section>
             <section>${b.content}</section>
         `));
@@ -1356,6 +1356,57 @@ app.route({
 });
 ```
 
+<!--Fastify-->
+
+```js
+layout.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+app.get(layout.pathname(), async (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
+
+    const document = layout.render(incoming, body, head);
+
+    reply.send(document);
+});
+```
+
+<!--HTTP-->
+
+```js
+layout.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
+
+    const document = layout.render(incoming, body, head);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(layout.render(incoming, body, head));
+});
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .process(HttpIncoming)
@@ -1441,6 +1492,8 @@ const podletB = layout.client.register({
     uri: 'http://localhost:7200/manifest.json',
 });
 
+[ ... ]
+
 app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
@@ -1451,8 +1504,6 @@ app.get(layout.pathname(), async (req, res, next) => {
 
     [ ... ]
 });
-
-app.listen(7000);
 ```
 
 <!--Hapi-->
@@ -1473,6 +1524,8 @@ const podletB = layout.client.register({
     uri: 'http://localhost:7200/manifest.json',
 });
 
+[ ... ]
+
 app.route({
     method: 'GET',
     path: layout.pathname(),
@@ -1486,6 +1539,69 @@ app.route({
 
         [ ... ]
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+[ ... ]
+
+app.get(layout.pathname(), async (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const [a, b] = await Promise.all([
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    ]);
+
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const [a, b] = await Promise.all([
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    ]);
+
+    [ ... ]
 });
 ```
 
@@ -1711,6 +1827,46 @@ app.route({
 });
 ```
 
+<!--Fastify-->
+
+```js
+const app = fastify();
+
+// Creates HttpIncoming and stores it on reply.app.podium
+app.register(fastifyLayout, layout);
+
+app.get(layout.pathname(), async (request, reply) => {
+
+    // Get HttpIncoming
+    const incoming = reply.app.podium;
+
+    const pod = await podlet.fetch(incoming);
+
+    reply.podiumSend(`
+        <section>${pod.content}</section>
+    `);
+});
+```
+
+<!--HTML-->
+
+```js
+const server = http.createServer(async (req, res) => {
+
+    // Creates HttpIncoming
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const pod = await podlet.fetch(incoming);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(layout.render(incoming, `
+        <section>${pod.content}</section>
+    `));
+});
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 #### options (optional)
@@ -1928,6 +2084,26 @@ app.route({
 });
 ```
 
+<!--Fastify-->
+
+```js
+app.get(layout.pathname(), async (request, reply) => {
+    reply.podiumSend('<h2>Hello world</h2>');
+});
+```
+
+<!--HTTP-->
+
+```js
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(layout.render(incoming, '<h2>Hello world</h2>'));
+});
+```
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 [express]: https://expressjs.com/ 'Express'
