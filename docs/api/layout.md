@@ -866,7 +866,7 @@ Sets the type for the script which is set. If not set, `default` will be used.
 
 The following are valid values:
 
--   `esm` for ECMAScript modules
+-   `esm` or `module` for ECMAScript modules
 -   `cjs` for CommonJS modules
 -   `amd` for AMD modules
 -   `umd` for Universal Module Definition
@@ -1780,18 +1780,17 @@ property of the request or response object.
 <!--Express-->
 
 ```js
-const app = express();
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
 
-// Creates HttpIncoming and stores it on res.locals.podium
-app.use(layout.middleware());
-
-app.get('/', async (req, res, next) => {
-    // Get HttpIncoming
+app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
-    const pod = await podlet.fetch(incoming);
+    const response = await podlet.fetch(incoming);
     res.podiumSend(`
-        <section>${pod.content}</section>
+        <section>${response.content}</section>
     `);
 });
 ```
@@ -1799,29 +1798,21 @@ app.get('/', async (req, res, next) => {
 <!--Hapi-->
 
 ```js
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7000,
-});
-
-// Creates HttpIncoming and stores it on request.app.podium
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
 });
 
 app.route({
     method: 'GET',
     path: layout.pathname(),
     handler: await (request, h) => {
-
-        // Get HttpIncoming
         const incoming = request.app.podium;
 
-        const pod = await podlet.fetch(incoming);
+        const response = await podlet.fetch(incoming);
 
         h.podiumSend(`
-            <section>${pod.content}</section>
+            <section>${response.content}</section>
         `);
     },
 });
@@ -1830,39 +1821,40 @@ app.route({
 <!--Fastify-->
 
 ```js
-const app = fastify();
-
-// Creates HttpIncoming and stores it on reply.app.podium
-app.register(fastifyLayout, layout);
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
 
 app.get(layout.pathname(), async (request, reply) => {
-
-    // Get HttpIncoming
     const incoming = reply.app.podium;
 
-    const pod = await podlet.fetch(incoming);
+    const response = await podlet.fetch(incoming);
 
     reply.podiumSend(`
-        <section>${pod.content}</section>
+        <section>${response.content}</section>
     `);
 });
 ```
 
-<!--HTML-->
+<!--HTTP-->
 
 ```js
-const server = http.createServer(async (req, res) => {
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
 
-    // Creates HttpIncoming
+const server = http.createServer(async (req, res) => {
     let incoming = new HttpIncoming(req, res);
     incoming = await layout.process(incoming);
 
-    const pod = await podlet.fetch(incoming);
+    const response = await podlet.fetch(incoming);
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
     res.end(layout.render(incoming, `
-        <section>${pod.content}</section>
+        <section>${response.content}</section>
     `));
 });
 ```
@@ -1907,13 +1899,15 @@ bound property of the request or response object.
 <!--Express-->
 
 ```js
-const app = express();
-app.use(layout.middleware());
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
 
-app.get('/', async (req, res, next) => {
+app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
-    const stream = component.stream(incoming);
+    const stream = podlet.stream(incoming);
     stream.pipe(res);
 });
 ```
@@ -1921,14 +1915,9 @@ app.get('/', async (req, res, next) => {
 <!--Hapi-->
 
 ```js
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7000,
-});
-
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
 });
 
 app.route({
@@ -1937,9 +1926,45 @@ app.route({
     handler: (request, h) => {
         const incoming = request.app.podium;
 
-        const stream = component.stream(incoming);
+        const stream = podlet.stream(incoming);
         return h.response(stream);
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+app.get(layout.pathname(), (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const stream = podlet.stream(incoming);
+    stream.pipe(reply);
+});
+```
+
+<!--HTTP-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+
+    const stream = podlet.stream(incoming);
+    stream.pipe(res);
 });
 ```
 
@@ -1968,13 +1993,15 @@ otherwise `css` will be an empty string.
 <!--Express-->
 
 ```js
-const app = express();
-app.use(layout.middleware());
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
 
-app.get('/', async (req, res, next) => {
+app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
-    const stream = component.stream(incoming);
+    const stream = podlet.stream(incoming);
     stream.once('beforeStream', data => {
         console.log(data.headers);
         console.log(data.css);
@@ -1988,14 +2015,9 @@ app.get('/', async (req, res, next) => {
 <!--Hapi-->
 
 ```js
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7000,
-});
-
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
 });
 
 app.route({
@@ -2004,7 +2026,7 @@ app.route({
     handler: (request, h) => {
         const incoming = request.app.podium;
 
-        const stream = component.stream(incoming);
+        const stream = podlet.stream(incoming);
         stream.once('beforeStream', data => {
             console.log(data.headers);
             console.log(data.css);
@@ -2013,6 +2035,54 @@ app.route({
 
         return h.response(stream);
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+app.get(layout.pathname(), (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const stream = podlet.stream(incoming);
+    stream.once('beforeStream', data => {
+        console.log(data.headers);
+        console.log(data.css);
+        console.log(data.js);
+    });
+
+    stream.pipe(reply);
+});
+```
+
+<!--HTTP-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const stream = podlet.stream(incoming);
+    stream.once('beforeStream', data => {
+        console.log(data.headers);
+        console.log(data.css);
+        console.log(data.js);
+    });
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+
+    stream.pipe(res);
 });
 ```
 
