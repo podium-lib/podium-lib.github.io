@@ -1184,10 +1184,17 @@ assets.
 
 #### options
 
-| option | type      | default   | required | details                                          |
-| ------ | --------- | --------- | -------- | ------------------------------------------------ |
-| value  | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset |
-| type   | `string`  | `default` |          | What type of JavaScript (eg. esm, default, cjs)  |
+| option         | type      | default   | required | details                                                                                      |
+| -------------- | --------- | --------- | -------- | -------------------------------------------------------------------------------------------- |
+| value          | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset                                             |
+| prefix         | `boolean` | `false`   |          | Whether the pathname defined on the constructor should be prepend, if relative, to the value |
+| type           | `string`  | `default` |          | What type of JavaScript (eg. esm, default, cjs)                                              |
+| referrerpolicy | `string`  |           |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| crossorigin    | `string`  |           |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| integrity      | `string`  |           |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| nomodule       | `boolean` | `false`   |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| async          | `boolean` | `false`   |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| defer          | `boolean` | `false`   |          | Correlates to the same attribute on a HTML `<script>` element                                |
 
 ##### value
 
@@ -1372,6 +1379,13 @@ const podlet = new Podlet({
 podlet.js({ value: 'http://cdn.mysite.com/assets/js/e7rfg76.js' });
 ```
 
+##### prefix
+
+Sets whether the method should prepend the value with the pathname value that
+was set in the constructor.
+
+Prefix will be ignored if value is an absolute URL
+
 ##### type
 
 Set the type of script which is set. If not set, `default` will be used.
@@ -1403,9 +1417,18 @@ assets.
 
 #### options
 
-| option | type      | default | required | details                                   |
-| ------ | --------- | ------- | -------- | ----------------------------------------- |
-| value  | `string`  |         | &check;  | Relative or absolute URL to the CSS asset |
+| option      | type      | default      | required | details                                                                                      |
+| ----------- | --------- | ------------ | -------- | -------------------------------------------------------------------------------------------- |
+| value       | `string`  |              | &check;  | Relative or absolute URL to the CSS asset                                                    |
+| prefix      | `boolean` | `false`      |          | Whether the pathname defined on the constructor should be prepend, if relative, to the value |
+| crossorigin | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| disabled    | `boolean` | `false`      |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| hreflang    | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| title       | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| media       | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| type        | `string`  | `text/css`   |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| rel         | `string`  | `stylesheet` |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| as          | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
 
 ##### value
 
@@ -1589,6 +1612,13 @@ const podlet = new Podlet({
 
 podlet.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
 ```
+
+##### prefix
+
+Sets whether the method should prepend the value with the pathname value that
+was set in the constructor.
+
+Prefix will be ignored if value is an absolute URL
 
 ### .proxy({ target, name })
 
