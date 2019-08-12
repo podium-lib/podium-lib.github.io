@@ -241,7 +241,7 @@ const server = http.createServer(async (req, res) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html');
 
-        res.end(podlet.render(incoming, `
+        res.end(layout.render(incoming, `
             <section>${a.content}</section>
             <section>${b.content}</section>
         `));
@@ -344,6 +344,41 @@ app.route({
 });
 ```
 
+<!--Fastify-->
+
+```js
+const app = fastify();
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.get('/', async (request, reply) => {
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    if (incoming.url.pathname === '/') {
+        [ ... ]
+    }
+});
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 If the layout is mounted at `/foo`, set the `pathname` to `/foo`:
@@ -401,6 +436,49 @@ app.route({
     handler: (request, h) => {
         [ ... ]
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const app = fastify();
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+app.register(fastifyLayout, layout);
+
+app.get('/foo', async (request, reply) => {
+    [ ... ]
+});
+
+app.get('/foo/:id', async (request, reply) => {
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    if (incoming.url.pathname === '/foo') {
+        [ ... ]
+    }
+
+    if (incoming.url.pathname.startsWith('/foo/')) {
+        [ ... ]
+    }
 });
 ```
 
@@ -605,6 +683,54 @@ app.route({
 layout.js({ value: '/assets.js' });
 ```
 
+<!--Fastify-->
+
+```js
+const app = fastify();
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.register(require('fastify-static'), {
+    root: './src/js/',
+});
+
+app.get('/assets.js', (request, reply) => {
+    reply.sendFile('main.js');
+});
+
+layout.js({ value: '/assets.js' });
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    if (incoming.url.pathname === '/assets.js') {
+        fs.readFile('./src/js/main.js', (error, data) => {
+            res.statusCode = 200;
+            res.setHeader('Content-type', 'text/javascript' );
+            res.end(data);
+        });
+        return;
+    }
+
+    [ ... ]
+});
+
+layout.js({ value: '/assets.js' });
+```
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Serve assets from a static file server and set a relative URI to the JS files:
@@ -668,6 +794,66 @@ layout.js([
 ]);
 ```
 
+<!--Fastify-->
+
+```js
+const app = fastify();
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.register(require('fastify-static'), {
+    root: './src/js/',
+});
+
+app.get('/assets/:file', (request, reply) => {
+    reply.sendFile(request.params.file);
+});
+
+layout.js([
+    { value: '/assets/main.js' },
+    { value: '/assets/extra.js' },
+]);
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const { pathname } = incoming.url;
+
+    if (pathname.startsWith('/assets/')) {
+        const file = pathname.substring(pathname.lastIndexOf('/'));
+        const sanitizedFile = path.normalize(file).replace(/^(\.\.[\/\\])+/, '');
+
+        fs.readFile(`./src/js/${sanitizedFile}`, (error, data) => {
+            res.statusCode = 200;
+            res.setHeader('Content-type', 'text/javascript' );
+            res.end(data);
+        });
+        return;
+    }
+
+    [ ... ]
+});
+
+layout.js([
+    { value: '/assets/main.js' },
+    { value: '/assets/extra.js' },
+]);
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Set an absolute URL to where the JavaScript file is located:
@@ -694,7 +880,7 @@ Sets the type for the script which is set. If not set, `default` will be used.
 
 The following are valid values:
 
--   `esm` for ECMAScript modules
+-   `esm` or `module` for ECMAScript modules
 -   `cjs` for CommonJS modules
 -   `amd` for AMD modules
 -   `umd` for Universal Module Definition
@@ -783,6 +969,55 @@ app.route({
 layout.css({ value: '/assets.css' });
 ```
 
+<!--Fastify-->
+
+```js
+const app = fastify();
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.register(require('fastify-static'), {
+    root: './src/css/',
+});
+
+app.get('/assets.css', (request, reply) => {
+    reply.sendFile('main.css');
+});
+
+layout.css({ value: '/assets.css' });
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    if (incoming.url.pathname === '/assets.css') {
+        fs.readFile('./src/js/main.css', (error, data) => {
+            res.statusCode = 200;
+            res.setHeader('Content-type', 'text/javascript' );
+            res.end(data);
+        });
+        return;
+    }
+
+    [ ... ]
+});
+
+layout.css({ value: '/assets.css' });
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 Serve assets from a static file server and set a relative URI to the CSS files:
@@ -838,6 +1073,66 @@ app.route({
             redirectToSlash: true,
         },
     },
+});
+
+layout.css([
+    { value: '/assets/main.css' },
+    { value: '/assets/extra.css' },
+]);
+```
+
+<!--Fastify-->
+
+```js
+const app = fastify();
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+app.register(fastifyLayout, layout);
+
+app.register(require('fastify-static'), {
+    root: './src/css/',
+});
+
+app.get('/assets/:file', (request, reply) => {
+    reply.sendFile(request.params.file);
+});
+
+layout.css([
+    { value: '/assets/main.css' },
+    { value: '/assets/extra.css' },
+]);
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const { pathname } = incoming.url;
+
+    if (pathname.startsWith('/assets/')) {
+        const file = pathname.substring(pathname.lastIndexOf('/'));
+        const sanitizedFile = path.normalize(file).replace(/^(\.\.[\/\\])+/, '');
+
+        fs.readFile(`./src/css/${sanitizedFile}`, (error, data) => {
+            res.statusCode = 200;
+            res.setHeader('Content-type', 'text/javascript' );
+            res.end(data);
+        });
+        return;
+    }
+
+    [ ... ]
 });
 
 layout.css([
@@ -927,6 +1222,55 @@ app.route({
     handler: (request, h) => {
         [ ... ]
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+app.get(layout.pathname(), async (request, reply) => {
+    [ ... ]
+});
+
+app.get(`${layout.pathname()}/bar`, async (request, reply) => {
+    [ ... ]
+});
+
+app.get(`${layout.pathname()}/bar/:id`, async (request, reply) => {
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/foo',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const { pathname } = incoming.url;
+
+    if (pathname === layout.pathname()) {
+        [ ... ]
+    }
+
+    if (pathname === `${layout.pathname()}/bar`) {
+        [ ... ]
+    }
+
+    if (pathname.startsWith(`${layout.pathname()}/bar/`)) {
+        [ ... ]
+    }
 });
 ```
 
@@ -1042,6 +1386,57 @@ app.route({
 });
 ```
 
+<!--Fastify-->
+
+```js
+layout.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+app.get(layout.pathname(), async (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
+
+    const document = layout.render(incoming, body, head);
+
+    reply.send(document);
+});
+```
+
+<!--HTTP-->
+
+```js
+layout.view = (incoming, body, head) => {
+    return `
+        <html>
+            <head>${head}</head>
+            <body>${body}</body>
+        </html>
+    `;
+};
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
+
+    const document = layout.render(incoming, body, head);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(layout.render(incoming, body, head));
+});
+```
+
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 ### .process(HttpIncoming)
@@ -1127,6 +1522,8 @@ const podletB = layout.client.register({
     uri: 'http://localhost:7200/manifest.json',
 });
 
+[ ... ]
+
 app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
@@ -1137,8 +1534,6 @@ app.get(layout.pathname(), async (req, res, next) => {
 
     [ ... ]
 });
-
-app.listen(7000);
 ```
 
 <!--Hapi-->
@@ -1159,6 +1554,8 @@ const podletB = layout.client.register({
     uri: 'http://localhost:7200/manifest.json',
 });
 
+[ ... ]
+
 app.route({
     method: 'GET',
     path: layout.pathname(),
@@ -1172,6 +1569,69 @@ app.route({
 
         [ ... ]
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+[ ... ]
+
+app.get(layout.pathname(), async (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const [a, b] = await Promise.all([
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    ]);
+
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const [a, b] = await Promise.all([
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    ]);
+
+    [ ... ]
 });
 ```
 
@@ -1350,18 +1810,17 @@ property of the request or response object.
 <!--Express-->
 
 ```js
-const app = express();
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
 
-// Creates HttpIncoming and stores it on res.locals.podium
-app.use(layout.middleware());
-
-app.get('/', async (req, res, next) => {
-    // Get HttpIncoming
+app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
-    const pod = await podlet.fetch(incoming);
+    const response = await podlet.fetch(incoming);
     res.podiumSend(`
-        <section>${pod.content}</section>
+        <section>${response.content}</section>
     `);
 });
 ```
@@ -1369,31 +1828,64 @@ app.get('/', async (req, res, next) => {
 <!--Hapi-->
 
 ```js
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7000,
-});
-
-// Creates HttpIncoming and stores it on request.app.podium
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
 });
 
 app.route({
     method: 'GET',
     path: layout.pathname(),
     handler: await (request, h) => {
-
-        // Get HttpIncoming
         const incoming = request.app.podium;
 
-        const pod = await podlet.fetch(incoming);
+        const response = await podlet.fetch(incoming);
 
         h.podiumSend(`
-            <section>${pod.content}</section>
+            <section>${response.content}</section>
         `);
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+app.get(layout.pathname(), async (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const response = await podlet.fetch(incoming);
+
+    reply.podiumSend(`
+        <section>${response.content}</section>
+    `);
+});
+```
+
+<!--HTTP-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const response = await podlet.fetch(incoming);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(layout.render(incoming, `
+        <section>${response.content}</section>
+    `));
 });
 ```
 
@@ -1437,13 +1929,15 @@ bound property of the request or response object.
 <!--Express-->
 
 ```js
-const app = express();
-app.use(layout.middleware());
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
 
-app.get('/', async (req, res, next) => {
+app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
-    const stream = component.stream(incoming);
+    const stream = podlet.stream(incoming);
     stream.pipe(res);
 });
 ```
@@ -1451,14 +1945,9 @@ app.get('/', async (req, res, next) => {
 <!--Hapi-->
 
 ```js
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7000,
-});
-
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
 });
 
 app.route({
@@ -1467,9 +1956,45 @@ app.route({
     handler: (request, h) => {
         const incoming = request.app.podium;
 
-        const stream = component.stream(incoming);
+        const stream = podlet.stream(incoming);
         return h.response(stream);
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+app.get(layout.pathname(), (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const stream = podlet.stream(incoming);
+    stream.pipe(reply);
+});
+```
+
+<!--HTTP-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+
+    const stream = podlet.stream(incoming);
+    stream.pipe(res);
 });
 ```
 
@@ -1498,13 +2023,15 @@ otherwise `css` will be an empty string.
 <!--Express-->
 
 ```js
-const app = express();
-app.use(layout.middleware());
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
 
-app.get('/', async (req, res, next) => {
+app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
-    const stream = component.stream(incoming);
+    const stream = podlet.stream(incoming);
     stream.once('beforeStream', data => {
         console.log(data.headers);
         console.log(data.css);
@@ -1518,14 +2045,9 @@ app.get('/', async (req, res, next) => {
 <!--Hapi-->
 
 ```js
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7000,
-});
-
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
 });
 
 app.route({
@@ -1534,7 +2056,7 @@ app.route({
     handler: (request, h) => {
         const incoming = request.app.podium;
 
-        const stream = component.stream(incoming);
+        const stream = podlet.stream(incoming);
         stream.once('beforeStream', data => {
             console.log(data.headers);
             console.log(data.css);
@@ -1543,6 +2065,54 @@ app.route({
 
         return h.response(stream);
     },
+});
+```
+
+<!--Fastify-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+app.get(layout.pathname(), (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const stream = podlet.stream(incoming);
+    stream.once('beforeStream', data => {
+        console.log(data.headers);
+        console.log(data.css);
+        console.log(data.js);
+    });
+
+    stream.pipe(reply);
+});
+```
+
+<!--HTTP-->
+
+```js
+const podlet = layout.client.register({
+    name: 'myPodlet',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const stream = podlet.stream(incoming);
+    stream.once('beforeStream', data => {
+        console.log(data.headers);
+        console.log(data.css);
+        console.log(data.js);
+    });
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+
+    stream.pipe(res);
 });
 ```
 
@@ -1614,6 +2184,26 @@ app.route({
 });
 ```
 
+<!--Fastify-->
+
+```js
+app.get(layout.pathname(), async (request, reply) => {
+    reply.podiumSend('<h2>Hello world</h2>');
+});
+```
+
+<!--HTTP-->
+
+```js
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end(layout.render(incoming, '<h2>Hello world</h2>'));
+});
+```
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 [express]: https://expressjs.com/ 'Express'
