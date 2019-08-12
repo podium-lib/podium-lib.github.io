@@ -686,7 +686,7 @@ layout.js({ value: 'http://cdn.mysite.com/assets/js/e7rfg76.js' });
 Sets whether the method should prepend the value with the pathname value that
 was set in the constructor.
 
-Prefix will be ignored if value is an absolute URL
+The prefix will be ignored if value is an absolute URL.
 
 ##### type
 
@@ -864,7 +864,7 @@ layout.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
 Sets whether the method should prepend the value with the pathname value that
 was set in the constructor.
 
-Prefix will be ignored if value is an absolute URL
+The prefix will be ignored if value is an absolute URL.
 
 ### .pathname()
 
