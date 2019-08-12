@@ -36,8 +36,8 @@ podlet content is placed into the `<body>` section of the document:
 ## Rendering
 
 A document template is used by calling the `.render()` methods in the [podlet](api/podlet.md)
-and [layout](api/podlet.md) modules or the `res.podiumSend()` provided by the
-HTTP framework in use.
+and [layout](api/podlet.md) modules or the `res.podiumSend()` provided by
+whichever HTTP framework is being used.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
