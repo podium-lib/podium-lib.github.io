@@ -1802,6 +1802,119 @@ podlet.defaults({
 N.B. The default development mode context will only be appended to the response
 when the constructor option `development` is set to `true`.
 
+### .pathname()
+
+A helper method used to retrieve the `pathname` value that was set in the
+constructor.
+
+Example:
+
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
+
+```js
+const podlet = new Podlet({
+    name: 'myPodlet',
+    pathname: '/foo',
+});
+
+app.get(podlet.pathname(), (req, res, next) => {
+    [ ... ]
+});
+
+app.get(`${podlet.pathname()}/bar`, (req, res, next) => {
+    [ ... ]
+});
+
+app.get(`${podlet.pathname()}/bar/:id`, (req, res, next) => {
+    [ ... ]
+});
+```
+
+<!--Hapi-->
+
+```js
+const podlet = new Podlet({
+    name: 'myPodlet',
+    pathname: '/foo',
+});
+
+app.route({
+    method: 'GET',
+    path: podlet.pathname(),
+    handler: (request, h) => {
+        [ ... ]
+    },
+});
+
+app.route({
+    method: 'GET',
+    path: `${podlet.pathname()}/bar`,
+    handler: (request, h) => {
+        [ ... ]
+    },
+});
+
+app.route({
+    method: 'GET',
+    path: `${podlet.pathname()}/bar/{id}`,
+    handler: (request, h) => {
+        [ ... ]
+    },
+});
+```
+
+<!--Fastify-->
+
+```js
+const podlet = new Podlet({
+    name: 'myPodlet',
+    pathname: '/foo',
+});
+
+app.get(podlet.pathname(), async (request, reply) => {
+    [ ... ]
+});
+
+app.get(`${podlet.pathname()}/bar`, async (request, reply) => {
+    [ ... ]
+});
+
+app.get(`${podlet.pathname()}/bar/:id`, async (request, reply) => {
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+const podlet = new Podlet({
+    name: 'myPodlet',
+    pathname: '/foo',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const { pathname } = incoming.url;
+
+    if (pathname === podlet.pathname()) {
+        [ ... ]
+    }
+
+    if (pathname === `${podlet.pathname()}/bar`) {
+        [ ... ]
+    }
+
+    if (pathname.startsWith(`${podlet.pathname()}/bar/`)) {
+        [ ... ]
+    }
+});
+```
+
+<!--END_DOCUSAURUS_CODE_TABS-->
+
 ### .view(template)
 
 Sets the default encapsulating HTML document template.
