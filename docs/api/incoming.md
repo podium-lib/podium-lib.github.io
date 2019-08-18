@@ -3,10 +3,10 @@ id: incoming
 title: HttpIncoming
 ---
 
-In the request/response life cycle of an HTTP request handled by Podium, different
-information needs to be accessible at different stages. To cater to this,
-Podium has an `HttpIncoming` object which is passed between the
-different parts of Podium throughout the request/response life cycle.
+In the request/response life cycle of an HTTP request handled by Podium,
+different information needs to be accessible at different stages. To cater to
+this, Podium has an `HttpIncoming` object which is passed between the different
+parts of Podium throughout the request/response life cycle.
 
 This `HttpIncoming` object holds different values during the various stages in a
 request/response life cycle. The most important values are:
@@ -19,13 +19,14 @@ request/response life cycle. The most important values are:
 [@podium/podlet](api/podlet.md).
 
 The `HttpIncoming` class is located in the [@podium/utils](https://github.com/podium-lib/utils/blob/master/lib/http-incoming.js)
-module and when writing a HTTP servers without using the supported
-HTTP framework plugins, it will be necessary to instantiate an instance of this object and
-pass it between the different parts of Podium.
+module and when writing a HTTP servers without using the supported HTTP
+framework plugins, it will be necessary to instantiate an instance of this
+object and pass it between the different parts of Podium.
 
 When using the supported HTTP framework plugins an instance of `HttpIncoming` is
 created for you under the hood and passed on as a property on the request
-between the different parts of the request/response life cycle of the HTTP framework.
+between the different parts of the request/response life cycle of the HTTP
+framework.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
@@ -58,8 +59,8 @@ layout.view = (incoming, body) => {
 };
 
 // Attach the middleware on Express. This will create HttpIncoming under the
-// hood plus generate the context and store it on HttpIncoming among other things
-// HttpIncoming will be stored at res.locals.podium
+// hood plus generate the context and store it on HttpIncoming among other
+// things HttpIncoming will be stored at res.locals.podium
 app.use(layout.middleware());
 
 app.get(layout.pathname(), (req, res) => {
@@ -300,8 +301,8 @@ object.
 
 If used with an HTTP framework please note that some frameworks operate with
 their own "request" objects as a wrapper around `http.IncomingMessage`. In such
-cases it is often necessary to gain access to the raw `http.IncomingMessage` object through
-a property or method.
+cases it is often necessary to gain access to the raw `http.IncomingMessage`
+object through a property or method.
 
 ##### response
 
@@ -310,22 +311,23 @@ object.
 
 If used with an HTTP framework please note that some frameworks operate with
 their own "request" objects as a wrapper around `http.IncomingMessage`. In such
-cases it is often necessary to gain access to the raw `http.IncomingMessage` object through
-a property or method.
+cases it is often necessary to gain access to the raw `http.IncomingMessage`
+object through a property or method.
 
 ##### params
 
 An object for passing arbitrary property values for Podium to use.
 
-**Note**: When using any of the supported HTTP frameworks, `params` is
-usually picked up from a special properties object on the request (eg.
-`res.locals` in Express.js). Please see the the relevant plugin for the appropriate HTTP
+**Note**: When using any of the supported HTTP frameworks, `params` is usually
+picked up from a special properties object on the request (eg. `res.locals` in
+Express.js). Please see the the relevant plugin for the appropriate HTTP
 framework for further information.
 
 One very common use case for this is to pass a request bound property to a
-context parser. There are cases where you may want to perform operations on requests prior to
-running the `.middleware()` or `.process()` methods in a layout or podlet and
-then pass the results of these operations on to a context parser.
+context parser. There are cases where you may want to perform operations on
+requests prior to running the `.middleware()` or `.process()` methods in a
+layout or podlet and then pass the results of these operations on to a context
+parser.
 
 The locale context parser does this when setting the request bound locale value:
 
@@ -508,13 +510,14 @@ An HttpIncoming instance has the following properties:
 | response    | `http.ServerResponse`  | &check; |         | `null`  | A raw Node.js HTTP response object set through the `response` argument in the constructor |
 | request     | `http.IncomingMessage` | &check; |         | `null`  | A raw Node.js HTTP request object set through the `request` argument in the constructor   |
 | context     | `object`               | &check; | &check; | `{}`    | The context created by the context parser                                                 |
+| podlets     | `array`                |         | &check; | `null`  | Array of client response objects. Used in `@podium/layout`.                               |
 | params      | `object`               | &check; |         | `{}`    | Params set through the `params` argument in the constructor                               |
 | proxy       | `boolean`              | &check; | &check; | `false` | Whether the request was handled by the proxy or not                                       |
 | name        | `string`               | &check; | &check; | `''`    | The name of the podlet / layout                                                           |
 | view        | `object`               | &check; | &check; | `{}`    | View parameters for the document template                                                 |
 | url         | `URL`                  | &check; |         | `{}`    | A URL object created out of the original request                                          |
-| css         | `array`                | &check; | &check; | `[]`    | CSS for the podlet / layout                                                               |
-| js          | `array`                | &check; | &check; | `[]`    | JS for the podlet / layout                                                                |
+| css         | `array`                | &check; | &check; | `[]`    | An array of [AssetCSS](assets.md#assetcss) objects                                        |
+| js          | `array`                | &check; | &check; | `[]`    | An array of [AssetJS](assets.md#assetjs) objects                                          |
 
 ## Methods
 

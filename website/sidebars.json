@@ -19,6 +19,7 @@
         "API Docs": [
             "api/getting_started",
             "api/incoming",
+            "api/assets",
             "api/document",
             "api/podlet",
             "api/layout"
