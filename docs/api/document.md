@@ -91,7 +91,7 @@ const server = http.createServer(async (req, res) => {
 
 ## Customizing
 
-Podium ships with a default document template which should cover most uses. It
+Podium ships with a default document template which should cover most use cases. It
 is possible, however, to set a custom document template which can then be
 plugged into both layout and podlet servers.
 
