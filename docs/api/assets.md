@@ -94,7 +94,7 @@ server.listen(7100);
 <!--END_DOCUSAURUS_CODE_TABS-->
 
 When a layout fetches a podlet and parses the podlets manifest, any assets on
-the `.css` and `.js` properties in the manifest is also parsed into appropiate
+the `.css` and `.js` properties in the manifest are also parsed into appropriate
 `AssetCSS` or `AssetJS` object.
 
 These `AssetCSS` or `AssetJS` objects are then available on the `.css` or `.js`
