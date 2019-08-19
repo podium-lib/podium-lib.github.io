@@ -3,21 +3,22 @@ id: document
 title: Document Template
 ---
 
-When developing podlets which are to be composed together with other podlets into
-a full HTML page by a layout it is important that the development of the podlet
-happens under the same constraints when developing in isolation as when running inside a full layout.
+When developing podlets which are to be composed together with other podlets
+into a full HTML page by a layout it is important that the development of the
+podlet happens under the same constraints when developing in isolation as when
+running inside a full layout.
 
-One example of such a constraint might be when a given CSS class is set on the `<body>` tag and used
-to set certain CSS restrictions on the whole document. If this class is then not present
-when developing a podlet, that podlet might end up looking different in isolation from when
-its included in a layout.
+One example of such a constraint might be when a given CSS class is set on the
+`<body>` tag and used to set certain CSS restrictions on the whole document. If
+this class is then not present when developing a podlet, that podlet might end
+up looking different in isolation from when its included in a layout.
 
 To cater for this, Podium has a concept of a document template that is intended
 to be used in both layout servers when serving a full pages and in podlets when
 in development.
 
-A document template is typically an HTML wireframe where layout and
-podlet content is placed into the `<body>` section of the document:
+A document template is typically an HTML wireframe where layout and podlet
+content is placed into the `<body>` section of the document:
 
 ```html
 <!DOCTYPE html>
@@ -90,9 +91,9 @@ const server = http.createServer(async (req, res) => {
 
 ## Customizing
 
-Podium ships with a [default document template](api/document.md)
-which should cover most uses. It is possible, however, to set a custom document template which can then be plugged into
-both layout and podlet servers.
+Podium ships with a default document template which should cover most use cases.
+It is possible, however, to set a custom document template which can then be
+plugged into both layout and podlet servers.
 
 A custom document template is set by using the `.view()` method in the
 [podlet](api/podlet.md) and [layout](api/podlet.md) modules.
@@ -115,7 +116,8 @@ layout.view((incoming, body, head) => `<!doctype html>
 ## Request Properties
 
 A document template will need properties which are request bound. This can be
-any type of property, but the value of the `<title>` element is one such example.
+any type of property, but the value of the `<title>` element  is one such
+example.
 
 It is possible to pass on properties to the document template by using the
 `.view` property on [`HttpIncoming`](incoming.md).
@@ -189,12 +191,48 @@ const server = http.createServer(async (req, res) => {
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
+## Assets
+
+On the [`HttpIncoming`](incoming.md) object which is passed on to the document
+template one can find an array of `AssetCSS` objects on the `.css` property and
+an array of `AssetJS` objects on the `.js` property . These properties hold the
+assets of a podlet or a layout. In a layout they can hold the assets of the
+requested podlets in addition to the assets of the layout itself.
+
+Please see the [asset](assets.md) documentation for more information.
+
+The arrays of `AssetCSS` and `AssetJS` objects can easily be converted into
+HTML in a document template by running each object through the [`.buildLinkElement()`](https://github.com/podium-lib/utils#buildlinkelementassetcss)
+or [`.buildScriptElement()`](https://github.com/podium-lib/utils#buildscriptelementassetjs)
+methods found in the `@podium/utils` package:
+
+```js
+const utils = require('@podium/utils');
+
+[ ... ]
+
+layout.view((incoming, body, head) => `<!doctype html>
+<html lang="${incoming.context.locale}">
+    <head>
+        <meta charset="${incoming.view.encoding}">
+        ${incoming.css.map(utils.buildLinkElement).join('\n')}
+        ${incoming.js.map(utils.buildScriptElement).join('\n')}
+        <title>${incoming.view.title}</title>
+        ${head}
+    </head>
+    <body>
+        ${body}
+    </body>
+</html>`;
+);
+```
+
 ## template(HttpIncoming, fragment, [args])
 
-A document template is implemented using a plain JavaScript function that returns a `String`.
+A document template is implemented using a plain JavaScript function that
+returns a string.
 
-The document template accepts, and will be called with, the
-following arguments:
+The document template accepts, and will be called with, the following arguments:
 
 #### HttpIncoming (required)
 
@@ -202,7 +240,7 @@ An instance of the [`HttpIncoming`](incoming.md) class.
 
 #### fragment
 
-A `String` that is intended to be a used as a fragment in the final HTML document.
+A string that is intended to be a used as a fragment in the final HTML document.
 
 #### [args]
 
@@ -210,8 +248,8 @@ All following arguments given to the `.render()` or `res.podiumSend()` methods
 in the [podlet](api/podlet.md) and [layout](api/podlet.md) modules will be
 passed on to the document template.
 
-The following is an example of how such additional arguments might be used to pass on parts of a page to the document
-template.
+The following is an example of how such additional arguments might be used to
+pass on parts of a page to the document template.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->

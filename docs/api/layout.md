@@ -3,13 +3,13 @@ id: layout
 title: @podium/layout
 ---
 
-Module used for composing HTML pages (layouts) out of page fragments (podlets)
-in Podium.
+In Podium a layout server is mainly responsible for fetching HTML fragments
+(podlets) and stitching these fragments together into an HTML page (a layout).
 
-A layout server is mainly responsible for fetching HTML fragments and stitching
-these fragments together into an HTML page.
+The `@podium/layout` module is used for composing HTML pages (layouts) out of
+page fragments (podlets).
 
-To do this, a layout instance provides three core features:
+The `@podium/layout` module provide three core features:
 
 -   A client used to fetch content from podlets
 -   A context used to set request bound information on requests from a layout to its podlets when fetching content from them
@@ -610,7 +610,7 @@ above.
 
 Set relative or absolute URLs to JavaScript assets for the layout.
 
-When set the values will be internally kept and made available for the document
+When set, the values will be internally kept and made available for the document
 template to include.
 
 This method can be called multiple times with a single options object to set
@@ -887,8 +887,8 @@ The following are valid values:
 -   `default` if the type is unknown.
 
 The type field provides a hint for further use of the script in the layout.
-Typically this is used in the document template when including the `<script>`
-tags or when optimizing JavaScript assets with a bundler.
+Typically this is used in the [document template](document.md) when including
+the `<script>` tags or when optimizing JavaScript assets with a bundler.
 
 ### .css(options|[options])
 
@@ -922,7 +922,6 @@ assets.
 Sets the `pathname` to the layout's CSS assets. This value can be an relative or
 absolute URL at which the podlet's user facing CSS is served.
 .
-
 Serve a CSS file at `/assets/main.css`:
 
 <!--DOCUSAURUS_CODE_TABS-->
@@ -1278,10 +1277,11 @@ const server = http.createServer(async (req, res) => {
 
 ### .view(template)
 
-Sets the default encapsulating HTML document template.
+Sets the default [document template](document.md).
 
-Takes a template function that accepts an instance of HttpIncoming, a content
-string as well as any additional markup for the document's head section:
+Takes a template function that accepts an instance of [`HttpIncoming`](incoming.md),
+a content string as well as any additional markup for the document's head
+section:
 
 ```js
 (incoming, body, head) => `Return an HTML string here`;
@@ -1306,9 +1306,9 @@ layout.view((incoming, body, head) => `<!doctype html>
 
 ### .render(HttpIncoming, fragment, [args])
 
-Method to render the document template. By default this will render the docment
-template provided by Podium unless a custom document template is set by using
-the `.view` method.
+Method to render the [document template](document.md). By default this will
+render a default [document template](document.md) provided by Podium unless
+a custom one is set by using the `.view` method.
 
 In most HTTP frameworks this method can be ignored in favour of
 `res.podiumSend()`. If present, `res.podiumSend()` has the advantage that it's
@@ -1329,11 +1329,11 @@ A `String` that is intended to be a fragment of the final HTML document
 
 #### [args]
 
-All following arguments given to the method will be passed on to the document
-template.
+All following arguments given to the method will be passed on to the
+[document template](document.md).
 
-Additional arguments could be used to pass on parts of a page to the document
-template as shown:
+Additional arguments could be used to pass on parts of a page to the
+[document template](document.md) as shown:
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
@@ -1650,8 +1650,8 @@ const podlet = layout.client.register({
 });
 ```
 
-Returns a podlet resource `Object` instance which is also stored on the layout
-client instance using the registered `name` value as its property name.
+Returns a [Podlet Resource](#podlet-resource) which is also stored on the
+layout client instance using the registered `name` value as its property name.
 
 Example:
 
@@ -1712,15 +1712,45 @@ The value will be one of the following values:
 -   `stable` - When all registered podlets are using cached manifests and only fetching content.
 -   `unhealthy` - When an podlet update never settled.
 
+### .client Events
+
+The Client instance emits the following events:
+
+#### state
+
+When there is a change in state. See the section
+"[Podlet update life cycle](#podlet-update-life-cycle)" for more information.
+
+```js
+layout.client.on('state', state => {
+    console.log(state);
+});
+
+const podlet = layout.client.register({
+    uri: 'http://foo.site.com/manifest.json',
+    name: 'foo',
+});
+
+podlet.fetch();
+```
+
+The event will fire with one the following values:
+
+-   `instantiated` - When a `Client` has been instantiated but no requests to any podlets have been made.
+-   `initializing` - When one or multiple podlets are requested for the very first time.
+-   `unstable` - When an update of a podlet is detected and is in the process of refetching the manifest.
+-   `stable` - When all registered podlets are using cached manifests and only fetching content.
+-   `unhealthy` - When an update of a podlet never settled.
+
 ### .context
 
 A property that exposes the instance of the @podium/context used to create the
-context.
+context which is appended to the requests to each podlet.
 
-Example of registering a custom third party context parser with the context
-instance:
+### .context.register(name, parser)
 
-Register a custom parser for a value that should be appended to the Context.
+The context is extensible so it is possible to register third party context
+parsers to it.
 
 Example of registering a custom third party context parser to the context:
 
@@ -1752,50 +1782,20 @@ exposed here.
 
 See [@metrics/metric] for full documentation.
 
-### Events
+## Podlet Resource
 
-The Client instance emits the following events:
+A registered podlet is stored in a Podlet Resource object.
 
-#### state
-
-When there is a change in state. See the section
-"[Podlet update life cycle](#podlet-update-life-cycle)" for more information.
-
-```js
-layout.client.on('state', state => {
-    console.log(state);
-});
-
-const podlet = layout.client.register({
-    uri: 'http://foo.site.com/manifest.json',
-    name: 'foo',
-});
-
-podlet.fetch();
-```
-
-The event will fire with one the following values:
-
--   `instantiated` - When a `Client` has been instantiated but no requests to any podlets have been made.
--   `initializing` - When one or multiple podlets are requested for the very first time.
--   `unstable` - When an update of a podlet is detected and is in the process of refetching the manifest.
--   `stable` - When all registered podlets are using cached manifests and only fetching content.
--   `unhealthy` - When an update of a podlet never settled.
-
-## Podlet Resource Instance
-
-A registered podlet is stored in a Podium resource object.
-
-The Podium resource object contains methods for retrieving the content of a
+The podlet Resource object contains methods for retrieving the content of a
 podlet. The URI of the content of a component is defined in the
 component's manifest. This is the content root of the component.
 
-A Podium resource object has the following API:
+A podlet resource object has the following API:
 
 ### .fetch(HttpIncoming, options)
 
 Fetches the content of the podlet. Returns a `Promise` which resolves with a
-response object containing the keys `content`, `headers`, `css` and `js`.
+Podlet Response object containing the keys `content`, `headers`, `css` and `js`.
 
 #### HttpIncoming (required)
 
@@ -1913,8 +1913,8 @@ console.log(result.css);
 
 Streams the content of the component. Returns a `ReadableStream` which streams
 the content of the component. Before the stream starts flowing a `beforeStream`
-event with a response object, containing `headers`, `css` and `js` references is
-emitted.
+event with a Podlet Response object, containing `headers`, `css` and `js`
+references is emitted.
 
 #### HttpIncoming (required)
 
@@ -2151,6 +2151,25 @@ during the call to `register`.
 ### .uri
 
 A property returning the location of the Podium resource.
+
+## Podlet Response
+
+When a podlet is requested by the [`.client.fetch()`](#fetchhttpincoming-options)
+method it will return a `Promise`  which will resolve with a podlet response
+object. If a podlet is requested by the [`.client.stream()`](#streamhttpincoming-options)
+method a `beforeStream` event will emit a podlet response object.
+
+This object hold the response of the HTTP request to the content URL of the
+podlet which was requested.
+
+An podlet response instance has the following properties:
+
+| property | type     | getter  | setter  | default | details                                                                                                 |
+| -------- | -------- | ------- | ------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| content  | `string` | &check; |         |         | The content of the podlet. Normally a string of HTML.                                                   |
+| headers  | `object` | &check; |         | `{}`    | The HTTP headers the content route of the podlet responded with.                                        |
+| css      | `array`  | &check; |         | `[]`    | An array of [AssetCSS](assets.md#assetcss) objects holding the CSS references registered by the podlet. |
+| js       | `array`  | &check; |         | `[]`    | An array of [AssetJS](assets.md#assetjs) objects holding the JS references registered by the podlet.    |
 
 ## res.podiumSend(fragment)
 
