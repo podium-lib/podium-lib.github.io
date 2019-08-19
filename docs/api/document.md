@@ -115,7 +115,7 @@ layout.view((incoming, body, head) => `<!doctype html>
 
 ## Request Properties
 
-A document template will need properties which are request  bound. This can be
+A document template will need properties which are request bound. This can be
 any type of property, but the value of the `<title>` element  is one such
 example.
 
