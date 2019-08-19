@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Passing URL params and query string values to podlets · Podium</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;There are occasions where you will want user interaction in a podlet to inform the behavior of other podlets. A great example of this is search. You might have one podlet that handles user search input and another podlet that displays search results.&lt;/p&gt;
+"/><meta name="docsearch:version" content="4.1.0"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Passing URL params and query string values to podlets · Podium"/><meta property="og:type" content="website"/><meta property="og:url" content="https://podium-lib.io//"/><meta property="og:description" content="&lt;p&gt;There are occasions where you will want user interaction in a podlet to inform the behavior of other podlets. A great example of this is search. You might have one podlet that handles user search input and another podlet that displays search results.&lt;/p&gt;
+"/><meta property="og:image" content="https://podium-lib.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://podium-lib.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon-32x32.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="https://podium-lib.io/blog/atom.xml" title="Podium Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://podium-lib.io/blog/feed.xml" title="Podium Blog RSS Feed"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/favicon-96x96.png" alt="Podium"/><h2 class="headerTitleWithLogo">Podium</h2></a><a href="/versions"><h3>4.1.0</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/4.1.0/podium/conceptual_overview" target="_self">Overview</a></li><li class="siteNavGroupActive"><a href="/docs/4.1.0/podlet/getting_started" target="_self">Podlets</a></li><li class="siteNavGroupActive"><a href="/docs/4.1.0/layout/getting_started" target="_self">Layouts</a></li><li class="siteNavGroupActive"><a href="/docs/4.1.0/api/getting_started" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Layout Guides</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/4.1.0/podium/conceptual_overview">Conceptual Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Podlet Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/4.1.0/podlet/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/podlet/fallbacks">Fallbacks</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/podlet/context">Context</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/podlet/proxying">Proxying</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/podlet/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Layout Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/4.1.0/layout/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/layout/context">The Podium Context</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/layout/unavailable_podlets">Handling podlet unavailability</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/4.1.0/layout/dynamic_routes">Passing URL params and query string values to podlets</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/layout/assets">Assets</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/layout/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/4.1.0/api/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/api/incoming">HttpIncoming</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/api/document">Document Template</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/api/podlet">@podium/podlet</a></li><li class="navListItem"><a class="navItem" href="/docs/4.1.0/api/layout">@podium/layout</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Passing URL params and query string values to podlets</h1></header><article><div><span><p>There are occasions where you will want user interaction in a podlet to inform the behavior of other podlets. A great example of this is search. You might have one podlet that handles user search input and another podlet that displays search results.</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> searchField = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'searchField'</span>,
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7200'</span>,
+});
+
+<span class="hljs-keyword">const</span> searchResults = layout.client.register({
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'searchResults'</span>,
+    <span class="hljs-attr">uri</span>: <span class="hljs-string">'http://localhost:7201'</span>,
+});
+</code></pre>
+<p>The recommended way for the <code>searchResults</code> podlet to react to user changes in the <code>searchField</code> is to manipulate the pages URL query string parameters or pathname param.</p>
+<h2><a class="anchor" aria-hidden="true" id="sending-query-params"></a><a href="#sending-query-params" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sending query params</h2>
+<p>The Podium context is not the only way for a layout to communicate with its podlets. Query params can be forwarded to podlets via <code>.fetch()</code> calls.</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> content = podlet.fetch(incoming, { <span class="hljs-attr">query</span>: { <span class="hljs-attr">search</span>: req.query.search } });
+</code></pre>
+<p>Continuing with our search example, when a request comes in to the layout at <code>http://localhost:7101?search=houses</code>, we forward the query parameter <code>search</code> on to both podlets.</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> content = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([
+    searchField.fetch(incoming, { <span class="hljs-attr">query</span>: { <span class="hljs-attr">search</span>: req.query.search } }),
+    searchResults.fetch(incoming, { <span class="hljs-attr">query</span>: { <span class="hljs-attr">search</span>: req.query.search } }),
+]);
+</code></pre>
+<p>Our podlets will then have access to the value of <code>search</code> and be able to render content accordingly. Likewise, in order to trigger changes, all a podlet will need to do is navigate the page to <code>http://localhost:7101?search=houses</code>.
+The <code>searchField</code> podlet could do this by creating a form.</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-html"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"http://localhost:7101"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"GET"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"search"</span> /&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="sending-a-pathname"></a><a href="#sending-a-pathname" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sending a pathname</h2>
+<p>Another way to send dynamic queries to podlets is by sending along a <code>pathname</code> option. This can be used, for example, to build podlet URLs that are defined using named route parameters.</p>
+<p><em>Example: sending podlet content route with named parameter</em></p>
+<p>In the layout.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> content = podlet.fetch(incoming, { <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/andrew'</span> });
+</code></pre>
+<p>In the podlet.</p>
+<pre><code class="hljs css language-js">app.get(<span class="hljs-string">'/:name'</span>, (req, res) =&gt; {
+    <span class="hljs-comment">// req.params.name =&gt; andrew</span>
+});
+</code></pre>
+<p>It is important to note here that the <code>pathname</code> value is appended to the content route so if you were to serve your content route at <code>/content</code> instead of at <code>/</code> the final URL sent to the podlet would include this.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+    <span class="hljs-attr">content</span>: <span class="hljs-string">'/content'</span>,
+});
+app.get(<span class="hljs-string">'/content/:name'</span>, (req, res) =&gt; {
+    <span class="hljs-comment">// req.params.name =&gt; andrew</span>
+});
+</code></pre>
+<p>You are, in fact, free to handle any routes you like under <code>content</code> namespace. The following is also valid.</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// include `/name` when defining `pathname`</span>
+<span class="hljs-keyword">const</span> content = podlet.fetch(incoming, { <span class="hljs-attr">pathname</span>: <span class="hljs-string">'/name/andrew'</span> });
+
+<span class="hljs-keyword">const</span> podlet = <span class="hljs-keyword">new</span> Podlet({
+    <span class="hljs-attr">content</span>: <span class="hljs-string">'/content'</span>,
+});
+app.get(<span class="hljs-string">'/content/name/:name'</span>, (req, res) =&gt; {
+    <span class="hljs-comment">// req.params.name =&gt; andrew</span>
+});
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 6/14/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/4.1.0/layout/unavailable_podlets"><span class="arrow-prev">← </span><span>Handling podlet unavailability</span></a><a class="docs-next button" href="/docs/4.1.0/layout/assets"><span>Assets</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#sending-query-params">Sending query params</a></li><li><a href="#sending-a-pathname">Sending a pathname</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon-96x96.png" alt="Podium" width="66" height="58"/></a><div><h5>Documentation</h5><a href="/docs/podium/conceptual_overview">Conceptual overview</a><a href="/docs/podlet/getting_started">Podlets</a><a href="/docs/layout/getting_started">Layouts</a></div><div><h5>API</h5><a href="/docs/api/getting_started">Getting started</a><a href="/docs/api/podlet">Podlets</a><a href="/docs/api/layout">Layouts</a></div><div><h5>Links</h5><a href="/blog">Blog</a><a href="https://github.com/podium-lib/issues">Issues</a><a href="https://github.com/podium-lib">GitHub</a><a href="https://www.npmjs.com/org/podium">npm</a><a href="https://micro-frontends.org/">Micro Frontends</a></div></section><a href="https://finn.no/" target="_blank" rel="noreferrer noopener" class="copyrightLogo"><img src="/img/finn_no_logo.png" alt="FINN.no" width="129" height="45"/></a><section class="copyright">Copyright © 2019 FINN.no Copyright</section></footer></div></body></html>
