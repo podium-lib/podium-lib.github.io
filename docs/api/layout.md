@@ -1790,7 +1790,7 @@ The podlet Resource object contains methods for retrieving the content of a
 podlet. The URI of the content of a component is defined in the
 component's manifest. This is the content root of the component.
 
-A Podlet resource object has the following API:
+A podlet resource object has the following API:
 
 ### .fetch(HttpIncoming, options)
 
