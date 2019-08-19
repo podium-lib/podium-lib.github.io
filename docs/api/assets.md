@@ -414,7 +414,7 @@ An `AssetJS` instance has the following methods:
 
 ### .toJSON()
 
-Returns JSON representation of the `AssetJS` instance.
+Returns a JSON representation of the `AssetJS` instance.
 
 ### .toHTML() {
 
