@@ -194,7 +194,7 @@ const server = http.createServer(async (req, res) => {
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-When a layout fetches one or more podlets its common that one would like to
+When a layout fetches one or more podlets it's common that one would like to
 include the assets to these podlets in the full HTML document the layout is
 composing.
 
