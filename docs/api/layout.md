@@ -2162,7 +2162,7 @@ method a `beforeStream` event will emit a podlet response object.
 This object hold the response of the HTTP request to the content URL of the
 podlet which was requested.
 
-An Podlet Response instance has the following properties:
+An podlet response instance has the following properties:
 
 | property | type     | getter  | setter  | default | details                                                                                                 |
 | -------- | -------- | ------- | ------- | ------- | ------------------------------------------------------------------------------------------------------- |
