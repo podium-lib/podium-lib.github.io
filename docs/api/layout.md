@@ -1790,7 +1790,7 @@ The podlet Resource object contains methods for retrieving the content of a
 podlet. The URI of the content of a component is defined in the
 component's manifest. This is the content root of the component.
 
-A Podlet resource object has the following API:
+A podlet resource object has the following API:
 
 ### .fetch(HttpIncoming, options)
 
@@ -2155,14 +2155,14 @@ A property returning the location of the Podium resource.
 ## Podlet Response
 
 When a podlet is requested by the [`.client.fetch()`](#fetchhttpincoming-options)
-method it will return a `Promise`  which will resolve with a Podlet Response
-object. Or if a podlet is requested by the [`.client.stream()`](#streamhttpincoming-options)
-method a `beforeStream` event will emit a Podlet Response object.
+method it will return a `Promise`  which will resolve with a podlet response
+object. If a podlet is requested by the [`.client.stream()`](#streamhttpincoming-options)
+method a `beforeStream` event will emit a podlet response object.
 
 This object hold the response of the HTTP request to the content URL of the
 podlet which was requested.
 
-An Podlet Response instance has the following properties:
+An podlet response instance has the following properties:
 
 | property | type     | getter  | setter  | default | details                                                                                                 |
 | -------- | -------- | ------- | ------- | ------- | ------------------------------------------------------------------------------------------------------- |
