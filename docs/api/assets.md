@@ -366,7 +366,7 @@ An `AssetCSS` instance has the following properties:
 | ----------- | --------- | ------- | ------- | ------------ | ----------------------------------------------------------- |
 | value       | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                   |
 | href        | `string`  | &check; |         | `''`         | Alias for the `value` property                              |
-| crossorigin | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
+| crossorigin | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
 | disabled    | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on a HTML `<link>` element |
 | hreflang    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
 | title       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
