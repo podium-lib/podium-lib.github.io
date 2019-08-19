@@ -194,6 +194,165 @@ const server = http.createServer(async (req, res) => {
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
+When a layout fetches one or more podlets its common that one would like to
+include the assets to these podlets in the full HTML document the layout is
+composing.
+
+By setting the [`Podlet Response`](layout.md#podlet-response) objects from the
+podlets one fetch on to the `HttpIncoming.podlets` property in a layout one
+appends the `AssetCSS` and `AssetJS` objects for the requested podlets onto the
+`HttpIncoming.css` and `HttpIncoming.js` properties.
+
+This way; the layouts registered assets and the assets for all the requested
+podlets are available for the [`document template`](document.md) in one array
+for CSS and one array for JS.
+
+<!--DOCUSAURUS_CODE_TABS-->
+<!--Express-->
+
+```js
+layout.css({ value: '/assets/styles.css' });
+layout.js({ value: '/assets/scripts.js', type: 'esm' });
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+app.get(layout.pathname(), async (req, res, next) => {
+    const incoming = res.locals.podium;
+
+    const response = await Promise.all(
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    );
+
+    // This appends the assets from the podlets onto incoming.css and incoming.js
+    incoming.podlets = response;
+
+    console.log(incoming.css)  // array with the layouts and podlets AssetCSS objects
+    console.log(incoming.js)   // array with the layouts and podlets AssetJS objects
+
+    [ ... ]
+});
+```
+
+<!--Hapi-->
+
+```js
+layout.css({ value: '/assets/styles.css' });
+layout.js({ value: '/assets/scripts.js', type: 'esm' });
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: (request, h) => {
+        const incoming = request.app.podium;
+
+        const response = await Promise.all(
+            podletA.fetch(incoming),
+            podletB.fetch(incoming),
+        );
+
+        // This appends the assets from the podlets onto incoming.css and incoming.js
+        incoming.podlets = response;
+
+        console.log(incoming.css)  // array with the layouts and podlets AssetCSS objects
+        console.log(incoming.js)   // array with the layouts and podlets AssetJS objects
+
+        [ ... ]
+    },
+});
+
+app.start();
+```
+
+<!--Fastify-->
+
+```js
+layout.css({ value: '/assets/styles.css' });
+layout.js({ value: '/assets/scripts.js', type: 'esm' });
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+app.get(layout.pathname(), async (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const response = await Promise.all(
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    );
+
+    // This appends the assets from the podlets onto incoming.css and incoming.js
+    incoming.podlets = response;
+
+    console.log(incoming.css)  // array with the layouts and podlets AssetCSS objects
+    console.log(incoming.js)   // array with the layouts and podlets AssetJS objects
+
+    [ ... ]
+});
+```
+
+<!--HTTP-->
+
+```js
+layout.css({ value: '/assets/styles.css' });
+layout.js({ value: '/assets/scripts.js', type: 'esm' });
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    const response = await Promise.all(
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    );
+
+    // This appends the assets from the podlets onto incoming.css and incoming.js
+    incoming.podlets = response;
+
+    console.log(incoming.css)  // array with the layouts and podlets AssetCSS objects
+    console.log(incoming.js)   // array with the layouts and podlets AssetJS objects
+
+    [ ... ]
+});
+```
+
+<!--END_DOCUSAURUS_CODE_TABS-->
+
 ## AssetCSS
 
 An `AssetCSS` instance holds information about a Cascading Style Sheet related
