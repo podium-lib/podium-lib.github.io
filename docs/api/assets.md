@@ -203,7 +203,7 @@ podlets one fetch on to the `HttpIncoming.podlets` property in a layout one
 appends the `AssetCSS` and `AssetJS` objects for the requested podlets onto the
 `HttpIncoming.css` and `HttpIncoming.js` properties.
 
-This way; the layouts registered assets and the assets for all the requested
+This way the layouts registered assets and the assets for all the requested
 podlets are available for the [`document template`](document.md) in one array
 for CSS and one array for JS.
 
