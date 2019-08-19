@@ -95,7 +95,7 @@ server.listen(7100);
 
 When a layout fetches a podlet and parses the podlets manifest, any assets on
 the `.css` and `.js` properties in the manifest are also parsed into appropriate
-`AssetCSS` or `AssetJS` object.
+`AssetCSS` or `AssetJS` objects.
 
 These `AssetCSS` or `AssetJS` objects are then available on the `.css` or `.js`
 properties of the [`Podlet Response`](layout.md#podlet-response) object returned
