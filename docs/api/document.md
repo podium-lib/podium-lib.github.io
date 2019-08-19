@@ -91,8 +91,8 @@ const server = http.createServer(async (req, res) => {
 
 ## Customizing
 
-Podium ships with a default document template which should cover most use cases. It
-is possible, however, to set a custom document template which can then be
+Podium ships with a default document template which should cover most use cases.
+It is possible, however, to set a custom document template which can then be
 plugged into both layout and podlet servers.
 
 A custom document template is set by using the `.view()` method in the
@@ -196,8 +196,8 @@ const server = http.createServer(async (req, res) => {
 On the [`HttpIncoming`](incoming.md) object which is passed on to the document
 template one can find an array of `AssetCSS` objects on the `.css` property and
 an array of `AssetJS` objects on the `.js` property . These properties hold the
-assets of a podlet or a layout. In a layout they can, in addition to the layouts
-assets, hold the assets of the requested podlets.
+assets of a podlet or a layout. In a layout they can hold the assets of the
+requested podlets in addition to the assets of the layout itself.
 
 Please see the [asset](assets.md) documentation for more information.
 

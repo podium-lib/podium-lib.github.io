@@ -1750,7 +1750,7 @@ context which is appended to the requests to each podlet.
 ### .context.register(name, parser)
 
 The context is extensible so it is possible to register third party context
-parser to it.
+parsers to it.
 
 Example of registering a custom third party context parser to the context:
 

@@ -19,7 +19,7 @@ request/response life cycle. The most important values are:
 [@podium/podlet](api/podlet.md).
 
 The `HttpIncoming` class is located in the [@podium/utils](https://github.com/podium-lib/utils/blob/master/lib/http-incoming.js)
-module and when writing a HTTP servers without using the supported HTTP
+module and when writing an HTTP server without using the supported HTTP
 framework plugins, it will be necessary to instantiate an instance of this
 object and pass it between the different parts of Podium.
 
@@ -60,7 +60,7 @@ layout.view = (incoming, body) => {
 
 // Attach the middleware on Express. This will create HttpIncoming under the
 // hood plus generate the context and store it on HttpIncoming among other
-// things HttpIncoming will be stored at res.locals.podium
+// things. HttpIncoming will be stored at res.locals.podium
 app.use(layout.middleware());
 
 app.get(layout.pathname(), (req, res) => {

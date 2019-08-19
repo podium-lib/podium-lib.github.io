@@ -93,9 +93,9 @@ server.listen(7100);
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-When a layout fetches a podlet and parses the podlets manifest, any assets on
-the `.css` and `.js` properties in the manifest are also parsed into appropriate
-`AssetCSS` or `AssetJS` objects.
+When a layout fetches a podlet and parses the podlet's manifest, any assets on
+the `.css` and `.js` properties of the manifest are also parsed into the
+appropriate `AssetCSS` or `AssetJS` objects.
 
 These `AssetCSS` or `AssetJS` objects are then available on the `.css` or `.js`
 properties of the [`Podlet Response`](layout.md#podlet-response) object returned
@@ -194,18 +194,18 @@ const server = http.createServer(async (req, res) => {
 
 <!--END_DOCUSAURUS_CODE_TABS-->
 
-When a layout fetches one or more podlets it's common that one would like to
-include the assets to these podlets in the full HTML document the layout is
-composing.
+When fetching one or more podlets from a layout, it's common to then include the
+assets from these podlets in the full HTML document being composed in this
+layout.
 
-By setting the [`Podlet Response`](layout.md#podlet-response) objects from the
-podlets one fetch on to the `HttpIncoming.podlets` property in a layout one
-appends the `AssetCSS` and `AssetJS` objects for the requested podlets onto the
-`HttpIncoming.css` and `HttpIncoming.js` properties.
+By setting an array of [`Podlet Response`](layout.md#podlet-response) objects
+(returned when podlets are requested) on the `HttpIncoming.podlets` property in
+a layout, podlet `AssetCSS` and `AssetJS` objects will be set on the properties
+`HttpIncoming.css` and `HttpIncoming.js` respectively.
 
-This way the layouts registered assets and the assets for all the requested
-podlets are available for the [`document template`](document.md) in one array
-for CSS and one array for JS.
+In this way the layout's registered assets, together with assets for all
+requested podlets, will be available for the [`document template`](document.md)
+in two arrays, one for CSS and another array for JS.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Express-->
@@ -362,18 +362,18 @@ to a podlet or layout.
 
 An `AssetCSS` instance has the following properties:
 
-| property    | type      | getter  | setter  | default      | details                                                     |
-| ----------- | --------- | ------- | ------- | ------------ | ----------------------------------------------------------- |
-| value       | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                   |
-| href        | `string`  | &check; |         | `''`         | Alias for the `value` property                              |
-| crossorigin | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
-| disabled    | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on a HTML `<link>` element |
-| hreflang    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
-| title       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
-| media       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
-| type        | `string`  | &check; | &check; | `text/css`   | Correlates to the same attribute on a HTML `<link>` element |
-| rel         | `string`  | &check; | &check; | `stylesheet` | Correlates to the same attribute on a HTML `<link>` element |
-| as          | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
+| property    | type      | getter  | setter  | default      | details                                                      |
+| ----------- | --------- | ------- | ------- | ------------ | ------------------------------------------------------------ |
+| value       | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                    |
+| href        | `string`  | &check; |         | `''`         | Alias for the `value` property                               |
+| crossorigin | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
+| disabled    | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<link>` element |
+| hreflang    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
+| title       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
+| media       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
+| type        | `string`  | &check; | &check; | `text/css`   | Correlates to the same attribute on an HTML `<link>` element |
+| rel         | `string`  | &check; | &check; | `stylesheet` | Correlates to the same attribute on an HTML `<link>` element |
+| as          | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
 
 ## Methods
 
@@ -385,28 +385,29 @@ Returns a JSON representation of the `AssetCSS` instance.
 
 ### .toHTML() {
 
-Returns a HTML `link` element as a string of the `AssetCSS` instance.
+Returns an HTML `<link>` element as a string representation of the `AssetCSS`
+instance.
 
 ## AssetJS
 
-An `AssetJS` instance holds information about a Javascript related to a podlet
-or layout.
+An `AssetJS` instance holds information about a podlet or layout's Javascript
+client side assets.
 
 ## Properties
 
 An `AssetJS` instance has the following properties:
 
-| property       | type      | getter  | setter  | default      | details                                                       |
-| -------------- | --------- | ------- | ------- | ------------ | ------------------------------------------------------------- |
-| value          | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                     |
-| src            | `string`  | &check; |         | `''`         | Alias for the `value` property                                |
-| referrerpolicy | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<script>` element |
-| crossorigin    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<script>` element |
-| integrity      | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<script>` element |
-| nomodule       | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on a HTML `<script>` element |
-| async          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on a HTML `<script>` element |
-| defer          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on a HTML `<script>` element |
-| type           | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<script>` element |
+| property       | type      | getter  | setter  | default      | details                                                        |
+| -------------- | --------- | ------- | ------- | ------------ | -------------------------------------------------------------- |
+| value          | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                      |
+| src            | `string`  | &check; |         | `''`         | Alias for the `value` property                                 |
+| referrerpolicy | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
+| crossorigin    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
+| integrity      | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
+| nomodule       | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<script>` element |
+| async          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<script>` element |
+| defer          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<script>` element |
+| type           | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
 
 ## Methods
 
@@ -418,4 +419,5 @@ Returns a JSON representation of the `AssetJS` instance.
 
 ### .toHTML() {
 
-Returns a HTML `script` element as a string of the `AssetJS` instance.
+Returns an HTML `<script>` element as a string representation of the `AssetJS`
+instance.
