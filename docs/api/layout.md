@@ -2155,7 +2155,7 @@ A property returning the location of the Podium resource.
 ## Podlet Response
 
 When a podlet is requested by the [`.client.fetch()`](#fetchhttpincoming-options)
-method it will return a `Promise`  which will resolve with a Podlet Response
+method it will return a `Promise`  which will resolve with a podlet response
 object. Or if a podlet is requested by the [`.client.stream()`](#streamhttpincoming-options)
 method a `beforeStream` event will emit a Podlet Response object.
 
