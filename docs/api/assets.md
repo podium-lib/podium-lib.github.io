@@ -396,18 +396,17 @@ or layout.
 
 An `AssetJS` instance has the following properties:
 
-| property    | type      | getter  | setter  | default      | details                                                     |
-| ----------- | --------- | ------- | ------- | ------------ | ----------------------------------------------------------- |
-| value       | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                   |
-| href        | `string`  | &check; |         | `''`         | Alias for the `value` property                              |
-| crossorigin | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
-| disabled    | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on a HTML `<link>` element |
-| hreflang    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
-| title       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
-| media       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
-| type        | `string`  | &check; | &check; | `text/css`   | Correlates to the same attribute on a HTML `<link>` element |
-| rel         | `string`  | &check; | &check; | `stylesheet` | Correlates to the same attribute on a HTML `<link>` element |
-| as          | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<link>` element |
+| property       | type      | getter  | setter  | default      | details                                                       |
+| -------------- | --------- | ------- | ------- | ------------ | ------------------------------------------------------------- |
+| value          | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                     |
+| src            | `string`  | &check; |         | `''`         | Alias for the `value` property                                |
+| referrerpolicy | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<script>` element |
+| crossorigin    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<script>` element |
+| integrity      | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<script>` element |
+| nomodule       | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on a HTML `<script>` element |
+| async          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on a HTML `<script>` element |
+| defer          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on a HTML `<script>` element |
+| type           | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on a HTML `<script>` element |
 
 ## Methods
 
