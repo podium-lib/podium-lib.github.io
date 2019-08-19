@@ -196,7 +196,7 @@ const server = http.createServer(async (req, res) => {
 On the [`HttpIncoming`](incoming.md) object which is passed on to the document
 template one can find an array of `AssetCSS` objects on the `.css` property and
 an array of `AssetJS` objects on the `.js` property . These properties hold the
-assets of a podlet or a layout. In a layout they can additionally to the layouts
+assets of a podlet or a layout. In a layout they can, in addition to the layouts
 assets, hold the assets of the requested podlets.
 
 Please see the [asset](assets.md) documentation for more information.
