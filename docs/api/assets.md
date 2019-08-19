@@ -4,7 +4,7 @@ title: Assets
 ---
 
 When an asset is registered through the `.css()` or `.js()` methods in a podlet
-or layout an appropiate `AssetCSS` or `AssetJS` object is created.
+or layout an appropriate `AssetCSS` or `AssetJS` object is created.
 
 The `AssetCSS` or `AssetJS` objects are then available on the `.css` or `.js`
 properties of the [`HttpIncoming`](incoming.md) object on a request.
