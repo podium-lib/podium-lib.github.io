@@ -1110,15 +1110,15 @@ layout.client.fooBar.fetch();
 
 #### options (required)
 
-| option     | type      | default | required | details                                                                                                                                                      |
-| ---------- | --------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| uri        | `string`  |         | &check;  | Uri to the manifest of a podlet                                                                                                                              |
-| name       | `string`  |         | &check;  | Name of the component. This is used to reference the component in your application, and does not have to match the name of the component itself              |
-| retries    | `number`  | `4`     |          | The number of times the client should retry to settle a version number conflict before terminating. Overrides the `retries` option in the layout constructor |
-| timeout    | `number`  | `1000`  |          | Defines how long, in milliseconds, a request should wait before the connection is terminated. Overrides the `timeout` option in the layout constructor       |
-| throwable  | `boolean` | `false` |          | Defines whether an error should be thrown if a failure occurs during the process of fetching a podlet                                                        |
-| resolveJs  | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for JavaScript assets                                                                              |
-| resolveCss | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for CSS assets                                                                                     |
+| option     | type      | default | required | details                                                                                                                                                              |
+| ---------- | --------- | ------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| uri        | `string`  |         | &check;  | Uri to the manifest of a podlet                                                                                                                                      |
+| name       | `string`  |         | &check;  | Name of the component. This is used to reference the component in your application, and does not have to match the name of the component itself                      |
+| retries    | `number`  | `4`     |          | The number of times the client should retry to settle a version number conflict before terminating. Overrides the `retries` option in the layout constructor         |
+| timeout    | `number`  | `1000`  |          | Defines how long, in milliseconds, a request should wait before the connection is terminated. Overrides the `timeout` option in the layout constructor               |
+| throwable  | `boolean` | `false` |          | Defines whether an error should be thrown if a failure occurs during the process of fetching a podlet. [See handling podlet unavailability](unavailable_podlets.md). |
+| resolveJs  | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for JavaScript assets                                                                                      |
+| resolveCss | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for CSS assets                                                                                             |
 
 ### .client.refreshManifests()
 
