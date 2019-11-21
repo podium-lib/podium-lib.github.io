@@ -9,11 +9,17 @@ To illustrate by way of an example, if podlet A. contains an input field wherein
 
 `EventBus` provides a simple mechanism for a podlet to publish events or to subscribe to receive events, in the browser, whenever they occur. To continue with our example above, podlet B. would subscribe to receive new reminder events so that when a user inputs a new reminder, Podlet A. would publish a new reminder event. Podlet B. would then immediately receive that event and be able to react by updating the reminder list with a new reminder.
 
+## Getting Started
+
+### Installation
+
 To get started, install the Podium browser package
 
 ```sh
 npm install @podium/browser
 ```
+
+### Import and Initialize
 
 Then in your podlet's client side JavaScript code, import the `MessageBus` class from the browser package and then create a new instance of the class.
 
@@ -22,6 +28,8 @@ import { MessageBus } from '@podium/browser';
 
 const messageBus = new MessageBus();
 ```
+
+### Publishing Events
 
 To publish an event, call the `publish` method and pass a `channel`, a `topic` and any data you want subscribers to receive.
 
@@ -37,6 +45,8 @@ document.getElementById('add-btn').on('click', () => {
     messageBus.publish('reminders', 'newReminder', reminder);
 });
 ```
+
+### Subscribing to Events
 
 To subscribe to events for a particular channel and topic, call the `subscribe` method passing it the `channel`, `topic` and a callback function to be executed whenever an event occurs. Whenever the callback is executed, it gets passed an `event` object which has the properties `channel`, `topic` and `payload`.
 
