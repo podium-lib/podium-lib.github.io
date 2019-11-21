@@ -3,7 +3,7 @@ id: podlet_to_podlet_communication
 title: Podlet To Podlet Communication In The Browser
 ---
 
-For situations where 2 or more podlets need to communicate with each other without a page refresh, Podium provides a client side pubsub class called `MessageBus`.
+For situations where 2 or more podlets need to communicate with each other without a page refresh, Podium provides a client side library called `@podium/browser` which provides a pubsub class called `MessageBus`.
 
 To illustrate by way of an example, if podlet A. contains an input field wherein a user can input a new reminder and podlet B. contains a list of all reminders, when a user inputs a new reminder into the area of the page that is rendered by podlet A. he or she would expect that the reminders list controlled by podlet B. would immediately be updated with the newly input reminder.
 
