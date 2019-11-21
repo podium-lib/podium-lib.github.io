@@ -3,11 +3,11 @@ id: podlet_to_podlet_communication
 title: Podlet To Podlet Communication In The Browser
 ---
 
-For situations where 2 or more podlets need to communicate with each other without a page refresh, Podium provides a client side pubsub library called `EventBus`.
+For situations where 2 or more podlets need to communicate with each other without a page refresh, Podium provides a client side pubsub class called `MessageBus`.
 
 To illustrate by way of an example, if podlet A. contains an input field wherein a user can input a new reminder and podlet B. contains a list of all reminders, when a user inputs a new reminder into the area of the page that is rendered by podlet A. he or she would expect that the reminders list controlled by podlet B. would immediately be updated with the newly input reminder.
 
-`EventBus` provides a simple mechanism for a podlet to publish events or to subscribe to receive events, in the browser, whenever they occur. To continue with our example above, podlet B. would subscribe to receive new reminder events so that when a user inputs a new reminder, Podlet A. would publish a new reminder event. Podlet B. would then immediately receive that event and be able to react by updating the reminder list with a new reminder.
+`MessageBus` provides a simple mechanism for a podlet to publish events or to subscribe to receive events, in the browser, whenever they occur. To continue with our example above, podlet B. would subscribe to receive new reminder events so that when a user inputs a new reminder, Podlet A. would publish a new reminder event. Podlet B. would then immediately receive that event and be able to react by updating the reminder list with a new reminder.
 
 ## Getting Started
 
