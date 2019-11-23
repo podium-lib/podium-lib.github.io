@@ -6,7 +6,8 @@
             "podlet/fallbacks",
             "podlet/context",
             "podlet/proxying",
-            "podlet/local_development"
+            "podlet/local_development",
+            "podlet/podlet_to_podlet_communication"
         ],
         "Layout Guides": [
             "layout/getting_started",
@@ -22,7 +23,8 @@
             "api/assets",
             "api/document",
             "api/podlet",
-            "api/layout"
+            "api/layout",
+            "api/browser"
         ]
     }
 }
