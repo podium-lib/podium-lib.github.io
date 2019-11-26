@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Podlet To Podlet Communication In The Browser · Podium</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="For situations where 2 or more podlets need to communicate with each other without a page refresh, Podium provides a client side library called `@podium/browser` that provides a pubsub class called `MessageBus`."/><meta name="docsearch:version" content="next"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Podlet To Podlet Communication In The Browser · Podium"/><meta property="og:type" content="website"/><meta property="og:url" content="https://podium-lib.io//"/><meta property="og:description" content="For situations where 2 or more podlets need to communicate with each other without a page refresh, Podium provides a client side library called `@podium/browser` that provides a pubsub class called `MessageBus`."/><meta property="og:image" content="https://podium-lib.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://podium-lib.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon-32x32.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><link rel="alternate" type="application/atom+xml" href="https://podium-lib.io/blog/atom.xml" title="Podium Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://podium-lib.io/blog/feed.xml" title="Podium Blog RSS Feed"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/favicon-96x96.png" alt="Podium"/><h2 class="headerTitleWithLogo">Podium</h2></a><a href="/versions"><h3>next</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/next/podium/conceptual_overview" target="_self">Overview</a></li><li class="siteNavGroupActive"><a href="/docs/next/podlet/getting_started" target="_self">Podlets</a></li><li class="siteNavGroupActive"><a href="/docs/next/layout/getting_started" target="_self">Layouts</a></li><li class="siteNavGroupActive"><a href="/docs/next/api/getting_started" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Podlet Guides</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Overview</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/podium/conceptual_overview">Conceptual Overview</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Podlet Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/podlet/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/fallbacks">Fallbacks</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/context">Context</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/proxying">Proxying</a></li><li class="navListItem"><a class="navItem" href="/docs/next/podlet/local_development">Local Development</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/next/podlet/podlet_to_podlet_communication">Podlet To Podlet Communication In The Browser</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Layout Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/layout/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/context">The Podium Context</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/unavailable_podlets">Handling podlet unavailability</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/dynamic_routes">Passing URL params and query string values to podlets</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/assets">Assets</a></li><li class="navListItem"><a class="navItem" href="/docs/next/layout/local_development">Local Development</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/next/api/getting_started">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/incoming">HttpIncoming</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/assets">Assets</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/document">Document Template</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/podlet">@podium/podlet</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/layout">@podium/layout</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/browser">@podium/browser</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Podlet To Podlet Communication In The Browser</h1></header><article><div><span><p>For situations where 2 or more podlets need to communicate with each other without a page refresh, Podium provides a client side library called <code>@podium/browser</code> that provides a pubsub class called <code>MessageBus</code>.</p>
+<p>To illustrate by way of an example, if podlet A. contains an input field wherein a user can input a new reminder and podlet B. contains a list of all reminders, when a user inputs a new reminder into the area of the page that is rendered by podlet A. he or she would expect that the reminders list controlled by podlet B. would immediately be updated with the newly input reminder.</p>
+<p><code>MessageBus</code> provides a simple mechanism for a podlet to publish events or to subscribe to receive events, in the browser, whenever they occur. To continue with our example above, podlet B. would subscribe to receive new reminder events so that when a user inputs a new reminder, Podlet A. would publish a new reminder event. Podlet B. would then immediately receive that event and be able to react by updating the reminder list with a new reminder.</p>
+<h2><a class="anchor" aria-hidden="true" id="getting-started"></a><a href="#getting-started" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Getting Started</h2>
+<h3><a class="anchor" aria-hidden="true" id="installation"></a><a href="#installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h3>
+<p>To get started, install the Podium browser package</p>
+<pre><code class="hljs css language-sh">npm install @podium/browser
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="import-and-initialize"></a><a href="#import-and-initialize" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Import and Initialize</h3>
+<p>Then in your podlet's client side JavaScript code, import the <code>MessageBus</code> class from the browser package and then create a new instance of the class.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { MessageBus } <span class="hljs-keyword">from</span> <span class="hljs-string">'@podium/browser'</span>;
+
+<span class="hljs-keyword">const</span> messageBus = <span class="hljs-keyword">new</span> MessageBus();
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="publishing-events"></a><a href="#publishing-events" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Publishing Events</h3>
+<p>To publish an event, call the <code>publish</code> method and pass a <code>channel</code>, a <code>topic</code> and any data you want subscribers to receive.</p>
+<pre><code class="hljs css language-js">messageBus.publish(channel, topic, payload);
+</code></pre>
+<p>In our example reminder app, podlet A. might listen for the user to click an <code>add</code> button on the page, read the reminder text from an input field, and then publish an event like so:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'add-btn'</span>).on(<span class="hljs-string">'click'</span>, () =&gt; {
+    <span class="hljs-keyword">const</span> reminder = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'new-reminder-field'</span>).value;
+    messageBus.publish(<span class="hljs-string">'reminders'</span>, <span class="hljs-string">'newReminder'</span>, reminder);
+});
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="subscribing-to-events"></a><a href="#subscribing-to-events" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Subscribing to Events</h3>
+<p>To subscribe to events for a particular channel and topic, call the <code>subscribe</code> method passing it the <code>channel</code>, <code>topic</code> and a callback function to be executed whenever an event occurs. Whenever the callback is executed, it gets passed an <code>event</code> object which has the properties <code>channel</code>, <code>topic</code> and <code>payload</code>.</p>
+<pre><code class="hljs css language-js">messageBus.subscribe(channel, topic, event =&gt; {});
+</code></pre>
+<p>In our example reminder app, podlet B. might listen for new reminder events and then update the list of reminders on the page like so:</p>
+<pre><code class="hljs css language-js">messageBus.subscribe(<span class="hljs-string">'reminders'</span>, <span class="hljs-string">'newReminder'</span>, event =&gt; {
+    <span class="hljs-keyword">const</span> li = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'li'</span>).innerHTML = event.payload;
+    <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'reminders-list'</span>).append(li);
+});
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 11/21/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/podlet/local_development"><span class="arrow-prev">← </span><span>Local Development</span></a><a class="docs-next button" href="/docs/next/layout/getting_started"><span>Getting Started</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#getting-started">Getting Started</a><ul class="toc-headings"><li><a href="#installation">Installation</a></li><li><a href="#import-and-initialize">Import and Initialize</a></li><li><a href="#publishing-events">Publishing Events</a></li><li><a href="#subscribing-to-events">Subscribing to Events</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon-96x96.png" alt="Podium" width="66" height="58"/></a><div><h5>Documentation</h5><a href="/docs/podium/conceptual_overview">Conceptual overview</a><a href="/docs/podlet/getting_started">Podlets</a><a href="/docs/layout/getting_started">Layouts</a></div><div><h5>API</h5><a href="/docs/api/getting_started">Getting started</a><a href="/docs/api/podlet">Podlets</a><a href="/docs/api/layout">Layouts</a></div><div><h5>Links</h5><a href="/blog">Blog</a><a href="https://github.com/podium-lib/issues">Issues</a><a href="https://github.com/podium-lib">GitHub</a><a href="https://www.npmjs.com/org/podium">npm</a><a href="https://micro-frontends.org/">Micro Frontends</a></div></section><a href="https://finn.no/" target="_blank" rel="noreferrer noopener" class="copyrightLogo"><img src="/img/finn_no_logo.png" alt="FINN.no" width="129" height="45"/></a><section class="copyright">Copyright © 2019 FINN.no Copyright</section></footer></div></body></html>
