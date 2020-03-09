@@ -32,7 +32,9 @@ const gettingStarted = layout.client.register({
 })
 ```
 
-Then, when fetching content, if that podlet is not available, then the fetch call will reject with an error which you can then handle as you please.
+Then, when fetching content, if that podlet is not available, then the fetch call will reject with an error which you can then handle as you please. 
+
+Error objects are instances of [Boom](https://www.npmjs.com/package/@hapi/boom) errors and are decorated with the HTTP status codes from the podlet.
 
 _Example_
 
@@ -43,10 +45,29 @@ app.get('/', (req, res, next) => {
         ...
     } catch(err) {
         // you might handle this directly...
-        // res.status(500).send('The getting started guide is currently unavailable');
+        // res.status(err.statusCode).end();
 
         // or perhaps just pass the error on to be handled in error handling middleware
         // next(err);
+    }
+});
+```
+
+In the special case that a podlet responds with a `3xx` redirect status code, the Podium client will not follow the podlet's redirect but will instead decorate the [Boom](https://www.npmjs.com/package/@hapi/boom) error object with the HTTP status code, the redirect URL and an `isRedirect` boolean property set to `true`. **N.B.** The `isRedirect` property is always present on the error object but if the podlet does not respond with a `3xx` status code, the property will be set to `false`.
+
+_Example_
+
+```js
+app.get('/', (req, res, next) => {
+    try {
+        const content = await gettingStarted.fetch(res.locals.podium);
+        ...
+    } catch(err) {
+        if (err.isRedirect) {
+            res.redirect(err.statusCode, err.redirectUrl);
+        } else {
+            next(err);
+        }
     }
 });
 ```
