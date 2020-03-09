@@ -198,7 +198,7 @@ When fetching one or more podlets from a layout, it's common to then include the
 assets from these podlets in the full HTML document being composed in this
 layout.
 
-By setting an array of [`Podlet Response`](layout.md#podlet-response) objects
+By setting a [`Podlet Response`](layout.md#podlet-response) or an array of [`Podlet Response`](layout.md#podlet-response) objects
 (returned when podlets are requested) on the `HttpIncoming.podlets` property in
 a layout, podlet `AssetCSS` and `AssetJS` objects will be set on the properties
 `HttpIncoming.css` and `HttpIncoming.js` respectively.
@@ -224,6 +224,11 @@ const podletB = layout.client.register({
     uri: 'http://localhost:7200/manifest.json',
 });
 
+const podletC = layout.client.register({
+    name: 'myPodletC',
+    uri: 'http://localhost:7300/manifest.json',
+});
+
 app.get(layout.pathname(), async (req, res, next) => {
     const incoming = res.locals.podium;
 
@@ -232,8 +237,13 @@ app.get(layout.pathname(), async (req, res, next) => {
         podletB.fetch(incoming),
     );
 
+    const singleResponse = await podletC.fetch(incoming);
+
     // This appends the assets from the podlets onto incoming.css and incoming.js
     incoming.podlets = response;
+
+    // A single response is also supported
+    incoming.podlets = singleResponse;
 
     console.log(incoming.css)  // array with the layouts and podlets AssetCSS objects
     console.log(incoming.js)   // array with the layouts and podlets AssetJS objects
@@ -258,6 +268,11 @@ const podletB = layout.client.register({
     uri: 'http://localhost:7200/manifest.json',
 });
 
+const podletC = layout.client.register({
+    name: 'myPodletC',
+    uri: 'http://localhost:7300/manifest.json',
+});
+
 app.route({
     method: 'GET',
     path: layout.pathname(),
@@ -269,8 +284,13 @@ app.route({
             podletB.fetch(incoming),
         );
 
+        const singleResponse = await podletC.fetch(incoming);
+
         // This appends the assets from the podlets onto incoming.css and incoming.js
         incoming.podlets = response;
+
+        // A single response is also supported
+        incoming.podlets = singleResponse;
 
         console.log(incoming.css)  // array with the layouts and podlets AssetCSS objects
         console.log(incoming.js)   // array with the layouts and podlets AssetJS objects
@@ -298,6 +318,11 @@ const podletB = layout.client.register({
     uri: 'http://localhost:7200/manifest.json',
 });
 
+const podletC = layout.client.register({
+    name: 'myPodletC',
+    uri: 'http://localhost:7300/manifest.json',
+});
+
 app.get(layout.pathname(), async (request, reply) => {
     const incoming = reply.app.podium;
 
@@ -306,8 +331,13 @@ app.get(layout.pathname(), async (request, reply) => {
         podletB.fetch(incoming),
     );
 
+    const singleResponse = await podletC.fetch(incoming);
+
     // This appends the assets from the podlets onto incoming.css and incoming.js
     incoming.podlets = response;
+
+    // A single response is also supported
+    incoming.podlets = singleResponse;
 
     console.log(incoming.css)  // array with the layouts and podlets AssetCSS objects
     console.log(incoming.js)   // array with the layouts and podlets AssetJS objects
@@ -332,6 +362,11 @@ const podletB = layout.client.register({
     uri: 'http://localhost:7200/manifest.json',
 });
 
+const podletC = layout.client.register({
+    name: 'myPodletC',
+    uri: 'http://localhost:7300/manifest.json',
+});
+
 const server = http.createServer(async (req, res) => {
     let incoming = new HttpIncoming(req, res);
     incoming = await layout.process(incoming);
@@ -341,8 +376,13 @@ const server = http.createServer(async (req, res) => {
         podletB.fetch(incoming),
     );
 
+    const singleResponse = await podletC.fetch(incoming);
+
     // This appends the assets from the podlets onto incoming.css and incoming.js
     incoming.podlets = response;
+
+    // A single response is also supported
+    incoming.podlets = singleResponse;
 
     console.log(incoming.css)  // array with the layouts and podlets AssetCSS objects
     console.log(incoming.js)   // array with the layouts and podlets AssetJS objects
