@@ -32,9 +32,9 @@ const gettingStarted = layout.client.register({
 })
 ```
 
-Then, when fetching content, if that podlet is not available, then the fetch call will reject with an error which you can then handle as you please. 
+When the Podium client makes a fetch to the podlet, if that podlet is not available, then the fetch call will reject with an error that you can then handle as you see fit. 
 
-Error objects are instances of [Boom](https://www.npmjs.com/package/@hapi/boom) errors and are decorated with the HTTP status codes from the podlet.
+Error objects are instances of [Boom](https://www.npmjs.com/package/@hapi/boom) errors and are decorated with the HTTP status code from the podlet response.
 
 _Example_
 
@@ -53,21 +53,26 @@ app.get('/', (req, res, next) => {
 });
 ```
 
-In the special case that a podlet responds with a `3xx` redirect status code, the Podium client will not follow the podlet's redirect but will instead decorate the [Boom](https://www.npmjs.com/package/@hapi/boom) error object with the HTTP status code, the redirect URL and an `isRedirect` boolean property set to `true`. **N.B.** The `isRedirect` property is always present on the error object but if the podlet does not respond with a `3xx` status code, the property will be set to `false`.
+## Defining a podlet as redirectable
+
+In the case that a podlet responds with a `3xx` redirect status code, by default, the Podium client will simply follow the redirect and return the content from the redirect. In some cases, you may wish to handle this redirect manually in your layout app. 
+
+To do so, set `redirectable` to `true` when registering the podlet and then check the response of calls to `fetch` for the `redirect` property. If `redirect` is truthy then the podlet responded with a redirect. The `redirect` property then will contain an object with keys `statusCode` and `location` which you can use to perform your own redirects.
 
 _Example_
 
 ```js
-app.get('/', (req, res, next) => {
-    try {
-        const content = await gettingStarted.fetch(res.locals.podium);
-        ...
-    } catch(err) {
-        if (err.isRedirect) {
-            res.redirect(err.statusCode, err.redirectUrl);
-        } else {
-            next(err);
-        }
+const gettingStarted = layout.client.register({
+    ...
+    redirectable: true,
+});
+
+app.get('/', async (req, res, next) => {
+    const response = await gettingStarted.fetch(res.locals.podium);
+    if (response.redirect) {
+        res.redirect(response.redirect.statusCode, response.redirect.location);
+    } else {
+        res.podiumSend(response.content);
     }
 });
 ```
