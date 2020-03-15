@@ -12,20 +12,25 @@ const CompLibrary = require('../../core/CompLibrary.js');
 const Container = CompLibrary.Container;
 const GridBlock = CompLibrary.GridBlock;
 
-const path =  require('path');
+const path = require('path');
 const fs = require('fs');
 
-const podletFile = path.resolve(__dirname, '../../../../../pages/en/front.podlet.html');
+const podletFile = path.resolve(
+  __dirname,
+  '../../../../../pages/en/front.podlet.html',
+);
 const podletExample = fs.readFileSync(podletFile, 'utf8');
 
-const layoutFile = path.resolve(__dirname, '../../../../../pages/en/front.layout.html');
+const layoutFile = path.resolve(
+  __dirname,
+  '../../../../../pages/en/front.layout.html',
+);
 const layoutExample = fs.readFileSync(layoutFile, 'utf8');
-
 
 class HomeSplash extends React.Component {
   render() {
-    const {siteConfig, language = ''} = this.props;
-    const {baseUrl, docsUrl} = siteConfig;
+    const { siteConfig, language = '' } = this.props;
+    const { baseUrl, docsUrl } = siteConfig;
     const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
     const langPart = `${language ? `${language}/` : ''}`;
     const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
@@ -73,7 +78,9 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href={docUrl('podium/conceptual_overview')}>Get Started</Button>
+            <Button href={docUrl('podium/conceptual_overview')}>
+              Get Started
+            </Button>
             <Button href="https://github.com/podium-lib/">GitHub</Button>
           </PromoSection>
         </div>
@@ -84,14 +91,15 @@ class HomeSplash extends React.Component {
 
 class Index extends React.Component {
   render() {
-    const {config: siteConfig, language = ''} = this.props;
-    const {baseUrl} = siteConfig;
+    const { config: siteConfig, language = '' } = this.props;
+    const { baseUrl } = siteConfig;
 
     const Block = props => (
       <Container
         padding={['bottom', 'top']}
         id={props.id}
-        background={props.background}>
+        background={props.background}
+      >
         <GridBlock
           align="center"
           contents={props.children}
@@ -105,7 +113,8 @@ class Index extends React.Component {
         padding={['bottom', 'top']}
         id={props.id}
         className={props.className}
-        background={props.background}>
+        background={props.background}
+      >
         <GridBlock
           align="left"
           contents={props.children}
@@ -119,19 +128,22 @@ class Index extends React.Component {
         {[
           {
             title: 'Autonomous development',
-            content: 'By adopting a simple manifest, teams can develop and serve parts of a web page in isolation as if one where developing and hosting a full site. These isolated parts, aka Podlets, can easily be developed in any technology stack or one can opt in to using the node.js Podium library with your favorite HTTP framework of choice.',
+            content:
+              'By implementing simple HTTP based conventions, teams can develop and serve parts of a web page in isolation as if they were developing and hosting full sites. As such, these isolated parts (called podlets) can be developed in any technology stack. Our team maintains a set of Podium libaries writen in Node.js which you can combine with which ever Node.js HTTP framework you prefer.',
             image: `${baseUrl}img/isolation_min.svg`,
             imageAlign: 'top',
           },
           {
             title: 'Powerful composition',
-            content: 'Podium makes it easy, yet flexible, to compose parts developed in isolation into full complex pages, aka Layouts. Page compostion is done programmatically instead of through config or markup providing much more power and freedom to make compostion suit every need one might have.',
+            content:
+              'Podium makes it easy, yet flexible, to compose isolated page fragments into complete web pages (called layouts). This page compostion is done programmatically (rather than through config or markup) which provides for more power and freedom for the developer.',
             image: `${baseUrl}img/composed_min.svg`,
             imageAlign: 'top',
           },
           {
             title: 'Contract based',
-            content: 'Composition with Podium is done over HTTP but between the isolated parts and the composition layer there is a strong contract. This ensures that the isolated parts always has a set of key, request bound, properties which can be of value to them to operate while the composition layer has usefull info about each isolated part it can use when composing.',
+            content:
+              'Page composition between isolated page fragments (podlets) and the composition layer (layout) is done over HTTP. A contract between components ensures that fragments get contextual information passed down from the composition layer and the composition layer gets meta information passed up from the fragments it composes together.',
             image: `${baseUrl}img/contract_min.svg`,
             imageAlign: 'top',
           },
@@ -140,7 +152,6 @@ class Index extends React.Component {
     );
 
     const Example = () => (
-
       <CodeBlock className="podium-front-examples">
         {[
           {
