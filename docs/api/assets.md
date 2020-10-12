@@ -423,6 +423,14 @@ An `AssetCSS` instance has the following methods:
 
 Returns a JSON representation of the `AssetCSS` instance.
 
+### .toJsxAttributes()
+
+Returns a JSON representation of the `AssetCSS` instance ready for use in a JSX link tag
+
+```jsx
+<link {...css.toJsxAttributes()} />
+```
+
 ### .toHTML() {
 
 Returns an HTML `<link>` element as a string representation of the `AssetCSS`
@@ -456,6 +464,14 @@ An `AssetJS` instance has the following methods:
 ### .toJSON()
 
 Returns a JSON representation of the `AssetJS` instance.
+
+### .toJsxAttributes()
+
+Returns a JSON representation of the `AssetJS` instance ready for use in a JSX script tag.
+
+```jsx
+<script {...js.toJsxAttributes()}></script>
+```
 
 ### .toHTML() {
 
