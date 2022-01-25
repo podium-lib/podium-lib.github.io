@@ -18,6 +18,12 @@ const users = [
     infoLink: 'https://www.finn.no/',
     pinned: true,
   },
+  {
+    caption: 'Madgex',
+    image: '/img/madgex_logo.png',
+    infoLink: 'https://madgex.com/',
+    pinned: true,
+  },
 ];
 
 const siteConfig = {
