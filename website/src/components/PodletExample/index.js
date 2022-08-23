@@ -1,0 +1,183 @@
+import React from "react";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+export default function PodletExample() {
+  return (
+    <>
+      <h2>Podlets</h2>
+      Podlets (page fragments) are standalone HTTP services developed and run in
+      isolation. Podlets can be written in any language, but Podium comes with a
+      @podium/podlet module for easy development of Podlets in node.js. This is
+      a Podlet serving a HTML endpoint responding to the locale it get from a
+      Layout:
+      
+      <Tabs groupId="server-frameworks">
+        <TabItem value="express" label="Express">
+          <CodeBlock language="js">
+            {`import express from 'express';
+import Podlet from '@podium/podlet';
+
+const app = express();
+
+const podlet = new Podlet({
+    name: 'myPodlet',
+    version: '1.0.0',
+    pathname: '/',
+    development: true,
+});
+
+app.use(podlet.middleware());
+
+app.get(podlet.content(), (req, res) => {
+    if (res.locals.podium.context.locale === 'nb-NO') {
+        return res.status(200).podiumSend('<h2>Hei verden</h2>');
+    }
+    res.status(200).podiumSend(\`<h2>Hello world</h2>\`);
+});
+
+app.get(podlet.manifest(), (req, res) => {
+    res.status(200).json(podlet);
+});
+
+app.listen(7100);`}
+          </CodeBlock>
+        </TabItem>
+        <TabItem value="hapi" label="Hapi">
+          <CodeBlock language="js">
+            {`import HapiPodlet from '@podium/hapi-podlet';
+import Podlet from '@podium/podlet';
+import Hapi from 'hapi';
+
+const app = Hapi.Server({
+    host: 'localhost',
+    port: 7100,
+});
+
+const podlet = new Podlet({
+    name: 'myPodlet',
+    version: '1.0.0',
+    pathname: '/',
+    development: true,
+});
+
+app.register({
+    plugin: new HapiPodlet(),
+    options: podlet,
+});
+
+app.route({
+    method: 'GET',
+    path: podlet.content(),
+    handler: (request, h) => {
+        if (request.app.podium.context.locale === 'nb-NO') {
+            return h.podiumSend('<h2>Hei verden</h2>');
+        }
+        return h.podiumSend('<h2>Hello world</h2>');
+    },
+});
+
+app.route({
+    method: 'GET',
+    path: podlet.manifest(),
+    handler: (request, h) => JSON.stringify(podlet),
+});
+
+app.start();`}
+          </CodeBlock>
+        </TabItem>
+        <TabItem value="fastify" label="Fastify">
+          <CodeBlock language="js">
+            {`import fastifyPodlet from '@podium/fastify-podlet';
+import fastify from 'fastify';
+import Podlet from '@podium/podlet';
+
+const app = fastify();
+
+const podlet = new Podlet({
+    name: 'myPodlet',
+    version: '1.0.0',
+    pathname: '/',
+    development: true,
+});
+
+app.register(fastifyPodlet, podlet);
+
+app.get(podlet.content(), async (request, reply) => {
+    if (reply.app.podium.context.locale === 'nb-NO') {
+        reply.podiumSend('<h2>Hei verden</h2>');
+        return;
+    }
+    reply.podiumSend('<h2>Hello world</h2>');
+});
+
+app.get(podlet.manifest(), async (request, reply) => {
+    reply.send(podlet);
+});
+
+const start = async () => {
+    try {
+        await app.listen(7100);
+        app.log.info(\`server listening on \${app.server.address().port}\`);
+    } catch (err) {
+        app.log.error(err);
+        process.exit(1);
+    }
+};
+start();`}
+          </CodeBlock>
+        </TabItem>
+        <TabItem value="http" label="HTTP">
+          <CodeBlock language="js">
+            {`import { HttpIncoming } from '@podium/utils';
+import Podlet from '@podium/podlet';
+import http from 'http';
+
+const podlet = new Podlet({
+    name: 'myPodlet',
+    version: '1.0.0',
+    pathname: '/',
+    development: true,
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await podlet.process(incoming);
+
+    if (incoming.url.pathname === podlet.manifest()) {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('podlet-version', podlet.version);
+        res.end(JSON.stringify(podlet));
+        return;
+    }
+
+    if (incoming.url.pathname === podlet.content()) {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/html');
+        res.setHeader('podlet-version', podlet.version);
+
+        if (incoming.context.locale === 'nb-NO') {
+            res.end(podlet.render(incoming, '<h2>Hei verden</h2>'));
+            return;
+        }
+        res.end(podlet.render(incoming, '<h2>Hello world</h2>'));
+        return;
+    }
+
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Not found');
+});
+
+server.listen(7100);`}
+          </CodeBlock>
+        </TabItem>
+
+      </Tabs>
+
+      Start the Podlet and it will be accessable on http://localhost:7100/
+    </>
+  );
+}

@@ -1,0 +1,208 @@
+import React from "react";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+export default function LayoutExample() {
+  return (
+    <>
+      <h2>Layouts</h2>
+      Layouts are standalone HTTP services which on run time compose one or
+      multiple Podlets (page fragments) into full webpages. Layouts are written
+      in node.js with the @podium/layout module. This is a Layout which will
+      include two Podlets:
+      <Tabs groupId="server-frameworks">
+        <TabItem value="express" label="Express">
+          <CodeBlock language="js">
+            {`import express from 'express';
+import Layout from '@podium/layout';
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+const app = express();
+app.use(layout.middleware());
+
+app.get(layout.pathname(), async (req, res, next) => {
+    const incoming = res.locals.podium;
+
+    const [a, b] = await Promise.all([
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    ]);
+
+    res.podiumSend(\`
+        <section>\${a.content}</section>
+        <section>\${b.content}</section>
+    \`);
+});
+
+app.listen(7000);`}
+          </CodeBlock>
+        </TabItem>
+        <TabItem value="hapi" label="Hapi">
+          <CodeBlock language="js">{`import HapiLayout from '@podium/hapi-layout';
+import Layout from '@podium/layout';
+import Hapi from 'hapi';
+
+const app = Hapi.Server({
+    host: 'localhost',
+    port: 7000,
+});
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+app.register({
+    plugin: new HapiLayout(),
+    options: layout,
+});
+
+app.route({
+    method: 'GET',
+    path: layout.pathname(),
+    handler: (request, h) => {
+        const incoming = request.app.podium;
+
+        const [a, b] = await Promise.all([
+            podletA.fetch(incoming),
+            podletB.fetch(incoming),
+        ]);
+
+        h.podiumSend(\`
+            <section>\${a.content}</section>
+            <section>\${b.content}</section>
+        \`);
+
+    },
+});
+
+app.start();`}</CodeBlock>
+        </TabItem>
+        <TabItem value="fastify" label="Fastify">
+          <CodeBlock language="js">{`import fastifyLayout from '@podium/fastify-layout';
+import fastify from 'fastify';
+import Layout from '@podium/layout';
+
+const app = fastify();
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+app.register(fastifyLayout, layout);
+
+app.get(layout.pathname(), async (request, reply) => {
+    const incoming = reply.app.podium;
+
+    const [a, b] = await Promise.all([
+        podletA.fetch(incoming),
+        podletB.fetch(incoming),
+    ]);
+
+    reply.podiumSend(\`
+        <section>\${a.content}</section>
+        <section>\${b.content}</section>
+    \`);
+});
+
+const start = async () => {
+    try {
+        await app.listen(7000);
+        app.log.info(\`server listening on \${app.server.address().port}\`);
+    } catch (err) {
+        app.log.error(err);
+        process.exit(1);
+    }
+}
+start();`}</CodeBlock>
+        </TabItem>
+        <TabItem value="http" label="HTTP">
+          <CodeBlock language="js">{`import { HttpIncoming } from '@podium/utils';
+import Layout from '@podium/layout';
+import http from 'http';
+
+const layout = new Layout({
+    name: 'myLayout',
+    pathname: '/',
+});
+
+const podletA = layout.client.register({
+    name: 'myPodletA',
+    uri: 'http://localhost:7100/manifest.json',
+});
+
+const podletB = layout.client.register({
+    name: 'myPodletB',
+    uri: 'http://localhost:7200/manifest.json',
+});
+
+const server = http.createServer(async (req, res) => {
+    let incoming = new HttpIncoming(req, res);
+    incoming = await layout.process(incoming);
+
+    if (incoming.url.pathname === layout.pathname()) {
+
+        const [a, b] = await Promise.all([
+            podletA.fetch(incoming),
+            podletB.fetch(incoming),
+        ]);
+
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/html');
+
+        res.end(podlet.render(incoming, \`
+            <section>\${a.content}</section>
+            <section>\${b.content}</section>
+        \`));
+        return;
+    }
+
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Not found');
+});
+
+server.listen(7000);`}</CodeBlock>
+        </TabItem>
+      </Tabs>
+
+      Start the Layout and it will be accessable on http://localhost:7000/
+    </>
+  );
+}
