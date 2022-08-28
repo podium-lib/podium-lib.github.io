@@ -1,0 +1,28 @@
+name: Deploy documentation
+
+on:
+  push:
+    branches:
+      - source
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: install node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+    - name: npm install
+      run: npm install
+    - name: npm run deploy
+      run: |
+        git config --global user.email "trygve-lie@users.noreply.github.com"
+        git config --global user.name "trygve-lie"
+        echo "machine github.com login trygve-lie password ${{ secrets.GIT_TOKEN }}" > ~/.netrc
+        npm run deploy
+      env:
+        CI: true
+        GIT_USER: trygve-lie
+        DEPLOYMENT_BRANCH: main
