@@ -227,6 +227,35 @@ layout.view((incoming, body, head) => `<!doctype html>
 );
 ```
 
+### Asset loading Strategy
+
+If the podlet's assets contain the `strategy` property, the document template can use this value to determine how and where to load the assets provided.
+
+```js
+const utils = require('@podium/utils');
+
+[ ... ]
+
+layout.view((incoming, body, head) => `<!doctype html>
+<html lang="${incoming.context.locale}">
+    <head>
+        <meta charset="${incoming.view.encoding}">
+        ${incoming.css.map(utils.buildLinkElement).join('\n')}
+        ${incoming.js.filter({ strategy } => strategy === "beforeInteractive").map(utils.buildScriptElement).join('\n')}
+        <title>${incoming.view.title}</title>
+        ${head}
+    </head>
+    <body>
+        ${body}
+        ${incoming.js.filter({ strategy } => strategy === "afterInteractive").map(utils.buildScriptElement).join('\n')}
+        ${incoming.js.filter({ strategy } => strategy === "lazy").map({ href } => `<script type="module">import("${href}")</script>`).join('\n')}
+    </body>
+</html>`;
+);
+```
+
+See [Asset strategy](assets.md#asset-strategy) for additional details.
+
 ## template(HttpIncoming, fragment, [args])
 
 A document template is implemented using a plain JavaScript function that
