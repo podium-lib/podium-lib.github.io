@@ -1,4 +1,7 @@
-
+---
+id: browser
+title: "@podium/browser"
+---
 
 The `@podium/browser` package contains classes to provide browser based functionality when building Podium micro-frontends.
 

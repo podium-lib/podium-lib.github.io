@@ -7,7 +7,7 @@ One of the key challenges when using micro-frontend systems like Podium is how t
 
 In the Podium world, a podlet may need to ship with client side JavaScript and/or CSS and when a layout consumes that podlet, it will also need to consume the podlet's JavaScript and/or CSS.
 
-Podium itself does not provide support for asset related tasks such as bundling or minification but we maintain another project aimed at solving some of the more challenging asset related issues one typically encounters in microfrontend apps. See [eik.dev](https://eik.dev) for more information.
+Podium itself does not provide support for asset related tasks such as bundling or minification but we are currently iterating over better general solutions to these problems which will be published and documented as soon as they are ready.
 
 While there are many ways to do so, the following examples illustrate a couple of possibilities for how you might tackle the asset problem currently. Both examples shown here share the same set of challenges:
 
