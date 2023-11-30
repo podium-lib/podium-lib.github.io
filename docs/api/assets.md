@@ -3,6 +3,9 @@ id: assets
 title: Assets
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 When an asset is registered through the `.css()` or `.js()` methods in a podlet
 or layout an appropriate `AssetCSS` or `AssetJS` object is created.
 
@@ -11,8 +14,8 @@ properties of the [`HttpIncoming`](incoming.md) object on a request.
 
 Example of printing the assets set in a podlet:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const podlet = new Podlet([ ... ]);
@@ -30,7 +33,8 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const podlet = new Podlet([ ... ]);
@@ -52,7 +56,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const podlet = new Podlet([ ... ]);
@@ -70,7 +75,8 @@ app.get(podlet.content(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const podlet = new Podlet([ ... ]);
@@ -90,8 +96,9 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(7100);
 ```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+    
+</TabItem>
+</Tabs>
 
 When a layout fetches a podlet and parses the podlet's manifest, any assets on
 the `.css` and `.js` properties of the manifest are also parsed into the
@@ -104,8 +111,8 @@ by the `.client.fetch()` method or emitted by the `beforeStream` event when the
 
 Example of a layout fetching a podlet and printing the assets of the podlet:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const podlet = layout.client.register({
@@ -125,7 +132,8 @@ app.get(layout.pathname(), async (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const podlet = layout.client.register({
@@ -151,7 +159,8 @@ app.route({
 app.start();
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const podlet = layout.client.register({
@@ -171,7 +180,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const podlet = layout.client.register({
@@ -192,7 +202,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 When fetching one or more podlets from a layout, it's common to then include the
 assets from these podlets in the full HTML document being composed in this
@@ -207,8 +218,8 @@ In this way the layout's registered assets, together with assets for all
 requested podlets, will be available for the [`document template`](document.md)
 in two arrays, one for CSS and another array for JS.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 layout.css({ value: '/assets/styles.css' });
@@ -252,7 +263,8 @@ app.get(layout.pathname(), async (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 layout.css({ value: '/assets/styles.css' });
@@ -302,7 +314,8 @@ app.route({
 app.start();
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 layout.css({ value: '/assets/styles.css' });
@@ -346,7 +359,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 layout.css({ value: '/assets/styles.css' });
@@ -391,40 +405,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
-
-### Asset scope
-
-An optional `scope` property can be used to tell the layout client when to include certain assets and when to exclude them.
-In the podlet you can add this property to your assets and the layout client will automatically filter the assets according to response type.
-
-Possible `scope` values are:
-
-- `content` - only include an asset with this scope when the podlet's content route response is successful and the podium client does not fallback.
-- `fallback` - only include an asset with this scope when the podlet's content route response is unsuccessful and the podium client does fallback.
-- `all` - always include an asset with this scope
-- no scope provided - always include an asset with no scope
-
-You can provide scopes for your assets using the `podlet.js` and `podlet.css` methods in your podlets.
-
-```js
-podlet.js([
-  { value: "https://assets.com/foo/bar/baz.js", scope: "content" },
-  { value: "https://assets.com/foo/bar/baz.js", scope: "fallback" },
-]);
-```
-
-### Asset strategy
-
-An optional `strategy` property can be used to tell the document template about how to load your assets and in which order. In the podlet, you can add this property to your assets and then make use of it inside your document template (this is taken care of for you if you use the default document template).
-
-Possible `strategy` values are:
-
-- `beforeInteractive` - load this asset early. This asset should be loaded as part of the critical render path (CRP) or could be used to perform hydration type tasks.
-- `afterInteractive` - load this asset as soon as the page becomes interactive. Most scripts fall into this category. 
-- `lazy` - lazy load the asset after everything else on the page is ready. Good for tracking scripts that are non essential for the user experience of the page.
-
-A [document template](document.md) can then make use of these values. See [Customising a document template](document.md#asset-loading-strategy) for more information.
+</TabItem>
+</Tabs>
 
 ## AssetCSS
 
@@ -435,20 +417,18 @@ to a podlet or layout.
 
 An `AssetCSS` instance has the following properties:
 
-| property    | type      | getter  | setter  | default      | details                                                                                                                                                                             |
-| ----------- | --------- | ------- | ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value       | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                                                                                                                                           |
-| href        | `string`  | &check; |         | `''`         | Alias for the `value` property                                                                                                                                                      |
-| crossorigin | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element                                                                                                                        |
-| disabled    | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<link>` element                                                                                                                        |
-| hreflang    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element                                                                                                                        |
-| title       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element                                                                                                                        |
-| media       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element                                                                                                                        |
-| type        | `string`  | &check; | &check; | `text/css`   | Correlates to the same attribute on an HTML `<link>` element                                                                                                                        |
-| rel         | `string`  | &check; | &check; | `stylesheet` | Correlates to the same attribute on an HTML `<link>` element                                                                                                                        |
-| as          | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element                                                                                                                        |
-| strategy    | `string`  | &check; | &check; | `undefined`  | Strategy hint for document templates. Possible values are `lazy`, `beforeInteractive` and `afterInteractive`                                                                        |
-| scope       | `string`  | &check; | &check; | `undefined`  | Asset scope used by the Podium client to filter assets depending on podlet response type (`content` or `fallback`). Possible values are `content`, `fallback`, `all` or `undefined` |
+| property    | type      | getter  | setter  | default      | details                                                      |
+| ----------- | --------- | ------- | ------- | ------------ | ------------------------------------------------------------ |
+| value       | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                    |
+| href        | `string`  | &check; |         | `''`         | Alias for the `value` property                               |
+| crossorigin | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
+| disabled    | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<link>` element |
+| hreflang    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
+| title       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
+| media       | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
+| type        | `string`  | &check; | &check; | `text/css`   | Correlates to the same attribute on an HTML `<link>` element |
+| rel         | `string`  | &check; | &check; | `stylesheet` | Correlates to the same attribute on an HTML `<link>` element |
+| as          | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<link>` element |
 
 ## Methods
 
@@ -458,7 +438,7 @@ An `AssetCSS` instance has the following methods:
 
 Returns a JSON representation of the `AssetCSS` instance.
 
-### .toHTML() {
+### .toHTML()
 
 Returns an HTML `<link>` element as a string representation of the `AssetCSS`
 instance.
@@ -472,19 +452,17 @@ client side assets.
 
 An `AssetJS` instance has the following properties:
 
-| property       | type      | getter  | setter  | default     | details                                                                                                                                                                             |
-| -------------- | --------- | ------- | ------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value          | `string`  | &check; |         | `''`        | Relative or absolute URL to the CSS asset                                                                                                                                           |
-| src            | `string`  | &check; |         | `''`        | Alias for the `value` property                                                                                                                                                      |
-| referrerpolicy | `string`  | &check; | &check; | `undefined` | Correlates to the same attribute on an HTML `<script>` element                                                                                                                      |
-| crossorigin    | `string`  | &check; | &check; | `undefined` | Correlates to the same attribute on an HTML `<script>` element                                                                                                                      |
-| integrity      | `string`  | &check; | &check; | `undefined` | Correlates to the same attribute on an HTML `<script>` element                                                                                                                      |
-| nomodule       | `boolean` | &check; | &check; | `false`     | Correlates to the same attribute on an HTML `<script>` element                                                                                                                      |
-| async          | `boolean` | &check; | &check; | `false`     | Correlates to the same attribute on an HTML `<script>` element                                                                                                                      |
-| defer          | `boolean` | &check; | &check; | `false`     | Correlates to the same attribute on an HTML `<script>` element                                                                                                                      |
-| type           | `string`  | &check; | &check; | `undefined` | Correlates to the same attribute on an HTML `<script>` element                                                                                                                      |
-| strategy       | `string`  | &check; | &check; | `undefined` | Strategy hint for document templates. Possible values are `lazy`, `beforeInteractive` and `afterInteractive`                                                                        |
-| scope          | `string`  | &check; | &check; | `undefined` | Asset scope used by the Podium client to filter assets depending on podlet response type (`content` or `fallback`). Possible values are `content`, `fallback`, `all` or `undefined` |
+| property       | type      | getter  | setter  | default      | details                                                        |
+| -------------- | --------- | ------- | ------- | ------------ | -------------------------------------------------------------- |
+| value          | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                      |
+| src            | `string`  | &check; |         | `''`         | Alias for the `value` property                                 |
+| referrerpolicy | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
+| crossorigin    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
+| integrity      | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
+| nomodule       | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<script>` element |
+| async          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<script>` element |
+| defer          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<script>` element |
+| type           | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
 
 ## Methods
 
@@ -494,7 +472,7 @@ An `AssetJS` instance has the following methods:
 
 Returns a JSON representation of the `AssetJS` instance.
 
-### .toHTML() {
+### .toHTML()
 
 Returns an HTML `<script>` element as a string representation of the `AssetJS`
 instance.

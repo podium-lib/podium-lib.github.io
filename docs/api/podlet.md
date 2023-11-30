@@ -1,7 +1,10 @@
 ---
 id: podlet
-title: @podium/podlet
+title: "@podium/podlet"
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 Module for building page fragment servers for micro frontend architectures.
 
@@ -21,35 +24,38 @@ section.
 
 ## Installation
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Default / Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```bash
 $ npm install @podium/podlet
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```bash
 $ npm install @podium/podlet
 $ npm install @podium/hapi-podlet
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```bash
 $ npm install @podium/podlet
 $ npm install @podium/fastify-podlet
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Getting started
 
 Building a simple podlet server.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const express = require('express');
@@ -80,7 +86,8 @@ app.get(podlet.manifest(), (req, res) => {
 app.listen(7100);
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const HapiPodlet = require('@podium/hapi-podlet');
@@ -124,7 +131,8 @@ app.route({
 app.start();
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const fastifyPodlet = require('@podium/fastify-podlet');
@@ -166,7 +174,8 @@ const start = async () => {
 start();
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const { HttpIncoming } = require('@podium/utils');
@@ -213,7 +222,8 @@ const server = http.createServer(async (req, res) => {
 server.listen(7100);
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Constructor
 
@@ -259,8 +269,8 @@ this value is used to define where the manifest is for the podlet.
 
 If the podlet is mounted at the "root", set `pathname` to `/`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -277,7 +287,8 @@ app.get('/', (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -301,7 +312,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -318,13 +330,14 @@ app.get('/', async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 If the podlet is to be mounted at `/foo`, set the pathname to `/foo` and mount
 middleware and routes at or under `/foo`
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -345,7 +358,8 @@ app.get('/foo/:id', (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -377,7 +391,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -398,7 +413,8 @@ app.get('/foo/:id', async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ##### version
 
@@ -424,8 +440,8 @@ The value should be relative to the value set on the `pathname` argument. In
 other words if a podlet is mounted into an HTTP server at `/foo` and the
 manifest is at `/foo/component.json`, set the pathname and manifest as follows:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -441,7 +457,8 @@ app.get('/foo/component.json', (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -464,7 +481,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -482,7 +500,8 @@ app.get('/foo/component.json', async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 The `.manifest()` method can be used to retrieve the value after it has been
 set.
@@ -497,8 +516,8 @@ If the value is relative, the value should be relative to the value set using th
 at `/foo` and the content is served at `/foo/index.html`, set pathname and content as
 follows:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -514,7 +533,8 @@ app.get('/foo/index.html', (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -539,7 +559,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -557,7 +578,8 @@ app.get('/foo/index.html', async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 The `.content()` method can be used to retrieve the value after it has been set.
 
@@ -571,8 +593,8 @@ If the value is relative, the value should be relative to the value set with the
 at `/foo` and the fallback is at `/foo/fallback.html`, set pathname and fallback
 as follows:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -588,7 +610,8 @@ app.get('/foo/fallback.html', (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -613,7 +636,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -631,7 +655,8 @@ app.get('/foo/fallback.html', async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 The `.fallback()` method can be used to retrieve the value after it has been
 set.
@@ -666,15 +691,16 @@ more or less a wrapper for the `.process()` method.
 
 **Important:** This middleware must be mounted before defining any routes.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
 app.use(podlet.middleware());
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 The middleware will create an [`HttpIncoming`](incoming.md) object and store it
 at `res.locals.podium`.
@@ -688,8 +714,8 @@ the constructor.
 
 Set the manifest using the default pathname which is `/manifest.json`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -704,7 +730,8 @@ app.get(podlet.manifest(), (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -726,7 +753,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -743,13 +771,14 @@ app.get(podlet.manifest(), async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Set the manifest to `/component.json` using the `manifest` argument on the
 constructor:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -765,7 +794,8 @@ app.get(podlet.manifest(), (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -788,7 +818,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -806,13 +837,14 @@ app.get(podlet.manifest(), async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Podium expects the podlet's manifest route to return a JSON document describing
 the podlet. This can be achieved by simply serializing the podlet instance.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -823,7 +855,8 @@ app.get(podlet.manifest(), (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -836,7 +869,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -847,7 +881,8 @@ app.get(podlet.manifest(), async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 The route will then respond with something like:
 
@@ -893,8 +928,8 @@ This method returns the value of the `content` argument set in the constructor.
 
 Set the content using the default pathname (`/`):
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -909,7 +944,8 @@ app.get(podlet.content(), (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -933,7 +969,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -950,12 +987,13 @@ app.get(podlet.content(), async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Set the content path to `/index.html`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -971,7 +1009,8 @@ app.get(podlet.content(), (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -996,7 +1035,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1014,13 +1054,14 @@ app.get(podlet.content(), async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Set the content path to `/content` and define multiple sub-routes each taking different
 URI parameters:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -1036,7 +1077,8 @@ app.get('/content/info', (req, res) => { ... });
 app.get('/content/info/:id', (req, res) => { ... });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -1077,7 +1119,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1095,7 +1138,8 @@ app.get('/content/info', async (request, reply) => { ... });
 app.get('/content/info/:id', async (request, reply) => { ... });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 #### options
 
@@ -1129,8 +1173,8 @@ This method returns the value of the `fallback` argument set in the constructor.
 
 Set the fallback to `/fallback.html`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -1146,7 +1190,8 @@ app.get(podlet.fallback(), (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -1171,7 +1216,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1189,7 +1235,8 @@ app.get(podlet.fallback(), async (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 #### options
 
@@ -1251,8 +1298,8 @@ the [pathname] of a [URL] or an absolute URL.
 
 Serve a javascript file at `/assets/main.js`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -1269,7 +1316,8 @@ app.get('/assets.js', (req, res) => {
 podlet.js({ value: '/assets.js' });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -1297,7 +1345,8 @@ app.route({
 podlet.js({ value: '/assets.js' });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1320,13 +1369,14 @@ app.get('/assets.js', (request, reply) => {
 podlet.js({ value: '/assets.js' });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Serve assets statically along side the app and set a relative URI to the
 JavaScript file:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -1344,7 +1394,8 @@ podlet.js([
 ]);
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server({
@@ -1386,7 +1437,8 @@ podlet.js([
 ]);
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1412,7 +1464,8 @@ podlet.js([
 ]);
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Set an absolute URL to where the javascript file is located:
 
@@ -1485,8 +1538,8 @@ a [URL] or an absolute URL.
 
 Serve a CSS file at `/assets/main.css`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -1503,7 +1556,8 @@ app.get('/assets.css', (req, res) => {
 podlet.css({ value: '/assets.css' });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -1531,7 +1585,8 @@ app.route({
 podlet.css({ value: '/assets.css' });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1554,13 +1609,14 @@ app.get('/assets.css', (request, reply) => {
 podlet.css({ value: '/assets.css' });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Serve assets statically alongside the app and set a relative URI to the css
 file:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -1578,7 +1634,8 @@ podlet.css([
 ]);
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server({
@@ -1620,7 +1677,8 @@ podlet.css([
 ]);
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1646,7 +1704,8 @@ podlet.css([
 ]);
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Set an absolute URL to where the CSS file is located:
 
@@ -1667,7 +1726,7 @@ was set in the constructor.
 
 The prefix will be ignored if value is an absolute URL.
 
-### .proxy({ target, name })
+### `.proxy({ target, name })`
 
 Method for defining proxy targets to be mounted in a layout server. For a
 detailed overview of how proxying works, please see the
@@ -1691,8 +1750,8 @@ For each podlet, each proxy target must have a unique name.
 
 Mounts one proxy target `/api` with the name `api`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -1700,7 +1759,8 @@ const podlet = new Podlet( ... );
 app.get(podlet.proxy({ target: '/api', name: 'api' }), (req, res) => { ... });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server( ... );
@@ -1712,7 +1772,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1722,12 +1783,13 @@ app.get(podlet.proxy({ target: '/api', name: 'api' }), async (request, reply) =>
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Defines multiple endpoints on one proxy target `/api` with the name `api`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -1741,7 +1803,8 @@ app.get('/api/bar/:id', (req, res) => { ... });
 podlet.proxy({ target: '/api', name: 'api' });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server( ... );
@@ -1774,7 +1837,8 @@ app.route({
 podlet.proxy({ target: '/api', name: 'api' });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1788,7 +1852,8 @@ app.get('/api/foo/:id', async (request, reply) => { ... });
 podlet.proxy({ target: '/api', name: 'api' });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Sets a remote target by defining an absolute URL:
 
@@ -1856,8 +1921,8 @@ constructor.
 
 Example:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const podlet = new Podlet({
@@ -1878,7 +1943,8 @@ app.get(`${podlet.pathname()}/bar/:id`, (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const podlet = new Podlet({
@@ -1911,7 +1977,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const podlet = new Podlet({
@@ -1932,7 +1999,8 @@ app.get(`${podlet.pathname()}/bar/:id`, async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const podlet = new Podlet({
@@ -1960,7 +2028,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ### .view(template)
 
@@ -2011,8 +2080,8 @@ This method takes the following arguments:
 
 An instance of the [`HttpIncoming`](incoming.md) class.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 app.get(podlet.content(), (req, res) => {
@@ -2022,7 +2091,8 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 app.route({
@@ -2035,7 +2105,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 app.get(podlet.content(), (req, res) => {
@@ -2045,7 +2116,8 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 #### fragment
 
@@ -2061,8 +2133,8 @@ All following arguments given to the method will be passed on to the document
 template. For example, this could be used to pass on parts of a page to the
 document template.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 podlet.view = (incoming, body, head) => {
@@ -2085,7 +2157,8 @@ app.get(podlet.content(), async (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 podlet.view = (incoming, body, head) => {
@@ -2111,7 +2184,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 podlet.view = (incoming, body, head) => {
@@ -2134,7 +2208,8 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ### .process(HttpIncoming)
 
@@ -2191,8 +2266,8 @@ dispatch the fragment.
 
 Example of sending an HTML fragment:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 app.get(podlet.content(), (req, res) => {
@@ -2200,7 +2275,8 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 app.route({
@@ -2212,7 +2288,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 app.get(podlet.content(), (request, reply) => {
@@ -2220,7 +2297,8 @@ app.get(podlet.content(), (request, reply) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Development mode
 

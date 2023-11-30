@@ -3,6 +3,9 @@ id: incoming
 title: HttpIncoming
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 In the request/response life cycle of an HTTP request handled by Podium,
 different information needs to be accessible at different stages. To cater to
 this, Podium has an `HttpIncoming` object which is passed between the different
@@ -28,8 +31,8 @@ created for you under the hood and passed on as a property on the request
 between the different parts of the request/response life cycle of the HTTP
 framework.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const express = require('express');
@@ -86,7 +89,8 @@ app.get(layout.pathname(), (req, res) => {
 app.listen(7000);
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const HapiLayout = require('@podium/hapi-layout');
@@ -152,7 +156,8 @@ app.route({
 app.start();
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const FastifyLayout = require('@podium/fastify-layout');
@@ -217,7 +222,8 @@ const start = async () => {
 start();
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const { HttpIncoming } = require('@podium/utils');
@@ -275,7 +281,8 @@ const server = http.createServer(async (req, res) => {
 server.listen(7000);
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Constructor
 
@@ -331,9 +338,9 @@ parser.
 
 The locale context parser does this when setting the request bound locale value:
 
-<!--DOCUSAURUS_CODE_TABS-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
-<!--Express-->
 
 ```js
 const app = express();
@@ -373,7 +380,8 @@ app.get('/', (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server({
@@ -426,7 +434,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -466,7 +475,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -498,7 +508,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Properties
 

@@ -10,7 +10,7 @@ js using the Express js HTTP framework. At the end you will have created a fairl
 
 Ideally, you should have some familiarity with building apps with JavaScript and
 Node.js. You will also need to have Node.js installed at version 8 or higher.
-The npm cli will be installed automatically when you install Node.js. Additionally, you should familiarize yourself with the Podium's [high level concepts](/docs/podium/conceptual_overview.html) and understand [how to build a podlet](/docs/podlets/getting_started.html) with Podium.
+The npm cli will be installed automatically when you install Node.js. Additionally, you should familiarize yourself with the Podium's [high level concepts](/docs/podium/conceptual_overview) and understand [how to build a podlet](/docs/podlet/getting_started) with Podium.
 
 ## Step 1: Project setup
 
@@ -66,7 +66,7 @@ const layout = new Layout({
 
 ## Step 5: Register a basic podlet for use in the page
 
-For this step, we can use the podlet we created in the [podlets - getting started](/docs/podlets/getting_started.html) guide. It's set up to run on port `7100` so after we start it up, we can register our podlet's manifest file in our layout like so:
+For this step, we can use the podlet we created in the [podlets - getting started](/docs/podlet/getting_started) guide. It's set up to run on port `7100` so after we start it up, we can register our podlet's manifest file in our layout like so:
 
 _Example_
 

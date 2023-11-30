@@ -1,7 +1,10 @@
 ---
 id: layout
-title: @podium/layout
+title: "@podium/layout"
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 In Podium a layout server is mainly responsible for fetching HTML fragments
 (podlets) and stitching these fragments together into an HTML page (a layout).
@@ -30,35 +33,38 @@ section.
 
 ## Installation
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--HTTP / Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```bash
 $ npm install @podium/layout
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```bash
 $ npm install @podium/layout
 $ npm install @podium/hapi-layout
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```bash
 $ npm install @podium/layout
 $ npm install @podium/fastify-layout
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Getting started
 
 Building a simple layout server including two podlets:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const express = require('express');
@@ -99,7 +105,8 @@ app.get(layout.pathname(), async (req, res, next) => {
 app.listen(7000);
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const HapiLayout = require('@podium/hapi-layout');
@@ -153,7 +160,8 @@ app.route({
 app.start();
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const fastifyLayout = require('@podium/fastify-layout');
@@ -205,7 +213,8 @@ const start = async () => {
 start();
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const { HttpIncoming } = require('@podium/utils');
@@ -256,7 +265,8 @@ const server = http.createServer(async (req, res) => {
 server.listen(7000);
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Constructor
 
@@ -300,8 +310,8 @@ mounted.
 
 If the layout is mounted at the server "root", set the `pathname` to `/`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -317,7 +327,8 @@ app.get('/', (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server({
@@ -344,7 +355,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -361,7 +373,8 @@ app.get('/', async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -379,12 +392,13 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 If the layout is mounted at `/foo`, set the `pathname` to `/foo`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -404,7 +418,8 @@ app.get('/foo/:id', (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server({
@@ -439,7 +454,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -460,7 +476,8 @@ app.get('/foo/:id', async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -482,7 +499,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 There is also a helper method for retrieving the set `pathname` which can be
 used to get the pathname from the layout object when defining routes.
@@ -590,15 +608,16 @@ more or less just a wrapper for the `.process()` method.
 
 Example
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
 app.use(layout.middleware());
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 The middleware will create an [`HttpIncoming`](incoming.md) object for each
 request and place it on the response at `res.locals.podium`.
@@ -639,8 +658,8 @@ either a URL [pathname] or an absolute URL.
 
 Serve a javascript file at `/assets/main.js`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -656,7 +675,8 @@ app.get('/assets.js', (req, res) => {
 layout.js({ value: '/assets.js' });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -683,7 +703,8 @@ app.route({
 layout.js({ value: '/assets.js' });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -705,7 +726,8 @@ app.get('/assets.js', (request, reply) => {
 layout.js({ value: '/assets.js' });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -731,12 +753,13 @@ const server = http.createServer(async (req, res) => {
 
 layout.js({ value: '/assets.js' });
 ```
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Serve assets from a static file server and set a relative URI to the JS files:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -753,7 +776,8 @@ layout.js([
 ]);
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server({
@@ -794,7 +818,8 @@ layout.js([
 ]);
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -819,7 +844,8 @@ layout.js([
 ]);
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -854,7 +880,8 @@ layout.js([
 ]);
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Set an absolute URL to where the JavaScript file is located:
 
@@ -924,8 +951,8 @@ absolute URL at which the podlet's user facing CSS is served.
 .
 Serve a CSS file at `/assets/main.css`:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -941,7 +968,8 @@ app.get('/assets.css', (req, res) => {
 layout.css({ value: '/assets.css' });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server([ ... ]);
@@ -968,7 +996,8 @@ app.route({
 layout.css({ value: '/assets.css' });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -990,7 +1019,8 @@ app.get('/assets.css', (request, reply) => {
 layout.css({ value: '/assets.css' });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -1017,12 +1047,13 @@ const server = http.createServer(async (req, res) => {
 layout.css({ value: '/assets.css' });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Serve assets from a static file server and set a relative URI to the CSS files:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const app = express();
@@ -1039,7 +1070,8 @@ layout.css([
 ]);
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server({
@@ -1080,7 +1112,8 @@ layout.css([
 ]);
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -1105,7 +1138,8 @@ layout.css([
 ]);
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -1140,7 +1174,8 @@ layout.css([
 ]);
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 Set an absolute URL to where the CSS file is located:
 
@@ -1169,8 +1204,8 @@ route
 
 Example:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const layout = new Layout({
@@ -1191,7 +1226,8 @@ app.get(`${layout.pathname()}/bar/:id`, (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const layout = new Layout({
@@ -1224,7 +1260,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const layout = new Layout({
@@ -1245,7 +1282,8 @@ app.get(`${layout.pathname()}/bar/:id`, async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -1273,7 +1311,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ### .view(template)
 
@@ -1335,8 +1374,8 @@ All following arguments given to the method will be passed on to the
 Additional arguments could be used to pass on parts of a page to the
 [document template](document.md) as shown:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 layout.view = (incoming, body, head) => {
@@ -1360,7 +1399,8 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 layout.view = (incoming, body, head) => {
@@ -1386,7 +1426,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 layout.view = (incoming, body, head) => {
@@ -1410,7 +1451,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 layout.view = (incoming, body, head) => {
@@ -1437,7 +1479,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ### .process(HttpIncoming)
 
@@ -1464,8 +1507,10 @@ This method takes the following arguments:
 
 An instance of the [`HttpIncoming`](incoming.md) class.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--HTTP-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const { HttpIncoming } = require('@podium/utils');
@@ -1494,7 +1539,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ### .client
 
@@ -1503,8 +1549,8 @@ podlets.
 
 Example of registering two podlets and retrieving their content:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const layout = new Layout({
@@ -1536,7 +1582,8 @@ app.get(layout.pathname(), async (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const layout = new Layout({
@@ -1572,7 +1619,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const layout = new Layout({
@@ -1604,7 +1652,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -1635,7 +1684,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ### .client.register(options)
 
@@ -1670,16 +1720,15 @@ layout.client.fooBar.fetch();
 
 #### options (required)
 
-| option       | type      | default | required | details                                                                                                                                                                                                                  |
-| ------------ | --------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| uri          | `string`  |         | &check;  | Uri to the manifest of a podlet                                                                                                                                                                                          |
-| name         | `string`  |         | &check;  | Name of the component. This is used to reference the component in your application, and does not have to match the name of the component itself                                                                          |
-| retries      | `number`  | `4`     |          | The number of times the client should retry to settle a version number conflict before terminating. Overrides the `retries` option in the layout constructor                                                             |
-| timeout      | `number`  | `1000`  |          | Defines how long, in milliseconds, a request should wait before the connection is terminated. Overrides the `timeout` option in the layout constructor                                                                   |
-| throwable    | `boolean` | `false` |          | Defines whether an error should be thrown if a failure occurs during the process of fetching a podlet. [See handling podlet unavailability](../layout/unavailable_podlets.md).                                           |
-| redirectable | `boolean` | `false` |          | Defines whether the client _follows_ redirects (default), or lets you handle the redirect in some other way, for instance forward the redirect to the caller. [See handling redirects](../layout/handling_redirects.md). |
-| resolveJs    | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for JavaScript assets                                                                                                                                          |
-| resolveCss   | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for CSS assets                                                                                                                                                 |
+| option     | type      | default | required | details                                                                                                                                                              |
+| ---------- | --------- | ------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| uri        | `string`  |         | &check;  | Uri to the manifest of a podlet                                                                                                                                      |
+| name       | `string`  |         | &check;  | Name of the component. This is used to reference the component in your application, and does not have to match the name of the component itself                      |
+| retries    | `number`  | `4`     |          | The number of times the client should retry to settle a version number conflict before terminating. Overrides the `retries` option in the layout constructor         |
+| timeout    | `number`  | `1000`  |          | Defines how long, in milliseconds, a request should wait before the connection is terminated. Overrides the `timeout` option in the layout constructor               |
+| throwable  | `boolean` | `false` |          | Defines whether an error should be thrown if a failure occurs during the process of fetching a podlet. [See handling podlet unavailability](../layout/unavailable_podlets.md). |
+| resolveJs  | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for JavaScript assets                                                                                      |
+| resolveCss | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for CSS assets                                                                                             |
 
 ### .client.refreshManifests()
 
@@ -1807,8 +1856,8 @@ process of fetching podlets.
 The [`HttpIncoming`](incoming.md) object is normally found on a request bound
 property of the request or response object.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const podlet = layout.client.register({
@@ -1826,7 +1875,8 @@ app.get(layout.pathname(), async (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const podlet = layout.client.register({
@@ -1849,7 +1899,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const podlet = layout.client.register({
@@ -1868,7 +1919,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const podlet = layout.client.register({
@@ -1890,7 +1942,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 #### options (optional)
 
@@ -1926,8 +1979,8 @@ process of fetching podlets.
 The [`HttpIncoming`](incoming.md) object is normally found on a request
 bound property of the request or response object.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const podlet = layout.client.register({
@@ -1943,7 +1996,8 @@ app.get(layout.pathname(), async (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const podlet = layout.client.register({
@@ -1963,7 +2017,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const podlet = layout.client.register({
@@ -1979,7 +2034,8 @@ app.get(layout.pathname(), (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const podlet = layout.client.register({
@@ -1999,7 +2055,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 #### options (optional)
 
@@ -2020,8 +2077,8 @@ the manifest file otherwise `js` will be an empty string. If the resource
 manifest defines CSS assets, `css` will contain the value from the manifest file
 otherwise `css` will be an empty string.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const podlet = layout.client.register({
@@ -2043,7 +2100,8 @@ app.get(layout.pathname(), async (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const podlet = layout.client.register({
@@ -2069,7 +2127,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const podlet = layout.client.register({
@@ -2091,7 +2150,8 @@ app.get(layout.pathname(), (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const podlet = layout.client.register({
@@ -2117,7 +2177,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ### .refresh()
 
@@ -2183,8 +2244,8 @@ set a custom template.
 
 _Example of sending an HTML fragment:_
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 app.get(layout.pathname(), (req, res) => {
@@ -2192,7 +2253,8 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 app.route({
@@ -2204,7 +2266,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 app.get(layout.pathname(), async (request, reply) => {
@@ -2212,7 +2275,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const server = http.createServer(async (req, res) => {
@@ -2224,7 +2288,8 @@ const server = http.createServer(async (req, res) => {
     res.end(layout.render(incoming, '<h2>Hello world</h2>'));
 });
 ```
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 [express]: https://expressjs.com/ 'Express'
 [hapi layout plugin]: https://github.com/podium-lib/hapi-layout 'Hapi Layout Plugin'

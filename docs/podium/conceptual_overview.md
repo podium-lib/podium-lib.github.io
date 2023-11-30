@@ -3,6 +3,7 @@ id: conceptual_overview
 title: Conceptual Overview
 ---
 
+
 Podium is a library for building [micro frontends](https://micro-frontends.org/). "Micro frontends" is a concept that advocates letting go of the monolith and instead putting all functionallity into smaller independent servers with each server being responsible for serving individual parts of the page in isolation (page fragments) and then composing them together into whole pages in separate layers. The composition is done by requesting each independent fragment over HTTP and then putting each fragment into the HTML page's markup.
 
 The following simple example shows a web page which has a header, a footer, a side bar and a main content area as indicated by the red dotted lines.

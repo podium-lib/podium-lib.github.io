@@ -3,6 +3,9 @@ id: document
 title: Document Template
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 When developing podlets which are to be composed together with other podlets
 into a full HTML page by a layout it is important that the development of the
 podlet happens under the same constraints when developing in isolation as when
@@ -40,8 +43,8 @@ A document template is used by calling the `.render()` methods in the [podlet](a
 and [layout](api/podlet.md) modules or the `res.podiumSend()` provided by
 whichever HTTP framework is being used.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 app.get(layout.pathname(), (req, res) => {
@@ -51,7 +54,8 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 app.route({
@@ -64,7 +68,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 app.get(layout.pathname(), (req, res) => {
@@ -74,7 +79,8 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const server = http.createServer(async (req, res) => {
@@ -87,7 +93,9 @@ const server = http.createServer(async (req, res) => {
     res.end(document);
 });
 ```
-<!--END_DOCUSAURUS_CODE_TABS-->
+
+</TabItem>
+</Tabs>
 
 ## Customizing
 
@@ -122,8 +130,8 @@ example.
 It is possible to pass on properties to the document template by using the
 `.view` property on [`HttpIncoming`](incoming.md).
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 app.get(layout.pathname(), (req, res) => {
@@ -138,7 +146,8 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 app.route({
@@ -156,7 +165,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 app.get(layout.pathname(), (req, res) => {
@@ -171,7 +181,8 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const server = http.createServer(async (req, res) => {
@@ -189,7 +200,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Assets
 
@@ -227,35 +239,6 @@ layout.view((incoming, body, head) => `<!doctype html>
 );
 ```
 
-### Asset loading Strategy
-
-If the podlet's assets contain the `strategy` property, the document template can use this value to determine how and where to load the assets provided.
-
-```js
-const utils = require('@podium/utils');
-
-[ ... ]
-
-layout.view((incoming, body, head) => `<!doctype html>
-<html lang="${incoming.context.locale}">
-    <head>
-        <meta charset="${incoming.view.encoding}">
-        ${incoming.css.map(utils.buildLinkElement).join('\n')}
-        ${incoming.js.filter({ strategy } => strategy === "beforeInteractive").map(utils.buildScriptElement).join('\n')}
-        <title>${incoming.view.title}</title>
-        ${head}
-    </head>
-    <body>
-        ${body}
-        ${incoming.js.filter({ strategy } => strategy === "afterInteractive").map(utils.buildScriptElement).join('\n')}
-        ${incoming.js.filter({ strategy } => strategy === "lazy").map({ href } => `<script type="module">import("${href}")</script>`).join('\n')}
-    </body>
-</html>`;
-);
-```
-
-See [Asset strategy](assets.md#asset-strategy) for additional details.
-
 ## template(HttpIncoming, fragment, [args])
 
 A document template is implemented using a plain JavaScript function that
@@ -280,8 +263,8 @@ passed on to the document template.
 The following is an example of how such additional arguments might be used to
 pass on parts of a page to the document template.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 layout.view = (incoming, body, head) => {
@@ -305,7 +288,8 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 layout.view = (incoming, body, head) => {
@@ -331,7 +315,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 layout.view = (incoming, body, head) => {
@@ -355,7 +340,8 @@ app.get(layout.pathname(), (req, res) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 layout.view = (incoming, body, head) => {
@@ -381,4 +367,5 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
