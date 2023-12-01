@@ -67,8 +67,8 @@ Building a simple layout server including two podlets:
 <TabItem value="express" label="Express">
 
 ```js
-const express = require('express');
-const Layout = require('@podium/layout');
+import express from 'express';
+import Layout from '@podium/layout';
 
 const layout = new Layout({
     name: 'myLayout',
@@ -109,9 +109,9 @@ app.listen(7000);
 <TabItem value="hapi" label="Hapi">
 
 ```js
-const HapiLayout = require('@podium/hapi-layout');
-const Layout = require('@podium/layout');
-const Hapi = require('hapi');
+import HapiLayout from '@podium/hapi-layout';
+import Layout from '@podium/layout';
+import Hapi from 'hapi';
 
 const app = Hapi.Server({
     host: 'localhost',
@@ -164,9 +164,9 @@ app.start();
 <TabItem value="fastify" label="Fastify">
 
 ```js
-const fastifyLayout = require('@podium/fastify-layout');
-const fastify = require('fastify');
-const Layout = require('@podium/layout');
+import fastifyLayout from '@podium/fastify-layout';
+import fastify from 'fastify';
+import Layout from '@podium/layout';
 
 const app = fastify();
 
@@ -217,9 +217,9 @@ start();
 <TabItem value="http" label="HTTP">
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
-const Layout = require('@podium/layout');
-const http = require('http');
+import { HttpIncoming } from '@podium/utils';
+import Layout from '@podium/layout';
+import http from 'http';
 
 const layout = new Layout({
     name: 'myLayout',
@@ -690,7 +690,7 @@ app.register({
     options: layout,
 });
 
-app.register(require('@hapi/inert'));
+app.register(await import('@hapi/inert'));
 
 app.route({
     method: 'GET',
@@ -715,7 +715,7 @@ const layout = new Layout({
 
 app.register(fastifyLayout, layout);
 
-app.register(require('fastify-static'), {
+app.register(await import('fastify-static'), {
     root: './src/js/',
 });
 
@@ -799,7 +799,7 @@ app.register({
     options: layout,
 });
 
-app.register(require('@hapi/inert'));
+app.register(await import('@hapi/inert'));
 
 app.route({
     method: 'GET',
@@ -830,7 +830,7 @@ const layout = new Layout({
 
 app.register(fastifyLayout, layout);
 
-app.register(require('fastify-static'), {
+app.register(await import('fastify-static'), {
     root: './src/js/',
 });
 
@@ -983,7 +983,7 @@ app.register({
     options: layout,
 });
 
-app.register(require('@hapi/inert'));
+app.register(await import('@hapi/inert'));
 
 app.route({
     method: 'GET',
@@ -1008,7 +1008,7 @@ const layout = new Layout({
 
 app.register(fastifyLayout, layout);
 
-app.register(require('fastify-static'), {
+app.register(await import('fastify-static'), {
     root: './src/css/',
 });
 
@@ -1093,7 +1093,7 @@ app.register({
     options: layout,
 });
 
-app.register(require('@hapi/inert'));
+app.register(await import('@hapi/inert'));
 
 app.route({
     method: 'GET',
@@ -1124,7 +1124,7 @@ const layout = new Layout({
 
 app.register(fastifyLayout, layout);
 
-app.register(require('fastify-static'), {
+app.register(await import('fastify-static'), {
     root: './src/css/',
 });
 
@@ -1513,8 +1513,8 @@ An instance of the [`HttpIncoming`](incoming.md) class.
 <TabItem value="http" label="HTTP">
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
-const Layout = require('@podium/layout');
+import { HttpIncoming } from '@podium/utils';
+import Layout from '@podium/layout';
 
 const layout = new Layout({
     name: 'myLayout',
@@ -1805,7 +1805,7 @@ parsers to it.
 Example of registering a custom third party context parser to the context:
 
 ```js
-const Parser = require('my-custom-parser');
+import Parser from 'my-custom-parser';
 
 const layout = new Layout({
     name: 'myLayout',

@@ -48,8 +48,8 @@ In Podium the `@podium/layout` module is used to help facilitate the process of 
 See the [layout guides](layout/getting_started.md) section for more information.
 
 ```js
-const express = require('express');
-const Layout = require('@podium/layout');
+import express from 'express';
+import Layout from '@podium/layout';
 
 const layout = new Layout({
     name: 'myLayout',

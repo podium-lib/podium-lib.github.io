@@ -11,8 +11,8 @@ This is a Layout which will include two Podlets:
   <TabItem value="express" label="Express" default>
 
     ```js
-    const express = require('express');
-    const Layout = require('@podium/layout');
+    import express from 'express';
+    import Layout from '@podium/layout';
 
     const layout = new Layout({
         name: 'myLayout',
@@ -53,9 +53,9 @@ This is a Layout which will include two Podlets:
   <TabItem value="hapi" label="Hapi">
 
     ```js
-    const HapiLayout = require('@podium/hapi-layout');
-    const Layout = require('@podium/layout');
-    const Hapi = require('hapi');
+    import HapiLayout from '@podium/hapi-layout';
+    import Layout from '@podium/layout';
+    import Hapi from 'hapi';
 
     const app = Hapi.Server({
         host: 'localhost',
@@ -109,9 +109,9 @@ This is a Layout which will include two Podlets:
 
 
     ```js
-    const fastifyLayout = require('@podium/fastify-layout');
-    const fastify = require('fastify');
-    const Layout = require('@podium/layout');
+    import fastifyLayout from '@podium/fastify-layout';
+    import fastify from 'fastify';
+    import Layout from '@podium/layout';
 
     const app = fastify();
 
@@ -163,9 +163,9 @@ This is a Layout which will include two Podlets:
   <TabItem value="http" label="Http">
 
     ```js
-    const { HttpIncoming } = require('@podium/utils');
-    const Layout = require('@podium/layout');
-    const http = require('http');
+    import { HttpIncoming } from '@podium/utils';
+    import Layout from '@podium/layout';
+    import http from 'http';
 
     const layout = new Layout({
         name: 'myLayout',

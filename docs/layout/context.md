@@ -46,7 +46,7 @@ It is possible to extend the Podium context by registering any number of additio
 _Example_
 
 ```js
-const CustomContext = require('my-custom-context-parser');
+import CustomContext from 'my-custom-context-parser';
 
 ...
 

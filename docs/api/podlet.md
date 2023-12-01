@@ -58,8 +58,8 @@ Building a simple podlet server.
 <TabItem value="express" label="Express">
 
 ```js
-const express = require('express');
-const Podlet = require('@podium/podlet');
+import express from 'express';
+import Podlet from '@podium/podlet';
 
 const app = express();
 
@@ -90,9 +90,9 @@ app.listen(7100);
 <TabItem value="hapi" label="Hapi">
 
 ```js
-const HapiPodlet = require('@podium/hapi-podlet');
-const Podlet = require('@podium/podlet');
-const Hapi = require('hapi');
+import HapiPodlet from '@podium/hapi-podlet';
+import Podlet from '@podium/podlet';
+import Hapi from 'hapi';
 
 const app = Hapi.Server({
     host: 'localhost',
@@ -135,9 +135,9 @@ app.start();
 <TabItem value="fastify" label="Fastify">
 
 ```js
-const fastifyPodlet = require('@podium/fastify-podlet');
-const fastify = require('fastify');
-const Podlet = require('@podium/podlet');
+import fastifyPodlet from '@podium/fastify-podlet';
+import fastify from 'fastify';
+import Podlet from '@podium/podlet';
 
 const app = fastify();
 
@@ -178,9 +178,9 @@ start();
 <TabItem value="http" label="HTTP">
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
-const Podlet = require('@podium/podlet');
-const http = require('http');
+import { HttpIncoming } from '@podium/utils';
+import Podlet from '@podium/podlet';
+import http from 'http';
 
 const podlet = new Podlet({
     name: 'myPodlet',
@@ -1332,7 +1332,7 @@ app.register({
     options: podlet,
 });
 
-app.register(require('@hapi/inert'));
+app.register(await import('@hapi/inert'));
 
 app.route({
     method: 'GET',
@@ -1358,7 +1358,7 @@ const podlet = new Podlet({
 
 app.register(fastifyPodlet, podlet);
 
-app.register(require('fastify-static'), {
+app.register(await import('fastify-static'), {
     root: './src/js/',
 });
 
@@ -1418,7 +1418,7 @@ app.register({
     options: podlet,
 });
 
-app.register(require('@hapi/inert'));
+app.register(await import('@hapi/inert'));
 
 app.route({
     method: 'GET',
@@ -1450,7 +1450,7 @@ const podlet = new Podlet({
 
 app.register(fastifyPodlet, podlet);
 
-app.register(require('fastify-static'), {
+app.register(await import('fastify-static'), {
     root: './src/js/',
 });
 
@@ -1572,7 +1572,7 @@ app.register({
     options: podlet,
 });
 
-app.register(require('@hapi/inert'));
+app.register(await import('@hapi/inert'));
 
 app.route({
     method: 'GET',
@@ -1598,7 +1598,7 @@ const podlet = new Podlet({
 
 app.register(fastifyPodlet, podlet);
 
-app.register(require('fastify-static'), {
+app.register(await import('fastify-static'), {
     root: './src/css/',
 });
 
@@ -1658,7 +1658,7 @@ app.register({
     options: podlet,
 });
 
-app.register(require('@hapi/inert'));
+app.register(await import('@hapi/inert'));
 
 app.route({
     method: 'GET',
@@ -1690,7 +1690,7 @@ const podlet = new Podlet({
 
 app.register(fastifyPodlet, podlet);
 
-app.register(require('fastify-static'), {
+app.register(await import('fastify-static'), {
     root: './src/css/',
 });
 
@@ -2231,8 +2231,8 @@ This method takes the following arguments:
 An instance of the [`HttpIncoming`](incoming.md) class.
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
-const Podlet = require('@podium/podlet');
+import { HttpIncoming } from '@podium/utils';
+import Podlet from '@podium/podlet';
 
 const podlet = new Podlet({
     name: 'myPodlet',
