@@ -174,6 +174,12 @@ const config = {
 				infoLink: 'https://descomplica.com.br/',
 				pinned: true,
 			},
+			{
+				caption: 'Madgex',
+				image: '/img/madgex_logo.png',
+				infoLink: 'https://madgex.com/',
+				pinned: true,
+			},
     ],
   },
 };
