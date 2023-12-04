@@ -45,8 +45,8 @@ Example of setting up a podlet server in all HTTP frameworks supported by the Po
 <TabItem value="express" label="Express">
 
 ```js
-const express = require('express');
-const Podlet = require('@podium/podlet');
+import express from 'express';
+import Podlet from '@podium/podlet';
 
 const app = express();
 
@@ -77,9 +77,9 @@ app.listen(7100);
 <TabItem value="hapi" label="Hapi">
 
 ```js
-const HapiPodlet = require('@podium/hapi-podlet');
-const Podlet = require('@podium/podlet');
-const Hapi = require('hapi');
+import HapiPodlet from '@podium/hapi-podlet';
+import Podlet from '@podium/podlet';
+import Hapi from 'hapi';
 
 const app = Hapi.Server({
     host: 'localhost',
@@ -122,9 +122,9 @@ app.start();
 <TabItem value="fastify" label="Fastify">
 
 ```js
-const fastifyPodlet = require('@podium/fastify-podlet');
-const fastify = require('fastify');
-const Podlet = require('@podium/podlet');
+import fastifyPodlet from '@podium/fastify-podlet';
+import fastify from 'fastify';
+import Podlet from '@podium/podlet';
 
 const app = fastify();
 
@@ -165,9 +165,9 @@ start();
 <TabItem value="http" label="HTTP">
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
-const Podlet = require('@podium/podlet');
-const http = require('http');
+import { HttpIncoming } from '@podium/utils';
+import Podlet from '@podium/podlet';
+import http from 'http';
 
 const podlet = new Podlet({
     name: 'myPodlet',

@@ -11,8 +11,8 @@ This is a Podlet serving a HTML endpoint responding to the locale it get from a 
   <TabItem value="express" label="Express" default>
 
     ```js
-    const express = require('express');
-		const Podlet = require('@podium/podlet');
+    import express from 'express';
+		import Podlet from '@podium/podlet';
 
 		const app = express();
 
@@ -43,9 +43,9 @@ This is a Podlet serving a HTML endpoint responding to the locale it get from a 
   <TabItem value="hapi" label="Hapi">
 
     ```js
-    const HapiPodlet = require('@podium/hapi-podlet');
-		const Podlet = require('@podium/podlet');
-		const Hapi = require('hapi');
+    import HapiPodlet from '@podium/hapi-podlet';
+		import Podlet from '@podium/podlet';
+		import Hapi from 'hapi';
 
 		const app = Hapi.Server({
 				host: 'localhost',
@@ -89,9 +89,9 @@ This is a Podlet serving a HTML endpoint responding to the locale it get from a 
 
 
     ```js
-    const fastifyPodlet = require('@podium/fastify-podlet');
-		const fastify = require('fastify');
-		const Podlet = require('@podium/podlet');
+    import fastifyPodlet from '@podium/fastify-podlet';
+		import fastify from 'fastify';
+		import Podlet from '@podium/podlet';
 
 		const app = fastify();
 
@@ -133,9 +133,9 @@ This is a Podlet serving a HTML endpoint responding to the locale it get from a 
   <TabItem value="http" label="Http">
 
     ```js
-    const { HttpIncoming } = require('@podium/utils');
-		const Podlet = require('@podium/podlet');
-		const http = require('http');
+    import { HttpIncoming } from '@podium/utils';
+		import Podlet from '@podium/podlet';
+		import http from 'http';
 
 		const podlet = new Podlet({
 				name: 'myPodlet',

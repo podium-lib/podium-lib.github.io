@@ -45,8 +45,8 @@ Create a file `index.js`, open it in your favorite text editor and import our 2 
 _Example_
 
 ```js
-const express = require('express');
-const Layout = require('@podium/layout');
+import express from 'express';
+import Layout from '@podium/layout';
 ```
 
 ## Step 4: Instantiate instances
@@ -162,8 +162,8 @@ If you see the text "This is the podlets html content" then you've successfully 
 _Example_
 
 ```js
-const express = require('express');
-const Layout = require('@podium/layout');
+import express from 'express';
+import Layout from '@podium/layout';
 
 const app = express();
 

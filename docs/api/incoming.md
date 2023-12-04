@@ -35,8 +35,8 @@ framework.
 <TabItem value="express" label="Express">
 
 ```js
-const express = require('express');
-const Layout = require('@podium/layout');
+import express from 'express';
+import Layout from '@podium/layout';
 
 const app = express();
 
@@ -93,9 +93,9 @@ app.listen(7000);
 <TabItem value="hapi" label="Hapi">
 
 ```js
-const HapiLayout = require('@podium/hapi-layout');
-const Layout = require('@podium/layout');
-const Hapi = require('hapi');
+import HapiLayout from '@podium/hapi-layout';
+import Layout from '@podium/layout';
+import Hapi from 'hapi';
 
 const app = Hapi.Server({
     host: 'localhost',
@@ -160,9 +160,9 @@ app.start();
 <TabItem value="fastify" label="Fastify">
 
 ```js
-const FastifyLayout = require('@podium/fastify-layout');
-const fastify = require('fastify');
-const Layout = require('@podium/layout');
+import FastifyLayout from '@podium/fastify-layout';
+import fastify from 'fastify';
+import Layout from '@podium/layout';
 
 const app = fastify({ logger: true });
 
@@ -226,9 +226,9 @@ start();
 <TabItem value="http" label="HTTP">
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
-const Layout = require('@podium/layout');
-const http = require('http');
+import { HttpIncoming } from '@podium/utils';
+import Layout from '@podium/layout';
+import http from 'http';
 
 const layout = new Layout({
     name: 'myLayout',
@@ -289,7 +289,7 @@ server.listen(7000);
 Create a new HttpIncoming instance.
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
+import { HttpIncoming } from '@podium/utils';
 const incoming = new HttpIncoming(request, response, params);
 ```
 

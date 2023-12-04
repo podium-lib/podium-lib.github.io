@@ -121,7 +121,7 @@ When creating a podlet with proxy routes, it's necessary to be able to dynamical
 The base URL can be constructed by joining together values plucked from the Podium context like so.
 
 ```js
-const { URL } = require('url'); // not required in node >=10
+import { URL } from 'url'; // not required in node >= 10;
 
 app.get(podlet.content(), (req, res) => {
     const { mountOrigin, publicPathname } = res.locals.podium.context;
@@ -153,8 +153,8 @@ app.get(podlet.content(), (req, res) => {
 ### Example: client side JavaScript fetching data from a /content route
 
 ```js
-const express = require('express');
-const Podlet = require('@podium/podlet');
+import express from 'express';
+import Podlet from '@podium/podlet';
 
 const podlet = new Podlet({
     name: 'myPodlet',

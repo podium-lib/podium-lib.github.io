@@ -219,7 +219,7 @@ or [`.buildScriptElement()`](https://github.com/podium-lib/utils#buildscriptelem
 methods found in the `@podium/utils` package:
 
 ```js
-const utils = require('@podium/utils');
+import utils from '@podium/utils';
 
 [ ... ]
 
