@@ -65,9 +65,9 @@ const Showcase = () => {
   const showcase = siteConfig.customFields.users
     .filter((user) => user.pinned)
     .map((user) => (
-      <a href={user.infoLink} key={user.infoLink}>
+      <Link to={user.infoLink} key={user.infoLink} className="margin--md">
         <img src={user.image} alt={user.caption} title={user.caption} />
-      </a>
+      </Link>
     ));
 
   const pageUrl = (page) => baseUrl + (language ? `${language}/` : "") + page;

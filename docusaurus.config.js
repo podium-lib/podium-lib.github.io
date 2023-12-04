@@ -166,6 +166,14 @@ const config = {
         infoLink: "https://www.finn.no/",
         pinned: true,
       },
+			{
+				caption: 'Descomplica',
+				// You will need to prepend the image path with your baseUrl
+				// if it is not '/', like: '/test-site/img/image.jpg'.
+				image: '/img/descomplica_logo.svg',
+				infoLink: 'https://descomplica.com.br/',
+				pinned: true,
+			},
     ],
   },
 };

@@ -11,7 +11,7 @@ export default function Users() {
 
   const editUrl = `https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}/edit/source/website/siteConfig.js`;
   const showcase = siteConfig.customFields.users.map((user) => (
-    <Link to={user.infoLink} key={user.infoLink}>
+    <Link to={user.infoLink} key={user.infoLink} className="margin--md">
       <img src={user.image} alt={user.caption} title={user.caption} />
     </Link>
   ));
