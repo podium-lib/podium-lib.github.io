@@ -41,8 +41,8 @@ npm install express @podium/podlet
 Create a file `index.js` and import the 2 dependencies at the top
 
 ```js
-const express = require('express');
-const Podlet = require('@podium/podlet');
+import express from 'express';
+import Podlet from '@podium/podlet';
 ```
 
 ## Step 4: Instantiate instances
@@ -136,8 +136,8 @@ curl http://localhost:7100
 ## The complete code
 
 ```js
-const express = require('express');
-const Podlet = require('@podium/podlet');
+import express from 'express';
+import Podlet from '@podium/podlet';
 
 const app = express();
 

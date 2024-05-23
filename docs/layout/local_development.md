@@ -14,8 +14,10 @@ _Example: header_
 Create a folder `/podlets/header` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-const Podlet = require('@podium/podlet');
-const app = require('express')();
+import Podlet from '@podium/podlet';
+import express from 'express';
+
+const app = express();
 
 const podlet = new Podlet({
     name: 'header',
@@ -41,8 +43,10 @@ _Example: navigation bar_
 Create a folder `/podlets/navigation` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-const Podlet = require('@podium/podlet');
-const app = require('express')();
+import Podlet from '@podium/podlet';
+import express from 'express';
+
+const app = express();
 
 const podlet = new Podlet({
     name: 'navigation',
@@ -75,8 +79,10 @@ _Example: main home page content_
 Create a folder `/podlets/home` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-const Podlet = require('@podium/podlet');
-const app = require('express')();
+import Podlet from '@podium/podlet';
+import express from 'express';
+
+const app = express();
 
 const podlet = new Podlet({
     name: 'homeContent',
@@ -102,8 +108,10 @@ _Example: page footer_
 Create a folder `/podlets/footer` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-const Podlet = require('@podium/podlet');
-const app = require('express')();
+import Podlet from '@podium/podlet';
+import express from 'express';
+
+const app = express();
 
 const podlet = new Podlet({
     name: 'footer',
@@ -131,8 +139,10 @@ _Example: the /home layout_
 Create a folder `/layouts/home`. Create a file `index.js` inside this folder to hold the following layout code.
 
 ```js
-const Layout = require('@podium/layout');
-const app = require('express')();
+import Layout from '@podium/layout';
+import express from 'express';
+
+const app = express();
 
 const layout = new Layout({
     name: 'homePage',

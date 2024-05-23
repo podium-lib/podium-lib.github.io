@@ -3,6 +3,9 @@ id: incoming
 title: HttpIncoming
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 In the request/response life cycle of an HTTP request handled by Podium,
 different information needs to be accessible at different stages. To cater to
 this, Podium has an `HttpIncoming` object which is passed between the different
@@ -28,12 +31,12 @@ created for you under the hood and passed on as a property on the request
 between the different parts of the request/response life cycle of the HTTP
 framework.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
-const express = require('express');
-const Layout = require('@podium/layout');
+import express from 'express';
+import Layout from '@podium/layout';
 
 const app = express();
 
@@ -86,12 +89,13 @@ app.get(layout.pathname(), (req, res) => {
 app.listen(7000);
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
-const HapiLayout = require('@podium/hapi-layout');
-const Layout = require('@podium/layout');
-const Hapi = require('hapi');
+import HapiLayout from '@podium/hapi-layout';
+import Layout from '@podium/layout';
+import Hapi from 'hapi';
 
 const app = Hapi.Server({
     host: 'localhost',
@@ -152,12 +156,13 @@ app.route({
 app.start();
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
-const FastifyLayout = require('@podium/fastify-layout');
-const fastify = require('fastify');
-const Layout = require('@podium/layout');
+import FastifyLayout from '@podium/fastify-layout';
+import fastify from 'fastify';
+import Layout from '@podium/layout';
 
 const app = fastify({ logger: true });
 
@@ -217,12 +222,13 @@ const start = async () => {
 start();
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
-const Layout = require('@podium/layout');
-const http = require('http');
+import { HttpIncoming } from '@podium/utils';
+import Layout from '@podium/layout';
+import http from 'http';
 
 const layout = new Layout({
     name: 'myLayout',
@@ -275,14 +281,15 @@ const server = http.createServer(async (req, res) => {
 server.listen(7000);
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Constructor
 
 Create a new HttpIncoming instance.
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
+import { HttpIncoming } from '@podium/utils';
 const incoming = new HttpIncoming(request, response, params);
 ```
 
@@ -331,9 +338,9 @@ parser.
 
 The locale context parser does this when setting the request bound locale value:
 
-<!--DOCUSAURUS_CODE_TABS-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
-<!--Express-->
 
 ```js
 const app = express();
@@ -373,7 +380,8 @@ app.get('/', (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const app = Hapi.Server({
@@ -426,7 +434,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const app = fastify();
@@ -466,7 +475,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const layout = new Layout({
@@ -498,7 +508,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## Properties
 

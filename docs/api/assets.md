@@ -3,6 +3,9 @@ id: assets
 title: Assets
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 When an asset is registered through the `.css()` or `.js()` methods in a podlet
 or layout an appropriate `AssetCSS` or `AssetJS` object is created.
 
@@ -11,8 +14,8 @@ properties of the [`HttpIncoming`](incoming.md) object on a request.
 
 Example of printing the assets set in a podlet:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const podlet = new Podlet([ ... ]);
@@ -30,7 +33,8 @@ app.get(podlet.content(), (req, res) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const podlet = new Podlet([ ... ]);
@@ -52,7 +56,8 @@ app.route({
 });
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const podlet = new Podlet([ ... ]);
@@ -70,7 +75,8 @@ app.get(podlet.content(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const podlet = new Podlet([ ... ]);
@@ -90,8 +96,9 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(7100);
 ```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+    
+</TabItem>
+</Tabs>
 
 When a layout fetches a podlet and parses the podlet's manifest, any assets on
 the `.css` and `.js` properties of the manifest are also parsed into the
@@ -104,8 +111,8 @@ by the `.client.fetch()` method or emitted by the `beforeStream` event when the
 
 Example of a layout fetching a podlet and printing the assets of the podlet:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 const podlet = layout.client.register({
@@ -125,7 +132,8 @@ app.get(layout.pathname(), async (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 const podlet = layout.client.register({
@@ -151,7 +159,8 @@ app.route({
 app.start();
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 const podlet = layout.client.register({
@@ -171,7 +180,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 const podlet = layout.client.register({
@@ -192,7 +202,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 When fetching one or more podlets from a layout, it's common to then include the
 assets from these podlets in the full HTML document being composed in this
@@ -207,8 +218,8 @@ In this way the layout's registered assets, together with assets for all
 requested podlets, will be available for the [`document template`](document.md)
 in two arrays, one for CSS and another array for JS.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
 layout.css({ value: '/assets/styles.css' });
@@ -252,7 +263,8 @@ app.get(layout.pathname(), async (req, res, next) => {
 });
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
 layout.css({ value: '/assets/styles.css' });
@@ -302,7 +314,8 @@ app.route({
 app.start();
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
 layout.css({ value: '/assets/styles.css' });
@@ -346,7 +359,8 @@ app.get(layout.pathname(), async (request, reply) => {
 });
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
 layout.css({ value: '/assets/styles.css' });
@@ -391,7 +405,8 @@ const server = http.createServer(async (req, res) => {
 });
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 ## AssetCSS
 
@@ -431,7 +446,7 @@ Returns a JSON representation of the `AssetCSS` instance ready for use in a JSX 
 <link {...css.toJsxAttributes()} />
 ```
 
-### .toHTML() {
+### .toHTML()
 
 Returns an HTML `<link>` element as a string representation of the `AssetCSS`
 instance.
@@ -473,7 +488,7 @@ Returns a JSON representation of the `AssetJS` instance ready for use in a JSX s
 <script {...js.toJsxAttributes()}></script>
 ```
 
-### .toHTML() {
+### .toHTML()
 
 Returns an HTML `<script>` element as a string representation of the `AssetJS`
 instance.

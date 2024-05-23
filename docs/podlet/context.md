@@ -77,7 +77,7 @@ These adher to the [WHATWG URL] spec so you can easily compose full URLs by usin
 _Example: using the URL module to construct urls from context values_
 
 ```js
-const { URL } = require('url');
+import { URL } from 'url';
 const { mountOrigin, mountPathname } = res.locals.podium.context;
 const url = new URL(mountPathname, mountOrigin);
 // url.href => <mountOrigin>/<mountPathname>
@@ -87,7 +87,7 @@ const url = new URL(mountPathname, mountOrigin);
 _Example: using the URL module to construct proxy urls from context values_
 
 ```js
-const { URL } = require('url');
+import { URL } from 'url';
 const { mountOrigin, publicPathname } = res.locals.podium.context;
 const url = new URL(publicPathname, mountOrigin);
 // url.href => <mountOrigin>/<publicPathname>
@@ -180,8 +180,10 @@ const url = new URL(mountPathname, mountOrigin).href;
 _Example: building a Podlet with a default context that passes values to the client_
 
 ```js
-const Podlet = require('@podium/podlet');
-const app = require('express')();
+import Podlet from '@podium/podlet';
+import express from 'express';
+
+const app = express();
 
 // Enable defaults which will set a default Context
 const podlet = new Podlet({

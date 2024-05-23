@@ -3,6 +3,9 @@ id: getting_started
 title: Getting Started
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Podium consists of two parts; podlets and layouts, each with its own matching module to be used for development.
 
 ### Podlets
@@ -38,12 +41,12 @@ plugin is handed an instance of the appropriate Podium module.
 
 Example of setting up a podlet server in all HTTP frameworks supported by the Podium team:
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Express-->
+<Tabs groupId="server-frameworks">
+<TabItem value="express" label="Express">
 
 ```js
-const express = require('express');
-const Podlet = require('@podium/podlet');
+import express from 'express';
+import Podlet from '@podium/podlet';
 
 const app = express();
 
@@ -70,12 +73,13 @@ app.get(podlet.manifest(), (req, res) => {
 app.listen(7100);
 ```
 
-<!--Hapi-->
+</TabItem>
+<TabItem value="hapi" label="Hapi">
 
 ```js
-const HapiPodlet = require('@podium/hapi-podlet');
-const Podlet = require('@podium/podlet');
-const Hapi = require('hapi');
+import HapiPodlet from '@podium/hapi-podlet';
+import Podlet from '@podium/podlet';
+import Hapi from 'hapi';
 
 const app = Hapi.Server({
     host: 'localhost',
@@ -114,12 +118,13 @@ app.route({
 app.start();
 ```
 
-<!--Fastify-->
+</TabItem>
+<TabItem value="fastify" label="Fastify">
 
 ```js
-const fastifyPodlet = require('@podium/fastify-podlet');
-const fastify = require('fastify');
-const Podlet = require('@podium/podlet');
+import fastifyPodlet from '@podium/fastify-podlet';
+import fastify from 'fastify';
+import Podlet from '@podium/podlet';
 
 const app = fastify();
 
@@ -156,12 +161,13 @@ const start = async () => {
 start();
 ```
 
-<!--HTTP-->
+</TabItem>
+<TabItem value="http" label="HTTP">
 
 ```js
-const { HttpIncoming } = require('@podium/utils');
-const Podlet = require('@podium/podlet');
-const http = require('http');
+import { HttpIncoming } from '@podium/utils';
+import Podlet from '@podium/podlet';
+import http from 'http';
 
 const podlet = new Podlet({
     name: 'myPodlet',
@@ -203,7 +209,8 @@ const server = http.createServer(async (req, res) => {
 server.listen(7100);
 ```
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+</TabItem>
+</Tabs>
 
 [@podium/fastify-podlet]: https://github.com/podium-lib/fastify-podlet
 [@podium/fastify-layout]: https://github.com/podium-lib/fastify-layout

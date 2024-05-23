@@ -12,8 +12,8 @@ At its most basic, the experience of developing a podlet on its own can be as si
 Consider the following very simple podlet server:
 
 ```js
-const express = require('express');
-const Podlet = require('@podium/podlet');
+import express from 'express';
+import Podlet from '@podium/podlet';
 
 const podlet = new Podlet({
     name: 'myPodlet',
