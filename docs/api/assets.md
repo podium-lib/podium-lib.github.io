@@ -96,7 +96,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(7100);
 ```
-    
+
 </TabItem>
 </Tabs>
 
@@ -452,17 +452,17 @@ client side assets.
 
 An `AssetJS` instance has the following properties:
 
-| property       | type      | getter  | setter  | default      | details                                                        |
-| -------------- | --------- | ------- | ------- | ------------ | -------------------------------------------------------------- |
-| value          | `string`  | &check; |         | `''`         | Relative or absolute URL to the CSS asset                      |
-| src            | `string`  | &check; |         | `''`         | Alias for the `value` property                                 |
-| referrerpolicy | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
-| crossorigin    | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
-| integrity      | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
-| nomodule       | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<script>` element |
-| async          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<script>` element |
-| defer          | `boolean` | &check; | &check; | `false`      | Correlates to the same attribute on an HTML `<script>` element |
-| type           | `string`  | &check; | &check; | `undefined`  | Correlates to the same attribute on an HTML `<script>` element |
+| property       | type      | getter  | setter  | default     | details                                                        |
+| -------------- | --------- | ------- | ------- | ----------- | -------------------------------------------------------------- |
+| value          | `string`  | &check; |         | `''`        | Relative or absolute URL to the CSS asset                      |
+| src            | `string`  | &check; |         | `''`        | Alias for the `value` property                                 |
+| referrerpolicy | `string`  | &check; | &check; | `undefined` | Correlates to the same attribute on an HTML `<script>` element |
+| crossorigin    | `string`  | &check; | &check; | `undefined` | Correlates to the same attribute on an HTML `<script>` element |
+| integrity      | `string`  | &check; | &check; | `undefined` | Correlates to the same attribute on an HTML `<script>` element |
+| nomodule       | `boolean` | &check; | &check; | `false`     | Correlates to the same attribute on an HTML `<script>` element |
+| async          | `boolean` | &check; | &check; | `false`     | Correlates to the same attribute on an HTML `<script>` element |
+| defer          | `boolean` | &check; | &check; | `false`     | Correlates to the same attribute on an HTML `<script>` element |
+| type           | `string`  | &check; | &check; | `undefined` | Correlates to the same attribute on an HTML `<script>` element |
 
 ## Methods
 

@@ -10,7 +10,7 @@ js using the Express js HTTP framework. At the end you will have created a fairl
 
 Ideally, you should have some familiarity with building apps with JavaScript and
 Node.js. You will also need to have Node.js installed at version 8 or higher.
-The npm cli will be installed automatically when you install Node.js. Additionally, you should familiarize yourself with the Podium's [high level concepts](/docs/podium/conceptual_overview) and understand [how to build a podlet](/docs/podlet/getting_started) with Podium.
+The npm cli will be installed automatically when you install Node.js. Additionally, you should familiarize yourself with the Podium's [high level concepts](/docs/introduction/conceptual-overview) and understand [how to build a podlet](/docs/podlet/getting_started) with Podium.
 
 ## Step 1: Project setup
 
@@ -45,8 +45,8 @@ Create a file `index.js`, open it in your favorite text editor and import our 2 
 _Example_
 
 ```js
-import express from 'express';
-import Layout from '@podium/layout';
+import express from "express";
+import Layout from "@podium/layout";
 ```
 
 ## Step 4: Instantiate instances
@@ -59,8 +59,8 @@ _Example_
 const app = express();
 
 const layout = new Layout({
-    name: 'myLayout', // required
-    pathname: '/demo', // required
+  name: "myLayout", // required
+  pathname: "/demo", // required
 });
 ```
 
@@ -72,8 +72,8 @@ _Example_
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet', // required
-    uri: 'http://localhost:7100/manifest.json', // required
+  name: "myPodlet", // required
+  uri: "http://localhost:7100/manifest.json", // required
 });
 ```
 
@@ -98,13 +98,13 @@ In our route handler, we grab a request bound instance of HttpIncoming from the 
 _Example_
 
 ```js
-app.get('/demo', async (req, res) => {
-    const incoming = res.locals.podium;
-    const response = await podlet.fetch(incoming);
+app.get("/demo", async (req, res) => {
+  const incoming = res.locals.podium;
+  const response = await podlet.fetch(incoming);
 
-    incoming.view.title = 'My Super Page';
+  incoming.view.title = "My Super Page";
 
-    res.podiumSend(`<div>${response}</div>`);
+  res.podiumSend(`<div>${response}</div>`);
 });
 ```
 
@@ -162,30 +162,30 @@ If you see the text "This is the podlets html content" then you've successfully 
 _Example_
 
 ```js
-import express from 'express';
-import Layout from '@podium/layout';
+import express from "express";
+import Layout from "@podium/layout";
 
 const app = express();
 
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/demo',
+  name: "myLayout",
+  pathname: "/demo",
 });
 
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 app.use(layout.middleware());
 
-app.get('/demo', async (req, res) => {
-    const incoming = res.locals.podium;
-    const response = await podlet.fetch(incoming);
+app.get("/demo", async (req, res) => {
+  const incoming = res.locals.podium;
+  const response = await podlet.fetch(incoming);
 
-    incoming.view.title = 'My Super Page';
+  incoming.view.title = "My Super Page";
 
-    res.podiumSend(`<div>${response}</div>`);
+  res.podiumSend(`<div>${response}</div>`);
 });
 
 app.listen(7000);
