@@ -125,10 +125,6 @@ podlet.defaults({
 });
 ```
 
-## Next steps
-
-Next you may want to look at the different guides for podlets and layouts which cover some common scenarios.
-
 [bcp47]: https://tools.ietf.org/html/bcp47
 [kebab case]: https://en.wikipedia.org/wiki/Kebab_case
 [camel case]: https://en.wikipedia.org/wiki/Camel_case

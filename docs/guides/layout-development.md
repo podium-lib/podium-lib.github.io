@@ -1,6 +1,5 @@
 ---
-id: local_development
-title: Local Development
+title: Layout development
 ---
 
 Once you have built one or more podlets, you will want to be able to test them in the more realistic context of a layout server, thereby allowing you to see the complete page and make sure all the pieces work together correctly.
@@ -14,25 +13,25 @@ _Example: header_
 Create a folder `/podlets/header` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-import Podlet from '@podium/podlet';
-import express from 'express';
+import Podlet from "@podium/podlet";
+import express from "express";
 
 const app = express();
 
 const podlet = new Podlet({
-    name: 'header',
-    version: '1.0.0',
-    development: false,
+  name: "header",
+  version: "1.0.0",
+  development: false,
 });
 
 app.use(podlet.middleware());
 
-app.get('/manifest.json', (req, res) => {
-    res.json(podlet);
+app.get("/manifest.json", (req, res) => {
+  res.json(podlet);
 });
 
-app.get('/', (req, res) => {
-    res.podiumSend(`<header>The Best Podium page ever</header>`);
+app.get("/", (req, res) => {
+  res.podiumSend(`<header>The Best Podium page ever</header>`);
 });
 
 app.listen(7001);
@@ -43,25 +42,25 @@ _Example: navigation bar_
 Create a folder `/podlets/navigation` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-import Podlet from '@podium/podlet';
-import express from 'express';
+import Podlet from "@podium/podlet";
+import express from "express";
 
 const app = express();
 
 const podlet = new Podlet({
-    name: 'navigation',
-    version: '1.0.0',
-    development: false,
+  name: "navigation",
+  version: "1.0.0",
+  development: false,
 });
 
 app.use(podlet.middleware());
 
-app.get('/manifest.json', (req, res) => {
-    res.json(podlet);
+app.get("/manifest.json", (req, res) => {
+  res.json(podlet);
 });
 
-app.get('/', (req, res) => {
-    res.podiumSend(`<nav>
+app.get("/", (req, res) => {
+  res.podiumSend(`<nav>
         <ul>
             <li><a href="/home">home</a></li>
             <li><a href="/blog">blog</a></li>
@@ -79,25 +78,25 @@ _Example: main home page content_
 Create a folder `/podlets/home` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-import Podlet from '@podium/podlet';
-import express from 'express';
+import Podlet from "@podium/podlet";
+import express from "express";
 
 const app = express();
 
 const podlet = new Podlet({
-    name: 'homeContent',
-    version: '1.0.0',
-    development: false,
+  name: "homeContent",
+  version: "1.0.0",
+  development: false,
 });
 
 app.use(podlet.middleware());
 
-app.get('/manifest.json', (req, res) => {
-    res.json(podlet);
+app.get("/manifest.json", (req, res) => {
+  res.json(podlet);
 });
 
-app.get('/', (req, res) => {
-    res.podiumSend(`<section>Welcome to my Podium home page</section>`);
+app.get("/", (req, res) => {
+  res.podiumSend(`<section>Welcome to my Podium home page</section>`);
 });
 
 app.listen(7003);
@@ -108,25 +107,25 @@ _Example: page footer_
 Create a folder `/podlets/footer` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-import Podlet from '@podium/podlet';
-import express from 'express';
+import Podlet from "@podium/podlet";
+import express from "express";
 
 const app = express();
 
 const podlet = new Podlet({
-    name: 'footer',
-    version: '1.0.0',
-    development: false,
+  name: "footer",
+  version: "1.0.0",
+  development: false,
 });
 
 app.use(podlet.middleware());
 
-app.get('/manifest.json', (req, res) => {
-    res.json(podlet);
+app.get("/manifest.json", (req, res) => {
+  res.json(podlet);
 });
 
-app.get('/', (req, res) => {
-    res.podiumSend(`<footer>&copy; 2018 - the Podium team</footer>`);
+app.get("/", (req, res) => {
+  res.podiumSend(`<footer>&copy; 2018 - the Podium team</footer>`);
 });
 
 app.listen(7004);
@@ -139,48 +138,48 @@ _Example: the /home layout_
 Create a folder `/layouts/home`. Create a file `index.js` inside this folder to hold the following layout code.
 
 ```js
-import Layout from '@podium/layout';
-import express from 'express';
+import Layout from "@podium/layout";
+import express from "express";
 
 const app = express();
 
 const layout = new Layout({
-    name: 'homePage',
-    pathname: '/home',
+  name: "homePage",
+  pathname: "/home",
 });
 
 const headerClient = layout.client.register({
-    name: 'header',
-    uri: 'http://localhost:7001/manifest.json',
+  name: "header",
+  uri: "http://localhost:7001/manifest.json",
 });
 const navigationClient = layout.client.register({
-    name: 'navigation',
-    uri: 'http://localhost:7002/manifest.json',
+  name: "navigation",
+  uri: "http://localhost:7002/manifest.json",
 });
 const contentClient = layout.client.register({
-    name: 'content',
-    uri: 'http://localhost:7003/manifest.json',
+  name: "content",
+  uri: "http://localhost:7003/manifest.json",
 });
 const footerClient = layout.client.register({
-    name: 'footer',
-    uri: 'http://localhost:7004/manifest.json',
+  name: "footer",
+  uri: "http://localhost:7004/manifest.json",
 });
 
 app.use(layout.pathname(), layout.middleware());
 
 app.get(layout.pathname(), async (req, res) => {
-    const incoming = res.locals.podium;
+  const incoming = res.locals.podium;
 
-    const [header, navigation, content, footer] = await Promise.all([
-        headerClient.fetch(incoming),
-        navigationClient.fetch(incoming),
-        contentClient.fetch(incoming),
-        footerClient.fetch(incoming),
-    ]);
+  const [header, navigation, content, footer] = await Promise.all([
+    headerClient.fetch(incoming),
+    navigationClient.fetch(incoming),
+    contentClient.fetch(incoming),
+    footerClient.fetch(incoming),
+  ]);
 
-    incoming.view.title = 'Podium example - home';
+  incoming.view.title = "Podium example - home";
 
-    res.podiumSend(`
+  res.podiumSend(`
       <section>${header}</section>
       <section>${navigation}</section>
       <section>${content}</section>
@@ -230,41 +229,41 @@ _Example: forever json configuration file_
 
 ```json
 [
-    {
-        "uid": "header",
-        "append": true,
-        "watch": true,
-        "script": "index.js",
-        "sourceDir": "/path/to/podlets/header"
-    },
-    {
-        "uid": "navigation",
-        "append": true,
-        "watch": true,
-        "script": "index.js",
-        "sourceDir": "/path/to/podlets/navigation"
-    },
-    {
-        "uid": "home",
-        "append": true,
-        "watch": true,
-        "script": "index.js",
-        "sourceDir": "/path/to/podlets/home"
-    },
-    {
-        "uid": "footer",
-        "append": true,
-        "watch": true,
-        "script": "index.js",
-        "sourceDir": "/path/to/podlets/footer"
-    },
-    {
-        "uid": "homePage",
-        "append": true,
-        "watch": true,
-        "script": "index.js",
-        "sourceDir": "/path/to/layouts/home"
-    }
+  {
+    "uid": "header",
+    "append": true,
+    "watch": true,
+    "script": "index.js",
+    "sourceDir": "/path/to/podlets/header"
+  },
+  {
+    "uid": "navigation",
+    "append": true,
+    "watch": true,
+    "script": "index.js",
+    "sourceDir": "/path/to/podlets/navigation"
+  },
+  {
+    "uid": "home",
+    "append": true,
+    "watch": true,
+    "script": "index.js",
+    "sourceDir": "/path/to/podlets/home"
+  },
+  {
+    "uid": "footer",
+    "append": true,
+    "watch": true,
+    "script": "index.js",
+    "sourceDir": "/path/to/podlets/footer"
+  },
+  {
+    "uid": "homePage",
+    "append": true,
+    "watch": true,
+    "script": "index.js",
+    "sourceDir": "/path/to/layouts/home"
+  }
 ]
 ```
 

@@ -1711,7 +1711,7 @@ The prefix will be ignored if value is an absolute URL.
 
 Method for defining proxy targets to be mounted in a layout server. For a
 detailed overview of how proxying works, please see the
-[proxying guide](podlet/proxying.md) for further details.
+[proxying guide](/docs/guides/proxying) for further details.
 
 When a podlet is put in development mode (`development` is set to `true` in the constructor) these proxy endpoints will also be mounted in the podlet for ease of development and you will then have the same proxy endpoints available in development as you do when working with a layout.
 

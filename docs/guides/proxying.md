@@ -1,24 +1,23 @@
 ---
-id: proxying
-title: Proxying
+title: Proxies
 ---
 
-Proxying is useful in cases where you decide to only expose layout servers directly to the Internet.
+Proxies are useful in cases where you decide to only expose layout servers directly to the Internet.
 
-Podium does not enforce a certain infrastructure setup. You can choose to have your podlets publicly available, in which case [proxying isn't strictly needed](#public-podlets-and-cross-origin-resource-sharing).
+Podium does not enforce a certain infrastructure setup. You can choose to have your podlets publicly available, in which case [proxies aren't strictly needed](#public-podlets-and-cross-origin-resource-sharing).
 
-If you decide to not have podlets available publicly, proxying can help in two common scenarios:
+If you decide to not have podlets available publicly, proxies can help in two common scenarios:
 
 - A podlet is expected to handle form submits.
 - A podlet includes one or more API routes.
 
 Podium includes a proxy feature to make this setup easier.
 
-## Podium Proxy
+## Podium proxy
 
 The Podium proxy is a transparent proxy that is mounted in the layout server based on a podlet's [manifest], making it possible to send any HTTP request through the layout to the podlet server.
 
-Podium proxying is the Podium way for a podlet to inform any layout servers that consume it that there are additional routes and that they should be given public access via routes on the layout server.
+The Podium proxy is the recommended way for a podlet to inform any layout servers that consume it that there are additional routes and that they should be given public access via routes on the layout server.
 
 ### How it works
 
@@ -26,7 +25,7 @@ Podium proxying is the Podium way for a podlet to inform any layout servers that
 - The podlet lists the location of the proxy routes in its manifest.
 - The layout reads the proxy information from the manifest.
 - The layout creates namespaced proxy routes.
-- The layout sends information to the podlet via [the context](/docs/introduction/context) about the public location of these routes.
+- The layout sends information to the podlet via [the context](/docs/guides/context) about the public location of these routes.
 - The podlet uses the context to construct URLs pointing to the public location of the layout's proxy.
 
 ### The manifest
@@ -103,7 +102,7 @@ When creating a podlet with proxy routes, it's necessary to be able to dynamical
 
 ### Constructing Proxy URLs
 
-The base URL can be constructed by joining together values plucked from the [Podium context](/docs/introduction/context) like so.
+The base URL can be constructed by joining together values plucked from the [Podium context](/docs/guides/context) like so.
 
 ```js
 import { URL } from "url"; // not required in node >= 10;

@@ -94,7 +94,7 @@ You can see the JSON manifest that makes up the contract between your podlet and
 
 A layout is responsible for supplying the structure of an HTML page, inserting each podlet into the appropriate location in the page's markup, and then serving the resulting page.
 
-The layout is also responsible for providing a [Podium context](/docs/introduction/context) on requests made to each podlet. This context is a set of HTTP headers with information the podlet can use to generate dynamic content.
+The layout is also responsible for providing a [Podium context](/docs/guides/context) on requests made to each podlet. This context is a set of HTTP headers with information the podlet can use to generate dynamic content.
 
 Like for podlets there is a [@podium/layout](/docs/api/layout) module which helps you build layouts.
 
