@@ -119,7 +119,7 @@ Unique selectors can mitigate some of the isolation problems, but a podlet can s
 
 Using the [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) you can isolate a podlet from its surroundings. By wrapping a podlet in a [declarative shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM#declaratively_with_html) you can still get the benefits of server-side rendering.
 
-#### `podlet.css()` can't be used with Shadow DOM
+#### `podlet.css()` can't be used with shadow DOM
 
 With `podlet.css()` the end result is a `<link />` tag in the HTML document's `<head />`. If your podlet's content renders inside a shadow DOM that CSS won't be able to reach the podlet.
 
