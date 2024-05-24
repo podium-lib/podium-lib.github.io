@@ -5,7 +5,7 @@ title: Proxying
 
 Proxying is useful in cases where you decide to only publicly expose layout servers to incoming traffic.
 
-Podium does not enforce a certain infrastructure setup. You can choose to have your podlets publicly available, in which case [proxying isn't strictly needed](#public-podlets-and-cors).
+Podium does not enforce a certain infrastructure setup. You can choose to have your podlets publicly available, in which case [proxying isn't strictly needed](#public-podlets-and-cross-origin-resource-sharing).
 
 If you decide to not have podlets available publicly, proxying can help in two common scenarios:
 
@@ -177,7 +177,7 @@ app.get(podlet.content(), (req, res) => {
 app.listen(7100);
 ```
 
-## Public podlets and CORS
+## Public podlets and cross-origin resource sharing
 
 If your infrastructure is set up so podlet servers are publicly available you can choose to communicate with podlet servers directly by enabling [cross-origin resource sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). You can still use the Podium proxy if you prefer.
 
