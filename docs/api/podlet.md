@@ -18,9 +18,8 @@ Connect compatible middleware based frameworks (such as [Express]) are
 considered first class in Podium and so this module provides a `.middleware()`
 method for convenience.
 
-For writing podlet servers with other HTTP frameworks, please see the
-[HTTP Framework Compabillity](api/getting_started.md#http-framework-compabillity)
-section.
+For writing podlet servers with other HTTP frameworks, see
+[HTTP Framework Compatibility](/docs/api/http-framework-compatibility).
 
 ## Installation
 
@@ -58,29 +57,29 @@ Building a simple podlet server.
 <TabItem value="express" label="Express">
 
 ```js
-import express from 'express';
-import Podlet from '@podium/podlet';
+import express from "express";
+import Podlet from "@podium/podlet";
 
 const app = express();
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    development: true,
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
+  development: true,
 });
 
 app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
-    if (res.locals.podium.context.locale === 'nb-NO') {
-        return res.status(200).podiumSend('<h2>Hei verden</h2>');
-    }
-    res.status(200).podiumSend(`<h2>Hello world</h2>`);
+  if (res.locals.podium.context.locale === "nb-NO") {
+    return res.status(200).podiumSend("<h2>Hei verden</h2>");
+  }
+  res.status(200).podiumSend(`<h2>Hello world</h2>`);
 });
 
 app.get(podlet.manifest(), (req, res) => {
-    res.status(200).send(podlet);
+  res.status(200).send(podlet);
 });
 
 app.listen(7100);
@@ -90,42 +89,42 @@ app.listen(7100);
 <TabItem value="hapi" label="Hapi">
 
 ```js
-import HapiPodlet from '@podium/hapi-podlet';
-import Podlet from '@podium/podlet';
-import Hapi from 'hapi';
+import HapiPodlet from "@podium/hapi-podlet";
+import Podlet from "@podium/podlet";
+import Hapi from "hapi";
 
 const app = Hapi.Server({
-    host: 'localhost',
-    port: 7100,
+  host: "localhost",
+  port: 7100,
 });
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    development: true,
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
+  development: true,
 });
 
 app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
+  plugin: new HapiPodlet(),
+  options: podlet,
 });
 
 app.route({
-    method: 'GET',
-    path: podlet.content(),
-    handler: (request, h) => {
-        if (request.app.podium.context.locale === 'nb-NO') {
-            return h.podiumSend('<h2>Hei verden</h2>');
-        }
-        return h.podiumSend('<h2>Hello world</h2>');
-    },
+  method: "GET",
+  path: podlet.content(),
+  handler: (request, h) => {
+    if (request.app.podium.context.locale === "nb-NO") {
+      return h.podiumSend("<h2>Hei verden</h2>");
+    }
+    return h.podiumSend("<h2>Hello world</h2>");
+  },
 });
 
 app.route({
-    method: 'GET',
-    path: podlet.manifest(),
-    handler: (request, h) => JSON.stringify(podlet),
+  method: "GET",
+  path: podlet.manifest(),
+  handler: (request, h) => JSON.stringify(podlet),
 });
 
 app.start();
@@ -135,41 +134,41 @@ app.start();
 <TabItem value="fastify" label="Fastify">
 
 ```js
-import fastifyPodlet from '@podium/fastify-podlet';
-import fastify from 'fastify';
-import Podlet from '@podium/podlet';
+import fastifyPodlet from "@podium/fastify-podlet";
+import fastify from "fastify";
+import Podlet from "@podium/podlet";
 
 const app = fastify();
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    development: true,
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
+  development: true,
 });
 
 app.register(fastifyPodlet, podlet);
 
 app.get(podlet.content(), async (request, reply) => {
-    if (reply.app.podium.context.locale === 'nb-NO') {
-        reply.podiumSend('<h2>Hei verden</h2>');
-        return;
-    }
-    reply.podiumSend('<h2>Hello world</h2>');
+  if (reply.app.podium.context.locale === "nb-NO") {
+    reply.podiumSend("<h2>Hei verden</h2>");
+    return;
+  }
+  reply.podiumSend("<h2>Hello world</h2>");
 });
 
 app.get(podlet.manifest(), async (request, reply) => {
-    reply.send(podlet);
+  reply.send(podlet);
 });
 
 const start = async () => {
-    try {
-        await app.listen(7100);
-        app.log.info(`server listening on ${app.server.address().port}`);
-    } catch (err) {
-        app.log.error(err);
-        process.exit(1);
-    }
+  try {
+    await app.listen(7100);
+    app.log.info(`server listening on ${app.server.address().port}`);
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
 };
 start();
 ```
@@ -178,45 +177,45 @@ start();
 <TabItem value="http" label="HTTP">
 
 ```js
-import { HttpIncoming } from '@podium/utils';
-import Podlet from '@podium/podlet';
-import http from 'http';
+import { HttpIncoming } from "@podium/utils";
+import Podlet from "@podium/podlet";
+import http from "http";
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    development: true,
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
+  development: true,
 });
 
 const server = http.createServer(async (req, res) => {
-    let incoming = new HttpIncoming(req, res);
-    incoming = await podlet.process(incoming);
+  let incoming = new HttpIncoming(req, res);
+  incoming = await podlet.process(incoming);
 
-    if (incoming.url.pathname === podlet.manifest()) {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('podlet-version', podlet.version);
-        res.end(JSON.stringify(podlet));
-        return;
+  if (incoming.url.pathname === podlet.manifest()) {
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader("podlet-version", podlet.version);
+    res.end(JSON.stringify(podlet));
+    return;
+  }
+
+  if (incoming.url.pathname === podlet.content()) {
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "text/html");
+    res.setHeader("podlet-version", podlet.version);
+
+    if (incoming.context.locale === "nb-NO") {
+      res.end(podlet.render(incoming, "<h2>Hei verden</h2>"));
+      return;
     }
+    res.end(podlet.render(incoming, "<h2>Hello world</h2>"));
+    return;
+  }
 
-    if (incoming.url.pathname === podlet.content()) {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/html');
-        res.setHeader('podlet-version', podlet.version);
-
-        if (incoming.context.locale === 'nb-NO') {
-            res.end(podlet.render(incoming, '<h2>Hei verden</h2>'));
-            return;
-        }
-        res.end(podlet.render(incoming, '<h2>Hello world</h2>'));
-        return;
-    }
-
-    res.statusCode = 404;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Not found');
+  res.statusCode = 404;
+  res.setHeader("Content-Type", "text/plain");
+  res.end("Not found");
 });
 
 server.listen(7100);
@@ -446,14 +445,14 @@ manifest is at `/foo/component.json`, set the pathname and manifest as follows:
 ```js
 const app = express();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-    manifest: '/component.json',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/foo",
+  manifest: "/component.json",
 });
 
-app.get('/foo/component.json', (req, res, next) => {
-    res.status(200).json(podlet);
+app.get("/foo/component.json", (req, res, next) => {
+  res.status(200).json(podlet);
 });
 ```
 
@@ -487,16 +486,16 @@ app.route({
 ```js
 const app = fastify();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-    manifest: '/component.json',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/foo",
+  manifest: "/component.json",
 });
 
 app.register(fastifyPodlet, podlet);
 
-app.get('/foo/component.json', async (request, reply) => {
-    reply.send(podlet);
+app.get("/foo/component.json", async (request, reply) => {
+  reply.send(podlet);
 });
 ```
 
@@ -720,13 +719,13 @@ Set the manifest using the default pathname which is `/manifest.json`:
 ```js
 const app = express();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
 app.get(podlet.manifest(), (req, res, next) => {
-    res.status(200).json(podlet);
+  res.status(200).json(podlet);
 });
 ```
 
@@ -759,15 +758,15 @@ app.route({
 ```js
 const app = fastify();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
 app.register(fastifyPodlet, podlet);
 
 app.get(podlet.manifest(), async (request, reply) => {
-    reply.send(podlet);
+  reply.send(podlet);
 });
 ```
 
@@ -783,14 +782,14 @@ constructor:
 ```js
 const app = express();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    manifest: '/component.json',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
+  manifest: "/component.json",
 });
 
 app.get(podlet.manifest(), (req, res, next) => {
-    res.status(200).json(podlet);
+  res.status(200).json(podlet);
 });
 ```
 
@@ -824,16 +823,16 @@ app.route({
 ```js
 const app = fastify();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    manifest: '/component.json',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
+  manifest: "/component.json",
 });
 
 app.register(fastifyPodlet, podlet);
 
 app.get(podlet.manifest(), async (request, reply) => {
-    reply.send(podlet);
+  reply.send(podlet);
 });
 ```
 
@@ -888,13 +887,13 @@ The route will then respond with something like:
 
 ```json
 {
-    "name": "myPodlet",
-    "version": "1.0.0",
-    "content": "/",
-    "fallback": "/fallback",
-    "css": [],
-    "js": [],
-    "proxy": {}
+  "name": "myPodlet",
+  "version": "1.0.0",
+  "content": "/",
+  "fallback": "/fallback",
+  "css": [],
+  "js": [],
+  "proxy": {}
 }
 ```
 
@@ -913,10 +912,10 @@ Return the full pathname to the manifest (`/foo/component.json`):
 
 ```js
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-    manifest: '/component.json',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/foo",
+  manifest: "/component.json",
 });
 
 podlet.manifest({ prefix: true });
@@ -1156,10 +1155,10 @@ Return the full pathname to the content (`/foo/index.html`):
 
 ```js
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-    content: '/index.html',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/foo",
+  content: "/index.html",
 });
 
 podlet.content({ prefix: true });
@@ -1253,10 +1252,10 @@ Return the full pathname to the fallback (`/foo/fallback.html`):
 
 ```js
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-    fallback: '/fallback.html',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/foo",
+  fallback: "/fallback.html",
 });
 
 podlet.fallback({ prefix: true });
@@ -1304,16 +1303,16 @@ Serve a javascript file at `/assets/main.js`:
 ```js
 const app = express();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
-app.get('/assets.js', (req, res) => {
-    res.status(200).sendFile('./src/js/main.js', err => {});
+app.get("/assets.js", (req, res) => {
+  res.status(200).sendFile("./src/js/main.js", (err) => {});
 });
 
-podlet.js({ value: '/assets.js' });
+podlet.js({ value: "/assets.js" });
 ```
 
 </TabItem>
@@ -1351,22 +1350,22 @@ podlet.js({ value: '/assets.js' });
 ```js
 const app = fastify();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
 app.register(fastifyPodlet, podlet);
 
-app.register(await import('fastify-static'), {
-    root: './src/js/',
+app.register(await import("fastify-static"), {
+  root: "./src/js/",
 });
 
-app.get('/assets.js', (request, reply) => {
-    reply.sendFile('main.js');
+app.get("/assets.js", (request, reply) => {
+  reply.sendFile("main.js");
 });
 
-podlet.js({ value: '/assets.js' });
+podlet.js({ value: "/assets.js" });
 ```
 
 </TabItem>
@@ -1381,17 +1380,14 @@ JavaScript file:
 ```js
 const app = express();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
-app.use('/assets', express.static('./src/js'));
+app.use("/assets", express.static("./src/js"));
 
-podlet.js([
-    { value: '/assets/main.js' },
-    { value: '/assets/extra.js' },
-]);
+podlet.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
 ```
 
 </TabItem>
@@ -1399,42 +1395,39 @@ podlet.js([
 
 ```js
 const app = Hapi.Server({
-    port: 7000,
-    routes: {
-        files: {
-            relativeTo: './src/js/',
-        },
+  port: 7000,
+  routes: {
+    files: {
+      relativeTo: "./src/js/",
     },
+  },
 });
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
 app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
+  plugin: new HapiPodlet(),
+  options: podlet,
 });
 
-app.register(await import('@hapi/inert'));
+app.register(await import("@hapi/inert"));
 
 app.route({
-    method: 'GET',
-    path: '/assets/{param*}',
-    handler: {
-        directory: {
-            path: '.',
-            redirectToSlash: true,
-        },
+  method: "GET",
+  path: "/assets/{param*}",
+  handler: {
+    directory: {
+      path: ".",
+      redirectToSlash: true,
     },
+  },
 });
 
-podlet.js([
-    { value: '/assets/main.js' },
-    { value: '/assets/extra.js' },
-]);
+podlet.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
 ```
 
 </TabItem>
@@ -1443,25 +1436,22 @@ podlet.js([
 ```js
 const app = fastify();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
 app.register(fastifyPodlet, podlet);
 
-app.register(await import('fastify-static'), {
-    root: './src/js/',
+app.register(await import("fastify-static"), {
+  root: "./src/js/",
 });
 
-app.get('/assets/:file', (request, reply) => {
-    reply.sendFile(request.params.file);
+app.get("/assets/:file", (request, reply) => {
+  reply.sendFile(request.params.file);
 });
 
-podlet.js([
-    { value: '/assets/main.js' },
-    { value: '/assets/extra.js' },
-]);
+podlet.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
 ```
 
 </TabItem>
@@ -1471,12 +1461,12 @@ Set an absolute URL to where the javascript file is located:
 
 ```js
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
-podlet.js({ value: 'http://cdn.mysite.com/assets/js/e7rfg76.js' });
+podlet.js({ value: "http://cdn.mysite.com/assets/js/e7rfg76.js" });
 ```
 
 ##### prefix
@@ -1492,11 +1482,11 @@ Set the type of script which is set. If not set, `default` will be used.
 
 Use one of the following values:
 
--   `esm` for ECMAScript modules
--   `cjs` for CommonJS modules
--   `amd` for AMD modules
--   `umd` for Universal Module Definition
--   `default` if the type is unknown.
+- `esm` for ECMAScript modules
+- `cjs` for CommonJS modules
+- `amd` for AMD modules
+- `umd` for Universal Module Definition
+- `default` if the type is unknown.
 
 The type is a hint for further use of the script. This is normally used by the
 document template to print correct `<script>` tag or to give a hint to a
@@ -1544,16 +1534,16 @@ Serve a CSS file at `/assets/main.css`:
 ```js
 const app = express();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
-app.get('/assets.css', (req, res) => {
-    res.status(200).sendFile('./src/css/main.css', err => {});
+app.get("/assets.css", (req, res) => {
+  res.status(200).sendFile("./src/css/main.css", (err) => {});
 });
 
-podlet.css({ value: '/assets.css' });
+podlet.css({ value: "/assets.css" });
 ```
 
 </TabItem>
@@ -1591,22 +1581,22 @@ podlet.css({ value: '/assets.css' });
 ```js
 const app = fastify();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
 app.register(fastifyPodlet, podlet);
 
-app.register(await import('fastify-static'), {
-    root: './src/css/',
+app.register(await import("fastify-static"), {
+  root: "./src/css/",
 });
 
-app.get('/assets.css', (request, reply) => {
-    reply.sendFile('main.css');
+app.get("/assets.css", (request, reply) => {
+  reply.sendFile("main.css");
 });
 
-podlet.css({ value: '/assets.css' });
+podlet.css({ value: "/assets.css" });
 ```
 
 </TabItem>
@@ -1621,17 +1611,14 @@ file:
 ```js
 const app = express();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
-app.use('/assets', express.static('./src/css'));
+app.use("/assets", express.static("./src/css"));
 
-podlet.css([
-    { value: '/assets/main.css' },
-    { value: '/assets/extra.css' },
-]);
+podlet.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
 ```
 
 </TabItem>
@@ -1639,42 +1626,39 @@ podlet.css([
 
 ```js
 const app = Hapi.Server({
-    port: 7000,
-    routes: {
-        files: {
-            relativeTo: './src/css/',
-        },
+  port: 7000,
+  routes: {
+    files: {
+      relativeTo: "./src/css/",
     },
+  },
 });
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
 app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
+  plugin: new HapiPodlet(),
+  options: podlet,
 });
 
-app.register(await import('@hapi/inert'));
+app.register(await import("@hapi/inert"));
 
 app.route({
-    method: 'GET',
-    path: '/assets/{param*}',
-    handler: {
-        directory: {
-            path: '.',
-            redirectToSlash: true,
-        },
+  method: "GET",
+  path: "/assets/{param*}",
+  handler: {
+    directory: {
+      path: ".",
+      redirectToSlash: true,
     },
+  },
 });
 
-podlet.css([
-    { value: '/assets/main.css' },
-    { value: '/assets/extra.css' },
-]);
+podlet.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
 ```
 
 </TabItem>
@@ -1683,25 +1667,22 @@ podlet.css([
 ```js
 const app = fastify();
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
 app.register(fastifyPodlet, podlet);
 
-app.register(await import('fastify-static'), {
-    root: './src/css/',
+app.register(await import("fastify-static"), {
+  root: "./src/css/",
 });
 
-app.get('/assets/:file', (request, reply) => {
-    reply.sendFile(request.params.file);
+app.get("/assets/:file", (request, reply) => {
+  reply.sendFile(request.params.file);
 });
 
-podlet.css([
-    { value: '/assets/main.css' },
-    { value: '/assets/extra.css' },
-]);
+podlet.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
 ```
 
 </TabItem>
@@ -1711,12 +1692,12 @@ Set an absolute URL to where the CSS file is located:
 
 ```js
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
-podlet.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
+podlet.css({ value: "http://cdn.mysite.com/assets/css/3ru39ur.css" });
 ```
 
 ##### prefix
@@ -1858,7 +1839,7 @@ podlet.proxy({ target: '/api', name: 'api' });
 Sets a remote target by defining an absolute URL:
 
 ```js
-podlet.proxy({ target: 'http://remote.site.com/api/', name: 'remoteApi' });
+podlet.proxy({ target: "http://remote.site.com/api/", name: "remoteApi" });
 ```
 
 ### .defaults(context)
@@ -1886,12 +1867,12 @@ Example of overriding `deviceType`:
 
 ```js
 const podlet = new Podlet({
-    name: 'foo',
-    version: '1.0.0',
+  name: "foo",
+  version: "1.0.0",
 });
 
 podlet.defaults({
-    deviceType: 'mobile',
+  deviceType: "mobile",
 });
 ```
 
@@ -1902,12 +1883,12 @@ Example of adding a context value:
 
 ```js
 const podlet = new Podlet({
-    name: 'foo',
-    version: '1.0.0',
+  name: "foo",
+  version: "1.0.0",
 });
 
 podlet.defaults({
-    token: '9fc498984f3ewi',
+  token: "9fc498984f3ewi",
 });
 ```
 
@@ -2085,9 +2066,9 @@ An instance of the [`HttpIncoming`](incoming.md) class.
 
 ```js
 app.get(podlet.content(), (req, res) => {
-    const incoming = res.locals.podium;
-    const document = layout.render(incoming, '<div>content to render</div>');
-    res.send(document);
+  const incoming = res.locals.podium;
+  const document = layout.render(incoming, "<div>content to render</div>");
+  res.send(document);
 });
 ```
 
@@ -2096,12 +2077,12 @@ app.get(podlet.content(), (req, res) => {
 
 ```js
 app.route({
-    method: 'GET',
-    path: podlet.content(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
-        return layout.render(incoming, '<div>content to render</div>');
-    },
+  method: "GET",
+  path: podlet.content(),
+  handler: (request, h) => {
+    const incoming = request.app.podium;
+    return layout.render(incoming, "<div>content to render</div>");
+  },
 });
 ```
 
@@ -2110,9 +2091,9 @@ app.route({
 
 ```js
 app.get(podlet.content(), (req, res) => {
-    const incoming = reply.app.podium;
-    const document = layout.render(incoming, '<div>content to render</div>');
-    reply.send(document);
+  const incoming = reply.app.podium;
+  const document = layout.render(incoming, "<div>content to render</div>");
+  reply.send(document);
 });
 ```
 
@@ -2124,7 +2105,7 @@ app.get(podlet.content(), (req, res) => {
 An String that is intended to be a fragment of the final HTML document.
 
 ```js
-layout.render(incoming, '<div>content to render</div>');
+layout.render(incoming, "<div>content to render</div>");
 ```
 
 #### [args]
@@ -2138,7 +2119,7 @@ document template.
 
 ```js
 podlet.view = (incoming, body, head) => {
-    return `
+  return `
         <html>
             <head>${head}</head>
             <body>${body}</body>
@@ -2147,13 +2128,13 @@ podlet.view = (incoming, body, head) => {
 };
 
 app.get(podlet.content(), async (req, res, next) => {
-    const incoming = res.locals.podium;
+  const incoming = res.locals.podium;
 
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
+  const head = `<meta ..... />`;
+  const body = `<section>my content</section>`;
 
-    const document = layout.render(incoming, body, head);
-    res.send(document);
+  const document = layout.render(incoming, body, head);
+  res.send(document);
 });
 ```
 
@@ -2162,7 +2143,7 @@ app.get(podlet.content(), async (req, res, next) => {
 
 ```js
 podlet.view = (incoming, body, head) => {
-    return `
+  return `
         <html>
             <head>${head}</head>
             <body>${body}</body>
@@ -2171,16 +2152,16 @@ podlet.view = (incoming, body, head) => {
 };
 
 app.route({
-    method: 'GET',
-    path: podlet.content(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
+  method: "GET",
+  path: podlet.content(),
+  handler: (request, h) => {
+    const incoming = request.app.podium;
 
-        const head = `<meta ..... />`;
-        const body = `<section>my content</section>`;
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
 
-        return layout.render(incoming, body, head);
-    },
+    return layout.render(incoming, body, head);
+  },
 });
 ```
 
@@ -2189,7 +2170,7 @@ app.route({
 
 ```js
 podlet.view = (incoming, body, head) => {
-    return `
+  return `
         <html>
             <head>${head}</head>
             <body>${body}</body>
@@ -2198,13 +2179,13 @@ podlet.view = (incoming, body, head) => {
 };
 
 app.get(podlet.content(), (req, res) => {
-    const incoming = reply.app.podium;
+  const incoming = reply.app.podium;
 
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
+  const head = `<meta ..... />`;
+  const body = `<section>my content</section>`;
 
-    const document = layout.render(incoming, body, head);
-    reply.send(document);
+  const document = layout.render(incoming, body, head);
+  reply.send(document);
 });
 ```
 
@@ -2219,8 +2200,8 @@ not need to be used directly by podlet developers when creating podlet servers.
 
 What it does:
 
--   Handles detection of development mode and sets the appropriate defaults
--   Runs context deserializing on the incoming request and sets a context object at `HttpIncoming.context`.
+- Handles detection of development mode and sets the appropriate defaults
+- Runs context deserializing on the incoming request and sets a context object at `HttpIncoming.context`.
 
 Returns an [`HttpIncoming`](incoming.md) object.
 
@@ -2231,26 +2212,26 @@ This method takes the following arguments:
 An instance of the [`HttpIncoming`](incoming.md) class.
 
 ```js
-import { HttpIncoming } from '@podium/utils';
-import Podlet from '@podium/podlet';
+import { HttpIncoming } from "@podium/utils";
+import Podlet from "@podium/podlet";
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: podlet.content(),
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: podlet.content(),
 });
 
 app.use(async (req, res, next) => {
-    const incoming = new HttpIncoming(req, res, res.locals);
-    try {
-        await podlet.process(incoming);
-        if (!incoming.proxy) {
-            res.locals.podium = result;
-            next();
-        }
-    } catch (error) {
-        next(error);
+  const incoming = new HttpIncoming(req, res, res.locals);
+  try {
+    await podlet.process(incoming);
+    if (!incoming.proxy) {
+      res.locals.podium = result;
+      next();
     }
+  } catch (error) {
+    next(error);
+  }
 });
 ```
 
@@ -2271,7 +2252,7 @@ Example of sending an HTML fragment:
 
 ```js
 app.get(podlet.content(), (req, res) => {
-    res.podiumSend('<h1>Hello World</h1>');
+  res.podiumSend("<h1>Hello World</h1>");
 });
 ```
 
@@ -2280,11 +2261,11 @@ app.get(podlet.content(), (req, res) => {
 
 ```js
 app.route({
-    method: 'GET',
-    path: podlet.content(),
-    handler: (request, h) => {
-        return h.podiumSend('<h2>Hello world</h2>');
-    },
+  method: "GET",
+  path: podlet.content(),
+  handler: (request, h) => {
+    return h.podiumSend("<h2>Hello world</h2>");
+  },
 });
 ```
 
@@ -2293,7 +2274,7 @@ app.route({
 
 ```js
 app.get(podlet.content(), (request, reply) => {
-    reply.podiumSend('<h2>Hello world</h2>');
+  reply.podiumSend("<h2>Hello world</h2>");
 });
 ```
 
@@ -2344,13 +2325,13 @@ When a layout server sends a request to a podlet in development mode, the
 default context will be overridden by the context from the layout server and
 the encapsulating HTML document will not be applied.
 
-[@podium/context]: https://github.com/podium-lib/context '@podium/context'
-[@podium/layout]: https://github.com/podium-lib/layout '@podium/layout'
-[@podium/proxy]: https://github.com/podium-lib/proxy '@podium/proxy'
-[express]: https://expressjs.com/ 'Express'
-[hapi podlet plugin]: https://github.com/podium-lib/hapi-podlet 'Hapi Podlet Plugin'
-[publicpathname]: https://github.com/podium-lib/context#public-pathname '`publicPathname`'
-[mountorigin]: https://github.com/podium-lib/context#mount-origin '`mountOrigin`'
-[abslog]: https://github.com/trygve-lie/abslog 'abslog'
-[pathname]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils/pathname 'pathname'
-[url]: https://developer.mozilla.org/en-US/docs/Web/API/URL 'URL'
+[@podium/context]: https://github.com/podium-lib/context "@podium/context"
+[@podium/layout]: https://github.com/podium-lib/layout "@podium/layout"
+[@podium/proxy]: https://github.com/podium-lib/proxy "@podium/proxy"
+[express]: https://expressjs.com/ "Express"
+[hapi podlet plugin]: https://github.com/podium-lib/hapi-podlet "Hapi Podlet Plugin"
+[publicpathname]: https://github.com/podium-lib/context#public-pathname "`publicPathname`"
+[mountorigin]: https://github.com/podium-lib/context#mount-origin "`mountOrigin`"
+[abslog]: https://github.com/trygve-lie/abslog "abslog"
+[pathname]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLHyperlinkElementUtils/pathname "pathname"
+[url]: https://developer.mozilla.org/en-US/docs/Web/API/URL "URL"

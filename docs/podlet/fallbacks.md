@@ -7,9 +7,11 @@ What happens if a podlet server is down? Unresponsive? Responding too slowly? By
 
 ## How do fallbacks work?
 
-On the first request to a podlet, Podium will request the podlet’s manifest file inside of which it will discover the location of the podlets fallback route if one has been defined. It will then make a request to the fallback route and cache the response. Later, if the podlet server cannot be reached for any reason, or the request returns a non 200 response, Podium will simply display the podlet’s cached fallback content instead.
+On the first request to a podlet a layout will read the podlet’s [manifest](/docs/api/manifest). The manifest includes the location of the fallback. The layout then makes a request to the fallback route and caches the response.
 
-Note that the podlet’s assets will still be served, so the fallback can depend on both JS and CSS being present once it’s rendered.
+Later, if the podlet server cannot be reached for any reason, or the request returns a non 200 response, the layout will use the podlet’s cached fallback content instead.
+
+Note that the podlet’s assets will still be served, so the fallback can depend on both JS and CSS being present once it’s rendered. This assumes the assets are hosted on a server [separate from the podlet](/docs/introduction/assets#use-a-cdn).
 
 ## Defining a fallback route
 
@@ -21,15 +23,15 @@ const podlet = new Podlet(/*...*/);
 const app = express();
 
 app.get(podlet.fallback(), (req, res) => {
-    res.status(200).podiumSend("<div>It didn't work :(</div>");
+  res.status(200).podiumSend("<div>It didn't work :(</div>");
 });
 ```
 
 With a custom URL, which will be reflected in the manifest.
 
 ```js
-app.get(podlet.fallback('/my-custom-fallback-route'), (req, res) => {
-    res.status(200).podiumSend("<div>It didn't work :(</div>");
+app.get(podlet.fallback("/my-custom-fallback-route"), (req, res) => {
+  res.status(200).podiumSend("<div>It didn't work :(</div>");
 });
 ```
 
@@ -37,9 +39,11 @@ You can also use some of the Podium context that's not request bound. This is us
 
 ```js
 app.get(podlet.fallback(), (req, res) => {
-    const { publicPathname } = res.locals.podium.context;
-    res.status(200).podiumSend(
-        `<div data-public-path-name=${publicPathname}>It didn't work :(</div>`
+  const { publicPathname } = res.locals.podium.context;
+  res
+    .status(200)
+    .podiumSend(
+      `<div data-public-path-name=${publicPathname}>It didn't work :(</div>`
     );
 });
 ```
@@ -49,5 +53,5 @@ The fallback can also point to an external service.
 ```js
 const podlet = new Podlet(/*...*/);
 
-podlet.fallback('https://www.example.com/my-fallback');
+podlet.fallback("https://www.example.com/my-fallback");
 ```

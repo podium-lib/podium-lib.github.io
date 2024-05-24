@@ -3,29 +3,51 @@ id: browser
 title: "@podium/browser"
 ---
 
-The `@podium/browser` package contains classes to provide browser based functionality when building Podium micro-frontends.
-
-For now, this module only includes [MessageBus](#messagebus), but it is possible that it will include more features in the future.
+The `@podium/browser` module is a client-side library designed to simplify communication between a podlet and the layout, and between podlets.
 
 ## Installation
 
 ```bash
-$ npm install @podium/browser
+npm install @podium/browser
 ```
 
-## MessageBus
+## Usage
 
-Cross podlet communication and message passing. For a information and examples on how and when to use this module, see [the guide](../podlet/podlet_to_podlet_communication)
+In your podlet's client side JavaScript code, import the `MessageBus` class from the browser package and create a new instance of the class.
 
-### Constructor
+```js
+import { MessageBus } from "@podium/browser";
 
-Create a new MessageBus instance.
+const messageBus = new MessageBus();
+```
+
+### Publishing messages
+
+To publish a message, call the `publish` method and pass a `channel`, a `topic` and any data you want subscribers to receive.
+
+```js
+messageBus.publish("reminders", "newReminder", reminder);
+```
+
+### Subscribing to messages
+
+To subscribe to messages on a particular channel and topic, call the `subscribe` method passing it the `channel`, `topic` and a callback function to be executed whenever an event occurs. Whenever the callback is executed it gets passed an `Event` object which has the properties `channel`, `topic` and `payload`.
+
+```js
+messageBus.subscribe("reminders", "newReminder", (event) => {
+  const reminder = event.payload;
+});
+```
+
+## API
+
+### MessageBus
+
+Cross podlet communication and message passing.
 
 ```javascript
 const messageBus = new MessageBus();
 ```
-
-### API
 
 #### .publish(channel, topic, payload)
 
@@ -42,9 +64,9 @@ This method takes the following arguments:
 Examples:
 
 ```javascript
-messageBus.publish('search', 'query', 'laptop');
+messageBus.publish("search", "query", "laptop");
 
-messageBus.publish('auth', 'logout');
+messageBus.publish("auth", "logout");
 ```
 
 #### .subscribe(channel, topic, callback)
@@ -62,8 +84,8 @@ This method takes the following arguments:
 Example:
 
 ```javascript
-messageBus.subscribe('channel', 'topic', event => {
-    console.log(event.payload);
+messageBus.subscribe("channel", "topic", (event) => {
+  console.log(event.payload);
 });
 ```
 
@@ -83,12 +105,12 @@ Example:
 
 ```javascript
 function cb(event) {
-    console.log(event.payload);
+  console.log(event.payload);
 }
 
-messageBus.subscribe('channel', 'topic', cb);
+messageBus.subscribe("channel", "topic", cb);
 
-messageBus.unsubscribe('channel', 'topic', cb);
+messageBus.unsubscribe("channel", "topic", cb);
 ```
 
 #### .peek(channel, topic)
@@ -117,9 +139,9 @@ This method takes the following arguments:
 Example:
 
 ```javascript
-const events = messageBus.log('channel', 'topic');
+const events = messageBus.log("channel", "topic");
 
-events.forEach(event => {
-    console.log(event.payload);
+events.forEach((event) => {
+  console.log(event.payload);
 });
 ```

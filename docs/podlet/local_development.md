@@ -1,34 +1,34 @@
 ---
 id: local_development
-title: Local Development
+title: Local development
 ---
 
 It is intended that podlets be developed in isolation from layouts and other podlets. This isolation can introduce challenges into local development due to some components normally provided by a layout (such as headers and Assets) not being available.
 
-## A basic podlet development setup
+## Podlet development setup
 
-At its most basic, the experience of developing a podlet on its own can be as simple as starting the podlet and visiting its URL in your favourite browser.
+The experience of developing a podlet on its own can be as simple as starting the podlet and visiting its URL in your favourite browser.
 
-Consider the following very simple podlet server:
+Consider the following podlet server:
 
 ```js
-import express from 'express';
-import Podlet from '@podium/podlet';
+import express from "express";
+import Podlet from "@podium/podlet";
 
 const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
+  name: "myPodlet",
+  version: "1.0.0",
+  pathname: "/",
 });
 
 const app = express();
 
 app.get(podlet.manifest(), (req, res) => {
-    res.json(podlet);
+  res.json(podlet);
 });
 
 app.get(podlet.content(), (req, res) => {
-    res.send(`<div>This is my content</div>`);
+  res.send(`<div>This is my content</div>`);
 });
 
 app.listen(7100);
@@ -40,10 +40,10 @@ If this content were saved in a file called `server.js` and run with the command
 node server.js
 ```
 
-then you could simply visit the following routes to test your changes
+then you could visit the following routes to test your changes
 
--   `http://localhost:7100/manifest.json`: the podlet's manifest route
--   `http://localhost:7100`: the podlet's content route
+- `http://localhost:7100/manifest.json`: the podlet's manifest route
+- `http://localhost:7100`: the podlet's content route
 
 ## Problems and solutions
 
@@ -53,86 +53,68 @@ The first problem with the basic setup described above is that every time you ma
 
 This is not so much a Podium problem as it is a common Node.js problem and it's easily solved. A common way to do so is to use a module such as [nodemon](http://nodemon.io) to monitor your file system and restart your server automatically anytime relevant files change.
 
-_Use nodemon to run your server_
-
 ```bash
 npx nodemon server.js
 ```
 
 See the [nodemon docs](https://github.com/remy/nodemon#nodemon) for more information.
 
+Node.js (v18 or newer) has a built-in `--watch` mode you can use:
+
+```bash
+node --watch server.js
+```
+
+See the [Node.js docs](https://nodejs.org/docs/v20.13.1/api/cli.html#--watch) for more information.
+
 ### Missing context headers
 
-When a podlet is being run in the context of a layout server, the layout server will send a number of Podium context headers with each request. If your podlet depends on these headers to work correctly then developing the podlet locally may be difficult or impossible out of the box.
+When a podlet is being run in the context of a layout server, the layout server will send a number of [Podium context](/docs/introduction/context) headers with each request. If your podlet depends on these headers to work correctly you need to turn on `development` mode.
 
 Consider a podlet with the following content route:
 
 ```js
 app.get(podlet.content(), (req, res) => {
-    const { mountOrigin } = res.locals.podium.context;
-    res.send(`<div>${mountOrigin}</div>`);
+  const { mountOrigin } = res.locals.podium.context;
+  res.send(`<div>${mountOrigin}</div>`);
 });
 ```
 
 This podlet will behave correctly when sent requests by a layout but it will throw an error if you try to visit `/` directly in your browser.
 
-To solve this, we provide a `development` mode. When enabled, you can set defaults for Podium context values that will be overwritten, and therefore not used, when requests are sent from the layout to the podlet.
+With `development` enabled, you can set defaults for Podium context values that will be overwritten, and therefore not used, when requests are sent from the layout to the podlet.
 
 To enable this feature, pass `development: true` in the podlet constructor like so:
 
 ```js
 const podlet = new Podlet({
-    ...
-    development: true,
+  development: true,
 });
 ```
 
-Then rewriting our previous example we can provide sensible development defaults for context values:
+Podium includes some sensible defaults, but you can override them if you like.
 
 ```js
 podlet.defaults({
-    mountOrigin: 'http://localhost:7100',
-});
-
-app.get(podlet.content(), (req, res) => {
-    const { mountOrigin } = res.locals.podium.context;
-    res.send(`<div>${mountOrigin}</div>`);
-});
-```
-
-Even better, simply enabling `development` mode will result in some sane context defaults being provided, regardless of whether you call `.defaults` or not.
-
-So the following should work when `development` mode is on as well:
-
-```js
-app.get(podlet.content(), (req, res) => {
-    const { mountOrigin } = res.locals.podium.context;
-    res.send(`<div>${mountOrigin}</div>`);
+  locale: "nb-NO",
 });
 ```
 
 ### HTML pages and page fragments
 
-In production, your content route will be responding with an HTML fragment devoid of its wrapping `<html>` or `<body>` tags. However, in development you will want to wrap your fragment in a light HTML page wrapper, especially if your podlet makes use of client side assets such as JavaScript or CSS.
+In production, your podlet's content route will be responding with an HTML fragment devoid of its wrapping `<html>` or `<body>` tags. However, in development you will want to wrap your fragment in a light HTML page, especially if your podlet makes use of client side assets such as JavaScript or CSS.
 
-Once again, `development` mode can help us here. If we set `development` to `true` in the constructor and use the `res.podiumSend` method in our content and fallback routes then our HTML response will be decorated with an HTML page template. As soon as we set `development` to `false`, the decorating stops and the fragment is returned on its own.
+Once again, `development` mode can help us here.
 
-Example
-
-Write the same code, toggle HTML template wrapping by setting `development` mode to `true` or `false`
+If we set `development` to `true` in the constructor and use the `res.podiumSend()` method in our content and fallback routes then our HTML response will be decorated with an HTML page template. As soon as we set `development` to `false`, the decorating stops and the fragment is returned on its own.
 
 ```js
 const podlet = new Podlet({
-    ...
-    development: true,
+  development: true,
 });
 
 app.get(podlet.content(), (req, res) => {
-    res.status(200).podiumSend(`
-        <div>
-            The podlet's HTML content
-        </div>
-    `);
+  res.podiumSend(`<div>The podlet's HTML content</div>`);
 });
 ```
 
@@ -140,32 +122,23 @@ Additionally, if you set JavaScript or CSS assets using the `podlet.js()` or `po
 
 ```js
 const podlet = new Podlet({
-    ...
-    development: true,
+  development: true,
 });
 
-podlet.js({ value: 'http://cdn.mysite.com/scripts.js' });
-podlet.css({ value: 'http://cdn.mysite.com/styles.css' });
+podlet.js({ value: "http://cdn.mysite.com/scripts.js" });
+podlet.css({ value: "http://cdn.mysite.com/styles.css" });
 
 app.get(podlet.content(), (req, res) => {
-    res.status(200).podiumSend(`
-        <div>
-            The podlet's HTML content
-        </div>
-    `);
+  res.podiumSend(`<div>The podlet's HTML content</div>`);
 });
 ```
-
-The decorated page template will include script and style tags to load in `http://cdn.mysite.com/scripts.js` and `http://cdn.mysite.com/styles.css`
-
-These would not be included if `development` was then set to `false`
 
 ### Proxying to absolute URLs
 
 Another case you may encounter when working locally with proxying is that absolute URLs are proxied to directly from layouts bypassing podlets entirely.
 
 ```js
-podlet.proxy({ target: 'http://google.com', name: 'google' });
+podlet.proxy({ target: "http://google.com", name: "google" });
 ```
 
 will generate the following entry in the podlet's manifest
@@ -185,19 +158,18 @@ Fortunately, `development` mode takes care of this as well. When `development` i
 
 ```js
 const podlet = new Podlet({
-    ...
-    development: true,
+  development: true,
 });
 
-podlet.proxy({ target: 'http://google.com', name: 'google' });
+podlet.proxy({ target: "http://google.com", name: "google" });
 
 app.get(podlet.content(), (req, res) => {
-    const { mountOrigin, publicPathname } = res.locals.podium.context;
-    const url = new URL(publicPathname, mountOrigin);
+  const { mountOrigin, publicPathname } = res.locals.podium.context;
+  const url = new URL(publicPathname, mountOrigin);
 
-    res.status(200).podiumSend(`
+  res.status(200).podiumSend(`
         <div>
-            The url being proxied to google is ${url.href  + 'google'}
+            The url being proxied to google is ${url.href + "google"}
         </div>
     `);
 });
@@ -209,9 +181,9 @@ In development mode, the URL will be something like `http://localhost:3000/podiu
 
 When not in development mode, the URL will be be similar except that it will be pointing at the layout server instead of the podlet server. Something like `http://localhost:8080/podium-resource/myPodlet/google`
 
-## In Summary
+## In summary
 
 For the best experience when developing podlets:
 
--   install nodemon so your podlet server restarts on changes
--   turn on development mode when in dev (but not in production)
+- Install `nodemon` or use `--watch` so your podlet server restarts on changes.
+- Turn on `development` mode when working locally, but keep it off in production.

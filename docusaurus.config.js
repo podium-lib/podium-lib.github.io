@@ -26,6 +26,47 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
 
+  plugins: [
+    require.resolve("docusaurus-lunr-search"),
+    [
+      // Add redirects when moving pages around
+      // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-client-redirects#configuration
+      "@docusaurus/plugin-client-redirects",
+      {
+        redirects: [
+          {
+            from: "/docs/podium/conceptual_overview",
+            to: "/docs/",
+          },
+          {
+            from: "/docs/api/getting_started",
+            to: "/docs/introduction/hello-podium",
+          },
+          {
+            from: "/docs/podlet/getting_started",
+            to: "/docs/introduction/hello-podium",
+          },
+          {
+            from: "/docs/layout/getting_started",
+            to: "/docs/introduction/hello-podium",
+          },
+          {
+            from: "/docs/layout/assets",
+            to: "/docs/introduction/assets",
+          },
+          {
+            from: "/docs/layout/context",
+            to: "/docs/introduction/context",
+          },
+          {
+            from: "/docs/podlet/context",
+            to: "/docs/introduction/context",
+          },
+        ],
+      },
+    ],
+  ],
+
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
@@ -41,17 +82,12 @@ const config = {
       ({
         docs: {
           sidebarPath: "./sidebars.js",
-          // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
             "https://github.com/podium-lib/podium-lib.github.io/tree/main/website/docs",
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/podium-lib/podium-lib.github.io/tree/main/website/blog",
         },
         theme: {
           customCss: "./src/css/custom.css",
@@ -73,52 +109,28 @@ const config = {
         },
         items: [
           {
-            to: "/docs/podium/conceptual_overview",
+            to: "/docs/",
             label: "Docs",
             position: "left",
           },
           { to: "/blog", label: "Blog", position: "left" },
-					{ to: "/help", label: "Help", position: "left" },
-          {
-            href: "https://github.com/podium-lib",
-            label: "GitHub",
-            position: "right",
-          },
         ],
       },
       footer: {
-        style: "dark",
         links: [
           {
             title: "Documentation",
             items: [
               {
-                label: "Conceptual overview",
-                to: "/docs/podium/conceptual_overview",
+                label: "Introduction",
+                to: "/docs/",
               },
               {
-                label: "Podlets",
-                to: "/docs/podlet/getting_started",
+                label: "Hello, Podium",
+                to: "/docs/introduction/hello-podium",
               },
               {
-                label: "Layouts",
-                to: "/docs/layout/getting_started",
-              },
-            ],
-          },
-          {
-            title: "API",
-            items: [
-              {
-                label: "Getting Started",
-                to: "/docs/api/getting_started",
-              },
-              {
-                label: "Podlets",
-                to: "/docs/api/podlet",
-              },
-              {
-                label: "Layouts",
+                label: "API Reference",
                 to: "/docs/api/layout",
               },
             ],
@@ -127,29 +139,21 @@ const config = {
             title: "Links",
             items: [
               {
-                label: "Blog",
-                to: "/blog",
-              },
-              {
-                label: "Issues",
+                label: "Report an issue",
                 href: "https://github.com/podium-lib/issues",
               },
               {
-                label: "GitHub",
+                label: "Podium on GitHub",
                 href: "https://github.com/podium-lib",
               },
               {
-                label: "npm",
+                label: "Podium on npm",
                 href: "https://www.npmjs.com/org/podium",
-              },
-              {
-                label: "Micro Frontends",
-                href: "https://micro-frontends.org/",
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Finn.no. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} FINN.no`,
       },
       prism: {
         theme: prismThemes.github,
@@ -166,20 +170,20 @@ const config = {
         infoLink: "https://www.finn.no/",
         pinned: true,
       },
-			{
-				caption: 'Descomplica',
-				// You will need to prepend the image path with your baseUrl
-				// if it is not '/', like: '/test-site/img/image.jpg'.
-				image: '/img/descomplica_logo.svg',
-				infoLink: 'https://descomplica.com.br/',
-				pinned: true,
-			},
-			{
-				caption: 'Madgex',
-				image: '/img/madgex_logo.png',
-				infoLink: 'https://madgex.com/',
-				pinned: true,
-			},
+      {
+        caption: "Descomplica",
+        // You will need to prepend the image path with your baseUrl
+        // if it is not '/', like: '/test-site/img/image.jpg'.
+        image: "/img/descomplica_logo.svg",
+        infoLink: "https://descomplica.com.br/",
+        pinned: true,
+      },
+      {
+        caption: "Madgex",
+        image: "/img/madgex_logo.png",
+        infoLink: "https://madgex.com/",
+        pinned: true,
+      },
     ],
   },
 };

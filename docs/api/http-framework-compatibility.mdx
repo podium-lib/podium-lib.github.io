@@ -1,22 +1,10 @@
 ---
-id: getting_started
-title: Getting Started
+title: HTTP Framework Compatibility
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Podium consists of two parts; podlets and layouts, each with its own matching module to be used for development.
-
-### Podlets
-
-When writing a server for serving page fragments (podlets), the [@podium/podlet module](api/podlet.md) should be used.
-
-### Layouts
-
-When writing a layout server in order to compose page fragments together, the [@podium/layout module](api/layout.md) should be used.
-
-## HTTP Framework Compabillity
 
 Podium is HTTP framework agnostic with first class support for [Express]. In
 practise this means that core Podium works with the standard [http.Server]

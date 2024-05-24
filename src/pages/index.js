@@ -22,10 +22,7 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/podium/conceptual_overview"
-          >
+          <Link className="button button--secondary button--lg" to="/docs/">
             Get Started
           </Link>
           <Link
@@ -91,10 +88,7 @@ const Showcase = () => {
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout
-      title={`Home`}
-      description="Podium.io documentation home page"
-    >
+    <Layout title={`Home`} description="Podium.io documentation home page">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
