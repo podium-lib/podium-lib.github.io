@@ -7,7 +7,7 @@ Podium provides a client side library called [@podium/browser] that includes a [
 
 ## The use case
 
-Say podlet A contains an input field where a user can input a new reminder and podlet B contains a list of all reminders.
+If podlet A contains an input field where a user can input a new reminder and podlet B contains a list of all reminders.
 
 When a user inputs a new reminder in podlet A they would expect that the reminders list in podlet B is updated immediately with the new reminder.
 
@@ -21,6 +21,6 @@ In the example above:
 
 ## Getting Started
 
-See the reference documentation for [@podium/browser] to get started.
+See the documentation for [@podium/browser] to get started.
 
 [@podium/browser]: /docs/api/browser

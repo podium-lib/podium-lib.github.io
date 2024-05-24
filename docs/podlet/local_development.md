@@ -59,7 +59,7 @@ npx nodemon server.js
 
 See the [nodemon docs](https://github.com/remy/nodemon#nodemon) for more information.
 
-Node also has a built-in `--watch` mode you can use:
+Node.js (v18 or newer) has a built-in `--watch` mode you can use:
 
 ```bash
 node --watch server.js
@@ -82,7 +82,7 @@ app.get(podlet.content(), (req, res) => {
 
 This podlet will behave correctly when sent requests by a layout but it will throw an error if you try to visit `/` directly in your browser.
 
-When `development` is enabled, you can set defaults for Podium context values that will be overwritten, and therefore not used, when requests are sent from the layout to the podlet.
+With `development` enabled, you can set defaults for Podium context values that will be overwritten, and therefore not used, when requests are sent from the layout to the podlet.
 
 To enable this feature, pass `development: true` in the podlet constructor like so:
 
