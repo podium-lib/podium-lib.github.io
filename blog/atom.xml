@@ -94,10 +94,10 @@ will translate into the following HTML element:</p>
 <p>Please see the following documentation for the options the different methods
 can now take:</p>
 <ul>
-<li>@podium/podlet <a href="https://podium-lib.io/docs/api/podlet#cssoptions-options"><code>.css()</code></a> method</li>
-<li>@podium/podlet <a href="https://podium-lib.io/docs/api/podlet#jsoptions-options"><code>.js()</code></a> method</li>
-<li>@podium/layout <a href="https://podium-lib.io/docs/api/layout#cssoptions-options"><code>.css()</code></a> method</li>
-<li>@podium/layout <a href="https://podium-lib.io/docs/api/layout#jsoptions-options"><code>.js()</code></a> method</li>
+<li>@podium/podlet <a href="https://podium-lib.io/docs/api/podlet#cssoptionsoptions"><code>.css()</code></a> method</li>
+<li>@podium/podlet <a href="https://podium-lib.io/docs/api/podlet#jsoptionsoptions"><code>.js()</code></a> method</li>
+<li>@podium/layout <a href="https://podium-lib.io/docs/api/layout#cssoptionsoptions"><code>.css()</code></a> method</li>
+<li>@podium/layout <a href="https://podium-lib.io/docs/api/layout#jsoptionsoptions"><code>.js()</code></a> method</li>
 </ul>
 <p>For further information on how assets are handled in general, please see the
 <a href="https://podium-lib.io/docs/api/assets">asset section</a>.</p>
