@@ -27,6 +27,7 @@ const config = {
   onBrokenMarkdownLinks: "warn",
 
   plugins: [
+    require.resolve("docusaurus-lunr-search"),
     [
       // Add redirects when moving pages around
       // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-client-redirects#configuration
@@ -113,47 +114,23 @@ const config = {
             position: "left",
           },
           { to: "/blog", label: "Blog", position: "left" },
-          { to: "/help", label: "Help", position: "left" },
-          {
-            href: "https://github.com/podium-lib",
-            label: "GitHub",
-            position: "right",
-          },
         ],
       },
       footer: {
-        style: "dark",
         links: [
           {
             title: "Documentation",
             items: [
               {
-                label: "Conceptual overview",
-                to: "/docs/podium/conceptual_overview",
+                label: "Introduction",
+                to: "/docs/",
               },
               {
-                label: "Podlets",
-                to: "/docs/podlet/getting_started",
+                label: "Hello, Podium",
+                to: "/docs/introduction/hello-podium",
               },
               {
-                label: "Layouts",
-                to: "/docs/layout/getting_started",
-              },
-            ],
-          },
-          {
-            title: "API",
-            items: [
-              {
-                label: "Getting Started",
-                to: "/docs/api/getting_started",
-              },
-              {
-                label: "Podlets",
-                to: "/docs/api/podlet",
-              },
-              {
-                label: "Layouts",
+                label: "API Reference",
                 to: "/docs/api/layout",
               },
             ],
@@ -162,29 +139,21 @@ const config = {
             title: "Links",
             items: [
               {
-                label: "Blog",
-                to: "/blog",
-              },
-              {
-                label: "Issues",
+                label: "Report an issue",
                 href: "https://github.com/podium-lib/issues",
               },
               {
-                label: "GitHub",
+                label: "Podium on GitHub",
                 href: "https://github.com/podium-lib",
               },
               {
-                label: "npm",
+                label: "Podium on npm",
                 href: "https://www.npmjs.com/org/podium",
-              },
-              {
-                label: "Micro Frontends",
-                href: "https://micro-frontends.org/",
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Finn.no. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} FINN.no`,
       },
       prism: {
         theme: prismThemes.github,

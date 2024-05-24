@@ -14,9 +14,9 @@ page fragments (podlets).
 
 The `@podium/layout` module provide three core features:
 
--   A client used to fetch content from podlets
--   A context used to set request bound information on requests from a layout to its podlets when fetching content from them
--   A proxy that makes it possible to publicly expose podlet data endpoints (or any backend services) via the layout
+- A client used to fetch content from podlets
+- A context used to set request bound information on requests from a layout to its podlets when fetching content from them
+- A proxy that makes it possible to publicly expose podlet data endpoints (or any backend services) via the layout
 
 This module is to be used in conjunction with a Node.js HTTP server. For this,
 Express js, Hapi and Fastify are all supported. It's also possible to write your
@@ -27,9 +27,7 @@ Connect compatible middleware based frameworks (such as [Express]) are
 considered first class in Podium and as such the layout module provides a
 `.middleware()` method for convenience.
 
-For writing layout servers with other HTTP frameworks, please see the
-[HTTP Framework Compabillity](api/getting_started.md#http-framework-compabillity)
-section.
+For writing layout servers with other HTTP frameworks, see [HTTP Framework Compatibility](/docs/api/http-framework-compatibility).
 
 ## Installation
 
@@ -67,36 +65,36 @@ Building a simple layout server including two podlets:
 <TabItem value="express" label="Express">
 
 ```js
-import express from 'express';
-import Layout from '@podium/layout';
+import express from "express";
+import Layout from "@podium/layout";
 
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 const podletA = layout.client.register({
-    name: 'myPodletA',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodletA",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 const podletB = layout.client.register({
-    name: 'myPodletB',
-    uri: 'http://localhost:7200/manifest.json',
+  name: "myPodletB",
+  uri: "http://localhost:7200/manifest.json",
 });
 
 const app = express();
 app.use(layout.middleware());
 
 app.get(layout.pathname(), async (req, res, next) => {
-    const incoming = res.locals.podium;
+  const incoming = res.locals.podium;
 
-    const [a, b] = await Promise.all([
-        podletA.fetch(incoming),
-        podletB.fetch(incoming),
-    ]);
+  const [a, b] = await Promise.all([
+    podletA.fetch(incoming),
+    podletB.fetch(incoming),
+  ]);
 
-    res.podiumSend(`
+  res.podiumSend(`
         <section>${a.content}</section>
         <section>${b.content}</section>
     `);
@@ -164,52 +162,52 @@ app.start();
 <TabItem value="fastify" label="Fastify">
 
 ```js
-import fastifyLayout from '@podium/fastify-layout';
-import fastify from 'fastify';
-import Layout from '@podium/layout';
+import fastifyLayout from "@podium/fastify-layout";
+import fastify from "fastify";
+import Layout from "@podium/layout";
 
 const app = fastify();
 
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 const podletA = layout.client.register({
-    name: 'myPodletA',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodletA",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 const podletB = layout.client.register({
-    name: 'myPodletB',
-    uri: 'http://localhost:7200/manifest.json',
+  name: "myPodletB",
+  uri: "http://localhost:7200/manifest.json",
 });
 
 app.register(fastifyLayout, layout);
 
 app.get(layout.pathname(), async (request, reply) => {
-    const incoming = reply.app.podium;
+  const incoming = reply.app.podium;
 
-    const [a, b] = await Promise.all([
-        podletA.fetch(incoming),
-        podletB.fetch(incoming),
-    ]);
+  const [a, b] = await Promise.all([
+    podletA.fetch(incoming),
+    podletB.fetch(incoming),
+  ]);
 
-    reply.podiumSend(`
+  reply.podiumSend(`
         <section>${a.content}</section>
         <section>${b.content}</section>
     `);
 });
 
 const start = async () => {
-    try {
-        await app.listen(7000);
-        app.log.info(`server listening on ${app.server.address().port}`);
-    } catch (err) {
-        app.log.error(err);
-        process.exit(1);
-    }
-}
+  try {
+    await app.listen(7000);
+    app.log.info(`server listening on ${app.server.address().port}`);
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
+};
 start();
 ```
 
@@ -217,49 +215,53 @@ start();
 <TabItem value="http" label="HTTP">
 
 ```js
-import { HttpIncoming } from '@podium/utils';
-import Layout from '@podium/layout';
-import http from 'http';
+import { HttpIncoming } from "@podium/utils";
+import Layout from "@podium/layout";
+import http from "http";
 
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 const podletA = layout.client.register({
-    name: 'myPodletA',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodletA",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 const podletB = layout.client.register({
-    name: 'myPodletB',
-    uri: 'http://localhost:7200/manifest.json',
+  name: "myPodletB",
+  uri: "http://localhost:7200/manifest.json",
 });
 
 const server = http.createServer(async (req, res) => {
-    let incoming = new HttpIncoming(req, res);
-    incoming = await layout.process(incoming);
+  let incoming = new HttpIncoming(req, res);
+  incoming = await layout.process(incoming);
 
-    if (incoming.url.pathname === layout.pathname()) {
+  if (incoming.url.pathname === layout.pathname()) {
+    const [a, b] = await Promise.all([
+      podletA.fetch(incoming),
+      podletB.fetch(incoming),
+    ]);
 
-        const [a, b] = await Promise.all([
-            podletA.fetch(incoming),
-            podletB.fetch(incoming),
-        ]);
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "text/html");
 
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/html');
-
-        res.end(layout.render(incoming, `
+    res.end(
+      layout.render(
+        incoming,
+        `
             <section>${a.content}</section>
             <section>${b.content}</section>
-        `));
-        return;
-    }
+        `
+      )
+    );
+    return;
+  }
 
-    res.statusCode = 404;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Not found');
+  res.statusCode = 404;
+  res.setHeader("Content-Type", "text/plain");
+  res.end("Not found");
 });
 
 server.listen(7000);
@@ -295,8 +297,8 @@ Example:
 
 ```js
 const layout = new Layout({
-    name: 'myLayoutName',
-    pathname: '/foo',
+  name: "myLayoutName",
+  pathname: "/foo",
 });
 ```
 
@@ -515,9 +517,9 @@ Example:
 
 ```js
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-    logger: console,
+  name: "myLayout",
+  pathname: "/foo",
+  logger: console,
 });
 ```
 
@@ -541,13 +543,13 @@ Example of setting the `debug` context to default `true`:
 
 ```js
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-    context: {
-        debug: {
-            enabled: true,
-        },
+  name: "myLayout",
+  pathname: "/foo",
+  context: {
+    debug: {
+      enabled: true,
     },
+  },
 });
 ```
 
@@ -565,11 +567,11 @@ Example of setting `retries` on the client to `6`:
 
 ```js
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-    client: {
-        retries: 6,
-    },
+  name: "myLayout",
+  pathname: "/foo",
+  client: {
+    retries: 6,
+  },
 });
 ```
 
@@ -586,11 +588,11 @@ Example of setting the `timeout` on the proxy to 30 seconds:
 
 ```js
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-    proxy: {
-        timeout: 30000,
-    },
+  name: "myLayout",
+  pathname: "/foo",
+  proxy: {
+    timeout: 30000,
+  },
 });
 ```
 
@@ -664,15 +666,15 @@ Serve a javascript file at `/assets/main.js`:
 ```js
 const app = express();
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
-app.get('/assets.js', (req, res) => {
-    res.status(200).sendFile('./src/js/main.js', err => {});
+app.get("/assets.js", (req, res) => {
+  res.status(200).sendFile("./src/js/main.js", (err) => {});
 });
 
-layout.js({ value: '/assets.js' });
+layout.js({ value: "/assets.js" });
 ```
 
 </TabItem>
@@ -709,21 +711,21 @@ layout.js({ value: '/assets.js' });
 ```js
 const app = fastify();
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 app.register(fastifyLayout, layout);
 
-app.register(await import('fastify-static'), {
-    root: './src/js/',
+app.register(await import("fastify-static"), {
+  root: "./src/js/",
 });
 
-app.get('/assets.js', (request, reply) => {
-    reply.sendFile('main.js');
+app.get("/assets.js", (request, reply) => {
+  reply.sendFile("main.js");
 });
 
-layout.js({ value: '/assets.js' });
+layout.js({ value: "/assets.js" });
 ```
 
 </TabItem>
@@ -753,6 +755,7 @@ const server = http.createServer(async (req, res) => {
 
 layout.js({ value: '/assets.js' });
 ```
+
 </TabItem>
 </Tabs>
 
@@ -764,16 +767,13 @@ Serve assets from a static file server and set a relative URI to the JS files:
 ```js
 const app = express();
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
-app.use('/assets', express.static('./src/js'));
+app.use("/assets", express.static("./src/js"));
 
-layout.js([
-    { value: '/assets/main.js' },
-    { value: '/assets/extra.js' },
-]);
+layout.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
 ```
 
 </TabItem>
@@ -781,41 +781,38 @@ layout.js([
 
 ```js
 const app = Hapi.Server({
-    port: 7000,
-    routes: {
-        files: {
-            relativeTo: './src/js/',
-        },
+  port: 7000,
+  routes: {
+    files: {
+      relativeTo: "./src/js/",
     },
+  },
 });
 
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 app.register({
-    plugin: new HapiLayout(),
-    options: layout,
+  plugin: new HapiLayout(),
+  options: layout,
 });
 
-app.register(await import('@hapi/inert'));
+app.register(await import("@hapi/inert"));
 
 app.route({
-    method: 'GET',
-    path: '/assets/{param*}',
-    handler: {
-        directory: {
-            path: '.',
-            redirectToSlash: true,
-        },
+  method: "GET",
+  path: "/assets/{param*}",
+  handler: {
+    directory: {
+      path: ".",
+      redirectToSlash: true,
     },
+  },
 });
 
-layout.js([
-    { value: '/assets/main.js' },
-    { value: '/assets/extra.js' },
-]);
+layout.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
 ```
 
 </TabItem>
@@ -824,24 +821,21 @@ layout.js([
 ```js
 const app = fastify();
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 app.register(fastifyLayout, layout);
 
-app.register(await import('fastify-static'), {
-    root: './src/js/',
+app.register(await import("fastify-static"), {
+  root: "./src/js/",
 });
 
-app.get('/assets/:file', (request, reply) => {
-    reply.sendFile(request.params.file);
+app.get("/assets/:file", (request, reply) => {
+  reply.sendFile(request.params.file);
 });
 
-layout.js([
-    { value: '/assets/main.js' },
-    { value: '/assets/extra.js' },
-]);
+layout.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
 ```
 
 </TabItem>
@@ -887,11 +881,11 @@ Set an absolute URL to where the JavaScript file is located:
 
 ```js
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
-layout.js({ value: 'http://cdn.mysite.com/assets/js/e7rfg76.js' });
+layout.js({ value: "http://cdn.mysite.com/assets/js/e7rfg76.js" });
 ```
 
 ##### prefix
@@ -907,11 +901,11 @@ Sets the type for the script which is set. If not set, `default` will be used.
 
 The following are valid values:
 
--   `esm` or `module` for ECMAScript modules
--   `cjs` for CommonJS modules
--   `amd` for AMD modules
--   `umd` for Universal Module Definition
--   `default` if the type is unknown.
+- `esm` or `module` for ECMAScript modules
+- `cjs` for CommonJS modules
+- `amd` for AMD modules
+- `umd` for Universal Module Definition
+- `default` if the type is unknown.
 
 The type field provides a hint for further use of the script in the layout.
 Typically this is used in the [document template](document.md) when including
@@ -957,15 +951,15 @@ Serve a CSS file at `/assets/main.css`:
 ```js
 const app = express();
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
-app.get('/assets.css', (req, res) => {
-    res.status(200).sendFile('./src/js/main.css', err => {});
+app.get("/assets.css", (req, res) => {
+  res.status(200).sendFile("./src/js/main.css", (err) => {});
 });
 
-layout.css({ value: '/assets.css' });
+layout.css({ value: "/assets.css" });
 ```
 
 </TabItem>
@@ -1002,21 +996,21 @@ layout.css({ value: '/assets.css' });
 ```js
 const app = fastify();
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 app.register(fastifyLayout, layout);
 
-app.register(await import('fastify-static'), {
-    root: './src/css/',
+app.register(await import("fastify-static"), {
+  root: "./src/css/",
 });
 
-app.get('/assets.css', (request, reply) => {
-    reply.sendFile('main.css');
+app.get("/assets.css", (request, reply) => {
+  reply.sendFile("main.css");
 });
 
-layout.css({ value: '/assets.css' });
+layout.css({ value: "/assets.css" });
 ```
 
 </TabItem>
@@ -1058,16 +1052,13 @@ Serve assets from a static file server and set a relative URI to the CSS files:
 ```js
 const app = express();
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
-app.use('/assets', express.static('./src/css'));
+app.use("/assets", express.static("./src/css"));
 
-layout.css([
-    { value: '/assets/main.css' },
-    { value: '/assets/extra.css' },
-]);
+layout.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
 ```
 
 </TabItem>
@@ -1075,41 +1066,38 @@ layout.css([
 
 ```js
 const app = Hapi.Server({
-    port: 7000,
-    routes: {
-        files: {
-            relativeTo: './src/css/',
-        },
+  port: 7000,
+  routes: {
+    files: {
+      relativeTo: "./src/css/",
     },
+  },
 });
 
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 app.register({
-    plugin: new HapiLayout(),
-    options: layout,
+  plugin: new HapiLayout(),
+  options: layout,
 });
 
-app.register(await import('@hapi/inert'));
+app.register(await import("@hapi/inert"));
 
 app.route({
-    method: 'GET',
-    path: '/assets/{param*}',
-    handler: {
-        directory: {
-            path: '.',
-            redirectToSlash: true,
-        },
+  method: "GET",
+  path: "/assets/{param*}",
+  handler: {
+    directory: {
+      path: ".",
+      redirectToSlash: true,
     },
+  },
 });
 
-layout.css([
-    { value: '/assets/main.css' },
-    { value: '/assets/extra.css' },
-]);
+layout.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
 ```
 
 </TabItem>
@@ -1118,24 +1106,21 @@ layout.css([
 ```js
 const app = fastify();
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 app.register(fastifyLayout, layout);
 
-app.register(await import('fastify-static'), {
-    root: './src/css/',
+app.register(await import("fastify-static"), {
+  root: "./src/css/",
 });
 
-app.get('/assets/:file', (request, reply) => {
-    reply.sendFile(request.params.file);
+app.get("/assets/:file", (request, reply) => {
+  reply.sendFile(request.params.file);
 });
 
-layout.css([
-    { value: '/assets/main.css' },
-    { value: '/assets/extra.css' },
-]);
+layout.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
 ```
 
 </TabItem>
@@ -1181,11 +1166,11 @@ Set an absolute URL to where the CSS file is located:
 
 ```js
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
-layout.css({ value: 'http://cdn.mysite.com/assets/css/3ru39ur.css' });
+layout.css({ value: "http://cdn.mysite.com/assets/css/3ru39ur.css" });
 ```
 
 ##### prefix
@@ -1379,7 +1364,7 @@ Additional arguments could be used to pass on parts of a page to the
 
 ```js
 layout.view = (incoming, body, head) => {
-    return `
+  return `
         <html>
             <head>${head}</head>
             <body>${body}</body>
@@ -1388,14 +1373,14 @@ layout.view = (incoming, body, head) => {
 };
 
 app.get(layout.pathname(), (req, res) => {
-    const incoming = res.locals.podium;
+  const incoming = res.locals.podium;
 
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
+  const head = `<meta ..... />`;
+  const body = `<section>my content</section>`;
 
-    const document = layout.render(incoming, body, head);
+  const document = layout.render(incoming, body, head);
 
-    res.send(document);
+  res.send(document);
 });
 ```
 
@@ -1404,7 +1389,7 @@ app.get(layout.pathname(), (req, res) => {
 
 ```js
 layout.view = (incoming, body, head) => {
-    return `
+  return `
         <html>
             <head>${head}</head>
             <body>${body}</body>
@@ -1413,16 +1398,16 @@ layout.view = (incoming, body, head) => {
 };
 
 app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
+  method: "GET",
+  path: layout.pathname(),
+  handler: (request, h) => {
+    const incoming = request.app.podium;
 
-        const head = `<meta ..... />`;
-        const body = `<section>my content</section>`;
+    const head = `<meta ..... />`;
+    const body = `<section>my content</section>`;
 
-        return layout.render(incoming, body, head);
-    },
+    return layout.render(incoming, body, head);
+  },
 });
 ```
 
@@ -1431,7 +1416,7 @@ app.route({
 
 ```js
 layout.view = (incoming, body, head) => {
-    return `
+  return `
         <html>
             <head>${head}</head>
             <body>${body}</body>
@@ -1440,14 +1425,14 @@ layout.view = (incoming, body, head) => {
 };
 
 app.get(layout.pathname(), async (request, reply) => {
-    const incoming = reply.app.podium;
+  const incoming = reply.app.podium;
 
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
+  const head = `<meta ..... />`;
+  const body = `<section>my content</section>`;
 
-    const document = layout.render(incoming, body, head);
+  const document = layout.render(incoming, body, head);
 
-    reply.send(document);
+  reply.send(document);
 });
 ```
 
@@ -1456,7 +1441,7 @@ app.get(layout.pathname(), async (request, reply) => {
 
 ```js
 layout.view = (incoming, body, head) => {
-    return `
+  return `
         <html>
             <head>${head}</head>
             <body>${body}</body>
@@ -1465,17 +1450,17 @@ layout.view = (incoming, body, head) => {
 };
 
 const server = http.createServer(async (req, res) => {
-    let incoming = new HttpIncoming(req, res);
-    incoming = await layout.process(incoming);
+  let incoming = new HttpIncoming(req, res);
+  incoming = await layout.process(incoming);
 
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
+  const head = `<meta ..... />`;
+  const body = `<section>my content</section>`;
 
-    const document = layout.render(incoming, body, head);
+  const document = layout.render(incoming, body, head);
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.end(layout.render(incoming, body, head));
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/html");
+  res.end(layout.render(incoming, body, head));
 });
 ```
 
@@ -1491,8 +1476,8 @@ creating a layout server.
 
 What it does:
 
--   Runs context parsers on the incoming request and sets an object with the context at `HttpIncoming.context` which can be passed on to the client when requesting content from podlets.
--   Mounts a proxy so that each podlet can do transparent proxy requests as needed.
+- Runs context parsers on the incoming request and sets an object with the context at `HttpIncoming.context` which can be passed on to the client when requesting content from podlets.
+- Mounts a proxy so that each podlet can do transparent proxy requests as needed.
 
 Returns a Promise which will resolve with the [`HttpIncoming`](incoming.md)
 object that was passed in.
@@ -1513,29 +1498,29 @@ An instance of the [`HttpIncoming`](incoming.md) class.
 <TabItem value="http" label="HTTP">
 
 ```js
-import { HttpIncoming } from '@podium/utils';
-import Layout from '@podium/layout';
+import { HttpIncoming } from "@podium/utils";
+import Layout from "@podium/layout";
 
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 const server = http.createServer(async (req, res) => {
-    const incoming = new HttpIncoming(req, res);
+  const incoming = new HttpIncoming(req, res);
 
-    try {
-        const result = await layout.process(incoming);
-        if (result.proxy) return;
+  try {
+    const result = await layout.process(incoming);
+    if (result.proxy) return;
 
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result));
-    } catch (error) {
-        res.statusCode = 500;
-        res.setHeader('Content-Type', 'text/plain');
-        res.end('Internal server error');
-    }
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify(result));
+  } catch (error) {
+    res.statusCode = 500;
+    res.setHeader("Content-Type", "text/plain");
+    res.end("Internal server error");
+  }
 });
 ```
 
@@ -1695,8 +1680,8 @@ Example:
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 ```
 
@@ -1707,28 +1692,28 @@ Example:
 
 ```js
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
 layout.client.register({
-    uri: 'http://foo.site.com/manifest.json',
-    name: 'fooBar',
+  uri: "http://foo.site.com/manifest.json",
+  name: "fooBar",
 });
 layout.client.fooBar.fetch();
 ```
 
 #### options (required)
 
-| option     | type      | default | required | details                                                                                                                                                              |
-| ---------- | --------- | ------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| uri        | `string`  |         | &check;  | Uri to the manifest of a podlet                                                                                                                                      |
-| name       | `string`  |         | &check;  | Name of the component. This is used to reference the component in your application, and does not have to match the name of the component itself                      |
-| retries    | `number`  | `4`     |          | The number of times the client should retry to settle a version number conflict before terminating. Overrides the `retries` option in the layout constructor         |
-| timeout    | `number`  | `1000`  |          | Defines how long, in milliseconds, a request should wait before the connection is terminated. Overrides the `timeout` option in the layout constructor               |
+| option     | type      | default | required | details                                                                                                                                                                        |
+| ---------- | --------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| uri        | `string`  |         | &check;  | Uri to the manifest of a podlet                                                                                                                                                |
+| name       | `string`  |         | &check;  | Name of the component. This is used to reference the component in your application, and does not have to match the name of the component itself                                |
+| retries    | `number`  | `4`     |          | The number of times the client should retry to settle a version number conflict before terminating. Overrides the `retries` option in the layout constructor                   |
+| timeout    | `number`  | `1000`  |          | Defines how long, in milliseconds, a request should wait before the connection is terminated. Overrides the `timeout` option in the layout constructor                         |
 | throwable  | `boolean` | `false` |          | Defines whether an error should be thrown if a failure occurs during the process of fetching a podlet. [See handling podlet unavailability](../layout/unavailable_podlets.md). |
-| resolveJs  | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for JavaScript assets                                                                                      |
-| resolveCss | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for CSS assets                                                                                             |
+| resolveJs  | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for JavaScript assets                                                                                                |
+| resolveCss | `boolean` | `false` |          | Defines whether to resolve relative URIs to absolute URIs for CSS assets                                                                                                       |
 
 ### .client.refreshManifests()
 
@@ -1737,13 +1722,13 @@ Refreshes the manifests of all registered resources. Does so by calling the
 
 ```js
 layout.client.register({
-    uri: 'http://foo.site.com/manifest.json',
-    name: 'foo',
+  uri: "http://foo.site.com/manifest.json",
+  name: "foo",
 });
 
 layout.client.register({
-    uri: 'http://bar.site.com/manifest.json',
-    name: 'bar',
+  uri: "http://bar.site.com/manifest.json",
+  name: "bar",
 });
 
 await layout.client.refreshManifests();
@@ -1756,11 +1741,11 @@ What state the client is in. See the section
 
 The value will be one of the following values:
 
--   `instantiated` - When a `Client` has been instantiated but no requests to any podlets have been made.
--   `initializing` - When one or more podlets are requested for the first time.
--   `unstable` - When an update of a podlet is detected and the layout is in the process of re-fetching the manifest.
--   `stable` - When all registered podlets are using cached manifests and only fetching content.
--   `unhealthy` - When an podlet update never settled.
+- `instantiated` - When a `Client` has been instantiated but no requests to any podlets have been made.
+- `initializing` - When one or more podlets are requested for the first time.
+- `unstable` - When an update of a podlet is detected and the layout is in the process of re-fetching the manifest.
+- `stable` - When all registered podlets are using cached manifests and only fetching content.
+- `unhealthy` - When an podlet update never settled.
 
 ### .client Events
 
@@ -1772,13 +1757,13 @@ When there is a change in state. See the section
 "[Podlet update life cycle](#podlet-update-life-cycle)" for more information.
 
 ```js
-layout.client.on('state', state => {
-    console.log(state);
+layout.client.on("state", (state) => {
+  console.log(state);
 });
 
 const podlet = layout.client.register({
-    uri: 'http://foo.site.com/manifest.json',
-    name: 'foo',
+  uri: "http://foo.site.com/manifest.json",
+  name: "foo",
 });
 
 podlet.fetch();
@@ -1786,11 +1771,11 @@ podlet.fetch();
 
 The event will fire with one the following values:
 
--   `instantiated` - When a `Client` has been instantiated but no requests to any podlets have been made.
--   `initializing` - When one or multiple podlets are requested for the very first time.
--   `unstable` - When an update of a podlet is detected and is in the process of refetching the manifest.
--   `stable` - When all registered podlets are using cached manifests and only fetching content.
--   `unhealthy` - When an update of a podlet never settled.
+- `instantiated` - When a `Client` has been instantiated but no requests to any podlets have been made.
+- `initializing` - When one or multiple podlets are requested for the very first time.
+- `unstable` - When an update of a podlet is detected and is in the process of refetching the manifest.
+- `stable` - When all registered podlets are using cached manifests and only fetching content.
+- `unhealthy` - When an update of a podlet never settled.
 
 ### .context
 
@@ -1805,14 +1790,14 @@ parsers to it.
 Example of registering a custom third party context parser to the context:
 
 ```js
-import Parser from 'my-custom-parser';
+import Parser from "my-custom-parser";
 
 const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
+  name: "myLayout",
+  pathname: "/",
 });
 
-layout.context.register('customParser', new Parser('someConfig'));
+layout.context.register("customParser", new Parser("someConfig"));
 ```
 
 #### name (required)
@@ -1861,15 +1846,15 @@ property of the request or response object.
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 app.get(layout.pathname(), async (req, res, next) => {
-    const incoming = res.locals.podium;
+  const incoming = res.locals.podium;
 
-    const response = await podlet.fetch(incoming);
-    res.podiumSend(`
+  const response = await podlet.fetch(incoming);
+  res.podiumSend(`
         <section>${response.content}</section>
     `);
 });
@@ -1904,16 +1889,16 @@ app.route({
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 app.get(layout.pathname(), async (request, reply) => {
-    const incoming = reply.app.podium;
+  const incoming = reply.app.podium;
 
-    const response = await podlet.fetch(incoming);
+  const response = await podlet.fetch(incoming);
 
-    reply.podiumSend(`
+  reply.podiumSend(`
         <section>${response.content}</section>
     `);
 });
@@ -1924,21 +1909,26 @@ app.get(layout.pathname(), async (request, reply) => {
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 const server = http.createServer(async (req, res) => {
-    let incoming = new HttpIncoming(req, res);
-    incoming = await layout.process(incoming);
+  let incoming = new HttpIncoming(req, res);
+  incoming = await layout.process(incoming);
 
-    const response = await podlet.fetch(incoming);
+  const response = await podlet.fetch(incoming);
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.end(layout.render(incoming, `
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/html");
+  res.end(
+    layout.render(
+      incoming,
+      `
         <section>${response.content}</section>
-    `));
+    `
+    )
+  );
 });
 ```
 
@@ -1984,15 +1974,15 @@ bound property of the request or response object.
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 app.get(layout.pathname(), async (req, res, next) => {
-    const incoming = res.locals.podium;
+  const incoming = res.locals.podium;
 
-    const stream = podlet.stream(incoming);
-    stream.pipe(res);
+  const stream = podlet.stream(incoming);
+  stream.pipe(res);
 });
 ```
 
@@ -2001,19 +1991,19 @@ app.get(layout.pathname(), async (req, res, next) => {
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
+  method: "GET",
+  path: layout.pathname(),
+  handler: (request, h) => {
+    const incoming = request.app.podium;
 
-        const stream = podlet.stream(incoming);
-        return h.response(stream);
-    },
+    const stream = podlet.stream(incoming);
+    return h.response(stream);
+  },
 });
 ```
 
@@ -2022,15 +2012,15 @@ app.route({
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 app.get(layout.pathname(), (request, reply) => {
-    const incoming = reply.app.podium;
+  const incoming = reply.app.podium;
 
-    const stream = podlet.stream(incoming);
-    stream.pipe(reply);
+  const stream = podlet.stream(incoming);
+  stream.pipe(reply);
 });
 ```
 
@@ -2039,19 +2029,19 @@ app.get(layout.pathname(), (request, reply) => {
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 const server = http.createServer(async (req, res) => {
-    let incoming = new HttpIncoming(req, res);
-    incoming = await layout.process(incoming);
+  let incoming = new HttpIncoming(req, res);
+  incoming = await layout.process(incoming);
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/html");
 
-    const stream = podlet.stream(incoming);
-    stream.pipe(res);
+  const stream = podlet.stream(incoming);
+  stream.pipe(res);
 });
 ```
 
@@ -2082,21 +2072,21 @@ otherwise `css` will be an empty string.
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 app.get(layout.pathname(), async (req, res, next) => {
-    const incoming = res.locals.podium;
+  const incoming = res.locals.podium;
 
-    const stream = podlet.stream(incoming);
-    stream.once('beforeStream', data => {
-        console.log(data.headers);
-        console.log(data.css);
-        console.log(data.js);
-    });
+  const stream = podlet.stream(incoming);
+  stream.once("beforeStream", (data) => {
+    console.log(data.headers);
+    console.log(data.css);
+    console.log(data.js);
+  });
 
-    stream.pipe(res);
+  stream.pipe(res);
 });
 ```
 
@@ -2105,25 +2095,25 @@ app.get(layout.pathname(), async (req, res, next) => {
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
+  method: "GET",
+  path: layout.pathname(),
+  handler: (request, h) => {
+    const incoming = request.app.podium;
 
-        const stream = podlet.stream(incoming);
-        stream.once('beforeStream', data => {
-            console.log(data.headers);
-            console.log(data.css);
-            console.log(data.js);
-        });
+    const stream = podlet.stream(incoming);
+    stream.once("beforeStream", (data) => {
+      console.log(data.headers);
+      console.log(data.css);
+      console.log(data.js);
+    });
 
-        return h.response(stream);
-    },
+    return h.response(stream);
+  },
 });
 ```
 
@@ -2132,21 +2122,21 @@ app.route({
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 app.get(layout.pathname(), (request, reply) => {
-    const incoming = reply.app.podium;
+  const incoming = reply.app.podium;
 
-    const stream = podlet.stream(incoming);
-    stream.once('beforeStream', data => {
-        console.log(data.headers);
-        console.log(data.css);
-        console.log(data.js);
-    });
+  const stream = podlet.stream(incoming);
+  stream.once("beforeStream", (data) => {
+    console.log(data.headers);
+    console.log(data.css);
+    console.log(data.js);
+  });
 
-    stream.pipe(reply);
+  stream.pipe(reply);
 });
 ```
 
@@ -2155,25 +2145,25 @@ app.get(layout.pathname(), (request, reply) => {
 
 ```js
 const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
+  name: "myPodlet",
+  uri: "http://localhost:7100/manifest.json",
 });
 
 const server = http.createServer(async (req, res) => {
-    let incoming = new HttpIncoming(req, res);
-    incoming = await layout.process(incoming);
+  let incoming = new HttpIncoming(req, res);
+  incoming = await layout.process(incoming);
 
-    const stream = podlet.stream(incoming);
-    stream.once('beforeStream', data => {
-        console.log(data.headers);
-        console.log(data.css);
-        console.log(data.js);
-    });
+  const stream = podlet.stream(incoming);
+  stream.once("beforeStream", (data) => {
+    console.log(data.headers);
+    console.log(data.css);
+    console.log(data.js);
+  });
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/html");
 
-    stream.pipe(res);
+  stream.pipe(res);
 });
 ```
 
@@ -2196,8 +2186,8 @@ value. If a manifest is not successfully fetched, it will resolve with `false`.
 
 ```js
 const podlet = layout.client.register({
-  uri: 'http://foo.site.com/manifest.json',
-  name: 'foo',
+  uri: "http://foo.site.com/manifest.json",
+  name: "foo",
 });
 
 const status = await podlet.refresh();
@@ -2217,7 +2207,7 @@ A property returning the location of the Podium resource.
 ## Podlet Response
 
 When a podlet is requested by the [`.client.fetch()`](#fetchhttpincoming-options)
-method it will return a `Promise`  which will resolve with a podlet response
+method it will return a `Promise` which will resolve with a podlet response
 object. If a podlet is requested by the [`.client.stream()`](#streamhttpincoming-options)
 method a `beforeStream` event will emit a podlet response object.
 
@@ -2226,12 +2216,12 @@ podlet which was requested.
 
 An podlet response instance has the following properties:
 
-| property | type     | getter  | setter  | default | details                                                                                                 |
-| -------- | -------- | ------- | ------- | ------- | ------------------------------------------------------------------------------------------------------- |
-| content  | `string` | &check; |         |         | The content of the podlet. Normally a string of HTML.                                                   |
-| headers  | `object` | &check; |         | `{}`    | The HTTP headers the content route of the podlet responded with.                                        |
-| css      | `array`  | &check; |         | `[]`    | An array of [AssetCSS](assets.md#assetcss) objects holding the CSS references registered by the podlet. |
-| js       | `array`  | &check; |         | `[]`    | An array of [AssetJS](assets.md#assetjs) objects holding the JS references registered by the podlet.    |
+| property | type     | getter  | setter | default | details                                                                                                 |
+| -------- | -------- | ------- | ------ | ------- | ------------------------------------------------------------------------------------------------------- |
+| content  | `string` | &check; |        |         | The content of the podlet. Normally a string of HTML.                                                   |
+| headers  | `object` | &check; |        | `{}`    | The HTTP headers the content route of the podlet responded with.                                        |
+| css      | `array`  | &check; |        | `[]`    | An array of [AssetCSS](assets.md#assetcss) objects holding the CSS references registered by the podlet. |
+| js       | `array`  | &check; |        | `[]`    | An array of [AssetJS](assets.md#assetjs) objects holding the JS references registered by the podlet.    |
 
 ## res.podiumSend(fragment)
 
@@ -2249,7 +2239,7 @@ _Example of sending an HTML fragment:_
 
 ```js
 app.get(layout.pathname(), (req, res) => {
-    res.podiumSend('<h1>Hello World</h1>');
+  res.podiumSend("<h1>Hello World</h1>");
 });
 ```
 
@@ -2258,11 +2248,11 @@ app.get(layout.pathname(), (req, res) => {
 
 ```js
 app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        return h.podiumSend('<h2>Hello world</h2>');
-    },
+  method: "GET",
+  path: layout.pathname(),
+  handler: (request, h) => {
+    return h.podiumSend("<h2>Hello world</h2>");
+  },
 });
 ```
 
@@ -2271,7 +2261,7 @@ app.route({
 
 ```js
 app.get(layout.pathname(), async (request, reply) => {
-    reply.podiumSend('<h2>Hello world</h2>');
+  reply.podiumSend("<h2>Hello world</h2>");
 });
 ```
 
@@ -2280,23 +2270,24 @@ app.get(layout.pathname(), async (request, reply) => {
 
 ```js
 const server = http.createServer(async (req, res) => {
-    let incoming = new HttpIncoming(req, res);
-    incoming = await layout.process(incoming);
+  let incoming = new HttpIncoming(req, res);
+  incoming = await layout.process(incoming);
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.end(layout.render(incoming, '<h2>Hello world</h2>'));
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/html");
+  res.end(layout.render(incoming, "<h2>Hello world</h2>"));
 });
 ```
+
 </TabItem>
 </Tabs>
 
-[express]: https://expressjs.com/ 'Express'
-[hapi layout plugin]: https://github.com/podium-lib/hapi-layout 'Hapi Layout Plugin'
-[@podium/client constructor]: https://github.com/podium-lib/client#constructor '@podium/client constructor'
-[@podium/proxy constructor]: https://github.com/podium-lib/proxy#constructor '@podium/proxy constructor'
-[@podium/context]: https://github.com/podium-lib/context '@podium/context'
-[@podium/client]: https://github.com/podium-lib/client '@podium/client'
-[@podium/proxy]: https://github.com/podium-lib/proxy '@podium/proxy'
-[@metrics/metric]: https://github.com/metrics-js/metric '@metrics/metric'
-[abslog]: https://github.com/trygve-lie/abslog 'abslog'
+[express]: https://expressjs.com/ "Express"
+[hapi layout plugin]: https://github.com/podium-lib/hapi-layout "Hapi Layout Plugin"
+[@podium/client constructor]: https://github.com/podium-lib/client#constructor "@podium/client constructor"
+[@podium/proxy constructor]: https://github.com/podium-lib/proxy#constructor "@podium/proxy constructor"
+[@podium/context]: https://github.com/podium-lib/context "@podium/context"
+[@podium/client]: https://github.com/podium-lib/client "@podium/client"
+[@podium/proxy]: https://github.com/podium-lib/proxy "@podium/proxy"
+[@metrics/metric]: https://github.com/metrics-js/metric "@metrics/metric"
+[abslog]: https://github.com/trygve-lie/abslog "abslog"
