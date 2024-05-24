@@ -1,9 +1,10 @@
 ---
-id: handling_redirects
-title: Handling redirects from podlets
+title: Redirects
 ---
 
-By default, the client registered in a layout will _follow_ a redirect, and use the HTML response as if it came from the podlet directly.
+Redirects in HTTP work by setting a [status code and Location HTTP header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections) on the response sent by the server to the browser. What happens if a podlet (which is not the one sending the HTTP response to the browser) wants to trigger a redirect?
+
+The layout is the server sending the HTTP response to the browser. Only the layout can do the actual redirect, but a podlet can ask the layout to do a redirect on its behalf. Here is how it works.
 
 ## Define a podlet as redirectable
 
@@ -11,15 +12,16 @@ If a podlet should trigger a redirect for the end user, or you want to handle re
 
 ```js
 const gettingStarted = layout.client.register({
-  /* ... */
   redirectable: true,
 });
 ```
 
-Then, in the request handler for the _layout_:
+This configuration is required, otherwise the layout will follow the redirect and use the HTML response as if it came from the podlet directly.
+
+With the podlet configured as `redirectable`, check the response in the request handler for the layout and forward the status code and `Location`:
 
 ```js
-app.get("/", async (req, res) => {
+app.get(layout.pathname(), async (req, res) => {
   const incoming = res.locals.podium;
   const response = await gettingStarted.fetch(incoming);
 
@@ -45,7 +47,7 @@ app.get(podlet.content(), (req, res) => {
   const shouldRedirect = /* Determine whether a redirect should happen */;
   if (shouldRedirect) {
     return res
-      .status(302)
+      .status(307)
       .setHeader("Location", "https://podium-lib.io")
       .send();
   }

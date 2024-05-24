@@ -1,6 +1,5 @@
 ---
-id: local_development
-title: Local development
+title: Podlet development
 ---
 
 It is intended that podlets be developed in isolation from layouts and other podlets. This isolation can introduce challenges into local development due to some components normally provided by a layout (such as headers and Assets) not being available.
@@ -69,7 +68,7 @@ See the [Node.js docs](https://nodejs.org/docs/v20.13.1/api/cli.html#--watch) fo
 
 ### Missing context headers
 
-When a podlet is being run in the context of a layout server, the layout server will send a number of [Podium context](/docs/introduction/context) headers with each request. If your podlet depends on these headers to work correctly you need to turn on `development` mode.
+When a podlet is being run in the context of a layout server, the layout server will send a number of [Podium context](/docs/guides/context) headers with each request. If your podlet depends on these headers to work correctly you need to turn on `development` mode.
 
 Consider a podlet with the following content route:
 

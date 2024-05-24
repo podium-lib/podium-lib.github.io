@@ -52,15 +52,51 @@ const config = {
           },
           {
             from: "/docs/layout/assets",
-            to: "/docs/introduction/assets",
+            to: "/docs/guides/assets",
+          },
+          {
+            from: "/docs/introduction/assets",
+            to: "/docs/guides/assets",
           },
           {
             from: "/docs/layout/context",
-            to: "/docs/introduction/context",
+            to: "/docs/guides/context",
+          },
+          {
+            from: "/docs/introduction/context",
+            to: "/docs/guides/context",
           },
           {
             from: "/docs/podlet/context",
-            to: "/docs/introduction/context",
+            to: "/docs/guides/context",
+          },
+          {
+            from: "/docs/podlet/fallbacks",
+            to: "/docs/guides/fallbacks",
+          },
+          {
+            from: "/docs/podlet/proxying",
+            to: "/docs/guides/proxying",
+          },
+          {
+            from: "/docs/layout/handling_redirects",
+            to: "/docs/guides/redirects",
+          },
+          {
+            from: "/docs/layout/unavailable_podlets",
+            to: "/docs/guides/fallbacks#throwable-podlets",
+          },
+          {
+            from: "/docs/layout/dynamic_routes",
+            to: "/docs/guides/passing-values-to-podlets",
+          },
+          {
+            from: "/docs/layout/local_development",
+            to: "/docs/guides/layout-development",
+          },
+          {
+            from: "/docs/podlet/local_development",
+            to: "/docs/guides/podlet-development",
           },
         ],
       },

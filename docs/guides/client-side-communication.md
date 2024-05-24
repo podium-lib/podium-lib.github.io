@@ -1,6 +1,5 @@
 ---
-id: podlet_to_podlet_communication
-title: Podlet to podlet communication in the browser
+title: Client-side communication in a Podium app
 ---
 
 Podium provides a client side library called [@podium/browser] that includes a [MessageBus](/docs/api/browser#messagebus). The message bus simplifies passing data between different podlets' client-side JavaScript.

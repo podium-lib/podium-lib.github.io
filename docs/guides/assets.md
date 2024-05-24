@@ -124,7 +124,3 @@ Using the [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_comp
 With `podlet.css()` the end result is a `<link />` tag in the HTML document's `<head />`. If your podlet's content renders inside a shadow DOM that CSS won't be able to reach the podlet.
 
 With a declarative shadow DOM you have to include your own `<link />` to the CSS from inside the shadow DOM.
-
-## Next steps
-
-Next you might want to familiarise yourself with the Podium context.
