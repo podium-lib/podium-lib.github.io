@@ -3,7 +3,7 @@ id: proxying
 title: Proxying
 ---
 
-Proxying is useful in cases where you decide to only publicly expose layout servers to incoming traffic.
+Proxying is useful in cases where you decide to only expose layout servers directly to the Internet.
 
 Podium does not enforce a certain infrastructure setup. You can choose to have your podlets publicly available, in which case [proxying isn't strictly needed](#public-podlets-and-cross-origin-resource-sharing).
 
