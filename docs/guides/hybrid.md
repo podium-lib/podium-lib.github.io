@@ -72,9 +72,9 @@ The same goes for `@podium/store`:
 
 ```js
 import "@podium/bridge";
-import { atom } from "@podium/store";
+import { map } from "@podium/store";
 
-const $auth = atom("system", "authentication", { token: null });
+const $auth = map("system", "authentication", { token: null });
 ```
 
 ### Reserved message names
