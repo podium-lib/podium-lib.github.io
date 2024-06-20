@@ -39,6 +39,7 @@ const sidebars = {
         { type: "doc", id: "guides/redirects" },
         { type: "doc", id: "guides/layout-development" },
         { type: "doc", id: "guides/podlet-development" },
+        { type: "doc", id: "guides/hybrid" },
       ],
     },
     {

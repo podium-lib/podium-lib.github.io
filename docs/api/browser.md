@@ -4,6 +4,9 @@ title: "@podium/browser"
 ---
 
 The `@podium/browser` module is a client-side library designed to simplify communication between a podlet and the layout, and between podlets.
+The module also supports applications running in a [hybrid application](/docs/guides/hybrid#client-side-communcication) when used with [@podium/bridge](/docs/api/bridge).
+
+For an API designed as reactive state, see [@podium/store](/docs/api/store).
 
 ## Installation
 
@@ -55,11 +58,11 @@ Publish an event for a channel and topic combination. Returns the event object p
 
 This method takes the following arguments:
 
-| option  | default | type     | required | details                   |
-| ------- | ------- | -------- | -------- | ------------------------- |
-| channel | `null`  | `string` | `true`   | Name of the channel       |
-| topic   | `null`  | `string` | `true`   | Name of the topic         |
-| payload | `null`  | any      | `false`  | The payload for the event |
+| option  | default | type     | required | details                                                                         |
+| ------- | ------- | -------- | -------- | ------------------------------------------------------------------------------- |
+| channel | `null`  | `string` | `true`   | Name of the channel. Podium reserves `system` and `view` for built-in features. |
+| topic   | `null`  | `string` | `true`   | Name of the topic.                                                              |
+| payload | `null`  | any      | `false`  | The payload for the event.                                                      |
 
 Examples:
 
@@ -77,7 +80,7 @@ This method takes the following arguments:
 
 | option   | default | type       | required | details                                                   |
 | -------- | ------- | ---------- | -------- | --------------------------------------------------------- |
-| channel  | `null`  | `string`   | `true`   | Name of the channel                                       |
+| channel  | `null`  | `string`   | `true`   | Name of the channel.                                      |
 | topic    | `null`  | `string`   | `true`   | Name of the topic                                         |
 | callback | `null`  | `Function` | `true`   | Callback function to be invoked. Receives an event object |
 
