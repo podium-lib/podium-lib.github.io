@@ -50,7 +50,9 @@ import { MessageBus } from "@podium/browser";
 
 const messageBus = new MessageBus();
 
-const reminders = [];
+// Check to see if an initial value exists on the messageBus
+// and fall back to a default value.
+const reminders = messageBus.peek("reminders", "newReminder") || [];
 
 // ListPodlet listens for new reminders published on the message bus and updates its state
 messageBus.subscribe("reminders", "newReminder", (event) => {
@@ -61,9 +63,16 @@ messageBus.subscribe("reminders", "newReminder", (event) => {
 
 See [@podium/browser] for API documentation.
 
+:::warning[Possible race condition]
+
+Your `subscribe` function might register after someone has already published an event.
+To make sure your application state is in sync, always do a `peek` first.
+
+:::
+
 ### `@podium/store`
 
-This library adds a reactive state API using [nanostores]. It sets up publishing and subscribing for you behind the scenes, leaving you with a reactive variable you read from and write to that will stay in sync between applications.
+This library adds a reactive state API on top of the MessageBus using [nanostores]. It sets up publishing and subscribing (including the peek for the initial value) for you behind the scenes, leaving you with a reactive variable you read from and write to that will stay in sync between applications.
 
 :::tip
 
