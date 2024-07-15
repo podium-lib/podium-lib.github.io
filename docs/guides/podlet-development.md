@@ -99,6 +99,12 @@ podlet.defaults({
 });
 ```
 
+:::tip
+
+Get the [browser extension](/docs/guides/browser-extension) and the accompanying [dev-tool middleware](https://github.com/podium-lib/dev-tool/tree/main/packages/server) to make it possible to change these defaults without changing code and restarting your server.
+
+:::
+
 ### HTML pages and page fragments
 
 In production, your podlet's content route will be responding with an HTML fragment devoid of its wrapping `<html>` or `<body>` tags. However, in development you will want to wrap your fragment in a light HTML page, especially if your podlet makes use of client side assets such as JavaScript or CSS.
