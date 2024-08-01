@@ -120,7 +120,7 @@ const config = {
           sidebarPath: "./sidebars.js",
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/podium-lib/podium-lib.github.io/tree/main/website/docs",
+            "https://github.com/podium-lib/podium-lib.github.io/tree/source/docs",
         },
         blog: {
           showReadingTime: true,
