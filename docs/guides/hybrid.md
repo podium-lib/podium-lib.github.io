@@ -14,19 +14,43 @@ Layouts and podlets need to be able to adapt to requests from a hybrid web view.
 
 ### Hybrid HTTP headers
 
+:::tip
+
+Get the [browser extension](/docs/guides/browser-extension) to make it easier to set the hybrid HTTP headers when developing locally.
+
+:::
+
 | Header                    | Example                        | Description                                                                               |
 | ------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------- |
 | `x-podium-app-id`         | `com.yourcompany.app@1.2.3`    | To identify clients in logs                                                               |
 | `x-podium-base-font-size` | `1rem`                         | To set base font size variable in CSS based on accessibility settings in the native host. |
 | `x-podium-device-type`    | `hybrid-ios`, `hybrid-android` | To give hints to the server what should be included in the response.                      |
-| `Authorization`           | `Bearer eyJhbGciOiJIU...`      | Optional. Signifies a logged-in user.                                                     |
 
-#### Podium developer tools extension
+### Podium context
 
-Get the extension to make it easier to set these HTTP headers when developing locally:
+Requests that include the hybrid HTTP headers have their values added to the Podium context, in addition to the [default context variables](/docs/guides/context#default-context-variables).
 
-- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/podium-developer-tools/)
-- [Chromium](https://chromewebstore.google.com/detail/podium-development-extens/jdlcejoeifgnnnckhnhapbmgieajaipl) based browsers
+| Header                    | Context name   | Description                                                           |
+| ------------------------- | -------------- | --------------------------------------------------------------------- |
+| `x-podium-app-id`         | `appId`        |                                                                       |
+| `x-podium-base-font-size` | `baseFontSize` |                                                                       |
+| `x-podium-device-type`    | `deviceType`   | Overrides the value that would otherwise be derived from `User-Agent` |
+
+### Conditionally fetch podlets
+
+In a hybrid web view setting your layout may want to exclude things like the header and footer. These are likely podlets, and Podium has an option when you register podlets to exclude them by device type.
+
+```js
+const headerPodlet = layout.client.register({
+  name: "header",
+  uri: "http://header/manifest.json",
+  excludeBy: {
+    deviceType: ["hybrid-ios", "hybrid-android"],
+  },
+});
+```
+
+In this case, if a request has the `x-podium-device-type: hybrid-ios` HTTP header, Podium will serve an empty response to the `headerPodlet.fetch()` call.
 
 ## Client-side communcication
 
