@@ -8,7 +8,7 @@ import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
 import styles from "./index.module.css";
 import CodeBlock from "@theme/CodeBlock";
-import PodletExample from "../../docs/partials/_layout_example.mdx";
+import PodletExample from "../../docs/partials/_podlet_example.mdx";
 import LayoutExample from "../../docs/partials/_layout_example.mdx";
 
 function HomepageHeader() {
