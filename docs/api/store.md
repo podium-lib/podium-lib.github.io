@@ -16,29 +16,6 @@ To install:
 npm install @podium/store
 ```
 
-Use an [included store](#included-stores) in your client-side application:
-
-```js
-// store/user.js
-import { $authentication } from "@podium/store";
-import { computed } from "nanostores";
-
-// You can optionally make a computed value based on the included store
-export const $loggedIn = computed($authentication, (authentication) =>
-  Boolean(authentication.token)
-);
-
-// Colocating actions with the store makes it easier to
-// see what can trigger updates.
-export function logIn(token) {
-  $authentication.set({ token });
-}
-
-export function logOut() {
-  $authentication.set({ token: null });
-}
-```
-
 Use the reactive store to do minimal updates of your UI when state changes. Nanostores supports multiple view frameworks:
 
 - [React and Preact](https://github.com/stores/stores?tab=readme-ov-file#react--preact)
@@ -84,14 +61,6 @@ customElements.define("a-user", User);
 By using the [included helper](#mapchannel-topic-initialvalue) you can make your reactive state sync between the different parts of a Podium application.
 
 ## API
-
-### `$authentication`
-
-Type: [`map`](https://github.com/stores/stores?tab=readme-ov-file#maps)
-
-```js
-import { $authentication } from "@podium/store";
-```
 
 ### `atom(channel, topic, initialValue)`
 
