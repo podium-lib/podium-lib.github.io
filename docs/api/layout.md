@@ -640,17 +640,19 @@ assets.
 
 #### options
 
-| option         | type      | default   | required | details                                                                                      |
-| -------------- | --------- | --------- | -------- | -------------------------------------------------------------------------------------------- |
-| value          | `string`  |           | &check;  | Relative or absolute URL to the JavaScript asset                                             |
-| prefix         | `boolean` | `false`   |          | Whether the pathname defined on the constructor should be prepend, if relative, to the value |
-| type           | `string`  | `default` |          | What type of JavaScript (eg. esm, default, cjs)                                              |
-| referrerpolicy | `string`  |           |          | Correlates to the same attribute on a HTML `<script>` element                                |
-| crossorigin    | `string`  |           |          | Correlates to the same attribute on a HTML `<script>` element                                |
-| integrity      | `string`  |           |          | Correlates to the same attribute on a HTML `<script>` element                                |
-| nomodule       | `boolean` | `false`   |          | Correlates to the same attribute on a HTML `<script>` element                                |
-| async          | `boolean` | `false`   |          | Correlates to the same attribute on a HTML `<script>` element                                |
-| defer          | `boolean` | `false`   |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| option         | type                                                  | default              | required | details                                                                                      |
+| -------------- | ----------------------------------------------------- | -------------------- | -------- | -------------------------------------------------------------------------------------------- |
+| value          | `string`                                              |                      | &check;  | Relative or absolute URL to the JavaScript asset                                             |
+| strategy       | `"beforeInteractive" \| "afterInteractive" \| "lazy"` | `"afterInteractive"` |          | Specify how the JavaScript should be loaded                                                  |
+| scope          | `"content" \| "fallback" \| "all"`                    | `"all"`              |          | Specify what routes the JavaScript should apply to                                           |
+| prefix         | `boolean`                                             | `false`              |          | Whether the pathname defined on the constructor should be prepend, if relative, to the value |
+| type           | `string`                                              | `default`            |          | What type of JavaScript (eg. esm, default, cjs)                                              |
+| referrerpolicy | `string`                                              |                      |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| crossorigin    | `string`                                              |                      |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| integrity      | `string`                                              |                      |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| nomodule       | `boolean`                                             | `false`              |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| async          | `boolean`                                             | `false`              |          | Correlates to the same attribute on a HTML `<script>` element                                |
+| defer          | `boolean`                                             | `false`              |          | Correlates to the same attribute on a HTML `<script>` element                                |
 
 ##### value
 
@@ -925,18 +927,20 @@ assets.
 
 #### options
 
-| option      | type      | default      | required | details                                                                                      |
-| ----------- | --------- | ------------ | -------- | -------------------------------------------------------------------------------------------- |
-| value       | `string`  |              | &check;  | Relative or absolute URL to the CSS asset                                                    |
-| prefix      | `boolean` | `false`      |          | Whether the pathname defined on the constructor should be prepend, if relative, to the value |
-| crossorigin | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
-| disabled    | `boolean` | `false`      |          | Correlates to the same attribute on a HTML `<link>` element                                  |
-| hreflang    | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
-| title       | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
-| media       | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
-| type        | `string`  | `text/css`   |          | Correlates to the same attribute on a HTML `<link>` element                                  |
-| rel         | `string`  | `stylesheet` |          | Correlates to the same attribute on a HTML `<link>` element                                  |
-| as          | `string`  |              |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| option      | type                                                                  | default               | required | details                                                                                      |
+| ----------- | --------------------------------------------------------------------- | --------------------- | -------- | -------------------------------------------------------------------------------------------- |
+| value       | `string`                                                              |                       | &check;  | Relative or absolute URL to the CSS asset                                                    |
+| strategy    | `"beforeInteractive" \| "afterInteractive" \| "lazy" \| "shadow-dom"` | `"beforeInteractive"` |          | Specify how the CSS should be loaded                                                         |
+| scope       | `"content" \| "fallback" \| "all"`                                    | `"all"`               |          | Specify what routes the CSS should apply to                                                  |
+| prefix      | `boolean`                                                             | `false`               |          | Whether the pathname defined on the constructor should be prepend, if relative, to the value |
+| crossorigin | `string`                                                              |                       |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| disabled    | `boolean`                                                             | `false`               |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| hreflang    | `string`                                                              |                       |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| title       | `string`                                                              |                       |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| media       | `string`                                                              |                       |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| type        | `string`                                                              | `text/css`            |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| rel         | `string`                                                              | `stylesheet`          |          | Correlates to the same attribute on a HTML `<link>` element                                  |
+| as          | `string`                                                              |                       |          | Correlates to the same attribute on a HTML `<link>` element                                  |
 
 ##### value
 
