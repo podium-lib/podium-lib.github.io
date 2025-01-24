@@ -62,6 +62,8 @@ By using the [included helper](#mapchannel-topic-initialvalue) you can make your
 
 ## API
 
+In addition to the APIs listed here, [`@podium/store` exports all APIs available in `nanostores`](https://github.com/nanostores/nanostores?tab=readme-ov-file#guide).
+
 ### `atom(channel, topic, initialValue)`
 
 Create your own [`atom`](https://github.com/nanostores/nanostores?tab=readme-ov-file#atoms) that syncs between parts of a Podium application using the [MessageBus](https://github.com/podium-lib/browser).
