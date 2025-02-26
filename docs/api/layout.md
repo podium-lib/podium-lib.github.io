@@ -582,7 +582,7 @@ Options to be passed on to the proxy.
 | option  | type     | default           | required | details                                                                                                |
 | ------- | -------- | ----------------- | -------- | ------------------------------------------------------------------------------------------------------ |
 | prefix  | `string` | `podium-resource` |          | Prefix used to namespace the proxy so that it's isolated from other routes in the HTTP server          |
-| timeout | `number` | `6000`            |          | Default value, in milliseconds, for how long a request should wait before the connection is terminated |
+| timeout | `number` | `20000`            |          | Default value, in milliseconds, for how long a request should wait before the connection is terminated |
 
 Example of setting the `timeout` on the proxy to 30 seconds:
 
