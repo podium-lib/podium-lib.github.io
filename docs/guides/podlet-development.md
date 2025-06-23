@@ -12,7 +12,7 @@ Consider the following podlet server:
 
 ```js
 import express from "express";
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 
 const podlet = new Podlet({
   name: "myPodlet",
@@ -27,7 +27,7 @@ app.get(podlet.manifest(), (req, res) => {
 });
 
 app.get(podlet.content(), (req, res) => {
-  res.send(`<div>This is my content</div>`);
+  res.send(html`<div>This is my content</div>`);
 });
 
 app.listen(7100);
@@ -75,7 +75,7 @@ Consider a podlet with the following content route:
 ```js
 app.get(podlet.content(), (req, res) => {
   const { mountOrigin } = res.locals.podium.context;
-  res.send(`<div>${mountOrigin}</div>`);
+  res.send(html`<div>${mountOrigin}</div>`);
 });
 ```
 
@@ -119,7 +119,7 @@ const podlet = new Podlet({
 });
 
 app.get(podlet.content(), (req, res) => {
-  res.podiumSend(`<div>The podlet's HTML content</div>`);
+  res.podiumSend(html`<div>The podlet's HTML content</div>`);
 });
 ```
 
@@ -134,7 +134,7 @@ podlet.js({ value: "http://cdn.mysite.com/scripts.js" });
 podlet.css({ value: "http://cdn.mysite.com/styles.css" });
 
 app.get(podlet.content(), (req, res) => {
-  res.podiumSend(`<div>The podlet's HTML content</div>`);
+  res.podiumSend(html`<div>The podlet's HTML content</div>`);
 });
 ```
 
@@ -172,7 +172,7 @@ app.get(podlet.content(), (req, res) => {
   const { mountOrigin, publicPathname } = res.locals.podium.context;
   const url = new URL(publicPathname, mountOrigin);
 
-  res.status(200).podiumSend(`
+  res.status(200).podiumSend(html`
         <div>
             The url being proxied to google is ${url.href + "google"}
         </div>

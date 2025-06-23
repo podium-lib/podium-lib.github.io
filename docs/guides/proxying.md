@@ -138,7 +138,7 @@ app.get(podlet.content(), (req, res) => {
 
 ```js
 import express from "express";
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 
 const podlet = new Podlet({
   name: "myPodlet",
@@ -160,7 +160,7 @@ app.get(podlet.content(), (req, res) => {
   const { mountOrigin, publicPathname } = res.locals.podium.context;
   const url = new URL(publicPathname, mountOrigin);
 
-  res.send(`
+  res.podiumSend(html`
         <div id="content-placeholder"></div>
         <script>
             fetch('${url.href + "content"}')

@@ -33,7 +33,7 @@ app.get(layout.pathname(), async (req, res) => {
   }
 
   incoming.view.title = "Hello, Layout!";
-  res.podiumSend(`<div>${response}</div>`);
+  res.podiumSend(html`<div>${response}</div>`);
 });
 ```
 
@@ -52,7 +52,7 @@ app.get(podlet.content(), (req, res) => {
       .send();
   }
 
-  res.status(200).podiumSend(`
+  res.status(200).podiumSend(html`
     <div id="app">Hello, Podlet!</div>
   `);
 });

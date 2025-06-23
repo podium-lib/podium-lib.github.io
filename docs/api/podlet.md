@@ -58,7 +58,7 @@ Building a simple podlet server.
 
 ```js
 import express from "express";
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 
 const app = express();
 
@@ -73,9 +73,9 @@ app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
   if (res.locals.podium.context.locale === "nb-NO") {
-    return res.status(200).podiumSend("<h2>Hei verden</h2>");
+    return res.status(200).podiumSend(html`<h2>Hei verden</h2>`);
   }
-  res.status(200).podiumSend(`<h2>Hello world</h2>`);
+  res.status(200).podiumSend(html`<h2>Hello world</h2>`);
 });
 
 app.get(podlet.manifest(), (req, res) => {
@@ -90,7 +90,7 @@ app.listen(7100);
 
 ```js
 import HapiPodlet from "@podium/hapi-podlet";
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 import Hapi from "hapi";
 
 const app = Hapi.Server({
@@ -115,9 +115,9 @@ app.route({
   path: podlet.content(),
   handler: (request, h) => {
     if (request.app.podium.context.locale === "nb-NO") {
-      return h.podiumSend("<h2>Hei verden</h2>");
+      return h.podiumSend(html`<h2>Hei verden</h2>`);
     }
-    return h.podiumSend("<h2>Hello world</h2>");
+    return h.podiumSend(html`<h2>Hello world</h2>`);
   },
 });
 
@@ -136,7 +136,7 @@ app.start();
 ```js
 import fastifyPodlet from "@podium/fastify-podlet";
 import fastify from "fastify";
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 
 const app = fastify();
 
@@ -151,10 +151,10 @@ app.register(fastifyPodlet, podlet);
 
 app.get(podlet.content(), async (request, reply) => {
   if (reply.app.podium.context.locale === "nb-NO") {
-    reply.podiumSend("<h2>Hei verden</h2>");
+    reply.podiumSend(html`<h2>Hei verden</h2>`);
     return;
   }
-  reply.podiumSend("<h2>Hello world</h2>");
+  reply.podiumSend(html`<h2>Hello world</h2>`);
 });
 
 app.get(podlet.manifest(), async (request, reply) => {
@@ -178,7 +178,7 @@ start();
 
 ```js
 import { HttpIncoming } from "@podium/utils";
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 import http from "http";
 
 const podlet = new Podlet({
@@ -206,10 +206,10 @@ const server = http.createServer(async (req, res) => {
     res.setHeader("podlet-version", podlet.version);
 
     if (incoming.context.locale === "nb-NO") {
-      res.end(podlet.render(incoming, "<h2>Hei verden</h2>"));
+      res.end(podlet.render(incoming, html`<h2>Hei verden</h2>`));
       return;
     }
-    res.end(podlet.render(incoming, "<h2>Hello world</h2>"));
+    res.end(podlet.render(incoming, html`<h2>Hello world</h2>`));
     return;
   }
 
@@ -2092,7 +2092,7 @@ An instance of the [`HttpIncoming`](incoming.md) class.
 ```js
 app.get(podlet.content(), (req, res) => {
   const incoming = res.locals.podium;
-  const document = layout.render(incoming, "<div>content to render</div>");
+  const document = layout.render(incoming, html`<div>content to render</div>`);
   res.send(document);
 });
 ```
@@ -2106,7 +2106,7 @@ app.route({
   path: podlet.content(),
   handler: (request, h) => {
     const incoming = request.app.podium;
-    return layout.render(incoming, "<div>content to render</div>");
+    return layout.render(incoming, html`<div>content to render</div>`);
   },
 });
 ```
@@ -2117,7 +2117,7 @@ app.route({
 ```js
 app.get(podlet.content(), (req, res) => {
   const incoming = reply.app.podium;
-  const document = layout.render(incoming, "<div>content to render</div>");
+  const document = layout.render(incoming, html`<div>content to render</div>`);
   reply.send(document);
 });
 ```
@@ -2130,7 +2130,7 @@ app.get(podlet.content(), (req, res) => {
 An String that is intended to be a fragment of the final HTML document.
 
 ```js
-layout.render(incoming, "<div>content to render</div>");
+layout.render(incoming, html`<div>content to render</div>`);
 ```
 
 #### [args]
@@ -2155,8 +2155,8 @@ podlet.view = (incoming, body, head) => {
 app.get(podlet.content(), async (req, res, next) => {
   const incoming = res.locals.podium;
 
-  const head = `<meta ..... />`;
-  const body = `<section>my content</section>`;
+  const head = html`<meta ..... />`;
+  const body = html`<section>my content</section>`;
 
   const document = layout.render(incoming, body, head);
   res.send(document);
@@ -2182,8 +2182,8 @@ app.route({
   handler: (request, h) => {
     const incoming = request.app.podium;
 
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
+    const head = html`<meta ..... />`;
+    const body = html`<section>my content</section>`;
 
     return layout.render(incoming, body, head);
   },
@@ -2206,8 +2206,8 @@ podlet.view = (incoming, body, head) => {
 app.get(podlet.content(), (req, res) => {
   const incoming = reply.app.podium;
 
-  const head = `<meta ..... />`;
-  const body = `<section>my content</section>`;
+  const head = html`<meta ..... />`;
+  const body = html`<section>my content</section>`;
 
   const document = layout.render(incoming, body, head);
   reply.send(document);
@@ -2260,6 +2260,50 @@ app.use(async (req, res, next) => {
 });
 ```
 
+
+## html
+
+Tagged template literal that automatically escapes the different inputs to prevent XSS.
+
+There are two exceptions that do not get escaped:
+
+- [The result of a podlet `fetch`](/docs/api/layout#podlet-response) (relevant for layouts).
+- [Strings wrapped in `DangerouslyIncludeUnescapedHTML`](#dangerouslyincludeunescapedhtml).
+
+Use with [podiumSend](#respodiumsendfragment).
+
+```js
+import { html } from "@podium/podlet";
+```
+
+## escape
+
+The same escape function used by [`html`](#html) in case you want to escape something manually, for example in APIs.
+
+```js
+import { escape } from "@podium/podlet";
+```
+
+## DangerouslyIncludeUnescapedHTML
+
+Lets you opt a string you trust out of being escaped.
+
+```js
+import { html, DangerouslyIncludeUnescapedHTML } from "@podium/podlet";
+
+const greeting = new DangerouslyIncludeUnescapedHTML({ __content:  "<em>Howdy</em>" });
+const result = html`<p>${greeting} partner!</p>`
+```
+
+## TemplateResult
+
+This is the class type returned by the [`html`](#html) tagged template literal.
+You can use it for typing, or for advanced cases if `html` does not work for you.
+
+```js
+import { TemplateResult } from "@podium/podlet";
+```
+
 ## res.podiumSend(fragment)
 
 Method for dispatching an HTML fragment. Calls the `.send()` / `.write()` methods
@@ -2277,7 +2321,7 @@ Example of sending an HTML fragment:
 
 ```js
 app.get(podlet.content(), (req, res) => {
-  res.podiumSend("<h1>Hello World</h1>");
+  res.podiumSend(html`<h1>Hello World</h1>`);
 });
 ```
 
@@ -2289,7 +2333,7 @@ app.route({
   method: "GET",
   path: podlet.content(),
   handler: (request, h) => {
-    return h.podiumSend("<h2>Hello world</h2>");
+    return h.podiumSend(html`<h2>Hello world</h2>`);
   },
 });
 ```
@@ -2299,12 +2343,14 @@ app.route({
 
 ```js
 app.get(podlet.content(), (request, reply) => {
-  reply.podiumSend("<h2>Hello world</h2>");
+  reply.podiumSend(html`<h2>Hello world</h2>`);
 });
 ```
 
 </TabItem>
 </Tabs>
+
+
 
 ## Development mode
 

@@ -49,7 +49,7 @@ whichever HTTP framework is being used.
 ```js
 app.get(layout.pathname(), (req, res) => {
     const incoming = res.locals.podium;
-    const document = podlet.render(incoming, '<div>content to render</div>');
+    const document = podlet.render(incoming, html`<div>content to render</div>`);
     res.send(document);
 });
 ```
@@ -63,7 +63,7 @@ app.route({
     path: layout.pathname(),
     handler: (request, h) => {
         const incoming = request.app.podium;
-        return podlet.render(incoming, '<div>content to render</div>');
+        return podlet.render(incoming, html`<div>content to render</div>`);
     },
 });
 ```
@@ -74,7 +74,7 @@ app.route({
 ```js
 app.get(layout.pathname(), (req, res) => {
     const incoming = reply.app.podium;
-    const document = podlet.render(incoming, '<div>content to render</div>');
+    const document = podlet.render(incoming, html`<div>content to render</div>`);
     reply.send(document);
 });
 ```
@@ -86,7 +86,7 @@ app.get(layout.pathname(), (req, res) => {
 const server = http.createServer(async (req, res) => {
     const incoming = new HttpIncoming(req, res);
 
-    const document = layout.render(incoming, '<div>content to render</div>');
+    const document = layout.render(incoming, html`<div>content to render</div>`);
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
@@ -141,7 +141,7 @@ app.get(layout.pathname(), (req, res) => {
         title: `My Site / ${someRequestValue}`,
     };
 
-    const document = layout.render(incoming, '<div>content to render</div>');
+    const document = layout.render(incoming, html`<div>content to render</div>`);
     res.send(document);
 });
 ```
@@ -160,7 +160,7 @@ app.route({
             title: `My Site / ${someRequestValue}`,
         };
 
-        return layout.render(incoming, '<div>content to render</div>');
+        return layout.render(incoming, html`<div>content to render</div>`);
     },
 });
 ```
@@ -176,7 +176,7 @@ app.get(layout.pathname(), (req, res) => {
         title: `My Site / ${someRequestValue}`,
     };
 
-    const document = layout.render(incoming, '<div>content to render</div>');
+    const document = layout.render(incoming, html`<div>content to render</div>`);
     reply.send(document);
 });
 ```
@@ -192,7 +192,7 @@ const server = http.createServer(async (req, res) => {
         title: `My Site / ${someRequestValue}`,
     };
 
-    const document = layout.render(incoming, '<div>content to render</div>');
+    const document = layout.render(incoming, html`<div>content to render</div>`);
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
@@ -279,8 +279,8 @@ layout.view = (incoming, body, head) => {
 app.get(layout.pathname(), (req, res) => {
     const incoming = res.locals.podium;
 
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
+    const head = html`<meta ..... />`;
+    const body = html`<section>my content</section>`;
 
     const document = layout.render(incoming, body, head);
 
@@ -307,8 +307,8 @@ app.route({
     handler: (request, h) => {
         const incoming = request.app.podium;
 
-        const head = `<meta ..... />`;
-        const body = `<section>my content</section>`;
+        const head = html`<meta ..... />`;
+        const body = html`<section>my content</section>`;
 
         return layout.render(incoming, body, head);
     },
@@ -331,8 +331,8 @@ layout.view = (incoming, body, head) => {
 app.get(layout.pathname(), (req, res) => {
     const incoming = reply.app.podium;
 
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
+    const head = html`<meta ..... />`;
+    const body = html`<section>my content</section>`;
 
     const document = layout.render(incoming, body, head);
 
@@ -356,8 +356,8 @@ layout.view = (incoming, body, head) => {
 const server = http.createServer(async (req, res) => {
     const incoming = new HttpIncoming(req, res);
 
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
+    const head = html`<meta ..... />`;
+    const body = html`<section>my content</section>`;
 
     const document = layout.render(incoming, body, head);
 

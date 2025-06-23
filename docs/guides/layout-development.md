@@ -13,7 +13,7 @@ _Example: header_
 Create a folder `/podlets/header` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 import express from "express";
 
 const app = express();
@@ -31,7 +31,7 @@ app.get("/manifest.json", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.podiumSend(`<header>The Best Podium page ever</header>`);
+  res.podiumSend(html`<header>The Best Podium page ever</header>`);
 });
 
 app.listen(7001);
@@ -42,7 +42,7 @@ _Example: navigation bar_
 Create a folder `/podlets/navigation` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 import express from "express";
 
 const app = express();
@@ -60,7 +60,7 @@ app.get("/manifest.json", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.podiumSend(`<nav>
+  res.podiumSend(html`<nav>
         <ul>
             <li><a href="/home">home</a></li>
             <li><a href="/blog">blog</a></li>
@@ -78,7 +78,7 @@ _Example: main home page content_
 Create a folder `/podlets/home` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 import express from "express";
 
 const app = express();
@@ -96,7 +96,7 @@ app.get("/manifest.json", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.podiumSend(`<section>Welcome to my Podium home page</section>`);
+  res.podiumSend(html`<section>Welcome to my Podium home page</section>`);
 });
 
 app.listen(7003);
@@ -107,7 +107,7 @@ _Example: page footer_
 Create a folder `/podlets/footer` with a file `index.js` inside to hold the following podlet code.
 
 ```js
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 import express from "express";
 
 const app = express();
@@ -125,7 +125,7 @@ app.get("/manifest.json", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.podiumSend(`<footer>&copy; 2018 - the Podium team</footer>`);
+  res.podiumSend(html`<footer>&copy; 2018 - the Podium team</footer>`);
 });
 
 app.listen(7004);
@@ -138,7 +138,7 @@ _Example: the /home layout_
 Create a folder `/layouts/home`. Create a file `index.js` inside this folder to hold the following layout code.
 
 ```js
-import Layout from "@podium/layout";
+import Layout, { html } from "@podium/layout";
 import express from "express";
 
 const app = express();
@@ -179,7 +179,7 @@ app.get(layout.pathname(), async (req, res) => {
 
   incoming.view.title = "Podium example - home";
 
-  res.podiumSend(`
+  res.podiumSend(html`
       <section>${header}</section>
       <section>${navigation}</section>
       <section>${content}</section>

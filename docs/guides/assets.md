@@ -62,7 +62,7 @@ app.get(layout.pathname(), (req, res) => {
   const response = await myPodlet.fetch(incoming);
 
   incoming.podlets = [response];
-  res.podiumSend(`<div>Hello, Layout</div>`);
+  res.podiumSend(html`<div>Hello, Layout</div>`);
 });
 ```
 
@@ -93,7 +93,7 @@ app.get(layout.pathname(), (req, res) => {
   const response = await myPodlet.fetch(incoming);
 
   incoming.podlets = [response];
-  res.podiumSend(`<div>Hello, Layout</div>`);
+  res.podiumSend(html`<div>Hello, Layout</div>`);
 });
 ```
 
