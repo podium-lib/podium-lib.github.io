@@ -189,3 +189,14 @@ app.get("/", (req, res) => {
 });
 ```
 
+### Using the html template literal with view frameworks
+
+If you use view frameworks like React or Lit to render your markup on the server they typically already include some XSS hardening. To tell Podium you trust the generated HTML, use `DangerouslyIncludeUnescapedHTML`, available for both [layouts](https://podium-lib.io/docs/api/layout#dangerouslyincludeunescapedhtml) and [podlets](https://podium-lib.io/docs/api/podlet#dangerouslyincludeunescapedhtml).
+
+```js
+app.get("/", (req, res) => {
+  const trustedHtml = await render();
+  const body = new DangerouslyIncludeUnescapedHTML({ __content: trustedHtml });
+  res.podiumSend(html`${body}`);
+});
+```
