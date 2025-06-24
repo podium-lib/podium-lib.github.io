@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.8.1">
 <title data-rh="true">Home | Podium.io</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://podium-lib.io/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="Home | Podium.io"><meta data-rh="true" name="description" content="Podium.io documentation home page"><meta data-rh="true" property="og:description" content="Podium.io documentation home page"><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://podium-lib.io/"><link data-rh="true" rel="alternate" href="https://podium-lib.io/" hreflang="en"><link data-rh="true" rel="alternate" href="https://podium-lib.io/" hreflang="x-default"><script data-rh="true">function insertBanner(){var n=document.createElement("div");n.id="__docusaurus-base-url-issue-banner-container";n.innerHTML='\n<div id="__docusaurus-base-url-issue-banner" style="border: thick solid red; background-color: rgb(255, 230, 179); margin: 20px; padding: 20px; font-size: 20px;">\n   <p style="font-weight: bold; font-size: 30px;">Your Docusaurus site did not load properly.</p>\n   <p>A very common reason is a wrong site <a href="https://docusaurus.io/docs/docusaurus.config.js/#baseUrl" style="font-weight: bold;">baseUrl configuration</a>.</p>\n   <p>Current configured baseUrl = <span style="font-weight: bold; color: red;">/</span>  (default value)</p>\n   <p>We suggest trying baseUrl = <span id="__docusaurus-base-url-issue-banner-suggestion-container" style="font-weight: bold; color: green;"></span></p>\n</div>\n',document.body.prepend(n);var e=document.getElementById("__docusaurus-base-url-issue-banner-suggestion-container"),s=window.location.pathname,o="/"===s.substr(-1)?s:s+"/";e.innerHTML=o}document.addEventListener("DOMContentLoaded",(function(){void 0===window.docusaurus&&insertBanner()}))</script><link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Podium.io RSS Feed">
-<link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Podium.io Atom Feed"><link rel="stylesheet" href="/assets/css/styles.d3e2e225.css">
-<script src="/assets/js/runtime~main.62bc8e5b.js" defer="defer"></script>
-<script src="/assets/js/main.9041dde2.js" defer="defer"></script>
+<link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Podium.io Atom Feed"><link rel="stylesheet" href="/assets/css/styles.55a7597c.css">
+<script src="/assets/js/runtime~main.92e12ee7.js" defer="defer"></script>
+<script src="/assets/js/main.df52eca0.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><defs>
@@ -16,7 +16,7 @@
 <p>Podlets (page fragments) are standalone HTTP services developed and run in isolation. Podlets can be written in any language, but Podium comes with a @podium/podlet module for easy development of Podlets in node.js.</p>
 <p>This is a Podlet serving a HTML endpoint responding to the locale it get from a Layout:</p>
 <div class="tabs-container tabList__CuJ"><ul role="tablist" aria-orientation="horizontal" class="tabs"><li role="tab" tabindex="0" aria-selected="true" class="tabs__item tabItem_LNqP tabs__item--active">Express</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Hapi</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Fastify</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Http</li></ul><div class="margin-top--md"><div role="tabpanel" class="tabItem_Ymn6"><pre><code class="language-js">import express from &#x27;express&#x27;;
-import Podlet from &#x27;@podium/podlet&#x27;;
+import Podlet, { html } from &#x27;@podium/podlet&#x27;;
 
 const app = express();
 
@@ -31,9 +31,9 @@ app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) =&gt; {
   if (res.locals.podium.context.locale === &#x27;nb-NO&#x27;) {
-    return res.status(200).podiumSend(&#x27;&lt;h2&gt;Hei verden&lt;/h2&gt;&#x27;);
+    return res.status(200).podiumSend(html`&lt;h2&gt;Hei verden&lt;/h2&gt;`);
   }
-  res.status(200).podiumSend(`&lt;h2&gt;Hello world&lt;/h2&gt;`);
+  res.status(200).podiumSend(html`&lt;h2&gt;Hello world&lt;/h2&gt;`);
 });
 
 app.get(podlet.manifest(), (req, res) =&gt; {
@@ -42,7 +42,7 @@ app.get(podlet.manifest(), (req, res) =&gt; {
 
 app.listen(7100);
 </code></pre></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><pre><code class="language-js">import HapiPodlet from &#x27;@podium/hapi-podlet&#x27;;
-import Podlet from &#x27;@podium/podlet&#x27;;
+import Podlet, { html } from &#x27;@podium/podlet&#x27;;
 import Hapi from &#x27;hapi&#x27;;
 
 const app = Hapi.Server({
@@ -67,9 +67,9 @@ app.route({
   path: podlet.content(),
   handler: (request, h) =&gt; {
     if (request.app.podium.context.locale === &#x27;nb-NO&#x27;) {
-      return h.podiumSend(&#x27;&lt;h2&gt;Hei verden&lt;/h2&gt;&#x27;);
+      return h.podiumSend(html`&lt;h2&gt;Hei verden&lt;/h2&gt;`);
     }
-    return h.podiumSend(&#x27;&lt;h2&gt;Hello world&lt;/h2&gt;&#x27;);
+    return h.podiumSend(html`&lt;h2&gt;Hello world&lt;/h2&gt;`);
   },
 });
 
@@ -82,7 +82,7 @@ app.route({
 app.start();
 </code></pre></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><pre><code class="language-js">import fastifyPodlet from &#x27;@podium/fastify-podlet&#x27;;
 import fastify from &#x27;fastify&#x27;;
-import Podlet from &#x27;@podium/podlet&#x27;;
+import Podlet, { html } from &#x27;@podium/podlet&#x27;;
 
 const app = fastify();
 
@@ -97,10 +97,10 @@ app.register(fastifyPodlet, podlet);
 
 app.get(podlet.content(), async (request, reply) =&gt; {
   if (reply.app.podium.context.locale === &#x27;nb-NO&#x27;) {
-    reply.podiumSend(&#x27;&lt;h2&gt;Hei verden&lt;/h2&gt;&#x27;);
+    reply.podiumSend(html`&lt;h2&gt;Hei verden&lt;/h2&gt;`);
     return;
   }
-  reply.podiumSend(&#x27;&lt;h2&gt;Hello world&lt;/h2&gt;&#x27;);
+  reply.podiumSend(html`&lt;h2&gt;Hello world&lt;/h2&gt;`);
 });
 
 app.get(podlet.manifest(), async (request, reply) =&gt; {
@@ -118,7 +118,7 @@ const start = async () =&gt; {
 };
 start();
 </code></pre></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><pre><code class="language-js">import { HttpIncoming } from &#x27;@podium/utils&#x27;;
-import Podlet from &#x27;@podium/podlet&#x27;;
+import Podlet, { html } from &#x27;@podium/podlet&#x27;;
 import http from &#x27;http&#x27;;
 
 const podlet = new Podlet({
@@ -146,10 +146,10 @@ const server = http.createServer(async (req, res) =&gt; {
     res.setHeader(&#x27;podlet-version&#x27;, podlet.version);
 
     if (incoming.context.locale === &#x27;nb-NO&#x27;) {
-      res.end(podlet.render(incoming, &#x27;&lt;h2&gt;Hei verden&lt;/h2&gt;&#x27;));
+      res.end(podlet.render(incoming, html`&lt;h2&gt;Hei verden&lt;/h2&gt;`));
       return;
     }
-    res.end(podlet.render(incoming, &#x27;&lt;h2&gt;Hello world&lt;/h2&gt;&#x27;));
+    res.end(podlet.render(incoming, html`&lt;h2&gt;Hello world&lt;/h2&gt;`));
     return;
   }
 
@@ -164,7 +164,7 @@ server.listen(7100);
 <p>Layouts are standalone HTTP services which on run time compose one or multiple Podlets (page fragments) into full webpages. Layouts are written in node.js with the @podium/layout module.</p>
 <p>This is a Layout which will include two Podlets:</p>
 <div class="tabs-container tabList__CuJ"><ul role="tablist" aria-orientation="horizontal" class="tabs"><li role="tab" tabindex="0" aria-selected="true" class="tabs__item tabItem_LNqP tabs__item--active">Express</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Hapi</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Fastify</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Http</li></ul><div class="margin-top--md"><div role="tabpanel" class="tabItem_Ymn6"><pre><code class="language-js">import express from &#x27;express&#x27;;
-import Layout from &#x27;@podium/layout&#x27;;
+import Layout, { html } from &#x27;@podium/layout&#x27;;
 
 const layout = new Layout({
   name: &#x27;myLayout&#x27;,
@@ -192,15 +192,15 @@ app.get(layout.pathname(), async (req, res, next) =&gt; {
     podletB.fetch(incoming),
   ]);
 
-  res.podiumSend(`
-    &lt;section&gt;${a.content}&lt;/section&gt;
-    &lt;section&gt;${b.content}&lt;/section&gt;
+  res.podiumSend(html`
+    &lt;section&gt;${a}&lt;/section&gt;
+    &lt;section&gt;${b}&lt;/section&gt;
   `);
 });
 
 app.listen(7000);
 </code></pre></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><pre><code class="language-js">import HapiLayout from &#x27;@podium/hapi-layout&#x27;;
-import Layout from &#x27;@podium/layout&#x27;;
+import Layout, { html } from &#x27;@podium/layout&#x27;;
 import Hapi from &#x27;hapi&#x27;;
 
 const app = Hapi.Server({
@@ -237,9 +237,9 @@ app.route({
       podletA.fetch(incoming),
       podletB.fetch(incoming),
     ]);
-    h.podiumSend(`
-      &lt;section&gt;${a.content}&lt;/section&gt;
-      &lt;section&gt;${b.content}&lt;/section&gt;
+    h.podiumSend(html`
+      &lt;section&gt;${a}&lt;/section&gt;
+      &lt;section&gt;${b}&lt;/section&gt;
     `);
   },
 });
@@ -247,7 +247,7 @@ app.route({
 app.start();
 </code></pre></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><pre><code class="language-js">import fastifyLayout from &#x27;@podium/fastify-layout&#x27;;
 import fastify from &#x27;fastify&#x27;;
-import Layout from &#x27;@podium/layout&#x27;;
+import Layout, { html } from &#x27;@podium/layout&#x27;;
 
 const app = fastify();
 
@@ -276,9 +276,9 @@ app.get(layout.pathname(), async (request, reply) =&gt; {
         podletB.fetch(incoming),
     ]);
 
-    reply.podiumSend(`
-        &lt;section&gt;${a.content}&lt;/section&gt;
-        &lt;section&gt;${b.content}&lt;/section&gt;
+    reply.podiumSend(html`
+        &lt;section&gt;${a}&lt;/section&gt;
+        &lt;section&gt;${b}&lt;/section&gt;
     `);
 });
 
@@ -293,7 +293,7 @@ const start = async () =&gt; {
 }
 start();
 </code></pre></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><pre><code class="language-js">import { HttpIncoming } from &#x27;@podium/utils&#x27;;
-import Layout from &#x27;@podium/layout&#x27;;
+import Layout, { html } from &#x27;@podium/layout&#x27;;
 import http from &#x27;http&#x27;;
 
 const layout = new Layout({
@@ -324,9 +324,9 @@ const server = http.createServer(async (req, res) =&gt; {
     res.statusCode = 200;
     res.setHeader(&#x27;Content-Type&#x27;, &#x27;text/html&#x27;);
 
-    res.end(podlet.render(incoming, `
-      &lt;section&gt;${a.content}&lt;/section&gt;
-      &lt;section&gt;${b.content}&lt;/section&gt;
+    res.end(podlet.render(incoming, html`
+      &lt;section&gt;${a}&lt;/section&gt;
+      &lt;section&gt;${b}&lt;/section&gt;
     `));
 
     return;
