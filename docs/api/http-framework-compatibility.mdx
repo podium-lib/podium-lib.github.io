@@ -34,7 +34,7 @@ Example of setting up a podlet server in all HTTP frameworks supported by the Po
 
 ```js
 import express from 'express';
-import Podlet from '@podium/podlet';
+import Podlet, { html } from '@podium/podlet';
 
 const app = express();
 
@@ -49,9 +49,9 @@ app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
     if (res.locals.podium.context.locale === 'nb-NO') {
-        return res.status(200).podiumSend('<h2>Hei verden</h2>');
+        return res.status(200).podiumSend(html`<h2>Hei verden</h2>`);
     }
-    res.status(200).podiumSend(`<h2>Hello world</h2>`);
+    res.status(200).podiumSend(html`<h2>Hello world</h2>`);
 });
 
 app.get(podlet.manifest(), (req, res) => {
@@ -66,7 +66,7 @@ app.listen(7100);
 
 ```js
 import HapiPodlet from '@podium/hapi-podlet';
-import Podlet from '@podium/podlet';
+import Podlet, { html } from '@podium/podlet';
 import Hapi from 'hapi';
 
 const app = Hapi.Server({
@@ -91,9 +91,9 @@ app.route({
     path: podlet.content(),
     handler: (request, h) => {
         if (request.app.podium.context.locale === 'nb-NO') {
-            return h.podiumSend('<h2>Hei verden</h2>');
+            return h.podiumSend(html`<h2>Hei verden</h2>`);
         }
-        return h.podiumSend('<h2>Hello world</h2>');
+        return h.podiumSend(html`<h2>Hello world</h2>`);
     },
 });
 
@@ -112,7 +112,7 @@ app.start();
 ```js
 import fastifyPodlet from '@podium/fastify-podlet';
 import fastify from 'fastify';
-import Podlet from '@podium/podlet';
+import Podlet, { html } from '@podium/podlet';
 
 const app = fastify();
 
@@ -127,10 +127,10 @@ app.register(fastifyPodlet, podlet);
 
 app.get(podlet.content(), async (request, reply) => {
     if (reply.app.podium.context.locale === 'nb-NO') {
-        reply.podiumSend('<h2>Hei verden</h2>');
+        reply.podiumSend(html`<h2>Hei verden</h2>`);
         return;
     }
-    reply.podiumSend('<h2>Hello world</h2>');
+    reply.podiumSend(html`<h2>Hello world</h2>`);
 });
 
 app.get(podlet.manifest(), async (request, reply) => {
@@ -182,10 +182,10 @@ const server = http.createServer(async (req, res) => {
         res.setHeader('podlet-version', podlet.version);
 
         if (incoming.context.locale === 'nb-NO') {
-            res.end(podlet.render(incoming, '<h2>Hei verden</h2>'));
+            res.end(podlet.render(incoming, html`<h2>Hei verden</h2>`));
             return;
         }
-        res.end(podlet.render(incoming, '<h2>Hello world</h2>'));
+        res.end(podlet.render(incoming, html`<h2>Hello world</h2>`));
         return;
     }
 

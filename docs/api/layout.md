@@ -66,7 +66,7 @@ Building a simple layout server including two podlets:
 
 ```js
 import express from "express";
-import Layout from "@podium/layout";
+import Layout, { html } from "@podium/layout";
 
 const layout = new Layout({
   name: "myLayout",
@@ -94,9 +94,9 @@ app.get(layout.pathname(), async (req, res, next) => {
     podletB.fetch(incoming),
   ]);
 
-  res.podiumSend(`
-        <section>${a.content}</section>
-        <section>${b.content}</section>
+  res.podiumSend(html`
+        <section>${a}</section>
+        <section>${b}</section>
     `);
 });
 
@@ -108,7 +108,7 @@ app.listen(7000);
 
 ```js
 import HapiLayout from '@podium/hapi-layout';
-import Layout from '@podium/layout';
+import Layout, { html } from '@podium/layout';
 import Hapi from 'hapi';
 
 const app = Hapi.Server({
@@ -147,9 +147,9 @@ app.route({
             podletB.fetch(incoming),
         ]);
 
-        h.podiumSend(`
-            <section>${a.content}</section>
-            <section>${b.content}</section>
+        h.podiumSend(html`
+            <section>${a}</section>
+            <section>${b}</section>
         `);
 
     },
@@ -164,7 +164,7 @@ app.start();
 ```js
 import fastifyLayout from "@podium/fastify-layout";
 import fastify from "fastify";
-import Layout from "@podium/layout";
+import Layout, { html } from "@podium/layout";
 
 const app = fastify();
 
@@ -193,9 +193,9 @@ app.get(layout.pathname(), async (request, reply) => {
     podletB.fetch(incoming),
   ]);
 
-  reply.podiumSend(`
-        <section>${a.content}</section>
-        <section>${b.content}</section>
+  reply.podiumSend(html`
+        <section>${a}</section>
+        <section>${b}</section>
     `);
 });
 
@@ -216,7 +216,7 @@ start();
 
 ```js
 import { HttpIncoming } from "@podium/utils";
-import Layout from "@podium/layout";
+import Layout, { html } from "@podium/layout";
 import http from "http";
 
 const layout = new Layout({
@@ -250,9 +250,9 @@ const server = http.createServer(async (req, res) => {
     res.end(
       layout.render(
         incoming,
-        `
-            <section>${a.content}</section>
-            <section>${b.content}</section>
+        html`
+            <section>${a}</section>
+            <section>${b}</section>
         `
       )
     );
@@ -2244,6 +2244,51 @@ An podlet response instance has the following properties:
 | css      | `array`  | &check; |        | `[]`    | An array of [AssetCSS](assets.md#assetcss) objects holding the CSS references registered by the podlet. |
 | js       | `array`  | &check; |        | `[]`    | An array of [AssetJS](assets.md#assetjs) objects holding the JS references registered by the podlet.    |
 
+## html
+
+Tagged template literal that automatically escapes the different inputs to prevent XSS.
+
+There are two exceptions that do not get escaped:
+
+- [The result of a podlet `fetch`](#podlet-response).
+- [Strings wrapped in `DangerouslyIncludeUnescapedHTML`](#dangerouslyincludeunescapedhtml).
+
+Use with [podiumSend](#respodiumsendfragment).
+
+```js
+import { html } from "@podium/layout";
+```
+
+## escape
+
+The same escape function used by [`html`](#html) in case you want to escape something manually, for example inputs to APIs.
+
+```js
+import { escape } from "@podium/layout";
+```
+
+## DangerouslyIncludeUnescapedHTML
+
+Lets you opt a string you trust out of being escaped.
+
+**NB**: You don't need to escape podlets this way as long as you send in the whole response instead of just `podlet.content`.
+
+```js
+import { html, DangerouslyIncludeUnescapedHTML } from "@podium/layout";
+
+const greeting = new DangerouslyIncludeUnescapedHTML({ __content:  "<em>Howdy</em>" });
+const result = html`<p>${greeting} partner!</p>`
+```
+
+## TemplateResult
+
+This is the class type returned by the [`html`](#html) tagged template literal.
+You can use it for typing, or for advanced cases if `html` does not work for you.
+
+```js
+import { TemplateResult } from "@podium/layout";
+```
+
 ## res.podiumSend(fragment)
 
 Method on the `http.ServerResponse` object for sending HTML fragments. Calls
@@ -2260,7 +2305,7 @@ _Example of sending an HTML fragment:_
 
 ```js
 app.get(layout.pathname(), (req, res) => {
-  res.podiumSend("<h1>Hello World</h1>");
+  res.podiumSend(html`<h1>Hello World</h1>`);
 });
 ```
 
@@ -2272,7 +2317,7 @@ app.route({
   method: "GET",
   path: layout.pathname(),
   handler: (request, h) => {
-    return h.podiumSend("<h2>Hello world</h2>");
+    return h.podiumSend(html`<h2>Hello world</h2>`);
   },
 });
 ```
@@ -2282,7 +2327,7 @@ app.route({
 
 ```js
 app.get(layout.pathname(), async (request, reply) => {
-  reply.podiumSend("<h2>Hello world</h2>");
+  reply.podiumSend(html`<h2>Hello world</h2>`);
 });
 ```
 
@@ -2296,7 +2341,7 @@ const server = http.createServer(async (req, res) => {
 
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/html");
-  res.end(layout.render(incoming, "<h2>Hello world</h2>"));
+  res.end(layout.render(incoming, html`<h2>Hello world</h2>`));
 });
 ```
 

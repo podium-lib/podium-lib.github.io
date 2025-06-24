@@ -49,7 +49,7 @@ Make an `index.mjs` file and set up the podlet using Express:
 ```js
 // index.mjs
 import express from "express";
-import Podlet from "@podium/podlet";
+import Podlet, { html } from "@podium/podlet";
 
 const app = express();
 
@@ -57,13 +57,13 @@ const podlet = new Podlet({
   name: "my-podlet",
   version: "1.0.0",
   pathname: "/",
-  development: true, // this should be false in production
+  development: true, // this should be false outside of localhost
 });
 
 app.use(podlet.middleware());
 
 app.get(podlet.content(), (req, res) => {
-  res.status(200).podiumSend(`
+  res.status(200).podiumSend(html`
         <div>
             This is the podlet's HTML content
         </div>
@@ -121,7 +121,7 @@ Make an `index.mjs` file and set up the layout using Express:
 ```js
 // index.mjs
 import express from "express";
-import Layout from "@podium/layout";
+import Layout, { html } from "@podium/layout";
 
 const app = express();
 
@@ -148,7 +148,7 @@ app.get(layout.pathname(), async (req, res) => {
   // Register the podlet's JS and CSS assets with the layout's HTML template
   incoming.podlets = [response];
 
-  res.podiumSend(`
+  res.podiumSend(html`
     <div>This is the layout's HTML content</div>
     ${response}
   `);

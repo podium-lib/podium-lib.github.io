@@ -23,7 +23,7 @@ const podlet = new Podlet(/*...*/);
 const app = express();
 
 app.get(podlet.fallback(), (req, res) => {
-  res.status(200).podiumSend("<div>It didn't work :(</div>");
+  res.status(200).podiumSend(html`<div>It didn't work :(</div>`);
 });
 ```
 
@@ -31,7 +31,7 @@ With a custom URL, which will be reflected in the manifest.
 
 ```js
 app.get(podlet.fallback("/my-custom-fallback-route"), (req, res) => {
-  res.status(200).podiumSend("<div>It didn't work :(</div>");
+  res.status(200).podiumSend(html`<div>It didn't work :(</div>`);
 });
 ```
 
@@ -43,7 +43,7 @@ app.get(podlet.fallback(), (req, res) => {
   res
     .status(200)
     .podiumSend(
-      `<div data-public-path-name=${publicPathname}>It didn't work :(</div>`
+      html`<div data-public-path-name=${publicPathname}>It didn't work :(</div>`
     );
 });
 ```

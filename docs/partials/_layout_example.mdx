@@ -12,7 +12,7 @@ This is a Layout which will include two Podlets:
 
 ```js
 import express from 'express';
-import Layout from '@podium/layout';
+import Layout, { html } from '@podium/layout';
 
 const layout = new Layout({
   name: 'myLayout',
@@ -40,9 +40,9 @@ app.get(layout.pathname(), async (req, res, next) => {
     podletB.fetch(incoming),
   ]);
 
-  res.podiumSend(`
-    <section>${a.content}</section>
-    <section>${b.content}</section>
+  res.podiumSend(html`
+    <section>${a}</section>
+    <section>${b}</section>
   `);
 });
 
@@ -54,7 +54,7 @@ app.listen(7000);
 
 ```js
 import HapiLayout from '@podium/hapi-layout';
-import Layout from '@podium/layout';
+import Layout, { html } from '@podium/layout';
 import Hapi from 'hapi';
 
 const app = Hapi.Server({
@@ -91,9 +91,9 @@ app.route({
       podletA.fetch(incoming),
       podletB.fetch(incoming),
     ]);
-    h.podiumSend(`
-      <section>${a.content}</section>
-      <section>${b.content}</section>
+    h.podiumSend(html`
+      <section>${a}</section>
+      <section>${b}</section>
     `);
   },
 });
@@ -108,7 +108,7 @@ app.start();
 ```js
 import fastifyLayout from '@podium/fastify-layout';
 import fastify from 'fastify';
-import Layout from '@podium/layout';
+import Layout, { html } from '@podium/layout';
 
 const app = fastify();
 
@@ -137,9 +137,9 @@ app.get(layout.pathname(), async (request, reply) => {
         podletB.fetch(incoming),
     ]);
 
-    reply.podiumSend(`
-        <section>${a.content}</section>
-        <section>${b.content}</section>
+    reply.podiumSend(html`
+        <section>${a}</section>
+        <section>${b}</section>
     `);
 });
 
@@ -161,7 +161,7 @@ start();
 
 ```js
 import { HttpIncoming } from '@podium/utils';
-import Layout from '@podium/layout';
+import Layout, { html } from '@podium/layout';
 import http from 'http';
 
 const layout = new Layout({
@@ -192,9 +192,9 @@ const server = http.createServer(async (req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
 
-    res.end(podlet.render(incoming, `
-      <section>${a.content}</section>
-      <section>${b.content}</section>
+    res.end(podlet.render(incoming, html`
+      <section>${a}</section>
+      <section>${b}</section>
     `));
 
     return;
