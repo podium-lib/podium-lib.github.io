@@ -34,29 +34,6 @@ app.get(podlet.content(), (req, res) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const podlet = new Podlet([ ... ]);
-
-podlet.css({ value: '/assets/styles.css' });
-podlet.js({ value: '/assets/scripts.js', type: 'esm' });
-
-app.route({
-    method: 'GET',
-    path: podlet.content(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
-
-        console.log(incoming.css)  // array of AssetCSS objects
-        console.log(incoming.js)   // array of AssetJS objects
-
-        [ ... ]
-    },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -130,33 +107,6 @@ app.get(layout.pathname(), async (req, res, next) => {
 
     [ ... ]
 });
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
-});
-
-app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
-
-        const response = await podlet.fetch(incoming);
-
-        console.log(response.css)  // array with the podlets AssetCSS objects
-        console.log(response.js)   // array with the podlets AssetJS objects
-
-        [ ... ]
-    },
-});
-
-app.start();
 ```
 
 </TabItem>
@@ -261,57 +211,6 @@ app.get(layout.pathname(), async (req, res, next) => {
 
     [ ... ]
 });
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-layout.css({ value: '/assets/styles.css' });
-layout.js({ value: '/assets/scripts.js', type: 'esm' });
-
-const podletA = layout.client.register({
-    name: 'myPodletA',
-    uri: 'http://localhost:7100/manifest.json',
-});
-
-const podletB = layout.client.register({
-    name: 'myPodletB',
-    uri: 'http://localhost:7200/manifest.json',
-});
-
-const podletC = layout.client.register({
-    name: 'myPodletC',
-    uri: 'http://localhost:7300/manifest.json',
-});
-
-app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
-
-        const response = await Promise.all(
-            podletA.fetch(incoming),
-            podletB.fetch(incoming),
-        );
-
-        const singleResponse = await podletC.fetch(incoming);
-
-        // This appends the assets from the podlets onto incoming.css and incoming.js
-        incoming.podlets = response;
-
-        // A single response is also supported
-        incoming.podlets = singleResponse;
-
-        console.log(incoming.css)  // array with the layouts and podlets AssetCSS objects
-        console.log(incoming.js)   // array with the layouts and podlets AssetJS objects
-
-        [ ... ]
-    },
-});
-
-app.start();
 ```
 
 </TabItem>

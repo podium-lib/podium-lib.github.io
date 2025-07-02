@@ -55,20 +55,6 @@ app.get(layout.pathname(), (req, res) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
-        return podlet.render(incoming, html`<div>content to render</div>`);
-    },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -143,25 +129,6 @@ app.get(layout.pathname(), (req, res) => {
 
     const document = layout.render(incoming, html`<div>content to render</div>`);
     res.send(document);
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
-
-        incoming.view = {
-            title: `My Site / ${someRequestValue}`,
-        };
-
-        return layout.render(incoming, html`<div>content to render</div>`);
-    },
 });
 ```
 
@@ -285,33 +252,6 @@ app.get(layout.pathname(), (req, res) => {
     const document = layout.render(incoming, body, head);
 
     res.send(document);
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-layout.view = (incoming, body, head) => {
-    return `
-        <html>
-            <head>${head}</head>
-            <body>${body}</body>
-        </html>
-    `;
-};
-
-app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
-
-        const head = html`<meta ..... />`;
-        const body = html`<section>my content</section>`;
-
-        return layout.render(incoming, body, head);
-    },
 });
 ```
 

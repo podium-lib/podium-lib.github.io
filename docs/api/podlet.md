@@ -31,14 +31,6 @@ $ npm install @podium/podlet
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```bash
-$ npm install @podium/podlet
-$ npm install @podium/hapi-podlet
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```bash
@@ -83,51 +75,6 @@ app.get(podlet.manifest(), (req, res) => {
 });
 
 app.listen(7100);
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-import HapiPodlet from "@podium/hapi-podlet";
-import Podlet, { html } from "@podium/podlet";
-import Hapi from "hapi";
-
-const app = Hapi.Server({
-  host: "localhost",
-  port: 7100,
-});
-
-const podlet = new Podlet({
-  name: "myPodlet",
-  version: "1.0.0",
-  pathname: "/",
-  development: true,
-});
-
-app.register({
-  plugin: new HapiPodlet(),
-  options: podlet,
-});
-
-app.route({
-  method: "GET",
-  path: podlet.content(),
-  handler: (request, h) => {
-    if (request.app.podium.context.locale === "nb-NO") {
-      return h.podiumSend(html`<h2>Hei verden</h2>`);
-    }
-    return h.podiumSend(html`<h2>Hello world</h2>`);
-  },
-});
-
-app.route({
-  method: "GET",
-  path: podlet.manifest(),
-  handler: (request, h) => JSON.stringify(podlet),
-});
-
-app.start();
 ```
 
 </TabItem>
@@ -288,31 +235,6 @@ app.get('/', (req, res, next) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: '/',
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -355,39 +277,6 @@ app.get('/foo', (req, res, next) => {
 
 app.get('/foo/:id', (req, res, next) => {
     [ ... ]
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: '/foo',
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-
-app.route({
-    method: 'GET',
-    path: '/foo/{id}',
-    handler: (request, h) => {
-        [ ... ]
-    },
 });
 ```
 
@@ -458,30 +347,6 @@ app.get("/foo/component.json", (req, res, next) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-    manifest: '/component.json',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: '/foo/component.json',
-    handler: (request, h) => JSON.stringify(podlet),
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -534,32 +399,6 @@ app.get('/foo/index.html', (req, res, next) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-    content: '/index.html',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: '/foo/index.html',
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -607,32 +446,6 @@ const podlet = new Podlet({
 
 app.get('/foo/fallback.html', (req, res, next) => {
     [ ... ]
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/foo',
-    fallback: '/fallback.html',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: '/foo/fallback.html',
-    handler: (request, h) => {
-        [ ... ]
-    },
 });
 ```
 
@@ -751,29 +564,6 @@ app.get(podlet.manifest(), (req, res, next) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: podlet.manifest(),
-    handler: (request, h) => JSON.stringify(podlet),
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -815,30 +605,6 @@ app.get(podlet.manifest(), (req, res, next) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    manifest: '/component.json',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: podlet.manifest(),
-    handler: (request, h) => JSON.stringify(podlet),
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -872,20 +638,6 @@ const podlet = new Podlet([ ... ]);
 
 app.get(podlet.manifest(), (req, res, next) => {
     res.status(200).json(podlet);
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet([ ... ]);
-
-app.route({
-    method: 'GET',
-    path: podlet.manifest(),
-    handler: (request, h) => JSON.stringify(podlet),
 });
 ```
 
@@ -965,31 +717,6 @@ app.get(podlet.content(), (req, res, next) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: podlet.content(),
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -1026,32 +753,6 @@ const podlet = new Podlet({
 
 app.get(podlet.content(), (req, res, next) => {
     [ ... ]
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    content: '/index.html',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: podlet.content(),
-    handler: (request, h) => {
-        [ ... ]
-    },
 });
 ```
 
@@ -1095,48 +796,6 @@ const podlet = new Podlet({
 app.get('/content', (req, res) => { ... });
 app.get('/content/info', (req, res) => { ... });
 app.get('/content/info/:id', (req, res) => { ... });
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    content: '/content',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: '/content',
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-
-app.route({
-    method: 'GET',
-    path: '/content/info',
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-
-app.route({
-    method: 'GET',
-    path: '/content/info/{id}',
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
 ```
 
 </TabItem>
@@ -1207,32 +866,6 @@ const podlet = new Podlet({
 
 app.get(podlet.fallback(), (req, res, next) => {
     [ ... ]
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-    fallback: '/fallback.html',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.route({
-    method: 'GET',
-    path: podlet.fallback(),
-    handler: (request, h) => {
-        [ ... ]
-    },
 });
 ```
 
@@ -1339,35 +972,6 @@ podlet.js({ value: "/assets.js" });
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.register(await import('@hapi/inert'));
-
-app.route({
-    method: 'GET',
-    path: '/assets.js',
-    handler: (request, h) => {
-        return h.file('./src/js/main.js');
-    },
-});
-
-podlet.js({ value: '/assets.js' });
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -1409,46 +1013,6 @@ const podlet = new Podlet({
 });
 
 app.use("/assets", express.static("./src/js"));
-
-podlet.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server({
-  port: 7000,
-  routes: {
-    files: {
-      relativeTo: "./src/js/",
-    },
-  },
-});
-
-const podlet = new Podlet({
-  name: "myPodlet",
-  version: "1.0.0",
-  pathname: "/",
-});
-
-app.register({
-  plugin: new HapiPodlet(),
-  options: podlet,
-});
-
-app.register(await import("@hapi/inert"));
-
-app.route({
-  method: "GET",
-  path: "/assets/{param*}",
-  handler: {
-    directory: {
-      path: ".",
-      redirectToSlash: true,
-    },
-  },
-});
 
 podlet.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
 ```
@@ -1572,35 +1136,6 @@ podlet.css({ value: "/assets.css" });
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const podlet = new Podlet({
-    name: 'myPodlet',
-    version: '1.0.0',
-    pathname: '/',
-});
-
-app.register({
-    plugin: new HapiPodlet(),
-    options: podlet,
-});
-
-app.register(await import('@hapi/inert'));
-
-app.route({
-    method: 'GET',
-    path: '/assets.css',
-    handler: (request, h) => {
-        return h.file('./src/css/main.css');
-    },
-});
-
-podlet.css({ value: '/assets.css' });
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -1642,46 +1177,6 @@ const podlet = new Podlet({
 });
 
 app.use("/assets", express.static("./src/css"));
-
-podlet.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server({
-  port: 7000,
-  routes: {
-    files: {
-      relativeTo: "./src/css/",
-    },
-  },
-});
-
-const podlet = new Podlet({
-  name: "myPodlet",
-  version: "1.0.0",
-  pathname: "/",
-});
-
-app.register({
-  plugin: new HapiPodlet(),
-  options: podlet,
-});
-
-app.register(await import("@hapi/inert"));
-
-app.route({
-  method: "GET",
-  path: "/assets/{param*}",
-  handler: {
-    directory: {
-      path: ".",
-      redirectToSlash: true,
-    },
-  },
-});
 
 podlet.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
 ```
@@ -1766,19 +1261,6 @@ app.get(podlet.proxy({ target: '/api', name: 'api' }), (req, res) => { ... });
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server( ... );
-const podlet = new Podlet( ... );
-app.route({
-    method: 'GET',
-    path: podlet.proxy({ target: '/api', name: 'api' }),
-    handler: (request, h) => { ... },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -1805,40 +1287,6 @@ app.get('/api', (req, res) => { ... });
 app.get('/api/foo', (req, res) => { ... });
 app.post('/api/foo', (req, res) => { ... });
 app.get('/api/bar/:id', (req, res) => { ... });
-
-podlet.proxy({ target: '/api', name: 'api' });
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server( ... );
-const podlet = new Podlet( ... );
-
-app.route({
-    method: 'GET',
-    path: '/api',
-    handler: (request, h) => { ... },
-});
-
-app.route({
-    method: 'GET',
-    path: '/api/foo',
-    handler: (request, h) => { ... },
-});
-
-app.route({
-    method: 'POST',
-    path: '/api/foo',
-    handler: (request, h) => { ... },
-});
-
-app.route({
-    method: 'GET',
-    path: '/api/bar/{id}',
-    handler: (request, h) => { ... },
-});
 
 podlet.proxy({ target: '/api', name: 'api' });
 ```
@@ -1946,40 +1394,6 @@ app.get(`${podlet.pathname()}/bar`, (req, res, next) => {
 
 app.get(`${podlet.pathname()}/bar/:id`, (req, res, next) => {
     [ ... ]
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const podlet = new Podlet({
-    name: 'myPodlet',
-    pathname: '/foo',
-});
-
-app.route({
-    method: 'GET',
-    path: podlet.pathname(),
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-
-app.route({
-    method: 'GET',
-    path: `${podlet.pathname()}/bar`,
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-
-app.route({
-    method: 'GET',
-    path: `${podlet.pathname()}/bar/{id}`,
-    handler: (request, h) => {
-        [ ... ]
-    },
 });
 ```
 
@@ -2098,20 +1512,6 @@ app.get(podlet.content(), (req, res) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-app.route({
-  method: "GET",
-  path: podlet.content(),
-  handler: (request, h) => {
-    const incoming = request.app.podium;
-    return layout.render(incoming, html`<div>content to render</div>`);
-  },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -2160,33 +1560,6 @@ app.get(podlet.content(), async (req, res, next) => {
 
   const document = layout.render(incoming, body, head);
   res.send(document);
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-podlet.view = (incoming, body, head) => {
-  return `
-        <html>
-            <head>${head}</head>
-            <body>${body}</body>
-        </html>
-    `;
-};
-
-app.route({
-  method: "GET",
-  path: podlet.content(),
-  handler: (request, h) => {
-    const incoming = request.app.podium;
-
-    const head = html`<meta ..... />`;
-    const body = html`<section>my content</section>`;
-
-    return layout.render(incoming, body, head);
-  },
 });
 ```
 
@@ -2326,19 +1699,6 @@ app.get(podlet.content(), (req, res) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-app.route({
-  method: "GET",
-  path: podlet.content(),
-  handler: (request, h) => {
-    return h.podiumSend(html`<h2>Hello world</h2>`);
-  },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -2400,7 +1760,6 @@ the encapsulating HTML document will not be applied.
 [@podium/layout]: https://github.com/podium-lib/layout "@podium/layout"
 [@podium/proxy]: https://github.com/podium-lib/proxy "@podium/proxy"
 [express]: https://expressjs.com/ "Express"
-[hapi podlet plugin]: https://github.com/podium-lib/hapi-podlet "Hapi Podlet Plugin"
 [publicpathname]: https://github.com/podium-lib/context#public-pathname "`publicPathname`"
 [mountorigin]: https://github.com/podium-lib/context#mount-origin "`mountOrigin`"
 [abslog]: https://github.com/trygve-lie/abslog "abslog"
