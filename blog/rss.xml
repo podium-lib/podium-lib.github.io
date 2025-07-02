@@ -4,10 +4,20 @@
         <title>Podium.io Blog</title>
         <link>https://podium-lib.io/blog</link>
         <description>Podium.io Blog</description>
-        <lastBuildDate>Mon, 23 Jun 2025 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 02 Jul 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Ending official support for Hapi]]></title>
+            <link>https://podium-lib.io/blog/saying-goodbye-to-hapi</link>
+            <guid>https://podium-lib.io/blog/saying-goodbye-to-hapi</guid>
+            <pubDate>Wed, 02 Jul 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[The Podium modules for Hapi, @podium/hapi-layout and @podium/hapi-podlet, are now deprecated and archived.]]></description>
+            <content:encoded><![CDATA[<p>The Podium modules for Hapi, <a href="https://github.com/podium-lib/hapi-layout" target="_blank" rel="noopener noreferrer">@podium/hapi-layout</a> and <a href="https://github.com/podium-lib/hapi-podlet" target="_blank" rel="noopener noreferrer">@podium/hapi-podlet</a>, are now deprecated and archived.</p>
+<p><a href="https://hapi.dev/" target="_blank" rel="noopener noreferrer">Hapi</a> has been one of the frameworks with official Podium support alongside Express and Fastify. Unfortunately the Podium team don't have the capacity to support this third framework alongside Express and Fastify.</p>
+<p>Podium's core design is not changing. We will still target Node's HTTP server and be independent of any one framework.</p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Introducing the html template literal]]></title>
             <link>https://podium-lib.io/blog/html-template-literal</link>
