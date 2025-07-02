@@ -19,7 +19,7 @@ The `@podium/layout` module provide three core features:
 - A proxy that makes it possible to publicly expose podlet data endpoints (or any backend services) via the layout
 
 This module is to be used in conjunction with a Node.js HTTP server. For this,
-Express js, Hapi and Fastify are all supported. It's also possible to write your
+Express and Fastify are bith supported. It's also possible to write your
 server using other HTTP frameworks or even just using the core Node.js HTTP
 libraries.
 
@@ -34,24 +34,16 @@ For writing layout servers with other HTTP frameworks, see [HTTP Framework Compa
 <Tabs groupId="server-frameworks">
 <TabItem value="express" label="Express">
 
-```bash
-$ npm install @podium/layout
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```bash
-$ npm install @podium/layout
-$ npm install @podium/hapi-layout
+```sh
+npm install @podium/layout
 ```
 
 </TabItem>
 <TabItem value="fastify" label="Fastify">
 
-```bash
-$ npm install @podium/layout
-$ npm install @podium/fastify-layout
+```sh
+npm install @podium/layout
+npm install @podium/fastify-layout
 ```
 
 </TabItem>
@@ -101,61 +93,6 @@ app.get(layout.pathname(), async (req, res, next) => {
 });
 
 app.listen(7000);
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-import HapiLayout from '@podium/hapi-layout';
-import Layout, { html } from '@podium/layout';
-import Hapi from 'hapi';
-
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7000,
-});
-
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
-});
-
-const podletA = layout.client.register({
-    name: 'myPodletA',
-    uri: 'http://localhost:7100/manifest.json',
-});
-
-const podletB = layout.client.register({
-    name: 'myPodletB',
-    uri: 'http://localhost:7200/manifest.json',
-});
-
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
-});
-
-app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
-
-        const [a, b] = await Promise.all([
-            podletA.fetch(incoming),
-            podletB.fetch(incoming),
-        ]);
-
-        h.podiumSend(html`
-            <section>${a}</section>
-            <section>${b}</section>
-        `);
-
-    },
-});
-
-app.start();
 ```
 
 </TabItem>
@@ -330,34 +267,6 @@ app.get('/', (req, res, next) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7000,
-});
-
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
-});
-
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
-});
-
-app.route({
-    method: 'GET',
-    path: '/',
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -417,42 +326,6 @@ app.get('/foo', (req, res, next) => {
 
 app.get('/foo/:id', (req, res, next) => {
     [ ... ]
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7000,
-});
-
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-});
-
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
-});
-
-app.route({
-    method: 'GET',
-    path: '/foo',
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-
-app.route({
-    method: 'GET',
-    path: '/foo/{id}',
-    handler: (request, h) => {
-        [ ... ]
-    },
 });
 ```
 
@@ -680,34 +553,6 @@ layout.js({ value: "/assets.js" });
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
-});
-
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
-});
-
-app.register(await import('@hapi/inert'));
-
-app.route({
-    method: 'GET',
-    path: '/assets.js',
-    handler: (request, h) => {
-        return h.file('./src/js/main.js');
-    },
-});
-
-layout.js({ value: '/assets.js' });
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -774,45 +619,6 @@ const layout = new Layout({
 });
 
 app.use("/assets", express.static("./src/js"));
-
-layout.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server({
-  port: 7000,
-  routes: {
-    files: {
-      relativeTo: "./src/js/",
-    },
-  },
-});
-
-const layout = new Layout({
-  name: "myLayout",
-  pathname: "/",
-});
-
-app.register({
-  plugin: new HapiLayout(),
-  options: layout,
-});
-
-app.register(await import("@hapi/inert"));
-
-app.route({
-  method: "GET",
-  path: "/assets/{param*}",
-  handler: {
-    directory: {
-      path: ".",
-      redirectToSlash: true,
-    },
-  },
-});
 
 layout.js([{ value: "/assets/main.js" }, { value: "/assets/extra.js" }]);
 ```
@@ -967,34 +773,6 @@ layout.css({ value: "/assets.css" });
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server([ ... ]);
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
-});
-
-app.register({
-    plugin: new HapiLayout(),
-    options: layout,
-});
-
-app.register(await import('@hapi/inert'));
-
-app.route({
-    method: 'GET',
-    path: '/assets.css',
-    handler: (request, h) => {
-        return h.file('./src/js/main.css');
-    },
-});
-
-layout.css({ value: '/assets.css' });
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -1061,45 +839,6 @@ const layout = new Layout({
 });
 
 app.use("/assets", express.static("./src/css"));
-
-layout.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const app = Hapi.Server({
-  port: 7000,
-  routes: {
-    files: {
-      relativeTo: "./src/css/",
-    },
-  },
-});
-
-const layout = new Layout({
-  name: "myLayout",
-  pathname: "/",
-});
-
-app.register({
-  plugin: new HapiLayout(),
-  options: layout,
-});
-
-app.register(await import("@hapi/inert"));
-
-app.route({
-  method: "GET",
-  path: "/assets/{param*}",
-  handler: {
-    directory: {
-      path: ".",
-      redirectToSlash: true,
-    },
-  },
-});
 
 layout.css([{ value: "/assets/main.css" }, { value: "/assets/extra.css" }]);
 ```
@@ -1212,40 +951,6 @@ app.get(`${layout.pathname()}/bar`, (req, res, next) => {
 
 app.get(`${layout.pathname()}/bar/:id`, (req, res, next) => {
     [ ... ]
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/foo',
-});
-
-app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-
-app.route({
-    method: 'GET',
-    path: `${layout.pathname()}/bar`,
-    handler: (request, h) => {
-        [ ... ]
-    },
-});
-
-app.route({
-    method: 'GET',
-    path: `${layout.pathname()}/bar/{id}`,
-    handler: (request, h) => {
-        [ ... ]
-    },
 });
 ```
 
@@ -1385,33 +1090,6 @@ app.get(layout.pathname(), (req, res) => {
   const document = layout.render(incoming, body, head);
 
   res.send(document);
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-layout.view = (incoming, body, head) => {
-  return `
-        <html>
-            <head>${head}</head>
-            <body>${body}</body>
-        </html>
-    `;
-};
-
-app.route({
-  method: "GET",
-  path: layout.pathname(),
-  handler: (request, h) => {
-    const incoming = request.app.podium;
-
-    const head = `<meta ..... />`;
-    const body = `<section>my content</section>`;
-
-    return layout.render(incoming, body, head);
-  },
 });
 ```
 
@@ -1568,43 +1246,6 @@ app.get(layout.pathname(), async (req, res, next) => {
     ]);
 
     [ ... ]
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const layout = new Layout({
-    name: 'myLayout',
-    pathname: '/',
-});
-
-const podletA = layout.client.register({
-    name: 'myPodletA',
-    uri: 'http://localhost:7100/manifest.json',
-});
-
-const podletB = layout.client.register({
-    name: 'myPodletB',
-    uri: 'http://localhost:7200/manifest.json',
-});
-
-[ ... ]
-
-app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: (request, h) => {
-        const incoming = request.app.podium;
-
-        const [a, b] = await Promise.all([
-            podletA.fetch(incoming),
-            podletB.fetch(incoming),
-        ]);
-
-        [ ... ]
-    },
 });
 ```
 
@@ -1882,30 +1523,6 @@ app.get(layout.pathname(), async (req, res, next) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const podlet = layout.client.register({
-    name: 'myPodlet',
-    uri: 'http://localhost:7100/manifest.json',
-});
-
-app.route({
-    method: 'GET',
-    path: layout.pathname(),
-    handler: await (request, h) => {
-        const incoming = request.app.podium;
-
-        const response = await podlet.fetch(incoming);
-
-        h.podiumSend(`
-            <section>${response.content}</section>
-        `);
-    },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -2008,27 +1625,6 @@ app.get(layout.pathname(), async (req, res, next) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const podlet = layout.client.register({
-  name: "myPodlet",
-  uri: "http://localhost:7100/manifest.json",
-});
-
-app.route({
-  method: "GET",
-  path: layout.pathname(),
-  handler: (request, h) => {
-    const incoming = request.app.podium;
-
-    const stream = podlet.stream(incoming);
-    return h.response(stream);
-  },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -2108,33 +1704,6 @@ app.get(layout.pathname(), async (req, res, next) => {
   });
 
   stream.pipe(res);
-});
-```
-
-</TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-const podlet = layout.client.register({
-  name: "myPodlet",
-  uri: "http://localhost:7100/manifest.json",
-});
-
-app.route({
-  method: "GET",
-  path: layout.pathname(),
-  handler: (request, h) => {
-    const incoming = request.app.podium;
-
-    const stream = podlet.stream(incoming);
-    stream.once("beforeStream", (data) => {
-      console.log(data.headers);
-      console.log(data.css);
-      console.log(data.js);
-    });
-
-    return h.response(stream);
-  },
 });
 ```
 
@@ -2310,19 +1879,6 @@ app.get(layout.pathname(), (req, res) => {
 ```
 
 </TabItem>
-<TabItem value="hapi" label="Hapi">
-
-```js
-app.route({
-  method: "GET",
-  path: layout.pathname(),
-  handler: (request, h) => {
-    return h.podiumSend(html`<h2>Hello world</h2>`);
-  },
-});
-```
-
-</TabItem>
 <TabItem value="fastify" label="Fastify">
 
 ```js
@@ -2349,7 +1905,6 @@ const server = http.createServer(async (req, res) => {
 </Tabs>
 
 [express]: https://expressjs.com/ "Express"
-[hapi layout plugin]: https://github.com/podium-lib/hapi-layout "Hapi Layout Plugin"
 [@podium/client constructor]: https://github.com/podium-lib/client#constructor "@podium/client constructor"
 [@podium/proxy constructor]: https://github.com/podium-lib/proxy#constructor "@podium/proxy constructor"
 [@podium/context]: https://github.com/podium-lib/context "@podium/context"

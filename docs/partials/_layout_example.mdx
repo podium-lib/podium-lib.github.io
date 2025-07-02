@@ -50,58 +50,6 @@ app.listen(7000);
 ```
 
   </TabItem>
-  <TabItem value="hapi" label="Hapi">
-
-```js
-import HapiLayout from '@podium/hapi-layout';
-import Layout, { html } from '@podium/layout';
-import Hapi from 'hapi';
-
-const app = Hapi.Server({
-  host: 'localhost',
-  port: 7000,
-});
-
-const layout = new Layout({
-  name: 'myLayout',
-  pathname: '/',
-});
-
-const podletA = layout.client.register({
-  name: 'myPodletA',
-  uri: 'http://localhost:7100/manifest.json',
-});
-
-const podletB = layout.client.register({
-  name: 'myPodletB',
-  uri: 'http://localhost:7200/manifest.json',
-});
-
-app.register({
-  plugin: new HapiLayout(),
-  options: layout,
-});
-
-app.route({
-  method: 'GET',
-  path: layout.pathname(),
-  handler: (request, h) => {
-    const incoming = request.app.podium;
-    const [a, b] = await Promise.all([
-      podletA.fetch(incoming),
-      podletB.fetch(incoming),
-    ]);
-    h.podiumSend(html`
-      <section>${a}</section>
-      <section>${b}</section>
-    `);
-  },
-});
-
-app.start();
-```
-
-  </TabItem>
   <TabItem value="fastify" label="Fastify">
 
 

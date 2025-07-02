@@ -40,51 +40,6 @@ app.listen(7100);
 ```
 
   </TabItem>
-  <TabItem value="hapi" label="Hapi">
-
-```js
-import HapiPodlet from '@podium/hapi-podlet';
-import Podlet, { html } from '@podium/podlet';
-import Hapi from 'hapi';
-
-const app = Hapi.Server({
-    host: 'localhost',
-    port: 7100,
-});
-
-const podlet = new Podlet({
-  name: 'myPodlet',
-  version: '1.0.0',
-  pathname: '/',
-  development: true,
-});
-
-app.register({
-  plugin: new HapiPodlet(),
-  options: podlet,
-});
-
-app.route({
-  method: 'GET',
-  path: podlet.content(),
-  handler: (request, h) => {
-    if (request.app.podium.context.locale === 'nb-NO') {
-      return h.podiumSend(html`<h2>Hei verden</h2>`);
-    }
-    return h.podiumSend(html`<h2>Hello world</h2>`);
-  },
-});
-
-app.route({
-  method: 'GET',
-  path: podlet.manifest(),
-  handler: (request, h) => JSON.stringify(podlet),
-});
-
-app.start();
-```
-
-  </TabItem>
   <TabItem value="fastify" label="Fastify">
 
 
