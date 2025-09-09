@@ -50,15 +50,7 @@ then you could visit the following routes to test your changes
 
 The first problem with the basic setup described above is that every time you make a change to your server, you will need to stop and restart your server before refreshing your browser window in order to see changes.
 
-This is not so much a Podium problem as it is a common Node.js problem and it's easily solved. A common way to do so is to use a module such as [nodemon](http://nodemon.io) to monitor your file system and restart your server automatically anytime relevant files change.
-
-```bash
-npx nodemon server.js
-```
-
-See the [nodemon docs](https://github.com/remy/nodemon#nodemon) for more information.
-
-Node.js (v18 or newer) has a built-in `--watch` mode you can use:
+This is not so much a Podium problem as it is a common Node.js problem and it's easily solved. Node.js (v18 or newer) has a built-in `--watch` mode you can use:
 
 ```bash
 node --watch server.js
@@ -98,12 +90,6 @@ podlet.defaults({
   locale: "nb-NO",
 });
 ```
-
-:::tip
-
-Get the [browser extension](/docs/guides/browser-extension) and the accompanying [dev-tool middleware](https://github.com/podium-lib/dev-tool/tree/main/packages/server) to make it possible to change these defaults without changing code and restarting your server.
-
-:::
 
 ### HTML pages and page fragments
 
@@ -190,5 +176,5 @@ When not in development mode, the URL will be be similar except that it will be 
 
 For the best experience when developing podlets:
 
-- Install `nodemon` or use `--watch` so your podlet server restarts on changes.
+- Use `--watch` so your podlet server restarts on changes.
 - Turn on `development` mode when working locally, but keep it off in production.

@@ -19,11 +19,7 @@ First, you may have to allow the extension to run on the page you're debugging. 
 
 The extension adds two new panes to your browser's developer tools that cover two main use-cases. You may have to open an overflow menu to see them.
 
-![](/img/browser-extension-devtools-panes.png)
-
-### The Podium Context pane
-
-This pane is used when developing podlets to change the default values set on the [Podium context](/docs/guides/context). Say you want to test how your podlet behaves when given a different `deviceType` value. You could make changes in code, restart the server and then do your test, or you can use the extension and it's [partner middleware](https://github.com/podium-lib/dev-tool/tree/main/packages/server) to quickly swap values at runtime.
+![](/img/browser-extension-devtools-panes.jpg)
 
 ### The Podium Headers pane
 

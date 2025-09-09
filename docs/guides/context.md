@@ -125,12 +125,6 @@ podlet.defaults({
 });
 ```
 
-:::tip
-
-Get the [browser extension](/docs/guides/browser-extension) and the accompanying [dev-tool middleware](https://github.com/podium-lib/dev-tool/tree/main/packages/server) to make it possible to change these defaults without changing code and restarting your server.
-
-:::
-
 [bcp47]: https://tools.ietf.org/html/bcp47
 [kebab case]: https://en.wikipedia.org/wiki/Kebab_case
 [camel case]: https://en.wikipedia.org/wiki/Camel_case
